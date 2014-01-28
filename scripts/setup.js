@@ -41,23 +41,23 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.15;
 backgroundMusic.load();
 
-fireSound         = new SoundPool(20);
-explodeSound      = new SoundPool(20);
-d_explodeSound    = new SoundPool(20);
-d_destroyedSound  = new SoundPool(10);
-t_destroyedSound  = new SoundPool(10);
-t_destroyedSound2 = new SoundPool(10);
-t_destroyedSound3 = new SoundPool(10);
-pick_powerupSound = new SoundPool(20);
+fireSound         = new SoundPool('sounds/turret_fire.wav', 0.12, 20);
+explodeSound      = new SoundPool('sounds/explosion.wav', 0.1, 20);
+d_explodeSound    = new SoundPool('sounds/destructible_hit.wav', 0.1, 20);
+d_destroyedSound  = new SoundPool('sounds/destructible_destroyed.wav', 0.2, 10);
+t_destroyedSound  = new SoundPool('sounds/tank_destroyed.wav', 0.2, 10);
+t_destroyedSound2 = new SoundPool('sounds/tank_destroyed2.wav', 0.2, 10);
+t_destroyedSound3 = new SoundPool('sounds/tank_destroyed3.wav', 0.2, 10);
+pick_powerupSound = new SoundPool('sounds/pick-powerup.wav', 0.2, 20);
 
-fireSound.init('turret_fire');
-explodeSound.init('explosion');
-d_explodeSound.init('d_explosion');
-d_destroyedSound.init('d_destroyed');
-t_destroyedSound.init('tank_destroyed');
-t_destroyedSound2.init('tank_destroyed2');
-t_destroyedSound3.init('tank_destroyed3');
-pick_powerupSound.init('pick-powerup');
+fireSound.init();
+explodeSound.init();
+d_explodeSound.init();
+d_destroyedSound.init();
+t_destroyedSound.init();
+t_destroyedSound2.init();
+t_destroyedSound3.init();
+pick_powerupSound.init();
 
 // the default map
 testmap = new Map('default');
