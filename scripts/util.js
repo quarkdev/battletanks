@@ -1,5 +1,3 @@
-/* Module: UTIL*/
-
 /*
 * Module : UTIL
 *
@@ -8,6 +6,18 @@
 var UTIL = (function () {
     var my = {};
     
+    /*
+    * Private Method: _idInArray
+    *
+    * Checks if id is found in array
+    *
+    * Parameters:
+    *   array - the array to be checked
+    *   id    - value to compare to
+    *
+    * Returns:
+    *   a boolean true if id is found in array, else a boolean false
+    */
     var _idInArray = function (array, id) {
         // Check if id exists in array.
         for (var i = 0; i < array.length; i++) {
@@ -19,16 +29,38 @@ var UTIL = (function () {
         return false;
     };
     
-    my.getMousePos = function (canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
+    /*
+    * Public Method: getMousePos
+    *
+    * Retreives the current mouse coordinates within an element
+    *
+    * Parameters:
+    *   element - the element
+    *   evt     - the event
+    *
+    * Returns:
+    *   an object with the following properties: mX, mY (which are the mouse coordinates)
+    */
+    my.getMousePos = function (element, evt) {
+        var rect = element.getBoundingClientRect();
         return {
             mX: evt.clientX - rect.left,
             mY: (evt.clientY - rect.bottom) * (-1) // multiply by -1 since the plane is inversed vertically
         };
     };
     
+    /*
+    * Public Method: genArrayId
+    *
+    * Generates a unique id for an array element
+    *
+    * Parameters:
+    *   array - the array
+    *
+    * Returns:
+    *   a unique alphanumeric string
+    */
     my.genArrayId = function (array) {
-        // Generate a unique id for an array element.
         var id = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         
@@ -40,6 +72,14 @@ var UTIL = (function () {
         return id;
     };
     
+    /*
+    * Public Method: writeToLog
+    *
+    * Appends a string/message to the combat log, increments logNum (used for auto-scrolling)
+    *
+    * Parameters:
+    *   message - the string to append
+    */
     my.writeToLog = function (message) {
         cLog.innerHTML = cLog.innerHTML + message + '<br>';
         cLog.scrollTop = document.getElementById('log-' + logNum).offsetTop;
@@ -141,8 +181,6 @@ UTIL.geometry = (function() {
     *   a boolean true if point lies inside, else a boolean false
     */
     my.pointInsideRectangle = function (rect, P) {
-        /* Checks if point is inside rotated/unrotated rectangle. */
-        
         var c         = Math.cos(-rect.a*Math.PI/180);
         var s         = Math.sin(-rect.a*Math.PI/180);
         
@@ -178,16 +216,12 @@ UTIL.geometry = (function() {
     *                   By - is the y coordinate of the line's point B
     *
     * Returns:
-    *   an object which contains the parameters:
+    *   an object which contains the properties:
     *       yes       - a boolean true if an intersection is found, else a boolean false
     *       sideIndex - an integer representing the side of impact
     *       poi       - an object representing the point of impact                
     */
-    my.lineAxPaSquareIntersect = function (square, line) {
-        /* Checks if a line intersects any of the line segments representing an axis-parallel square, where
-           square = { s: _, x: _, y: _ } and line = { Ax: _, Ay: _, Bx: _, By: _ } | line.Bx and line.By are points
-           corresponding to lastX and lastY. */
-           
+    my.lineAxPaSquareIntersect = function (square, line) {    
         // First retrieve the four line segments that compose the square.
         var lines = _getLineSegmentsFromSquare(square.s, square.x, square.y),
             lastPoint = new Point(line.Bx, line.By),
@@ -260,24 +294,64 @@ UTIL.geometry = (function() {
         }
     };
     
+    /*
+    * Public Method: getPofIntLines
+    *
+    * Finds the point of intersection of two lines
+    *
+    * Parameters:
+    *   A, B - points representing the first line
+    *   C, D - points representing the second line
+    *
+    * Returns:
+    *   the result of a call to the private method: _getPofIntLines
+    */
     my.getPofIntLines = function(A, B, C, D) {
-        /* Utility wrapper. Takes 4 points: AB CD. */
-        
         return _getPofIntLines(new Line(A, B), new Line(C, D));
     };
     
+    /*
+    * Public Method: getDistanceBetweenPoints
+    *
+    * Finds the distance between two points
+    *
+    * Parameters:
+    *   A, B - the two points
+    *
+    * Returns:
+    *   the result of a call to a private method: _getDistanceBetweenPoints
+    */
     my.getDistanceBetweenPoints = function(A, B) {
-        /* Utility wrapper. */
-        
         return _getDistanceBetweenPoints(A, B);
     };
     
-    var _getDistanceBetweenPoints = function(A, B) {
-        /* Return the distance between two points. */
-        
+    /*
+    * Private Method: _getDistanceBetweenPoints
+    *
+    * Finds the distance between two points
+    *
+    * Parameters:
+    *   A, B - the two points
+    *
+    * Returns:
+    *   a floating point value, the distance
+    */
+    var _getDistanceBetweenPoints = function(A, B) {   
         return Math.sqrt(Math.pow(A.x - B.x, 2) + Math.pow(A.y - B.y, 2));
     };
     
+    /*
+    * Private Method: _getPofIntLines
+    *
+    * Finds the point of intersection of two lines
+    *
+    * Parameters:
+    *   lineA, lineB - Line objects
+    *
+    * Returns:
+    *   an object which contains the properties:
+    *       x, y - the x and y coordinates of the point of intersection
+    */
     var _getPofIntLines = function (lineA, lineB) {
         /* Returns the point of intersection of two lines in the form: {x: _, y: _} parameters are Line objects. */
         
@@ -328,10 +402,19 @@ UTIL.geometry = (function() {
         return {x: X, y: Y};
     };
     
+    /*
+    * Private Method: _linesIntersect
+    *
+    * Checks if two lines each defined by two points intersect
+    *
+    * Parameters:
+    *   A, B - points belonging to the first line
+    *   C, D - points belonging to the second line
+    *
+    * Returns:
+    *   a boolean true if they intersect, else a boolean false
+    */
     var _linesIntersect = function (A, B, C, D) {
-        /* Checks if two lines each defined by two points, intersect. Parameters: A, B, C and D are all Point objects.
-           This is based on the following assumption: A-B:C-D are line segment AB and CD respectively.*/
-
         var CmP = new Point(C.x - A.x, C.y - A.y);
         var r   = new Point(B.x - A.x, B.y - A.y);
         var s   = new Point(D.x - C.x, D.y - C.y);
@@ -357,9 +440,19 @@ UTIL.geometry = (function() {
         return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1);
     };
     
+    /*
+    * Private Method: _getLineSegmentsFromSquare
+    *
+    * Retrieves the outer line segments defining a square
+    *
+    * Parameters:
+    *   side - length of the square's side
+    *   x, y - coordinates of the square's center point
+    *
+    * Returns:
+    *   an array of lines following the format: [Top, Right, Bottom, Left]
+    */
     var _getLineSegmentsFromSquare = function (side, x, y) {
-        /*  Returns a list of Line Objects of the format: [T, R, B, L] */
-
         var hs = side/2.0;
         
         var pTL = new Point(x - hs, y + hs), // Top left.
@@ -379,10 +472,19 @@ UTIL.geometry = (function() {
     return my;
 }());
 
-// IMAGE LIBRARY
+/*
+* Public Object: ImageLibrary
+*
+*  An image library constructor
+*/
 function ImageLibrary() {
     this.shelf = [];
- 
+    
+    /*
+    * Public Method: add
+    *
+    * Pushes a new image object into the shelf array
+    */
     this.add = function(id, source) {
         this.tmp = new Image();
         this.tmp.id = id;
@@ -391,6 +493,11 @@ function ImageLibrary() {
         this.shelf.push(this.tmp);
     };
     
+    /*
+    * Public Method: get
+    *
+    * Returns the image object which contains id
+    */
     this.get = function(id) {
         for (var i = 0; i < this.shelf.length; i++) {
             if (this.shelf[i].id == id) {
@@ -401,85 +508,48 @@ function ImageLibrary() {
     };
 }
 
-// SOUND POOL
-function SoundPool(maxSize) {
-    var size = maxSize; // max sounds allowed in pool
+/*
+* Public Object: SoundPool
+*
+* A sound pool constructor
+*
+* Parameters:
+*   loc - location of the sound file
+*   vol - sound volume
+*   max - max number of sounds in pool
+*/
+function SoundPool(loc, vol, max) {
+    var size = max,
+        soundLoc = loc,
+        soundVol = vol,
+        soundIndex = 0;
+    
     var pool = [];
     this.pool = pool;
-    var currSound = 0;
     
-    this.init = function(object) {
-        if (object == 'turret_fire') {
-            for (var i = 0; i < size; i++) {
-                // initialize the sound
-                turret_fire = new Audio('sounds/turret_fire.wav');
-                turret_fire.volume = 0.12;
-                turret_fire.load();
-                pool[i] = turret_fire;
-            }
-        }
-        else if (object == 'explosion') {
-            for (var i = 0; i < size; i++) {
-                var explosion = new Audio('sounds/explosion.wav');
-                explosion.volume = 0.1;
-                explosion.load();
-                pool[i] = explosion;
-            }
-        }
-        else if (object == 'd_explosion') {
-            for (var i = 0; i < size; i++) {
-                var d_explosion = new Audio('sounds/destructible_hit.wav');
-                d_explosion.volume = 0.1;
-                d_explosion.load();
-                pool[i] = d_explosion;
-            }
-        }
-        else if (object == 'd_destroyed') {
-            for (var i = 0; i < size; i++) {
-                var d_destroyed = new Audio('sounds/destructible_destroyed.wav');
-                d_destroyed.volume = 0.2;
-                d_destroyed.load();
-                pool[i] = d_destroyed;
-            }
-        }
-        else if (object == 'tank_destroyed') {
-            for (var i = 0; i < size; i++) {
-                var t_destroyed = new Audio('sounds/tank_destroyed.wav');
-                t_destroyed.volume = 0.2;
-                t_destroyed.load();
-                pool[i] = t_destroyed;
-            }
-        }
-        else if (object == 'tank_destroyed2') {
-            for (var i = 0; i < size; i++) {
-                var t_destroyed2 = new Audio('sounds/tank_destroyed2.wav');
-                t_destroyed2.volume = 0.2;
-                t_destroyed2.load();
-                pool[i] = t_destroyed2;
-            }
-        }
-        else if (object == 'tank_destroyed3') {
-            for (var i = 0; i < size; i++) {
-                var t_destroyed3 = new Audio('sounds/tank_destroyed3.wav');
-                t_destroyed3.volume = 0.2;
-                t_destroyed3.load();
-                pool[i] = t_destroyed3;
-            }
-        }
-        else if (object == 'pick-powerup') {
-            for (var i = 0; i < size; i++) {
-                var pick_powerup = new Audio('sounds/pick-powerup.wav');
-                pick_powerup.volume = 0.2;
-                pick_powerup.load();
-                pool[i] = pick_powerup;
-            }
+    /*
+    * Public Method: init
+    * 
+    * Initializes the sound pool for later use
+    */
+    this.init = function () {
+        for (var i = 0; i < size; i++) {
+            var sound = new Audio(soundLoc);
+            sound.volume = soundVol,
+            sound.load();
+            pool[i] = sound;
         }
     };
     
-    this.get = function() {
-        if(pool[currSound].currentTime === 0 || pool[currSound].ended) {
-            pool[currSound].play();
+    /*
+    * Public Method: get
+    *
+    * Plays a sound in the pool, shifts index
+    */
+    this.get = function () {
+        if (pool[soundIndex].currentTime === 0 || pool[soundIndex].ended) {
+            pool[soundIndex].play();
         }
-        currSound = (currSound + 1) % size;
+        soundIndex = (soundIndex + 1) % size;
     };
 }
