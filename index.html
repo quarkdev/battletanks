@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+    #game-screen {
+        border: 1px solid grey;
+        cursor: crosshair;
+    }
+    
+    html, body {
+        width:  100%;
+        height: 100%;
+        margin: 0px;
+    }
+    
+    #health-bar,
+    #current-health,
+    #current-health-anim,
+    #hNum    {
+        width: 1024px;
+        height: 20px;
+        position: relative;
+    }
+    
+    #health-bar {
+        border: 1px solid black;
+        z-index: 1;
+    }
+    
+    #hNum {
+        font-family: 'Arial Narrow';
+        text-align: center;
+        top: -20px;
+        z-index: 1000;
+    }
+    
+    #current-health {
+        background-color: #66CD00;
+        z-index: 100;
+    }
+    
+    #current-health-anim {
+        background-color: grey;
+        z-index: 10;
+    }
+    
+    #combat-log {
+        height: 100px;
+        width: 1024px;
+        font-family: Consolas, Arial;
+        font-size: 11px;
+        text-align: left;
+        overflow: scroll;
+        border: 1p solid grey;
+    }
+    
+    #canvas-wrap { position: relative }
+    .overlay {
+        position: absolute;
+        width: 1026px;
+        height: 610px;
+        background-color: #000;
+        opacity: 0.75;
+        top: 0;
+        left: 0;
+    }
+    
+    #main-menu {
+        background: url('images/background/battle.jpg');
+        opacity: 1.0;
+    }
+    
+    .menu-btn {
+        width: 200px;
+        margin: 12px auto;
+        padding: 12px 18px;
+        text-align: center;
+        background-color: red;
+        color: #fff;
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    
+    .menu-btn-container {
+        width: 200px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        
+    }
+    
+    .ui_input,
+    #map-name,
+    #map-name-ex {
+        font-size: 16px;
+        width: 208px;
+        padding: 12px;
+        height: 30px;
+        margin: 0 auto;
+    }
+    
+    .mbc-5 {
+        margin: -212px 0 0 -100px;
+    }
+    
+    .mbc-3 {
+        margin: -128px 0 0 -100px;
+    }
+    
+    .mbc-2 {
+        margin: -84px 0 0 -100px; <!-- offset for menus with 2 items -->
+    }
+    
+    .mbc-1 {
+        margin: -42px 0 0 -100px;
+    }
+    
+    .menu-btn:hover {
+        -webkit-box-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
+        -moz-box-shadow:    0px 0px 30px rgba(255, 255, 255, 1);
+        box-shadow:         0px 0px 30px rgba(255, 255, 255, 1);
+    }
+</style>
+<style type="text/css" src="css/style.css"></style>
+<script type="text/javascript" src="scripts/jquery.js"></script>
+</head>
+<body>
+<div id="canvas-wrap" onselectstart="return false;">
+    <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
+    <div id="main-menu" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <div id="start-game" class="menu-btn">START GAME</div>
+            <div id="map-builder" class="menu-btn">MAP BUILDER</div>
+        </div>
+    </div>
+    <div id="pause-menu" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <div class="menu-btn main-menu">MAIN MENU</div>
+            <div class="menu-btn continue-game">CONTINUE</div>
+        </div>
+    </div>
+    <div id="editor-menu" class="overlay">
+        <div class="menu-btn-container mbc-5">
+            <div class="menu-btn main-menu">MAIN MENU</div>
+            <div id="save-map" class="menu-btn">SAVE MAP</div>
+            <div id="import-map" class="menu-btn">IMPORT MAP</div>
+            <div id="export-map" class="menu-btn">EXPORT MAP</div>
+            <div class="menu-btn continue-game">CONTINUE</div>
+        </div>
+    </div>
+    <div id="prompt-pre-game-settings" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <span style="color: white">MAP: </span>
+            <select  style="width: 152px; padding: 8px 4px; margin-bottom: 12px;">
+                <option value="0" selected="selected">Default</option>
+            </select>
+            <input id="player-name" class="ui_input" type="text" value="" placeholder="Player Name" />
+            <div id="start-battle-ok" class="menu-btn">START BATTLE!</div>
+        </div>
+    </div>
+    <div id="prompt-map-name" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <input id="map-name" type="text" value="" placeholder="Map Name" />
+            <div id="save-map-ok" class="menu-btn">OK</div>
+        </div>
+    </div>
+    <div id="prompt-map-name-export" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <input id="map-name-ex" type="text" value="" placeholder="Map Name" />
+            <div id="save-map-ex-ok" class="menu-btn">OK</div>
+        </div>
+    </div>
+    <div id="prompt-map-import" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <input id="map-string" class="ui_input" type="text" value="" placeholder="Map String" />
+            <div id="import-map-ok" class="menu-btn">IMPORT</div>
+        </div>
+    </div>
+</div>
+<div id="external-hud">
+    <div id="health-bar">
+        <div id="current-health-anim">
+            <div id="current-health">
+            </div>  
+        </div>
+        <div id="hNum">
+        </div>
+    </div>
+    <div id="combat-log"></div>
+</div>
+
+<!-- Ok, let's start unloading our Javascript payload -->
+<script type="text/javascript" src="scripts/init.js"></script>
+<script type="text/javascript" src="scripts/util.js"></script>
+<script type="text/javascript" src="scripts/listener.js"></script>
+<script type="text/javascript" src="scripts/canvas.js"></script>
+<script type="text/javascript" src="scripts/global.js"></script>
+<script type="text/javascript" src="scripts/tank.js"></script>
+<script type="text/javascript" src="scripts/projectile.js"></script>
+<script type="text/javascript" src="scripts/destructible.js"></script>
+<script type="text/javascript" src="scripts/startingpoint.js"></script>
+<script type="text/javascript" src="scripts/powerup.js"></script>
+<script type="text/javascript" src="scripts/blueprint.js"></script>
+<script type="text/javascript" src="scripts/map.js"></script>
+<script type="text/javascript" src="scripts/setup.js"></script>
+<script type="text/javascript" src="scripts/load.js"></script>
+<script type="text/javascript" src="scripts/main.js"></script>
+</body>
+</html>
