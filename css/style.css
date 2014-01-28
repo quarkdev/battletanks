@@ -1,0 +1,120 @@
+    #game-screen {
+        border: 1px solid grey;
+        cursor: crosshair;
+    }
+    
+    html, body {
+        width:  100%;
+        height: 100%;
+        margin: 0px;
+    }
+    
+    #health-bar,
+    #current-health,
+    #current-health-anim,
+    #hNum    {
+        width: 1024px;
+        height: 20px;
+        position: relative;
+    }
+    
+    #health-bar {
+        border: 1px solid black;
+        z-index: 1;
+    }
+    
+    #hNum {
+        font-family: 'Arial Narrow';
+        text-align: center;
+        top: -20px;
+        z-index: 1000;
+    }
+    
+    #current-health {
+        background-color: #66CD00;
+        z-index: 100;
+    }
+    
+    #current-health-anim {
+        background-color: grey;
+        z-index: 10;
+    }
+    
+    #combat-log {
+        height: 100px;
+        width: 1024px;
+        font-family: Consolas, Arial;
+        font-size: 11px;
+        text-align: left;
+        overflow: scroll;
+        border: 1p solid grey;
+    }
+    
+    #canvas-wrap { position: relative }
+    .overlay {
+        position: absolute;
+        width: 1026px;
+        height: 610px;
+        background-color: #000;
+        opacity: 0.75;
+        top: 0;
+        left: 0;
+    }
+    
+    #main-menu {
+        background: url('images/background/battle.jpg');
+        opacity: 1.0;
+    }
+    
+    .menu-btn {
+        width: 200px;
+        margin: 12px auto;
+        padding: 12px 18px;
+        text-align: center;
+        background-color: red;
+        color: #fff;
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    
+    .menu-btn-container {
+        width: 200px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        
+    }
+    
+    .ui_input,
+    #map-name,
+    #map-name-ex {
+        font-size: 16px;
+        width: 208px;
+        padding: 12px;
+        height: 30px;
+        margin: 0 auto;
+    }
+    
+    .mbc-5 {
+        margin: -212px 0 0 -100px;
+    }
+    
+    .mbc-3 {
+        margin: -128px 0 0 -100px;
+    }
+    
+    .mbc-2 {
+        margin: -84px 0 0 -100px; <!-- offset for menus with 2 items -->
+    }
+    
+    .mbc-1 {
+        margin: -42px 0 0 -100px;
+    }
+    
+    .menu-btn:hover {
+        -webkit-box-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
+        -moz-box-shadow:    0px 0px 30px rgba(255, 255, 255, 1);
+        box-shadow:         0px 0px 30px rgba(255, 255, 255, 1);
+    }
