@@ -292,10 +292,3 @@ function Tank(specs, id, x, y) {
         this.config.oY = 0;
     };
 }
-
-// Draw Tanks
-var drawTanks = function(context) {
-    for (var i = 0; i < tanks.length; i++) {
-        tanks[i].draw(context);
-    }
-};

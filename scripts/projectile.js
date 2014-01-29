@@ -1,4 +1,11 @@
-/*-------- Projectiles --------*/
+/*
+* Public Object: Projectile
+*
+* A Projectile object constructor
+*
+* Parameters:
+*   specs - contains the following properties: speed, damage, angle, oX, oY, srcId, srcType
+*/
 function Projectile(specs) {
     this.config = {
         active  : true,
@@ -13,10 +20,15 @@ function Projectile(specs) {
         sideHit : 0 // Side hit (if square)
     };
     
-    this.update = function (modifier) {
-        // Prevent update if not active.
-        if (this.config.active === false) return;
-    
+    /*
+    * Public Method: update
+    *
+    * Updates the projectile's configuration, including collision checks
+    *
+    * Parameters:
+    *   modifier - this is the time elapsed since the last frame/update (delta/1000)
+    */
+    this.update = function (modifier) {  
         var p = this.config,
             angleInDegrees = p.angle * Math.PI / 180;
         
@@ -105,29 +117,59 @@ function Projectile(specs) {
         }
     };
     
+    /*
+    * Public Method: draw
+    *
+    * Draws the projectile
+    *
+    * Parameters:
+    *   ctx - the context
+    */
     this.draw = function (ctx) {
-        // Prevent draw if not active.
-        if (this.config.active === false) return;
-
         ctx.beginPath();
         ctx.arc(this.config.oX, this.config.oY, 3, 0, 2 * Math.PI, false);
         ctx.fillStyle = 'red';
         ctx.fill();
     };
     
+    /*
+    * Private Method: _hasHitBoundary
+    *
+    * Checks if projectile have hit the outer bounds of the canvas
+    *
+    * Parameters:
+    *   x, y - projectile coordinates
+    *
+    * Returns:
+    *   a boolean true if hit, else a boolean false
+    */
     var _hasHitBoundary = function (x, y) {      
         return (x < 0 || x > canvas.width || y < 0 || y > canvas.height);
     };
     
+    /*
+    * Private Method: _hasHitDestructible
+    *
+    * Checks if projectile hit a destructible
+    *
+    * Parameters:
+    *   destructibles - the array of destructibles
+    *   x, y          - the coordinates of the projectile
+    *   lastX, lastY  - the previous coodinates of the projectile (current frame - 1)
+    *
+    * Returns:
+    *   an object with the following parameters:
+    *       hit          - boolean
+    *       poi          - point of impact
+    *       sideH        - side of impact (used to calculate bound angle)
+    *       destructible - the affected destructible
+    */
     var _hasHitDestructible = function (destructibles, x, y, lastX, lastY) {
         for (var i = 0; i < destructibles.length; i++) {
             var d = destructibles[i].config;
             
-            if (d.active === false) continue; // Skip inactive.
+            if (d.active === false) continue; // Skip inactive destructibles
             
-            /* If (UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size)) {
-                return { hit: true, destructible: destructibles[i] };
-            }*/
             var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY });
             if (lineX.yes) {
                 return { hit: true, poi: lineX.PoI, sideH: lineX.sideIndex, destructible: destructibles[i] };
@@ -136,9 +178,21 @@ function Projectile(specs) {
         return { hit: false, poi: null, sideH: null, destructible: null };
     };
     
+    /*
+    * Private Method: _hasHitTank
+    *
+    * Checks if projectile hit a tank
+    *
+    * Parameters:
+    *   tanks - the array of tanks
+    *   x, y  - the projectile coordinates
+    *
+    * Returns:
+    *   an object containing the parameters: hit, tank
+    */
     var _hasHitTank = function (tanks, x, y) {
         for (var i = 0; i < tanks.length; i++) {
-            if (tanks[i].config.active === false) continue; // Skip inactive.
+            if (tanks[i].config.active === false) continue; // Skip inactive tanks
         
             if (UTIL.geometry.pointInsideRectangle({w: tanks[i].config.width, h: tanks[i].config.height, a: tanks[i].config.hAngle, x: tanks[i].config.oX, y: tanks[i].config.oY}, {x: x, y: y})) {
                 return { hit: true, tank: tanks[i] };
@@ -147,22 +201,3 @@ function Projectile(specs) {
         return { hit: false, tank: null };
     };
 }
-
-var updateProjectiles = function(modifier) {
-    for (var i = 0; i < projectiles.length; i++) {
-        if (projectiles[i].config.active) {
-            projectiles[i].update(modifier);
-        }
-    }
-};
-
-// Draw Projectiles
-var drawProjectiles = function(ctx) {
-    /* draw all the projectiles */
-    for (var i = 0; i < projectiles.length; i++) {
-        // draw the projectile
-        if (projectiles[i].config.active) {
-            projectiles[i].draw(ctx);
-        }
-    }
-};

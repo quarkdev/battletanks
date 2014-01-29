@@ -28,7 +28,27 @@ var CANVAS = (function () {
             destructibles[i].draw(context);
         }
     };
-    
+    my.drawProjectiles = function (context) {
+        /* draw all the projectiles */
+        for (var i = 0; i < projectiles.length; i++) {
+            // draw the projectile
+            if (projectiles[i].config.active) {
+                projectiles[i].draw(context);
+            }
+        }
+    };
+    my.drawPowerUps = function (context) {
+        /* draw all powerups */
+        for (var i = 0; i < powerups.length; i++) {
+            if (powerups[i].config.image.ready) {
+                var _size = powerups[i].config.size / 2; // half Size
+                context.translate(powerups[i].config.oX, powerups[i].config.oY);
+                context.drawImage(powerups[i].config.image, -_size, -_size);
+                // reverse translate
+                context.translate(-powerups[i].config.oX, -powerups[i].config.oY);
+            }
+        }
+    };
     return my;
 }());
 

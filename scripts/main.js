@@ -83,8 +83,13 @@
             enemy2.fire();
         }
         // point enemy turret to player and fire
-        updateProjectiles(modifier);
-        //reset();
+        
+        // Update all projectiles.
+        for (var i = 0; i < projectiles.length; i++) {
+            if (projectiles[i].config.active) {
+                projectiles[i].update(modifier);
+            }
+        }
     };
     
     // Editor UPDATE
@@ -145,10 +150,10 @@
 
         CANVAS.clear(ctx);
 
-        drawDestructibles(ctx);
-        drawPowerUps(ctx);
-        drawTanks(ctx);
-        drawProjectiles(ctx);
+        CANVAS.drawDestructibles(ctx);
+        CANVAS.drawPowerUps(ctx);
+        CANVAS.drawTanks(ctx);
+        CANVAS.drawProjectiles(ctx);
 
     };
     

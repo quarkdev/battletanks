@@ -204,10 +204,3 @@ function Destructible(specs, x, y) {
         ctx.translate(-this.config.oX, -this.config.oY);
     }
 }
-
-var drawDestructibles = function(context) {
-    /* draw all destructibles */
-    for (var i = 0; i < destructibles.length; i++) {
-        destructibles[i].draw(context);
-    }
-};

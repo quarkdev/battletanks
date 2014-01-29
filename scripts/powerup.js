@@ -285,17 +285,3 @@ function Ammo(x, y) {
         tank.config.ammo += 25;
     };
 }
-
-
-var drawPowerUps = function(ctx) {
-    /* draw all powerups */
-    for (var i = 0; i < powerups.length; i++) {
-        if (powerups[i].config.image.ready) {
-            var _size = powerups[i].config.size / 2; // half Size
-            ctx.translate(powerups[i].config.oX, powerups[i].config.oY);
-            ctx.drawImage(powerups[i].config.image, -_size, -_size);
-            // reverse translate
-            ctx.translate(-powerups[i].config.oX, -powerups[i].config.oY);
-        }
-    }
-};
