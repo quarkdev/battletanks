@@ -61,6 +61,14 @@ function Map(name) {
     this.startingPoints = []; // this also dictates the max player
 }
 
+// StartingPoint object
+function StartingPoint(x, y) {
+    this.config = {
+        oX: x,
+        oY: y
+    };
+}
+
 function setupMap(map, playerlist) {
     /* Prepare the battlefield according to a map object's settings.
        map - is the map object

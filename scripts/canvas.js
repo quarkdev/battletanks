@@ -49,6 +49,15 @@ var CANVAS = (function () {
             }
         }
     };
+    my.drawStartingPoints = function (context) {
+        /* draw all starting points */
+        for (var i = 0; i < startingpoints.length; i++) {
+            context.translate(startingpoints[i].config.oX, startingpoints[i].config.oY);
+            context.drawImage(EditorImages.get('starting-point'), -16, -16);
+            // reverse translate
+            context.translate(-startingpoints[i].config.oX, -startingpoints[i].config.oY);
+        }
+    };
     return my;
 }());
 

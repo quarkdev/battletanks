@@ -207,7 +207,7 @@
         editorUpdate();
         renderCanvas();
         
-        drawStartingPoints(); 
+        CANVAS.drawStartingPoints(ctx); 
         drawAssetOnCursor();
         
         editorAnimation = requestAnimationFrame(editor);
