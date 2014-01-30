@@ -24,7 +24,7 @@ function initGameSettings(player_name) {
         playerlist.push(['bot'+i, 'm4_sherman']);
     }
 
-    if (setupMap(current_map, playerlist) == 0) {
+    if (MAP.setup(current_map, playerlist) == 0) {
     
         // temporary controls binds for rudimentary AI
         player = tanks[0];

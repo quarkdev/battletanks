@@ -35,7 +35,7 @@ var MAP = (function () {
         }
 
         // push the tanks into the array
-        for (j = 0; j < number_of_players; j++) {
+        for (j = 0; j < playerNum; j++) {
             // select random coordinates
             var roll = 0;
             do {
@@ -50,7 +50,7 @@ var MAP = (function () {
     };
     
     return my;
-});
+}());
 
 // Map object
 function Map(name) {
@@ -67,52 +67,6 @@ function StartingPoint(x, y) {
         oX: x,
         oY: y
     };
-}
-
-function setupMap(map, playerlist) {
-    /* Prepare the battlefield according to a map object's settings.
-       map - is the map object
-       playerNames - array of playernames/id
-       
-       error_code:
-       0 - success
-       1 - map can't accomodate the number of players
-    */
-    "use strict";
-    var number_of_players, coords_taken, i, j;
-
-    number_of_players = playerlist.length;
-    coords_taken = [];
-
-    // first determine if selected map can accomodate the number of players
-    if (number_of_players > map.startingPoints.length) {
-        return 1; // nope, can't accomodate..
-    }
-
-    // clear the destructible, projectile, tank, and powerup arrays
-    destructibles.clear();
-    projectiles.clear();
-    tanks.clear();
-    powerups.clear();
-
-    // push the destructibles into the array
-    for (i = 0; i < map.destructibles.length; i++) {
-        destructibles.push(new Destructible(BLUEPRINT.get(map.destructibles[i][0]), map.destructibles[i][1], map.destructibles[i][2]));
-    }
-
-    // push the tanks into the array
-    for (j = 0; j < number_of_players; j++) {
-        // select random coordinates
-        var roll = 0;
-        do {
-            roll = Math.floor(Math.random() * (map.startingPoints.length)) + 0;
-        } while (coords_taken.indexOf(roll) != -1);
-        coords_taken.push(roll);
-    
-        tanks.push(new Tank(BLUEPRINT.get(playerlist[j][1]), playerlist[j][0], map.startingPoints[roll].config.oX, map.startingPoints[roll].config.oY));
-    }
-
-    return 0;
 }
 
 var drawAssetOnCursor = function () {
