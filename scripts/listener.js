@@ -64,7 +64,7 @@ function attachEditorEventListeners() {
         
         var name = document.getElementById('map-name').value;
         
-        saveMap(name);
+        MAP.save(name);
         
         // hide menu
         editor();
@@ -84,7 +84,7 @@ function attachEditorEventListeners() {
         
         var name = document.getElementById('map-name-ex').value;
         
-        writeMapAsString(name);
+        MAP.exportAsString(name);
         
         // hide menu
         editor();
@@ -105,7 +105,7 @@ function attachEditorEventListeners() {
         
         var mapStr = document.getElementById('map-string').value;
         
-        loadMapFromString(mapStr);
+        MAP.importFromString(mapStr);
         
         // hide menu
         editor();

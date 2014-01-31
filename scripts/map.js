@@ -163,6 +163,99 @@ var MAP = (function () {
         ctx.translate(-x, -y);
     };
     
+    my.save = function (name) {
+        /* Add the map to the maplist and set as current | mapdata is taken from the newgame-ready globals: destructibles, projectiles... and so on */
+        var newmap = new Map(name);
+        
+        for (var i = 0; i < destructibles.length; i++) {
+            newmap.destructibles.push([destructibles[i].config.name, destructibles[i].config.oX, destructibles[i].config.oY]);
+        }
+        
+        for (i = 0; i < startingpoints.length; i++) {
+            newmap.startingPoints.push(startingpoints[i]);
+        }
+         
+        // check map list for similarly-named map
+        for (i = 0; i < maps.length; i++) {
+            if (maps[i].name == newmap.name) {
+                // duplicate found, inform user that map hasn't been saved
+                // ...
+                return;
+            }
+        }
+        
+        maps.push(newmap);
+        current_map = newmap;
+    };
+    
+    my.exportAsString = function (name) {
+        /* Export the current map in the editor in the form of a custom-delimited string. */
+        name = name === '' ? 'newmap' : name;
+        
+        var map = '';
+        map += name + '|';
+        
+        for (var i = 0; i < startingpoints.length; i++) {
+            if (i !== 0) map += ',';
+            map += startingpoints[i].config.oX + ':' + startingpoints[i].config.oY;
+        }
+        
+        map += '|';
+        
+        for (i = 0; i < destructibles.length; i++) {
+            if (i !== 0) map += ',';
+            map += destructibles[i].config.name + ':';
+            map += destructibles[i].config.oX + ':';
+            map += destructibles[i].config.oY;
+        }
+        
+        wdw = window.open("data:text/html," + encodeURIComponent(map), "_blank", "width=200, height=100");
+    };
+    
+    my.importFromString = function (mapStr) {
+        /* load map to map list from string | error_codes: 0 = success, 1 = map already exists. */
+        
+        var name_sp_dt     = mapStr.split('|'),
+            name           = name_sp_dt[0],
+            startingPoints = name_sp_dt[1].split(','),
+            destructibles  = name_sp_dt[2].split(','),
+            newmap         = new Map(name),
+            coords         = [],
+            type_coords    = [];
+        
+        for (var i = 0; i < startingPoints.length; i++) {
+            coords = startingPoints[i].split(':'); // x:y
+            newmap.startingPoints.push([coords[0], coords[1]]);
+        }
+        
+        for (i = 0; i < destructibles.length; i++) {
+            type_coords = destructibles[i].split(':'); // type:x:y
+            newmap.destructibles.push([type_coords[0], type_coords[1], type_coords[2]]);
+        }
+        
+        // check map list if it contains a similar map
+        for (i = 0; i < maps.length; i++) {
+            if (maps[i].name == newmap.name) {
+                return 1;
+            }
+        }
+        
+        // add new map to maps
+        maps.push(newmap);
+        
+        return 0;
+    };
+    
+    my.getIndex = function (name) {
+        /* Retrieve the index from maps. Returns the map index if found, otherwise -1. */
+        for (var i = 0; i < maps.length; i++) {
+            if (maps[i].name == name) {
+                return i;
+            }
+        }
+        return -1;
+    };
+    
     my.setup = function (map, playerList) {
         /* Prepare the battlefield according to a map object's settings.
            map - is the map object
@@ -227,102 +320,4 @@ function StartingPoint(x, y) {
         oX: x,
         oY: y
     };
-}
-
-function writeMapAsString(name) {
-    /* Save the current map in the editor in the form of a custom-delimited string. */
-    name = name === '' ? 'newmap' : name;
-    
-    var map = '';
-    map += name + '|';
-    
-    for (var i = 0; i < startingpoints.length; i++) {
-        if (i !== 0) map += ',';
-        map += startingpoints[i].config.oX + ':' + startingpoints[i].config.oY;
-    }
-    
-    map += '|';
-    
-    for (i = 0; i < destructibles.length; i++) {
-        if (i !== 0) map += ',';
-        map += destructibles[i].config.name + ':';
-        map += destructibles[i].config.oX + ':';
-        map += destructibles[i].config.oY;
-    }
-    
-    wdw = window.open("data:text/html," + encodeURIComponent(map), "_blank", "width=200, height=100");
-    wdw.focus();
-    
-}
-
-function loadMapFromString(mapStr) {
-    /* load map to map list from string | error_codes: 0 = success, 1 = map already exists. */
-    
-    var name_sp_dt = mapStr.split('|');
-    
-    var name = name_sp_dt[0];
-    var startingPoints = name_sp_dt[1].split(',');
-    var destructibles = name_sp_dt[2].split(',');
-    
-    var newmap = new Map(name);
-    
-    var coords = [],
-        type_coords = [];
-    
-    for (var i = 0; i < startingPoints.length; i++) {
-        coords = startingPoints[i].split(':'); // x:y
-        newmap.startingPoints.push([coords[0], coords[1]]);
-    }
-    
-    for (i = 0; i < destructibles.length; i++) {
-        type_coords = destructibles[i].split(':'); // type:x:y
-        newmap.destructibles.push([type_coords[0], type_coords[1], type_coords[2]]);
-    }
-    
-    // check map list if it contains a similar map
-    for (i = 0; i < maps.length; i++) {
-        if (maps[i].name == newmap.name) {
-            return 1;
-        }
-    }
-    
-    // add new map to maps
-    maps.push(newmap);
-    
-    return 0;
-}
-
-function saveMap(name) {
-    /* Add the map to the maplist and set as current | mapdata is taken from the newgame-ready globals: destructibles, projectiles... and so on */
-    var newmap = new Map(name);
-    
-    for (var i = 0; i < destructibles.length; i++) {
-        newmap.destructibles.push([destructibles[i].config.name, destructibles[i].config.oX, destructibles[i].config.oY]);
-    }
-    
-    for (i = 0; i < startingpoints.length; i++) {
-        newmap.startingPoints.push(startingpoints[i]);
-    }
-     
-    // check map list for similarly-named map
-    for (i = 0; i < maps.length; i++) {
-        if (maps[i].name == newmap.name) {
-            // duplicate found, inform user that map hasn't been saved
-            // ...
-            return;
-        }
-    }
-    
-    maps.push(newmap);
-    current_map = newmap;
-}
-
-function getMapIndex(name) {
-    /* Retrieve the index from maps. Returns the map index if found, otherwise -1. */
-    for (var i = 0; i < maps.length; i++) {
-        if (maps[i].name == name) {
-            return i;
-        }
-    }
-    return -1;
 }
