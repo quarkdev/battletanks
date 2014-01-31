@@ -59,6 +59,14 @@ t_destroyedSound2.init();
 t_destroyedSound3.init();
 pick_powerupSound.init();
 
+// Map editor initiatlization
+MAP.addPlaceable('destructible', 'brick_explosive');
+MAP.addPlaceable('destructible', 'concrete');
+MAP.addPlaceable('destructible', 'riveted_iron');
+MAP.addPlaceable('destructible', 'wall_rubber');
+MAP.addPlaceable('destructible', 'heavy_rubber');
+MAP.addPlaceable('starting-point', 'starting-point');
+
 // the default map
 testmap = new Map('default');
 testmap.destructibles.push(['brick_explosive', 300, 200]);

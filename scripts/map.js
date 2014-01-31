@@ -3,6 +3,166 @@
 var MAP = (function () {
     var my = {};
     
+    var cpi = 0, // the current placeable index
+        ups = 16, // units per step. The number of units the cursor is moved per step.
+        ccc = [ups, ups], // current cursor coordinates
+        placeables = [],
+        mode = 1; // edit mode, 1 = manhattan, 0 = freeform
+    
+    my.addPlaceable = function (type, name) {
+        /* Add a new placeable string pair to the placeable array (e.g. 'destructible', 'concrete') */
+        placeables.push([type, name]);
+    };
+    
+    my.nextPlaceable = function () {
+        /* Cycles through the placeable index. */
+        cpi = (cpi + 1) % placeables.length;
+    };
+    
+    my.placeObject = function () {
+        /* Place game object at current cursor coordinates. */
+        
+        var x, y;
+        
+        if (mode === 0) {
+            x = mousePos.mX;
+            y = mousePos.mY;
+        }
+        else {
+            x = ccc[0];
+            y = ccc[1];
+        }
+        
+        var asset_type = placeables[cpi][0];
+        
+        switch (asset_type) {
+            case 'destructible':
+                destructibles.push(new Destructible(BLUEPRINT.get(placeables[cpi][1]), x, y));
+                break;
+            case 'starting-point':
+                startingpoints.push(new StartingPoint(x, y));
+                break;
+            default:
+                break;
+        }
+    };
+    
+    my.removeObject = function () {
+        /* Remove object at cursor. */
+        
+        var x, y;
+        
+        if (mode === 0) {
+            x = mousePos.mX;
+            y = mousePos.mY;
+        }
+        else {
+            x = ccc[0];
+            y = ccc[1];
+        }
+        
+        // first lets check the destructibles, start from the topmost
+        for (var i = destructibles.length-1; i != -1; i--) {
+        
+            if (x < destructibles[i].config.oX + 16 &&
+                x > destructibles[i].config.oX - 16 &&
+                y < destructibles[i].config.oY + 16 &&
+                y > destructibles[i].config.oY - 16) {
+                // if mouse lies inside a destructible...
+                destructibles.splice(i, 1);
+                break;
+            }
+            
+        }
+        
+        // second, the starting points
+        for (i = startingpoints.length-1; i != -1; i--) {
+            
+            if (x < startingpoints[i].config.oX + 16 &&
+                x > startingpoints[i].config.oX - 16 &&
+                y < startingpoints[i].config.oY + 16 &&
+                y > startingpoints[i].config.oY - 16) {
+                // if mouse lies inside a starting point...
+                startingpoints.splice(i, 1);
+                break;
+            }
+        }
+        
+    };
+    
+    my.moveCursor = function (direction) {
+        /* Move cursor to specified direction. */
+        
+        if (mode === 0) { return; } // do nothing when in manhattan mode
+        
+        switch (direction) {
+            case 'L':
+                if (ccc[0] > ups) {
+                    ccc[0] -= ups;
+                }
+                break;
+            case 'R':
+                if (ccc[0] + ups < canvas.width) {
+                    ccc[0] += ups;
+                }
+                break;
+            case 'U':
+                if (ccc[1] + ups < canvas.height) {
+                    ccc[1] += ups;
+                }
+                break;
+            case 'D':
+                if (ccc[1] > ups) {
+                    ccc[1] -= ups;
+                }
+                break;
+            default:
+                break;
+        }
+    };
+    
+    my.toggleMode = function () {
+        /* Change the mode of the editor into: freeform or manhattan */
+        mode = mode === 0 ? 1 : 0;
+    };
+    
+    my.drawPlaceableGhost = function (ctx) {
+        /* Draw current placeable at cursor, at 50% opacity. */
+        
+        var x, y;
+        
+        if (mode === 0) {
+            x = mousePos.mX;
+            y = mousePos.mY;
+        }
+        else {
+            x = ccc[0];
+            y = ccc[1];
+        }
+        
+        ctx.translate(x, y);
+        ctx.globalAlpha = 0.5;
+
+        var asset_type = placeables[cpi][0];
+
+        switch (asset_type) {
+
+            case 'destructible':
+                ctx.drawImage(DestructibleImages.get(placeables[cpi][1]), -16, -16);
+                break;
+            case 'starting-point':
+                ctx.drawImage(EditorImages.get(placeables[cpi][1]), -16, -16);
+                break;
+            default:
+                break;
+
+        }
+
+        ctx.globalAlpha = 1;
+        // reverse translate
+        ctx.translate(-x, -y);
+    };
+    
     my.setup = function (map, playerList) {
         /* Prepare the battlefield according to a map object's settings.
            map - is the map object
@@ -68,66 +228,6 @@ function StartingPoint(x, y) {
         oY: y
     };
 }
-
-var drawAssetOnCursor = function () {
-    // draw current asset on cursor
-    ctx.translate(mousePos.mX, mousePos.mY);
-    ctx.globalAlpha = 0.5;
-
-    var asset_type = cs_assets[current_asset][0];
-
-    switch (asset_type) {
-
-        case 'destructible':
-            ctx.drawImage(DestructibleImages.get(cs_assets[current_asset][1]), -16, -16);
-            break;
-        case 'starting-point':
-            ctx.drawImage(EditorImages.get(cs_assets[current_asset][1]), -16, -16);
-            break;
-        default:
-            break;
-
-    }
-
-    ctx.globalAlpha = 1;
-    // reverse translate
-    ctx.translate(-mousePos.mX, -mousePos.mY);
-};
-
-var deleteAssetOnCursor = function () {
-    // remove asset on cursor
-    ctx.translate(mousePos.mX, mousePos.mY);
-    
-    // first lets check the destructibles, start from the topmost
-    for (var i = destructibles.length-1; i != -1; i--) {
-    
-        if (mousePos.mX < destructibles[i].config.oX + 16 &&
-            mousePos.mX > destructibles[i].config.oX - 16 &&
-            mousePos.mY < destructibles[i].config.oY + 16 &&
-            mousePos.mY > destructibles[i].config.oY - 16) {
-            // if mouse lies inside a destructible...
-            destructibles.splice(i, 1);
-            break;
-        }
-        
-    }
-    
-    // second, the starting points
-    for (i = startingpoints.length-1; i != -1; i--) {
-        
-        if (mousePos.mX < startingpoints[i].config.oX + 16 &&
-            mousePos.mX > startingpoints[i].config.oX - 16 &&
-            mousePos.mY < startingpoints[i].config.oY + 16 &&
-            mousePos.mY > startingpoints[i].config.oY - 16) {
-            // if mouse lies inside a starting point...
-            startingpoints.splice(i, 1);
-            break;
-        }
-        
-    }
-    
-    ctx.translate(-mousePos.mX, -mousePos.mY);
-};
 
 function writeMapAsString(name) {
     /* Save the current map in the editor in the form of a custom-delimited string. */

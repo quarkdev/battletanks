@@ -30,27 +30,14 @@ then = Date.now();
 
 
 /* map editor */
-
-// list of placeable objects in the map editor { name_string, img_path }
-cs_assets = [
-    ['destructible', 'brick_explosive'],
-    ['destructible', 'concrete'],
-    ['destructible', 'riveted_iron'],
-    ['destructible', 'wall_rubber'],
-    ['destructible', 'heavy_rubber'],
-    ['starting-point', 'starting-point']
-];
-
-
 cs_placement_ok = true;
 cspo_timeout = null; // timeout for cs_placement_ok
 
 cs_asset_select_ok = true;
 csas_timeout = null;
 
-csa_max = cs_assets.length-1;
-current_asset = 0; // current asset on cursor
-
+cs_movement_ok = true;
+csmv_timeout = null;
 
 cLog = document.getElementById('combat-log');
 hNum = document.getElementById('hNum');

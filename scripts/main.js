@@ -94,53 +94,64 @@
     
     // Editor UPDATE
     var editorUpdate = function() {
-
-        if (mouseDownLeft && cs_placement_ok) {
-            // place game object
-            
-            var asset_type = cs_assets[current_asset][0];
-
-            switch (asset_type) {
-                case 'destructible':
-                    destructibles.push(new Destructible(BLUEPRINT.get(cs_assets[current_asset][1]), mousePos.mX, mousePos.mY));
-                    break;
-                case 'starting-point':
-                    startingpoints.push(new StartingPoint(mousePos.mX, mousePos.mY));
-                    break;
-                default:
-                    break;
-            }
-            
-            cs_placement_ok = false;
-            
-            clearTimeout(cspo_timeout);
-            
-            cspo_timeout = setTimeout(function() { cs_placement_ok = true; }, 120);
-        }
-        
-        if (mouseDownRight) {
-            
-            deleteAssetOnCursor();
-            
-        }
-        
-        
+         
         if (cs_asset_select_ok) {
-            if (37 in keysDown) { // left arrow pressed
-                // move down on cs_assets
-                current_asset = current_asset != csa_max ? current_asset+1 : 0;
+            
+            if (96 in keysDown) { // num 0
+                MAP.nextPlaceable();
             }
             
-            if (39 in keysDown) { // right arrow pressed
-                // move up on cs_assets
-                current_asset = current_asset != 0 ? current_asset-1 : csa_max;
+            if (17 in keysDown) { // ctrl
+                MAP.toggleMode();
             }
             
             cs_asset_select_ok = false;
             
             clearTimeout(csas_timeout);
             
-            csas_timeout = setTimeout(function() { cs_asset_select_ok = true }, 100);
+            csas_timeout = setTimeout(function() { cs_asset_select_ok = true }, 75);
+        }
+        
+        if (cs_movement_ok) {
+        
+            if (37 in keysDown) { // left arrow
+                MAP.moveCursor('L');
+            }
+            
+            if (39 in keysDown) { // right arrow
+                MAP.moveCursor('R');
+            }
+            
+            if (38 in keysDown) { // up arrow
+                MAP.moveCursor('U');
+            }
+            
+            if (40 in keysDown) { // down arrow
+                MAP.moveCursor('D');
+            }
+            
+            cs_movement_ok = false;
+            
+            clearTimeout(csmv_timeout);
+            
+            csmv_timeout = setTimeout(function() { cs_movement_ok = true }, 50);
+        }
+        
+        if (cs_placement_ok) {
+        
+            if (13 in keysDown || mouseDownLeft) { // enter
+                MAP.placeObject();
+            }
+            
+            cs_placement_ok = false;
+            
+            clearTimeout(cspo_timeout);
+            
+            cspo_timeout = setTimeout(function() { cs_placement_ok = true; }, 100);
+        }
+        
+        if (110 in keysDown || mouseDownRight ) {
+            MAP.removeObject();
         }
 
     }
@@ -208,7 +219,7 @@
         renderCanvas();
         
         CANVAS.drawStartingPoints(ctx); 
-        drawAssetOnCursor();
+        MAP.drawPlaceableGhost(ctx);
         
         editorAnimation = requestAnimationFrame(editor);
     }
