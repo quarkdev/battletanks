@@ -230,7 +230,7 @@
         
         $('#external-hud').show();
         
-        initGameSettings(player_name);
+        LOAD.gameSettings(player_name);
         attachGameEventListeners();
         checkAudio = window.setInterval(function() { checkReadyState() }, 1000);
         then = performance.now();
