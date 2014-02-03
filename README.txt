@@ -4,4 +4,4 @@ Battletanks HTML5-Canvas Game
 
 NOTES:
 
-code has a ton of comments, don't worry you can just fold them inside your favorite text editor / IDE
+files will need to be uploaded to a server (a local server for testing) in order to run in Chrome.

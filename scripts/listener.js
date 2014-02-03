@@ -35,9 +35,13 @@ function attachMenuEventListeners() {
         then = Date.now();
         if (ui_location == 'game') main();
         if (ui_location == 'editor') editor();
+        
+        UTIL.playMusic(backgroundMusic);
     });
     
     $('.main-menu').click(function() {
+        UTIL.stopMusic(backgroundMusic);
+    
         cancelAnimationFrame(mainAnimation);
         cancelAnimationFrame(editorAnimation);
         

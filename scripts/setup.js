@@ -81,10 +81,3 @@ testmap.startingPoints.push(new StartingPoint(720, 362));
 
 maps.push(testmap);
 current_map = maps[0];
-
-function checkReadyState() {
-    if (backgroundMusic.readyState === 4 ) {
-        window.clearInterval(checkAudio);
-        backgroundMusic.play();
-    }
-}

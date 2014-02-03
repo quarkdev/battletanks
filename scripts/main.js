@@ -19,6 +19,8 @@
         // show pause menu
         if (ui_location == 'game') $('#pause-menu').show();
         else if (ui_location == 'editor') $('#editor-menu').show();
+        
+        UTIL.pauseMusic(backgroundMusic);
     };
     
     // NEW GAME
@@ -235,6 +237,7 @@
         attachGameEventListeners();
         checkAudio = window.setInterval(function() { checkReadyState() }, 1000);
         then = performance.now();
+        UTIL.playMusic(backgroundMusic);
 
         main();
     };

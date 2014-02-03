@@ -84,7 +84,22 @@ var UTIL = (function () {
         cLog.innerHTML = cLog.innerHTML + message + '<br>';
         cLog.scrollTop = document.getElementById('log-' + logNum).offsetTop;
         logNum++;
-    }; 
+    };
+
+    my.stopMusic = function (music) {
+        music.pause();
+        music.currentTime = 0;
+    };
+    
+    my.pauseMusic = function (music) {
+        music.pause();
+    };
+    
+    my.playMusic = function (music) {
+        if (music.readyState === 4) {
+            music.play();
+        }
+    };
         
     return my;
 }());
