@@ -39,3 +39,27 @@ var LOAD = (function () {
     
     return my;
 }());
+
+/* Sub-module: worker
+ * In-charge of spawning workers
+ */
+LOAD.worker = (function () {
+    var my = {};
+    
+    my.bot = function () {
+        /* Spawn a new bot worker. */
+        
+        var ai = new Worker('scripts/bot.js');
+        
+        ai.addEventListener('message', function (event) {
+            UTIL.writeToLog('worker says: ' + event.data);
+            // terminate worker
+            ai.terminate();
+        }, false);
+        
+        // start worker
+        ai.postMessage('Watson');
+    };
+    
+    return my;
+}());

@@ -231,6 +231,7 @@
         $('#external-hud').show();
         
         LOAD.gameSettings(player_name);
+        LOAD.worker.bot(); // worker test
         attachGameEventListeners();
         checkAudio = window.setInterval(function() { checkReadyState() }, 1000);
         then = performance.now();
