@@ -44,21 +44,38 @@ var LOAD = (function () {
  * In-charge of spawning workers
  */
 LOAD.worker = (function () {
-    var my = {};
+    var my = {},
+        workerPool = [];
     
     my.bot = function () {
         /* Spawn a new bot worker. */
         
-        var ai = new Worker('scripts/bot.js');
+        var ai = _spawnWorker('scripts/bot.js', workerPool);
         
         ai.addEventListener('message', function (event) {
             UTIL.writeToLog('worker says: ' + event.data);
             // terminate worker
-            ai.terminate();
+            my.terminateAll();
         }, false);
         
         // start worker
-        ai.postMessage('Watson');
+        ai.postMessage(JSON.stringify(tanks[1].config));
+    };
+    
+    my.terminateAll = function () {
+        /* Terminate all workers in pool. */
+        for (var i = 0; i < workerPool.length; i++) {
+            workerPool[i].terminate();
+        }
+    };
+    
+    var _spawnWorker = function (src, pool) {
+        /* Spawn a new worker. */
+        var worker = new Worker(src);
+        
+        pool.push(worker);
+        
+        return worker;
     };
     
     return my;

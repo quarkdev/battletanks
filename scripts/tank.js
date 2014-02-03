@@ -17,6 +17,11 @@ function Tank(specs, id, x, y) {
         chassisRotateAmount : 0.0
     };
     
+    this.images = {
+        chassis   : TankImages.get(specs.bImage),  // chassis image
+        turret    : TankImages.get(specs.tImage),  // turret image
+    };
+    
     this.reloading = false;
 
     this.config = {
@@ -24,8 +29,6 @@ function Tank(specs, id, x, y) {
         id        : id,                            // random-gen id
         name      : specs.name,                    // tank name
         type      : specs.type,                    // tanks type (light/medium/heavy/destroyer/howitzer)
-        chassis   : TankImages.get(specs.bImage),  // chassis image
-        turret    : TankImages.get(specs.tImage),  // turret image
         health    : specs.health,                  // tank health
         maxHealth : specs.health,
         width     : specs.width,
@@ -262,14 +265,14 @@ function Tank(specs, id, x, y) {
         ctx.translate(this.config.oX, this.config.oY);
         // draw body && attachments
         ctx.rotate(this.config.hAngle * Math.PI/180);
-        ctx.drawImage(this.config.chassis, this.config.cx, this.config.cy);
+        ctx.drawImage(this.images.chassis, this.config.cx, this.config.cy);
         for (var i = 0; i < this.attachments.chassis.length; i++) {
             ctx.drawImage(this.attachments.chassis[i].img, this.config.cx, this.config.cy);
         }
         ctx.rotate(-this.config.hAngle * Math.PI/180);
          // draw turret && attachments
         ctx.rotate(this.config.tAngle * Math.PI/180);
-        ctx.drawImage(this.config.turret, this.config.cxt, this.config.cyt);
+        ctx.drawImage(this.images.turret, this.config.cxt, this.config.cyt);
         for (var i = 0; i < this.attachments.turret.length; i++) {
             ctx.drawImage(this.attachments.turret[i].img, this.config.cxt, this.config.cyt);
         }
