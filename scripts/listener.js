@@ -41,6 +41,7 @@ function attachMenuEventListeners() {
     
     $('.main-menu').click(function() {
         UTIL.stopMusic(backgroundMusic);
+        LOAD.worker.terminateAll();
     
         cancelAnimationFrame(mainAnimation);
         cancelAnimationFrame(editorAnimation);

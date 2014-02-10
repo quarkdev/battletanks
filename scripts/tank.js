@@ -1,6 +1,7 @@
 /*-------- Tanks --------*/
 function Tank(specs, id, x, y) {
     this.callbacks = []; // callbacks attached (powerups, etc..)
+    
     this.attachments = { // {id, Image()}
         turret  : new Array(),
         chassis : new Array()

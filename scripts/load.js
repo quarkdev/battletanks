@@ -45,12 +45,12 @@ var LOAD = (function () {
  */
 LOAD.worker = (function () {
     var my = {},
-        workerPool = [];
+        workerPool = []; // format of each item [worker, id]
     
-    my.bot = function () {
+    my.bot = function (id) {
         /* Spawn a new bot worker. */
         
-        var ai = _spawnWorker('scripts/bot.js', workerPool);
+        var ai = _spawnWorker('scripts/bot.js', id, workerPool);
         
         ai.addEventListener('message', function (event) {
             UTIL.writeToLog('worker says: ' + event.data);
@@ -62,18 +62,38 @@ LOAD.worker = (function () {
         ai.postMessage(JSON.stringify(tanks[1].config));
     };
     
+    my.pathFinder = function (id) {
+        /* Spawn a new pathFinder worker. */
+        
+        var pf = _spawnWorker('scripts/pathfinder.js', id, workerPool);
+        
+        pf.addEventListener('message', function (event) {
+            // Receive data from pathfinder
+            var messageReceived = JSON.parse(event.data),
+                moveCmds = messageReceived.directives;
+            
+            // Save the movement commands to the moveCmds action array
+            
+            
+        }, false);
+        
+        // start worker
+        pf.postMessage();
+    };
+    
     my.terminateAll = function () {
         /* Terminate all workers in pool. */
         for (var i = 0; i < workerPool.length; i++) {
-            workerPool[i].terminate();
+            workerPool[i][0].terminate();
         }
     };
     
-    var _spawnWorker = function (src, pool) {
+    var _spawnWorker = function (src, id, pool) {
         /* Spawn a new worker. */
+        
         var worker = new Worker(src);
         
-        pool.push(worker);
+        pool.push([worker, id]);
         
         return worker;
     };

@@ -4,8 +4,8 @@ var MAP = (function () {
     var my = {};
     
     var cpi = 0, // the current placeable index
-        ups = 16, // units per step. The number of units the cursor is moved per step.
-        ccc = [ups, ups], // current cursor coordinates
+        ups = 8, // units per step. The number of units the cursor is moved per step.
+        ccc = [16, 16], // current cursor coordinates
         placeables = [],
         mode = 1; // edit mode, 1 = manhattan, 0 = freeform
     
@@ -97,22 +97,22 @@ var MAP = (function () {
         
         switch (direction) {
             case 'L':
-                if (ccc[0] > ups) {
+                if (ccc[0] > 16) {
                     ccc[0] -= ups;
                 }
                 break;
             case 'R':
-                if (ccc[0] + ups < canvas.width) {
+                if (ccc[0] + 16 < canvas.width) {
                     ccc[0] += ups;
                 }
                 break;
             case 'U':
-                if (ccc[1] + ups < canvas.height) {
+                if (ccc[1] + 16 < canvas.height) {
                     ccc[1] += ups;
                 }
                 break;
             case 'D':
-                if (ccc[1] > ups) {
+                if (ccc[1] > 16) {
                     ccc[1] -= ups;
                 }
                 break;
@@ -269,7 +269,6 @@ var MAP = (function () {
         var playerNum = playerList.length,
             coords_taken = [],
             i, j;
-
 
         // Determine if selected map can accomodate the number of players.
         if (playerNum > map.startingPoints.length) {
