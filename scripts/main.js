@@ -233,7 +233,7 @@
         $('#external-hud').show();
         
         LOAD.gameSettings(player_name);
-        LOAD.worker.bot(); // worker test
+        LOAD.worker.pathFinder(current_map, 1); // worker test, random id
         attachGameEventListeners();
         then = performance.now();
         UTIL.playMusic(backgroundMusic);

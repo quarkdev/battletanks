@@ -62,7 +62,7 @@ LOAD.worker = (function () {
         ai.postMessage(JSON.stringify(tanks[1].config));
     };
     
-    my.pathFinder = function (id) {
+    my.pathFinder = function (map, id) {
         /* Spawn a new pathFinder worker. */
         
         var pf = _spawnWorker('scripts/pathfinder.js', id, workerPool);
@@ -70,7 +70,21 @@ LOAD.worker = (function () {
         pf.addEventListener('message', function (event) {
             // Receive data from pathfinder
             var messageReceived = JSON.parse(event.data),
-                moveCmds = messageReceived.directives;
+                cmd = messageReceived.cmd,
+                data = messageReceived.data;
+                
+                switch (cmd) {
+                    case 'update_ok':
+                        //UTIL.writeToLog('Pathfinder grid successfully updated.');
+                        var str = '';
+                        for (var i = 0; i < 76; i++) {
+                            str += '<br>' + data[i].join(' ');
+                        }
+                        window.open("data:text/html," + encodeURIComponent(str), "_blank", "width=200, height=100");
+                        break;
+                    default:
+                        break;
+                }
             
             // Save the movement commands to the moveCmds action array
             
@@ -78,7 +92,11 @@ LOAD.worker = (function () {
         }, false);
         
         // start worker
-        pf.postMessage();
+        var msg = {};
+        msg.cmd = 'update_obstacles';
+        msg.data = map.destructibles;
+        
+        pf.postMessage(JSON.stringify(msg));
     };
     
     my.terminateAll = function () {

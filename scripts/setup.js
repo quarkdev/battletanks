@@ -69,11 +69,11 @@ MAP.addPlaceable('starting-point', 'starting-point');
 
 // the default map
 testmap = new Map('default');
-testmap.destructibles.push(['brick_explosive', 300, 200]);
-testmap.destructibles.push(['wall_rubber', 332, 200]);
-testmap.destructibles.push(['wall_rubber', 364, 200]);
-testmap.destructibles.push(['concrete', 396, 200]);
-testmap.destructibles.push(['riveted_iron', 428, 200]);
+testmap.destructibles.push(['brick_explosive', 320, 240]);
+testmap.destructibles.push(['wall_rubber', 352, 240]);
+testmap.destructibles.push(['wall_rubber', 384, 240]);
+testmap.destructibles.push(['concrete', 416, 240]);
+testmap.destructibles.push(['riveted_iron', 448, 240]);
 testmap.startingPoints.push(new StartingPoint(100, 100));
 testmap.startingPoints.push(new StartingPoint(400, 300));
 testmap.startingPoints.push(new StartingPoint(500, 300));
