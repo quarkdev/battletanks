@@ -30,25 +30,25 @@ function findPathTo(x, y) {
     var cell = transCanvasCoordsToGrid(x, y);
     
     // Check if goal point is open/reachable.
-    if (grid[cell[0] + 12][cell[1] + 12] === 1 ||
-        grid[cell[0] + 4][cell[1] + 12]  === 1 ||
-        grid[cell[0] - 4][cell[1] + 12]  === 1 ||
-        grid[cell[0] - 12][cell[1] + 12] === 1 ||
+    if (grid[cell[0] + 2][cell[1] + 2] === 1 ||
+        grid[cell[0] + 1][cell[1] + 2]  === 1 ||
+        grid[cell[0] - 1][cell[1] + 2]  === 1 ||
+        grid[cell[0] - 2][cell[1] + 2] === 1 ||
         
-        grid[cell[0] + 12][cell[1] + 4]  === 1 ||
-        grid[cell[0] + 4][cell[1] + 4]   === 1 ||
-        grid[cell[0] - 4][cell[1] + 4]   === 1 ||
-        grid[cell[0] - 12][cell[1] + 4]  === 1 ||
+        grid[cell[0] + 2][cell[1] + 1]  === 1 ||
+        grid[cell[0] + 1][cell[1] + 1]   === 1 ||
+        grid[cell[0] - 1][cell[1] + 1]   === 1 ||
+        grid[cell[0] - 2][cell[1] + 1]  === 1 ||
         
-        grid[cell[0] + 12][cell[1] - 4]  === 1 ||
-        grid[cell[0] + 4][cell[1] - 4]   === 1 ||
-        grid[cell[0] - 4][cell[1] - 4]   === 1 ||
-        grid[cell[0] - 12][cell[1] - 4]  === 1 ||
+        grid[cell[0] + 2][cell[1] - 1]  === 1 ||
+        grid[cell[0] + 1][cell[1] - 1]   === 1 ||
+        grid[cell[0] - 1][cell[1] - 1]   === 1 ||
+        grid[cell[0] - 2][cell[1] - 1]  === 1 ||
         
-        grid[cell[0] + 12][cell[1] - 12] === 1 ||
-        grid[cell[0] + 4][cell[1] - 12]  === 1 ||
-        grid[cell[0] - 4][cell[1] - 12]  === 1 ||
-        grid[cell[0] - 12][cell[1] - 12] === 1) {
+        grid[cell[0] + 2][cell[1] - 2] === 1 ||
+        grid[cell[0] + 1][cell[1] - 2]  === 1 ||
+        grid[cell[0] - 1][cell[1] - 2]  === 1 ||
+        grid[cell[0] - 2][cell[1] - 2] === 1) {
         
         return []; // path closed/unreachable
     }
@@ -75,67 +75,67 @@ function updateGrid(obs) {
     for (i = 0; i < obs.length; i++) {
         // -12, +12
         var c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] + 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
         
         // -4, +12
-        var c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 12);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +4, +12
-        var c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 12);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +12, +12
-        var c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 12);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
         
         // -12, +4
-        var c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] + 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] + 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
         
         // -4, +4
-        var c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +4, +4
-        var c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +12, +4
-        var c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
         
         // -12, -4
-        var c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
         
         // -4, -4
-        var c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +4, -4
-        var c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +12, -4
-        var c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 4);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 4);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
         
         // -12, -12
-        var c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 12);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
         
         // -4, -12
-        var c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 12);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +4, -12
-        var c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 12);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
 
         // +12, -12
-        var c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 12);
-        grid[c.y][c.x] = withinBounds(c.x, c.y) ? 1 : 0;
+        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 12);
+        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 1; }
     }
 }
 
