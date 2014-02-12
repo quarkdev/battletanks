@@ -26,17 +26,44 @@ function messageHandler(event) {
                 postMessage(JSON.stringify(reply));
                 break;
             case 'get_waypoint':
-                var path = getMoveList(messageReceived.data.start, messageReceived.data.goal, messageReceived.data.angle),
+                var waypoint = getMoveList(messageReceived.data.start, messageReceived.data.goal, messageReceived.data.angle),
                     reply = {};
                 
                 reply.cmd = 'waypoint_ok';
-                reply.data = path;
+                reply.data = waypoint;
                 
                 postMessage(JSON.stringify(reply));
                 break;
+            case 'get_waypoint_random':
+                var waypoint = getRandomMoveList(messageReceived.data.start, messageReceived.data.angle),
+                    reply = {};
+                    
+                reply.cmd = 'waypoint_random_ok';
+                reply.data = waypoint;
+                
+                postMessage(JSON.stringify(reply));
+                break
             default:
                 break;
         }
+}
+
+function getRandomMoveList(S, angle) {
+    /* Get a random goal point, then search for a path to it. */
+    
+    var row, col, goal_ok = false;
+    
+   while (!goal_ok) {
+        row = Math.floor(Math.random() * 76);
+        col = Math.floor(Math.random() * 128);
+        
+        // Check if goal point is open
+        goal_ok = grid[row][col] === 1;
+    }
+    
+    var G = transGridToCanvasCoords(col, row);
+    
+    return getMoveList(S, [G.x, G.y], angle);
 }
 
 function getMoveList(S, G, angle) {
@@ -187,7 +214,7 @@ function transCanvasCoordsToGrid(x, y) {
 }
 
 function transGridToCanvasCoords(x, y) {
-    /* Translates the grid coords to canvas coords. */
+    /* Translates the grid coords to canvas coords. NOTE: swap the x is grid col, y is grid row */
     return { x: x * 8, y: (75 - y) * 8 };
 }
     

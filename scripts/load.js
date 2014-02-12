@@ -75,14 +75,22 @@ LOAD.worker = (function () {
                 
                 switch (cmd) {
                     case 'update_ok':
-                        //UTIL.writeToLog('Pathfinder grid successfully updated.');
-                        var str = '';
+                        UTIL.writeToLog('Pathfinder grid successfully updated.');
+                        /*var str = '';
                         for (var i = 0; i < 76; i++) {
                             str += '<br>' + data[i].join(' ');
                         }
                         window.open("data:text/html," + encodeURIComponent(str), "_blank", "width=200, height=100");
+                        */
                         break;
                     case 'waypoint_ok':
+                        var str = '';
+                        for (var i = 0; i < data.length; i++) {
+                            str += '[' + data[i][0] + ', ' + data[i][1] + ', ' + data[i][2] + '], ';
+                        }
+                        alert(str);
+                        break;
+                    case 'waypoint_random_ok':
                         var str = '';
                         for (var i = 0; i < data.length; i++) {
                             str += '[' + data[i][0] + ', ' + data[i][1] + ', ' + data[i][2] + '], ';

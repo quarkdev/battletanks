@@ -66,10 +66,9 @@
         if (mouseDownRight) {
             var msg = {};
             
-            msg.cmd = 'get_waypoint';
+            msg.cmd = 'get_waypoint_random';
             msg.data = {};
             msg.data.start = [0, 0];
-            msg.data.goal = [560, 48];
             msg.data.angle = 45; // body angle
             
             LOAD.worker.sendMessage(1, msg);
