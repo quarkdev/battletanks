@@ -63,6 +63,18 @@
             player.fire();
         }
         
+        if (mouseDownRight) {
+            var msg = {};
+            
+            msg.cmd = 'get_waypoint';
+            msg.data = {};
+            msg.data.start = [0, 0];
+            msg.data.goal = [560, 48];
+            msg.data.angle = 45; // body angle
+            
+            LOAD.worker.sendMessage(1, msg);
+        }
+        
         /* turn turret (based on current facing angle) */
         player.turnTurret(modifier, mousePos.mX, mousePos.mY);
        

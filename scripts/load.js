@@ -82,6 +82,13 @@ LOAD.worker = (function () {
                         }
                         window.open("data:text/html," + encodeURIComponent(str), "_blank", "width=200, height=100");
                         break;
+                    case 'waypoint_ok':
+                        var str = '';
+                        for (var i = 0; i < data.length; i++) {
+                            str += '[' + data[i][0] + ', ' + data[i][1] + ', ' + data[i][2] + '], ';
+                        }
+                        alert(str);
+                        break;
                     default:
                         break;
                 }
@@ -97,6 +104,18 @@ LOAD.worker = (function () {
         msg.data = map.destructibles;
         
         pf.postMessage(JSON.stringify(msg));
+    };
+    
+    my.sendMessage = function (id, msg) {
+        /* Send message to worker corresponding to id. msg is an object containing the properties: cmd and data. */
+        for (var i = 0; i < workerPool.length; i++) {
+            if (id === workerPool[i][1]) {
+                workerPool[i][0].postMessage(JSON.stringify(msg));
+                break;
+            }
+        }
+        
+        // if no matching id is found, fail silently.
     };
     
     my.terminateAll = function () {
