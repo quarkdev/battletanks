@@ -295,7 +295,7 @@ var MAP = (function () {
             } while (coords_taken.indexOf(roll) != -1);
             coords_taken.push(roll);
         
-            tanks.push(new Tank(BLUEPRINT.get(playerList[j][1]), playerList[j][0], map.startingPoints[roll].config.oX, map.startingPoints[roll].config.oY));
+            tanks.push(new Tank(BLUEPRINT.get(playerList[j][1]), playerList[j][0], playerList[j][2], map.startingPoints[roll].config.oX, map.startingPoints[roll].config.oY));
         }
 
         return 0;

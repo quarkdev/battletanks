@@ -1,5 +1,5 @@
 /*-------- Tanks --------*/
-function Tank(specs, id, x, y) {
+function Tank(specs, id, control, x, y) {
     this.callbacks = []; // callbacks attached (powerups, etc..)
     
     this.attachments = { // {id, Image()}
@@ -27,6 +27,7 @@ function Tank(specs, id, x, y) {
 
     this.config = {
         active    : true,
+        control   : typeof control === 'undefined' ? 'computer' : 'player',
         id        : id,                            // random-gen id
         name      : specs.name,                    // tank name
         type      : specs.type,                    // tanks type (light/medium/heavy/destroyer/howitzer)
@@ -59,7 +60,7 @@ function Tank(specs, id, x, y) {
         tAngle    : specs.tAngle                   // tank turret angle (the direction the turret is facing)
     };
     
-    this.turnBody = function(modifier, direction) {
+    this.turnBody = function (modifier, direction) {
         if (this.config.active === false) return;
     
         /* turn tank body to direction */
@@ -90,7 +91,7 @@ function Tank(specs, id, x, y) {
         this.status.chassisRotateAmount = Math.abs(oldAngle - this.config.hAngle);
     };
     
-    this.turnTurret = function(modifier, mX, mY) {
+    this.turnTurret = function (modifier, mX, mY) {
         if (this.config.active === false || this.config.tSpeed == 0) return;
     
         /*  1. calculate mouseCoord line angle using oX and oY
@@ -141,7 +142,7 @@ function Tank(specs, id, x, y) {
         }           
     };
     
-    this.move = function(modifier, direction) {
+    this.move = function (modifier, direction) {
         if (this.config.active === false) return;
     
         /* move forward or backward, modifier is time-based*/
@@ -230,7 +231,7 @@ function Tank(specs, id, x, y) {
         }
     };
     
-    this.fire = function() {
+    this.fire = function () {
         if (this.config.active === false) return;
     
         // are we still reloading?
@@ -249,18 +250,18 @@ function Tank(specs, id, x, y) {
         // we just fired a round, let's reload
         this.reloading = true;
         var that = this; // save context
-        setTimeout(function() { that.reload(); }, 1000 / this.config.fRate);
+        setTimeout(function () { that.reload(); }, 1000 / this.config.fRate);
         
         // play sound effect
         fireSound.get();
     };
     
-    this.reload = function() {
+    this.reload = function () {
         if (this.config.active === false) return;
         this.reloading = false;
     };
     
-    this.draw = function() {
+    this.draw = function () {
         if (this.config.active === false) return;
 
         ctx.translate(this.config.oX, this.config.oY);
@@ -282,14 +283,14 @@ function Tank(specs, id, x, y) {
         ctx.translate(-this.config.oX, -this.config.oY);
     };
     
-    this.hit = function() {
+    this.hit = function () {
         /* when tank is hit */
         for (var i = 0; i < this.callbacks.length; i++) {
             this.callbacks[i]();
         }
     };
     
-    this.death = function() {
+    this.death = function () {
         /* Move object offscreen. Set to inactive. */
         this.config.active = false;
         this.config.oX = canvas.height+250;

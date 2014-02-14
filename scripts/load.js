@@ -11,7 +11,7 @@ var LOAD = (function () {
         destructibles.clear();
         startingpoints.clear();
         
-        player_name = player_name == '' ? 'player' : player_name;
+        player_name = player_name === '' ? 'player' : player_name;
         
         // get the max players for current map : can be taken from the startingpoint length
         var max_players = current_map.startingPoints.length;
@@ -20,17 +20,19 @@ var LOAD = (function () {
         var playerlist = [];
         
         // push the player first
-        playerlist.push([player_name, 'jagdpanther']);
+        playerlist.push([player_name, 'jagdpanther', 'player']);
         
         for (var i = 1; i < max_players; i++) {
             // start on 1 so that the total bot number is 1 less than the max_players
-            playerlist.push(['bot'+i, 'm4_sherman']);
+            playerlist.push(['bot'+i, 'm4_sherman', 'computer']);
         }
 
         if (MAP.setup(current_map, playerlist) == 0) {
         
-            // temporary controls binds for rudimentary AI
+            // bind player controls
             player = tanks[0];
+            
+            // bind ai controls
             enemy = tanks[1];
             enemy2 = tanks[2];
         }
