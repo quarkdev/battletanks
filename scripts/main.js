@@ -103,6 +103,11 @@
                 projectiles[i].update(modifier);
             }
         }
+        
+        // Remove all inactive projectiles. This keeps the projectile array from accumulating inactive objects.
+        projectiles = projectiles.filter(function (item) {
+            return item.config.active;
+        });
     };
     
     // Editor UPDATE
