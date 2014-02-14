@@ -128,8 +128,9 @@ LOAD.worker = (function () {
     
     my.terminateAll = function () {
         /* Terminate all workers in pool. */
-        for (var i = 0; i < workerPool.length; i++) {
-            workerPool[i][0].terminate();
+        while (workerPool.length > 0) {
+            workerPool[0][0].terminate();
+            workerPool.splice(0, 1);
         }
     };
     
