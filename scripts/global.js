@@ -12,6 +12,8 @@ projectiles = [];
 destructibles = [];
 startingpoints = [];
 maps = [];
+bots = []; // [tank, movequeue, status]
+curr_cmd = 0; // 0 - none, 1 - turnleft, 2 - turnright, 3 - forward
 
 current_map = null;
 

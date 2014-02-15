@@ -100,6 +100,16 @@ var UTIL = (function () {
             music.play();
         }
     };
+    
+    my.getBotReference = function (id) {
+        /* Return the reference to the bot matching the id from bots */
+        for (var i = 0; i < bots.length; i++) {
+            if (bots[i][0].config.id === id) {
+                return bots[i];
+                break;
+            }
+        }
+    };
         
     return my;
 }());

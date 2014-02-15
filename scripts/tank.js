@@ -60,8 +60,11 @@ function Tank(specs, id, control, x, y) {
         tAngle    : specs.tAngle                   // tank turret angle (the direction the turret is facing)
     };
     
-    this.turnBody = function (modifier, direction) {
+    this.turnBody = function (modifier, direction, lockAngle) {
+        /* lockAngle is used by AI. Prevents it from going beyond the lockAngle. */
         if (this.config.active === false) return;
+        
+        lockAngle = typeof lockAngle === 'undefined' ? false : lockAngle; 
     
         /* turn tank body to direction */
         var oldAngle = this.config.hAngle;
@@ -69,10 +72,16 @@ function Tank(specs, id, control, x, y) {
         switch(direction) {
             case 'ccw':
                 this.config.hAngle += (this.config.sSpeed*modifier);
+                if (lockAngle !== false && lockAngle < this.config.hAngle) {
+                    this.config.hAngle = lockAngle;
+                }
                 this.status.chassisRotateLeft = true;
                 break;
             case 'cw':
                 this.config.hAngle -= (this.config.sSpeed*modifier);
+                if (lockAngle !== false && lockAngle > this.config.hAngle) {
+                    this.config.hAngle = lockAngle;
+                }
                 this.status.chassisRotateRight = true;
                 break;
             case 'hold':
@@ -84,7 +93,7 @@ function Tank(specs, id, control, x, y) {
         this.config.hAngle = this.config.hAngle % 360;
         
         // if turret turn speed is zero (fixed-turret type), copy angle of chassis to turret
-        if (this.config.tSpeed == 0) {
+        if (this.config.tSpeed === 0) {
             this.config.tAngle = this.config.hAngle; 
         }
         
@@ -92,7 +101,7 @@ function Tank(specs, id, control, x, y) {
     };
     
     this.turnTurret = function (modifier, mX, mY) {
-        if (this.config.active === false || this.config.tSpeed == 0) return;
+        if (this.config.active === false || this.config.tSpeed === 0) return;
     
         /*  1. calculate mouseCoord line angle using oX and oY
             2. calculate angle in between mc angle and current facing angle
@@ -142,8 +151,12 @@ function Tank(specs, id, control, x, y) {
         }           
     };
     
-    this.move = function (modifier, direction) {
+    this.move = function (modifier, direction, lockPoint) {
+        /* lockPoint used by AI. Prevents it from going beyond the lockPoint. */
+        
         if (this.config.active === false) return;
+        
+        lockPoint = typeof lockPoint === 'undefined' ? false : lockPoint; 
     
         /* move forward or backward, modifier is time-based*/
         var tmpX = this.config.oX; // save old coords
@@ -153,8 +166,30 @@ function Tank(specs, id, control, x, y) {
             case 'forward':
                 this.velocity.forward += this.config.accel;
                 this.velocity.forward = this.velocity.forward > this.config.fSpeed ? this.config.fSpeed : this.velocity.forward;
-                this.config.oX = this.config.oX +  (modifier*this.velocity.forward)*Math.cos(this.config.hAngle*Math.PI/180);
-                this.config.oY = this.config.oY +  (modifier*this.velocity.forward)*Math.sin(this.config.hAngle*Math.PI/180);
+                
+                var step = modifier*this.velocity.forward;
+                var slope = Math.tan(this.config.hAngle * Math.PI/180);
+                var yIntercept = this.config.oY - (slope * this.config.oX);
+                                
+                if (lockPoint !== false) {
+                    // Check if AI is near enough target point. Compare step and the required distance to target point
+                    var distance_to_lockpoint = Math.sqrt(Math.pow(lockPoint.x - tmpX, 2) + Math.pow(lockPoint.y - tmpY, 2));
+
+                    if (distance_to_lockpoint < step) {
+                        // Distance is less than step, so stop at lockPoint
+                        this.config.oX = lockPoint.x;
+                        this.config.oY = lockPoint.y;
+                    }
+                    else {
+                        this.config.oX = this.config.oX +  (step)*Math.cos(this.config.hAngle*Math.PI/180);
+                        this.config.oY = this.config.oY +  (step)*Math.sin(this.config.hAngle*Math.PI/180);
+                    }
+                }
+                else {
+                    this.config.oX = this.config.oX +  (step)*Math.cos(this.config.hAngle*Math.PI/180);
+                    this.config.oY = this.config.oY +  (step)*Math.sin(this.config.hAngle*Math.PI/180);
+                }
+                
                 break;
             case 'reverse':
                 this.velocity.reverse += this.config.accel;
@@ -182,6 +217,11 @@ function Tank(specs, id, control, x, y) {
                 this.config.oY = tmpY;
                 this.velocity.forward = 0.0;
                 this.velocity.reverse = 0.0;
+                // reset pathfinding
+                var bot = UTIL.getBotReference(this.config.id);
+                if (typeof bot !== 'undefined') {
+                    bot[1].length = 0; // empty movequeue
+                }
                 break;
             }
         }
@@ -218,6 +258,11 @@ function Tank(specs, id, control, x, y) {
                 this.config.oY = tmpY;
                 this.velocity.forward = 0.0;
                 this.velocity.reverse = 0.0;
+                // reset pathfinding
+                var bot = UTIL.getBotReference(this.config.id);
+                if (typeof bot !== 'undefined') {
+                    bot[1].length = 0; // empty movequeue
+                }
                 break;
             }
         }
@@ -228,6 +273,11 @@ function Tank(specs, id, control, x, y) {
             this.config.oY = tmpY;
             this.velocity.forward = 0.0;
             this.velocity.reverse = 0.0;
+            // reset pathfinding
+            var bot = UTIL.getBotReference(this.config.id);
+            if (typeof bot !== 'undefined') {
+                bot[1].length = 0; // empty movequeue
+            }
         }
     };
     

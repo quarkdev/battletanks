@@ -12,34 +12,33 @@ importScripts('astar.js'); // https://github.com/bgrins/javascript-astar
 
 function messageHandler(event) {
     var messageReceived = JSON.parse(event.data);
+    var reply = {};
+        
+    reply.sender = messageReceived.sender;
     
         switch (messageReceived.cmd) {
             case 'update_obstacles':
-                var obstacles = messageReceived.data,
-                    reply = {};
+                var obstacles = messageReceived.data;
                 
                 updateGrid(obstacles);
                 
                 reply.cmd = 'update_ok';
-                reply.data = grid;
                 
                 postMessage(JSON.stringify(reply));
                 break;
             case 'get_waypoint':
-                var waypoint = getMoveList(messageReceived.data.start, messageReceived.data.goal, messageReceived.data.angle),
-                    reply = {};
+                var waypoint = getMoveList(messageReceived.start, messageReceived.goal, messageReceived.angle);
                 
-                reply.cmd = 'waypoint_ok';
-                reply.data = waypoint;
+                reply.cmd      = 'waypoint_ok';
+                reply.waypoint = waypoint;
                 
                 postMessage(JSON.stringify(reply));
                 break;
             case 'get_waypoint_random':
-                var waypoint = getRandomMoveList(messageReceived.data.start, messageReceived.data.angle),
-                    reply = {};
+                var waypoint = getRandomMoveList(messageReceived.start, messageReceived.angle);
                     
-                reply.cmd = 'waypoint_random_ok';
-                reply.data = waypoint;
+                reply.cmd      = 'waypoint_ok';
+                reply.waypoint = waypoint;
                 
                 postMessage(JSON.stringify(reply));
                 break
@@ -67,7 +66,7 @@ function getRandomMoveList(S, angle) {
 }
 
 function getMoveList(S, G, angle) {
-    /* Search for a pth from S to G then convert to movelist for tank AI. */
+    /* Search for a path from S to G then convert to movelist for tank AI. */
     var graph = new Graph(grid);
     var s = transCanvasCoordsToGrid(S[0], S[1]);
     var g = transCanvasCoordsToGrid(G[0], G[1]);
@@ -115,7 +114,7 @@ function getMoveList(S, G, angle) {
         movelist.push(['move', path[i].x, path[i].y]);
     }
     
-    return movelist;
+    return movelist.reverse(); // send a reversed movelist for easy popping
 }
 
 function updateGrid(obs) {

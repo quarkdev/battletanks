@@ -7,6 +7,7 @@ var LOAD = (function () {
         /* Load game settings before game starts. */
         powerups.clear();
         tanks.clear();
+        bots.clear();
         projectiles.clear();
         destructibles.clear();
         startingpoints.clear();
@@ -26,8 +27,10 @@ var LOAD = (function () {
             // start on 1 so that the total bot number is 1 less than the max_players
             playerlist.push(['bot'+i, 'm4_sherman', 'computer']);
         }
+        
+        var setup_error = MAP.setup(current_map, playerlist);
 
-        if (MAP.setup(current_map, playerlist) == 0) {
+        if (setup_error === 0) {
         
             // bind player controls
             player = tanks[0];
@@ -35,6 +38,13 @@ var LOAD = (function () {
             // bind ai controls
             enemy = tanks[1];
             enemy2 = tanks[2];
+            
+            for (i = 1; i < max_players; i++) {
+                bots.push([tanks[i], [], 'waiting']);
+            
+                // spawn pathfinders
+                LOAD.worker.pathFinder(current_map, tanks[i].config.id);
+            }
         }
         
     };
@@ -52,7 +62,7 @@ LOAD.worker = (function () {
     my.bot = function (id) {
         /* Spawn a new bot worker. */
         
-        var ai = _spawnWorker('scripts/bot.js', id, workerPool);
+        var ai = _spawnWorker('scripts/bot.js', id);
         
         ai.addEventListener('message', function (event) {
             UTIL.writeToLog('worker says: ' + event.data);
@@ -67,17 +77,26 @@ LOAD.worker = (function () {
     my.pathFinder = function (map, id) {
         /* Spawn a new pathFinder worker. */
         
-        var pf = _spawnWorker('scripts/pathfinder.js', id, workerPool);
+        var pf = _spawnWorker('scripts/pathfinder.js', id);
         
         pf.addEventListener('message', function (event) {
             // Receive data from pathfinder
-            var messageReceived = JSON.parse(event.data),
-                cmd = messageReceived.cmd,
-                data = messageReceived.data;
+            var messageReceived  = JSON.parse(event.data),
+                sender           = messageReceived.sender,
+                cmd              = messageReceived.cmd;
+                
+            var bot_index = null;
+            
+            for (var i = 0; i < bots.length; i++) {
+                // find bot matching sender
+                if (bots[i][0].config.id === sender) {
+                    bot_index = i; // save index
+                }
+            }
                 
                 switch (cmd) {
                     case 'update_ok':
-                        UTIL.writeToLog('Pathfinder grid successfully updated.');
+                        bots[bot_index][2] = 'ready';
                         /*var str = '';
                         for (var i = 0; i < 76; i++) {
                             str += '<br>' + data[i].join(' ');
@@ -86,18 +105,13 @@ LOAD.worker = (function () {
                         */
                         break;
                     case 'waypoint_ok':
-                        var str = '';
+                        bots[bot_index][1] = messageReceived.waypoint;
+                        bots[bot_index][2] = 'ready';
+                        /*var str = '';
                         for (var i = 0; i < data.length; i++) {
                             str += '[' + data[i][0] + ', ' + data[i][1] + ', ' + data[i][2] + '], ';
                         }
-                        alert(str);
-                        break;
-                    case 'waypoint_random_ok':
-                        var str = '';
-                        for (var i = 0; i < data.length; i++) {
-                            str += '[' + data[i][0] + ', ' + data[i][1] + ', ' + data[i][2] + '], ';
-                        }
-                        alert(str);
+                        alert(str);*/
                         break;
                     default:
                         break;
@@ -111,6 +125,7 @@ LOAD.worker = (function () {
         // start worker
         var msg = {};
         msg.cmd = 'update_obstacles';
+        msg.sender = id;
         msg.data = map.destructibles;
         
         pf.postMessage(JSON.stringify(msg));
@@ -136,12 +151,12 @@ LOAD.worker = (function () {
         }
     };
     
-    var _spawnWorker = function (src, id, pool) {
+    var _spawnWorker = function (src, id) {
         /* Spawn a new worker. */
         
         var worker = new Worker(src);
         
-        pool.push([worker, id]);
+        workerPool.push([worker, id]);
         
         return worker;
     };

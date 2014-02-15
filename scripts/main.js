@@ -63,29 +63,71 @@
             player.fire();
         }
         
-        if (mouseDownRight) {
-            var msg = {};
-            
-            msg.cmd = 'get_waypoint_random';
-            msg.data = {};
-            msg.data.start = [0, 0];
-            msg.data.angle = 45; // body angle
-            
-            LOAD.worker.sendMessage(1, msg);
-        }
-        
         /* turn turret (based on current facing angle) */
         player.turnTurret(modifier, mousePos.mX, mousePos.mY);
        
         // enemy AI here, but random movements for now
         // calculate distance between player and enemy
-        var d = Math.sqrt(Math.pow(player.config.oX-enemy.config.oX, 2) + Math.pow(player.config.oY-enemy.config.oY, 2));
+        /*var d = Math.sqrt(Math.pow(player.config.oX-enemy.config.oX, 2) + Math.pow(player.config.oY-enemy.config.oY, 2));
         if (d < 200) {
             enemy.move(modifier, 'forward');
         }
         else if (d > 400) {
             enemy.move(modifier, 'reverse');
+        }*/
+
+        
+        for (var i = 0; i < bots.length; i++) {
+            // update tanks only if active | TEST for AI pathfinding
+            if (bots[i][0].config.active) {          
+                // Check if movequeue has commands
+                var mq = bots[i][1];
+                if (mq.length > 0 && bots[i][2] === 'ready') {
+                    // if it has commands execute them starting from the last (since its reversed)
+                    var move = mq[mq.length - 1];
+                    var cmd = move[0];
+                    
+                    switch (cmd) {
+                        case 'turn':
+                            bots[i][0].turnBody(modifier, move[1], move[2]);
+                            // check if turn angle reached
+                            if (bots[i][0].config.hAngle === move[2]) {
+                                // if yes, pop the move
+                                bots[i][1].pop();
+                            }
+                            break;
+                        case 'move':
+                            bots[i][0].move(modifier, 'forward', { x: move[1], y: move[2] });
+                            // check if move point reach
+                            if (bots[i][0].config.oX === move[1] && bots[i][0].config.oY === move[2]) {
+                                // if yes, pop the move
+                                bots[i][1].pop();
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (bots[i][2] !== 'waiting') {
+                    // movequeue is empty and bot is not waiting for reply from worker, so ask for random goal point (TEST, this should rely on the ai STATE)
+                    var bot_id = bots[i][0].config.id;
+                    
+                    var msg = {};
+                    
+                    msg.sender = bot_id;
+                    msg.cmd = 'get_waypoint_random';
+                    msg.start = [bots[i][0].config.oX, bots[i][0].config.oY];
+                    msg.angle = bots[i][0].config.hAngle; // body angle
+                    
+                    // send message to pathfinder worker asking for directions
+                    LOAD.worker.sendMessage(bot_id, msg);
+                    
+                    // set status to:
+                    bots[i][2] = 'waiting'
+                }
+            }
         }
+        
         enemy.turnTurret(modifier, player.config.oX, player.config.oY);
         enemy2.turnTurret(modifier, player.config.oX, player.config.oY);
         var rng = Math.floor(Math.random() * 250) + 1;
@@ -98,7 +140,7 @@
         // point enemy turret to player and fire
         
         // Update all projectiles.
-        for (var i = 0; i < projectiles.length; i++) {
+        for (i = 0; i < projectiles.length; i++) {
             if (projectiles[i].config.active) {
                 projectiles[i].update(modifier);
             }
@@ -249,7 +291,6 @@
         $('#external-hud').show();
         
         LOAD.gameSettings(player_name);
-        LOAD.worker.pathFinder(current_map, 1); // worker test, random id
         attachGameEventListeners();
         then = performance.now();
         UTIL.playMusic(backgroundMusic);
