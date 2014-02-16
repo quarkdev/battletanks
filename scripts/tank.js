@@ -68,18 +68,19 @@ function Tank(specs, id, control, x, y) {
     
         /* turn tank body to direction */
         var oldAngle = this.config.hAngle;
+        var turnAmount = this.config.sSpeed*modifier;
         
         switch(direction) {
             case 'ccw':
                 this.config.hAngle += (this.config.sSpeed*modifier);
-                if (lockAngle !== false && lockAngle < this.config.hAngle) {
+                if (lockAngle !== false && Math.abs(oldAngle - lockAngle) < turnAmount) {
                     this.config.hAngle = lockAngle;
                 }
                 this.status.chassisRotateLeft = true;
                 break;
             case 'cw':
                 this.config.hAngle -= (this.config.sSpeed*modifier);
-                if (lockAngle !== false && lockAngle > this.config.hAngle) {
+                if (lockAngle !== false && Math.abs(oldAngle - lockAngle) < turnAmount) {
                     this.config.hAngle = lockAngle;
                 }
                 this.status.chassisRotateRight = true;
@@ -90,7 +91,9 @@ function Tank(specs, id, control, x, y) {
                 break;
         }
         
+        
         this.config.hAngle = this.config.hAngle % 360;
+        this.config.hAngle = this.config.hAngle < 0 ? this.config.hAngle + 360 : this.config.hAngle;
         
         // if turret turn speed is zero (fixed-turret type), copy angle of chassis to turret
         if (this.config.tSpeed === 0) {
@@ -117,7 +120,7 @@ function Tank(specs, id, control, x, y) {
         var d_add = tanA;
         var d_sub = Math.abs(360 - tanA);
         
-        if (tanA == 360) {
+        if (tanA === 360) {
             // nothing
         }
         else if (d_add < d_sub) {
@@ -168,8 +171,8 @@ function Tank(specs, id, control, x, y) {
                 this.velocity.forward = this.velocity.forward > this.config.fSpeed ? this.config.fSpeed : this.velocity.forward;
                 
                 var step = modifier*this.velocity.forward;
-                var slope = Math.tan(this.config.hAngle * Math.PI/180);
-                var yIntercept = this.config.oY - (slope * this.config.oX);
+                //var slope = Math.tan(this.config.hAngle * Math.PI/180);
+                //var yIntercept = this.config.oY - (slope * this.config.oX);
                                 
                 if (lockPoint !== false) {
                     // Check if AI is near enough target point. Compare step and the required distance to target point
@@ -200,10 +203,16 @@ function Tank(specs, id, control, x, y) {
             case 'forward-stop':
                 this.velocity.forward -= this.config.accel*3;
                 this.velocity.forward = this.velocity.forward < 0.0 ? 0.0 : this.velocity.forward;
+                if (lockPoint === false) {
+                    this.config.oX = this.config.oX +  (modifier*this.velocity.forward)*Math.cos(this.config.hAngle*Math.PI/180);
+                    this.config.oY = this.config.oY +  (modifier*this.velocity.forward)*Math.sin(this.config.hAngle*Math.PI/180);
+                }
                 break;
             case 'reverse-stop':
                 this.velocity.reverse -= this.config.accel*3;
                 this.velocity.reverse = this.velocity.reverse < 0.0 ? 0.0 : this.velocity.reverse;
+                this.config.oX = this.config.oX +  (modifier*this.velocity.reverse)*Math.cos((this.config.hAngle+180)*Math.PI/180);
+                this.config.oY = this.config.oY +  (modifier*this.velocity.reverse)*Math.sin((this.config.hAngle+180)*Math.PI/180);
                 break;
         }
         

@@ -12,7 +12,7 @@ projectiles = [];
 destructibles = [];
 startingpoints = [];
 maps = [];
-bots = []; // [tank, movequeue, status]
+bots = []; // [tank, movequeue, movelist_status, state] where movelist_status pertains to readiness to execute the movelist, state refers to bot state 'patrolling', 'chasing', 'running'
 curr_cmd = 0; // 0 - none, 1 - turnleft, 2 - turnright, 3 - forward
 
 current_map = null;

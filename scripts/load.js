@@ -40,7 +40,7 @@ var LOAD = (function () {
             enemy2 = tanks[2];
             
             for (i = 1; i < max_players; i++) {
-                bots.push([tanks[i], [], 'waiting']);
+                bots.push([tanks[i], [], 'waiting', 'patrol']);
             
                 // spawn pathfinders
                 LOAD.worker.pathFinder(current_map, tanks[i].config.id);

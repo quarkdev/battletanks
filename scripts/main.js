@@ -66,17 +66,8 @@
         /* turn turret (based on current facing angle) */
         player.turnTurret(modifier, mousePos.mX, mousePos.mY);
        
-        // enemy AI here, but random movements for now
-        // calculate distance between player and enemy
-        /*var d = Math.sqrt(Math.pow(player.config.oX-enemy.config.oX, 2) + Math.pow(player.config.oY-enemy.config.oY, 2));
-        if (d < 200) {
-            enemy.move(modifier, 'forward');
-        }
-        else if (d > 400) {
-            enemy.move(modifier, 'reverse');
-        }*/
+        // AI
 
-        
         for (var i = 0; i < bots.length; i++) {
             // update tanks only if active | TEST for AI pathfinding
             if (bots[i][0].config.active) {          
@@ -89,6 +80,10 @@
                     
                     switch (cmd) {
                         case 'turn':
+                            //bots[i][0].move(modifier, 'forward-stop');
+                            if (bots[i][0].config.hAngle !== move[2]) {
+                                bots[i][0].velocity.forward = 0.0;
+                            }
                             bots[i][0].turnBody(modifier, move[1], move[2]);
                             // check if turn angle reached
                             if (bots[i][0].config.hAngle === move[2]) {
@@ -97,6 +92,7 @@
                             }
                             break;
                         case 'move':
+                            bots[i][0].turnBody(modifier, 'hold');
                             bots[i][0].move(modifier, 'forward', { x: move[1], y: move[2] });
                             // check if move point reach
                             if (bots[i][0].config.oX === move[1] && bots[i][0].config.oY === move[2]) {
@@ -109,15 +105,28 @@
                     }
                 }
                 else if (bots[i][2] !== 'waiting') {
-                    // movequeue is empty and bot is not waiting for reply from worker, so ask for random goal point (TEST, this should rely on the ai STATE)
+                    // movequeue is empty and bot is not waiting for reply from worker, so ask for movelist from pathfinder
+                    
                     var bot_id = bots[i][0].config.id;
                     
                     var msg = {};
                     
                     msg.sender = bot_id;
-                    msg.cmd = 'get_waypoint_random';
                     msg.start = [bots[i][0].config.oX, bots[i][0].config.oY];
                     msg.angle = bots[i][0].config.hAngle; // body angle
+                    
+                    switch (bots[i][3]) {
+                        case 'patrol':
+                            msg.cmd = 'get_waypoint_random';
+                            break;
+                        case 'chase':
+                            msg.goal  = [player.config.oX, player.config.oY];
+                            msg.cmd = 'get_waypoint';
+                            break;
+                        default:
+                            msg.cmd = 'get_waypoint_random';
+                            break;
+                    }
                     
                     // send message to pathfinder worker asking for directions
                     LOAD.worker.sendMessage(bot_id, msg);
