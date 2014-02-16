@@ -332,6 +332,21 @@ function updateGrid(obs) {
         c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] - 28);
         if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
     }
+    
+    // Pad the boundaries
+    for (i = 0; i < 128; i++) {
+        grid[0][i] = 0;
+        grid[1][i] = 0;
+        grid[74][i] = 0;
+        grid[75][i] = 0;
+    }
+    
+    for (i = 0; i < 76; i++) {
+        grid[i][0] = 0;
+        grid[i][1] = 0;
+        grid[i][126] = 0;
+        grid[i][127] = 0;
+    }
 }
 
 function withinBounds(x, y) {
