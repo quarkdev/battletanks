@@ -220,7 +220,7 @@ function Tank(specs, id, control, x, y) {
                 // reset pathfinding
                 var bot = UTIL.getBotReference(this.config.id);
                 if (typeof bot !== 'undefined') {
-                    bot[1].length = 0; // empty movequeue
+                    bot[2] = 'blocked';
                 }
                 break;
             }
@@ -261,7 +261,7 @@ function Tank(specs, id, control, x, y) {
                 // reset pathfinding
                 var bot = UTIL.getBotReference(this.config.id);
                 if (typeof bot !== 'undefined') {
-                    bot[1].length = 0; // empty movequeue
+                    bot[2] = 'blocked';
                 }
                 break;
             }
@@ -276,7 +276,7 @@ function Tank(specs, id, control, x, y) {
             // reset pathfinding
             var bot = UTIL.getBotReference(this.config.id);
             if (typeof bot !== 'undefined') {
-                bot[1].length = 0; // empty movequeue
+                bot[2] = 'blocked';
             }
         }
     };
