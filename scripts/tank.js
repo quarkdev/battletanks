@@ -226,6 +226,7 @@ function Tank(specs, id, control, x, y) {
                 this.config.oY = tmpY;
                 this.velocity.forward = 0.0;
                 this.velocity.reverse = 0.0;
+                
                 // reset pathfinding
                 var bot = UTIL.getBotReference(this.config.id);
                 if (typeof bot !== 'undefined') {

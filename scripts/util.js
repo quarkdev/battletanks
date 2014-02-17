@@ -110,6 +110,17 @@ var UTIL = (function () {
             }
         }
     };
+    
+    my.levelCleared = function () {
+        /* Check if all enemy tanks have been destroyed. */
+        for (var i = 0; i < bots.length; i++) {
+            if (bots[i][0].config.active) {
+                return false;
+            }
+        }
+        
+        return true;
+    };
         
     return my;
 }());

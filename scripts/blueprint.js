@@ -48,6 +48,32 @@ BLUEPRINT.add({
 });
 
 BLUEPRINT.add({
+    name     : 'm4_sherman_blue',           // tank name
+    type     : 'medium',               // tanks type (light/medium/heavy/destroyer/howitzer)
+    bImage   : 'm4_sherman_chassis_blue',   // chassis image
+    tImage   : 'm4_sherman_turret_blue',    // turret image
+    health   : 25.0,                   // tank health
+    armor    : 20.0,                   // tank armor
+    bSize    : 32.0,                   // tank body Size (in px, must be square)
+    tSize    : 46.0,                   // tank turret Size (in px, must be square)
+    sSpeed   : 150.0,                  // chassis turn speed
+    width    : 32.0,                   // chassis width 
+    height   : 32.0,                   // chassis height
+    tWidth   : 52.0,                   // turret width
+    tHeight  : 52.0,                   // turret height
+    tSpeed   : 120.0,                  // turret turn Speed (in degrees / sec)
+    fSpeed   : 200.0,                  // tank forward Speed (in pixels / sec)
+    rSpeed   : 180.0,                  // tank reverse Speed
+    accel    : 1.0,                    // acceleration
+    pSpeed   : 520.0,                  // Projectile speed
+    pDamage  : 52.5,                   // Projectile damage
+    ammo     : 98.0,                   // ammunition
+    fRate    : 2.0,                    // Firing rate
+    hAngle   : 90.0,                   // tank head angle (the direction it is currently facing)
+    tAngle   : 45.0,                   // tank turret angle (the direction the turret is facing)
+});
+
+BLUEPRINT.add({
     name     : 'jagdpanther',          // tank name
     type     : 'destroyer',            // tanks type (light/medium/heavy/destroyer/howitzer)
     bImage   : 'jagdpanther_chassis',  // chassis image

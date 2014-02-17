@@ -83,6 +83,17 @@
         cursor: pointer;
     }
     
+    .menu-txt {
+        width: 200px;
+        margin: 12px auto;
+        padding: 12px 18px;
+        text-align: center;
+        color: #fff;
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 24px;
+    }
+    
     .menu-btn-container {
         width: 200px;
         position: absolute;
@@ -148,6 +159,18 @@
             <div id="import-map" class="menu-btn">IMPORT MAP</div>
             <div id="export-map" class="menu-btn">EXPORT MAP</div>
             <div class="menu-btn continue-game">CONTINUE</div>
+        </div>
+    </div>
+    <div id="level-cleared-screen" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <div class="menu-txt">LEVEL CLEARED!</div>
+            <div class="menu-btn main-menu">MAIN MENU</div>
+        </div>
+    </div>
+    <div id="game-over-screen" class="overlay">
+        <div class="menu-btn-container mbc-2">
+            <div class="menu-txt">GAME OVER!</div>
+            <div class="menu-btn main-menu">MAIN MENU</div>
         </div>
     </div>
     <div id="prompt-pre-game-settings" class="overlay">

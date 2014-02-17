@@ -121,7 +121,7 @@ function attachEditorEventListeners() {
 
 function attachGameEventListeners() {
     addEventListener('keydown', gameKeyDownEvent, false);
-    addEventListener('keyup', gameKeyUpEvent, false); 
+    addEventListener('keyup', gameKeyUpEvent, false);
     canvas.addEventListener('mousemove', gameMouseMoveEvent, false);
     canvas.addEventListener('mousedown', gameMouseDownEvent, false);
     canvas.addEventListener('mouseup', gameMouseUpEvent, false);

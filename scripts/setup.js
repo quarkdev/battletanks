@@ -4,10 +4,12 @@ TankImages = new ImageLibrary();
 TankImages.add('light-turret-blue', 'images/tanks/light-turret-blue.png');
 TankImages.add('light-turret-red', 'images/tanks/light-turret-red.png');
 TankImages.add('light-chassis', 'images/tanks/light-chassis.png');
-TankImages.add('jagdpanther_turret', 'images/tanks/jagdpanther_turret.png');
-TankImages.add('jagdpanther_chassis', 'images/tanks/jagdpanther_chassis.png');
-TankImages.add('m4_sherman_turret', 'images/tanks/m4_sherman_turret.png');
-TankImages.add('m4_sherman_chassis', 'images/tanks/m4_sherman_chassis.png');
+TankImages.add('jagdpanther_turret', 'images/tanks/jagdpanther/turret.png');
+TankImages.add('jagdpanther_chassis', 'images/tanks/jagdpanther/chassis.png');
+TankImages.add('m4_sherman_turret', 'images/tanks/m4_sherman/turret.png');
+TankImages.add('m4_sherman_chassis', 'images/tanks/m4_sherman/chassis.png');
+TankImages.add('m4_sherman_turret_blue', 'images/tanks/m4_sherman/turret_blue.png');
+TankImages.add('m4_sherman_chassis_blue', 'images/tanks/m4_sherman/chassis_blue.png');
 
 PowerUpImages = new ImageLibrary();
 PowerUpImages.add('random', 'images/powerups/random.png');

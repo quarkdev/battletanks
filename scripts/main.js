@@ -11,7 +11,7 @@
         $('#main-menu').show();
     };
     
-    var pause = function() {
+    var pause = function () {
         // stop the main interval
         if (ui_location == 'game') cancelAnimationFrame(mainAnimation);
         if (ui_location == 'editor') cancelAnimationFrame(editorAnimation);
@@ -67,10 +67,17 @@
         player.turnTurret(modifier, mousePos.mX, mousePos.mY);
        
         // AI
-
         for (var i = 0; i < bots.length; i++) {
             // update tanks only if active | TEST for AI pathfinding
-            if (bots[i][0].config.active) {          
+            if (bots[i][0].config.active) {
+                // Update turret
+                bots[i][0].turnTurret(modifier, player.config.oX, player.config.oY);
+                
+                // Fire
+                if (1 > Math.random() * 100) {
+                    bots[i][0].fire();
+                }
+                
                 // Check if movequeue has commands
                 var mq = bots[i][1];
                 if (mq.length > 0 && bots[i][2] === 'ready') {
@@ -136,17 +143,6 @@
                 }
             }
         }
-        
-        enemy.turnTurret(modifier, player.config.oX, player.config.oY);
-        enemy2.turnTurret(modifier, player.config.oX, player.config.oY);
-        var rng = Math.floor(Math.random() * 250) + 1;
-        if (rng == 1 || rng == 4 || rng == 7) {
-            enemy.fire();
-        }
-        if (rng == 50 || rng == 18 || rng == 101) {
-            enemy2.fire();
-        }
-        // point enemy turret to player and fire
         
         // Update all projectiles.
         for (i = 0; i < projectiles.length; i++) {
@@ -226,7 +222,7 @@
     }
 
     // DRAW SCENE
-    var renderCanvas = function() {
+    var renderCanvas = function () {
 
         CANVAS.clear(ctx);
 
@@ -237,7 +233,7 @@
 
     };
     
-    var renderExtern = function() {
+    var renderExtern = function () {
         // draw player health
         var healthFraction = player.config.health / player.config.maxHealth;
         var cHealth = player.config.health <= 0 ? 0 : 1024 * healthFraction; // 420
@@ -268,7 +264,7 @@
     }    
     
     // MAIN
-    var main = function() {
+    var main = function () {
         var now = performance.now();
         var delta = now - then;
 
@@ -280,10 +276,20 @@
         
         then = now;
         mainAnimation = requestAnimationFrame(main);
+        
+        // check player state
+        if (!player.config.active) {
+            // if player is dead, show game over screen
+            showGameOver();
+        }
+        else if (UTIL.levelCleared()) {
+            // level is cleared (i.e. all enemy tanks are destroyed)
+            showLevelCleared();
+        }
     };
     
     // Faux Main (Map Editor)
-    var editor = function() {
+    var editor = function () {
         editorUpdate();
         renderCanvas();
         
@@ -294,7 +300,7 @@
     }
     
     // START
-    var start = function(player_name) {
+    var start = function (player_name) {
         ui_location = 'game';
         
         $('#external-hud').show();
@@ -308,7 +314,7 @@
     };
     
     // Editor START
-    var startMapEditor = function() {
+    var startMapEditor = function () {
         
         ui_location = 'editor';
     
@@ -323,7 +329,25 @@
         attachEditorEventListeners();
         
         editor();
-    }
+    };
+    
+    var showGameOver = function () {
+        // stop the main interval
+        cancelAnimationFrame(mainAnimation);
+    
+        // show game over screen
+        $('#game-over-screen').show();
+        UTIL.pauseMusic(backgroundMusic);
+    };
+    
+    var showLevelCleared = function () {
+        // stop the main interval
+        cancelAnimationFrame(mainAnimation);
+    
+        // show game over screen
+        $('#level-cleared-screen').show();
+        UTIL.pauseMusic(backgroundMusic);
+    };
     
     menu();
     attachMenuEventListeners();

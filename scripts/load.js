@@ -21,7 +21,7 @@ var LOAD = (function () {
         var playerlist = [];
         
         // push the player first
-        playerlist.push([player_name, 'm4_sherman', 'player']);
+        playerlist.push([player_name, 'm4_sherman_blue', 'player']);
         
         for (var i = 1; i < max_players; i++) {
             // start on 1 so that the total bot number is 1 less than the max_players
