@@ -30,7 +30,6 @@ logNum = 0;
 keysDown = {};
 then = Date.now();
 
-
 /* map editor */
 cs_placement_ok = true;
 cspo_timeout = null; // timeout for cs_placement_ok

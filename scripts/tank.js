@@ -27,7 +27,7 @@ function Tank(specs, id, control, x, y) {
 
     this.config = {
         active    : true,
-        control   : typeof control === 'undefined' ? 'computer' : 'player',
+        control   : typeof control === 'undefined' ? 'computer' : control,
         id        : id,                            // random-gen id
         name      : specs.name,                    // tank name
         type      : specs.type,                    // tanks type (light/medium/heavy/destroyer/howitzer)
@@ -120,7 +120,7 @@ function Tank(specs, id, control, x, y) {
         var d_add = tanA;
         var d_sub = Math.abs(360 - tanA);
         
-        if (tanA === 360) {
+        if (tanA === 360 || tanA === 0) {
             // nothing
         }
         else if (d_add < d_sub) {
@@ -295,7 +295,11 @@ function Tank(specs, id, control, x, y) {
         if (this.config.active === false) return;
     
         // are we still reloading?
-        if (this.reloading || this.config.ammo == 0) { return; } 
+        if (this.reloading || this.config.ammo === 0) { return; } 
+        
+        if (this.config.control === 'player') {
+            GameStatistics.inc('total_shots_fired', 1);
+        }
         
         // if not, then fire!
         /* solve for (oX, oY) at tSize/2 distance from (oX, oY) */

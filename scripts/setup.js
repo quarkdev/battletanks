@@ -61,6 +61,13 @@ t_destroyedSound2.init();
 t_destroyedSound3.init();
 pick_powerupSound.init();
 
+// Init stat fields
+GameStatistics = new STAT();
+GameStatistics.add('total_shots_fired');
+GameStatistics.add('total_hits');
+GameStatistics.add('total_damage_dealt');
+GameStatistics.add('total_damage_taken');
+
 // Map editor initiatlization
 MAP.addPlaceable('destructible', 'brick_explosive');
 MAP.addPlaceable('destructible', 'concrete');

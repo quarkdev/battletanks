@@ -90,8 +90,30 @@
         text-align: center;
         color: #fff;
         font-family: Arial;
-        font-weight: bold;
+        font-weight: normal;
         font-size: 24px;
+    }
+    
+    .stat-title {
+        width: 200px;
+        margin: 12px auto;
+        padding: 6px 18px;
+        text-align: center;
+        color: #fff;
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    
+    .stat-txt {
+        width: 200px;
+        margin: 2px auto;
+        padding: 2px 18px;
+        text-align: left;
+        color: #fff;
+        font-family: Consolas, "Lucida Console", Monaco, monospace;
+        font-weight: bold;
+        font-size: 12px;
     }
     
     .menu-btn-container {
@@ -162,8 +184,15 @@
         </div>
     </div>
     <div id="level-cleared-screen" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <div class="menu-txt">LEVEL CLEARED!</div>
+        <div class="menu-btn-container mbc-3">
+            <div class="menu-txt">VICTORY!</div>
+            <div class="stat-title">STATISTICS:</div>
+            <div class="stat-txt" >Shots fired -------- <span id="stat-sf"></span></div>
+            <div class="stat-txt" >Hits --------------- <span id="stat-h"></span></div>
+            <div class="stat-txt" >Misses ------------- <span id="stat-m"></span></div>
+            <div class="stat-txt" >Accuracy ----------- <span id="stat-a"></span></div>
+            <div class="stat-txt" >Damage Dealt ------- <span id="stat-dd"></span></div>
+            <div class="stat-txt" >Damage Taken ------- <span id="stat-dt"></span></div>
             <div class="menu-btn main-menu">MAIN MENU</div>
         </div>
     </div>
@@ -217,6 +246,7 @@
 <!-- Ok, let's start unloading our Javascript payload -->
 <script type="text/javascript" src="scripts/init.js"></script>
 <script type="text/javascript" src="scripts/util.js"></script>
+<script type="text/javascript" src="scripts/stat.js"></script>
 <script type="text/javascript" src="scripts/canvas.js"></script>
 <script type="text/javascript" src="scripts/global.js"></script>
 <script type="text/javascript" src="scripts/tank.js"></script>

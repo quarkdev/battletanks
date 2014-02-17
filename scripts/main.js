@@ -13,8 +13,15 @@
     
     var pause = function () {
         // stop the main interval
-        if (ui_location == 'game') cancelAnimationFrame(mainAnimation);
-        if (ui_location == 'editor') cancelAnimationFrame(editorAnimation);
+        if (ui_location === 'game') {
+            cancelAnimationFrame(mainAnimation);
+        }
+        else if (ui_location === 'editor') {
+            cancelAnimationFrame(editorAnimation);
+        }
+        else if (ui_location === 'post_game') {
+            return;
+        }
     
         // show pause menu
         if (ui_location == 'game') $('#pause-menu').show();
@@ -280,10 +287,24 @@
         // check player state
         if (!player.config.active) {
             // if player is dead, show game over screen
+            ui_location = 'post_game';
             showGameOver();
         }
         else if (UTIL.levelCleared()) {
             // level is cleared (i.e. all enemy tanks are destroyed)
+            var shots_fired = GameStatistics.get('total_shots_fired');
+            var hits = GameStatistics.get('total_hits');
+            var damage_dealt = GameStatistics.get('total_damage_dealt');
+            var damage_taken = GameStatistics.get('total_damage_taken');
+            
+            document.getElementById('stat-sf').innerHTML = shots_fired;
+            document.getElementById('stat-h').innerHTML = hits;
+            document.getElementById('stat-m').innerHTML = shots_fired - hits;
+            document.getElementById('stat-a').innerHTML = ((hits / shots_fired) * 100).toFixed(2) + '%';
+            document.getElementById('stat-dd').innerHTML = damage_dealt.toFixed(2);
+            document.getElementById('stat-dt').innerHTML = damage_taken.toFixed(2);
+            
+            ui_location = 'post_game';
             showLevelCleared();
         }
     };
@@ -334,6 +355,8 @@
     var showGameOver = function () {
         // stop the main interval
         cancelAnimationFrame(mainAnimation);
+        // clear statistics
+        GameStatistics.reset();
     
         // show game over screen
         $('#game-over-screen').show();
@@ -343,6 +366,8 @@
     var showLevelCleared = function () {
         // stop the main interval
         cancelAnimationFrame(mainAnimation);
+        // clear statistics
+        GameStatistics.reset();
     
         // show game over screen
         $('#level-cleared-screen').show();

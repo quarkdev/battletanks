@@ -98,7 +98,7 @@ function getMoveList(S, G, angle) {
         d_sub = Math.abs(360 - tanA);
         
         // push turn command
-        if (tanA === 360) {
+        if (tanA === 360 || tanA === 0) {
             movelist.push(['turn', 'hold', angleBetween]);
         }
         else if (d_add < d_sub) {

@@ -58,6 +58,18 @@ function Projectile(specs) {
                 var mod_damage = critical_hit ? raw_damage*2.0 : raw_damage; // damage after mods/crit
                 var end_damage = mod_damage/t.config.armor;
                 
+                // record hit if source is the player and target is NOT the player
+                if (this.config.srcId === player.config.id && result.tank.config.id !== player.config.id) {
+                    // the one hit is an enemy
+                    GameStatistics.inc('total_hits', 1);
+                    GameStatistics.inc('total_damage_dealt', end_damage);
+                }
+                else if (this.config.srcId !== player.config.id && result.tank.config.id === player.config.id) {
+                    // source is enemy tank, and target is the player
+                    GameStatistics.inc('total_damage_taken', end_damage);
+                }
+                
+                // decrease health
                 t.config.health = t.config.health < end_damage ? 0 : t.config.health - end_damage;
                 
                 // Update combat log.
