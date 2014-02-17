@@ -22,6 +22,7 @@ PowerUpImages.add('aphotic-shield', 'images/powerups/aphotic-shield.png');
 PowerUpImages.add('reactive-armor', 'images/powerups/reactive-armor.png');
 PowerUpImages.add('regeneration', 'images/powerups/regeneration.png');
 PowerUpImages.add('ammo', 'images/powerups/ammo.png');
+PowerUpImages.add('projectile-barrier', 'images/powerups/projectile-barrier.png');
 
 DestructibleImages = new ImageLibrary();
 DestructibleImages.add('brick_explosive', 'images/destructibles/brick-explosive.png');

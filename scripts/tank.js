@@ -1,6 +1,7 @@
 /*-------- Tanks --------*/
 function Tank(specs, id, control, x, y) {
-    this.callbacks = []; // callbacks attached (powerups, etc..)
+    this.callbacks = []; // hit callbacks attached (powerups, etc..)
+    this.move_callbacks = []; // callbacks called everytime the tank moves
     
     this.attachments = { // {id, Image()}
         turret  : new Array(),
@@ -158,6 +159,11 @@ function Tank(specs, id, control, x, y) {
         /* lockPoint used by AI. Prevents it from going beyond the lockPoint. */
         
         if (this.config.active === false) return;
+        
+        /* when tank moves */
+        for (var i = 0; i < this.move_callbacks.length; i++) {
+            this.move_callbacks[i]();
+        }
         
         lockPoint = typeof lockPoint === 'undefined' ? false : lockPoint; 
     

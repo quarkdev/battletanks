@@ -38,11 +38,68 @@ function Random(x, y) {
             break;
     }
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         this.tmp.use(tank);
         var pn = this.tmp.config.name;
         this.config.name += ' | ' + pn;
     }
+}
+
+function ProjectileBarrier(x, y) {
+    /* causes projectiles that hit the tank to circle around forming a lethal barrier */
+    this.config = {
+        name    : 'Projectile Barrier',
+        oX      : x,
+        oY      : y,
+        size    : 32,
+        cRadius : 16,
+        image   : PowerUpImages.get('projectile-barrier')
+    };
+    
+    this.use = function (tank) {
+        // array that holds the projectile barriers
+        tank.pBarrier = [];
+    
+        var incBarrier = function () {
+            // Increases the barrier projectile count
+            var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, angle: 0, oX: tank.config.oX + 35, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
+            projectiles.push(tmp);
+            tank.pBarrier.push([tmp, 0]);
+        };
+        incBarrier.id = 'incBarrier';
+        
+        tank.callbacks.push(incBarrier);
+        
+        var updateBarrierSpin = function () {
+            // Updates the position of each projectile tethered to the tank
+
+            for (var i = 0; i < tank.pBarrier.length; i++) {
+                var newAngle = tank.pBarrier[i][1] === 359 ? 0 : tank.pBarrier[i][1] + 1;
+                var newLoc = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, newAngle, 35);
+                tank.pBarrier[i][0].config.oX = newLoc[0];
+                tank.pBarrier[i][0].config.oY = newLoc[1];
+                tank.pBarrier[i][1] = newAngle;
+            }
+        };
+        updateBarrierSpin.id = 'updateBarrierSpin';
+        
+        tank.move_callbacks.push(updateBarrierSpin);
+        
+        tank.config.armor += 1000; // make tank almost invulnerable
+        
+        setTimeout(function () {
+            tank.config.armor -= 1000;
+            
+            // deactivate all projectiles in pBarrier
+            for (var i = 0; i < tank.pBarrier.length; i++) {
+                tank.pBarrier[i][0].config.active = false;
+            }
+            
+            delete tank.pBarrier; // remove temp variable
+            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'incBarrier'; });
+            tank.move_callbacks = tank.move_callbacks.filter(function (item) { return item.id != 'updateBarrierSpin'; });
+        }, 20000);
+    };
 }
 
 function RapidFire(x, y) {
@@ -56,9 +113,9 @@ function RapidFire(x, y) {
         image   : PowerUpImages.get('rapid-fire')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         tank.config.fRate += 5;
-        setTimeout(function() { tank.config.fRate -= 5; }, 5000);
+        setTimeout(function () { tank.config.fRate -= 5; }, 5000);
     };
 }
 
@@ -73,10 +130,10 @@ function Haste(x, y) {
         image   : PowerUpImages.get('haste')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         tank.config.fSpeed += 100;
         tank.config.rSpeed += 100;
-        setTimeout(function() { tank.config.fSpeed -= 100; tank.config.rSpeed -= 100; }, 10000);
+        setTimeout(function () { tank.config.fSpeed -= 100; tank.config.rSpeed -= 100; }, 10000);
     };
 }
 
@@ -91,9 +148,9 @@ function FasterProjectile(x, y) {
         image   : PowerUpImages.get('faster-projectile')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         tank.config.pSpeed += 200;
-        setTimeout(function() { tank.config.pSpeed -= 200; }, 8000);
+        setTimeout(function () { tank.config.pSpeed -= 200; }, 8000);
     };
 }
 
@@ -108,16 +165,16 @@ function IncreasedArmor(x, y) {
         image   : PowerUpImages.get('increased-armor')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         // add chassis attachment, no cleanup needed since this is an infinitely stackable powerup
         var unique_id = UTIL.genArrayId(tank.attachments.chassis);
         tank.attachments.chassis.push({id: unique_id, img: AttachmentImages.get('increased-armor')}); // add attachment
         
         tank.config.armor += 50;
-        setTimeout(function() {
+        setTimeout(function () {
             tank.config.armor -= 50;
             // remove attachment
-            tank.attachments.chassis = tank.attachments.chassis.filter(function(item) { return item.id != unique_id; }); // remove all instances of unique_id
+            tank.attachments.chassis = tank.attachments.chassis.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
         }, 20000);
     };
 }
@@ -133,17 +190,17 @@ function IncreasedDamage(x, y) {
         image   : PowerUpImages.get('increased-damage')
     };
     
-    this.use = function(tank) {   
+    this.use = function (tank) {   
         // add turret attachment, no cleanup needed since this is an infinitely stackable powerup
         var unique_id = UTIL.genArrayId(tank.attachments.turret);
-        //tank.attachments.turret = tank.attachments.turret.filter(function(item) { return item.id != unique_id; }); // cleanup
+        //tank.attachments.turret = tank.attachments.turret.filter(function (item) { return item.id != unique_id; }); // cleanup
         tank.attachments.turret.push({id: unique_id, img: AttachmentImages.get('increased-damage')}); // add attachment
         
         tank.config.pDamage += 50;
-        setTimeout(function() { 
+        setTimeout(function () { 
             tank.config.pDamage -= 50;
             // remove attachment
-            tank.attachments.turret = tank.attachments.turret.filter(function(item) { return item.id != unique_id; }); // remove all instances of unique_id
+            tank.attachments.turret = tank.attachments.turret.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
         }, 20000);
     };
 }
@@ -159,9 +216,9 @@ function AphoticShield(x, y) {
         image   : PowerUpImages.get('aphotic-shield')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 0;
-        var absorbHit = function() {
+        var absorbHit = function () {
             // absorb all projectile hits
             tank.hitsTaken++;
         };
@@ -170,7 +227,7 @@ function AphoticShield(x, y) {
         tank.callbacks.push(absorbHit);
         
         tank.config.armor += 1000; // make tank almost invulnerable
-        setTimeout(function() {
+        setTimeout(function () {
             tank.config.armor -= 1000;
             // fire the number of absorbed projectiles in all directions
             var aFactor = 360/tank.hitsTaken;
@@ -194,7 +251,7 @@ function AphoticShield(x, y) {
             }
             
             delete tank.hitsTaken; // remove temp variable
-            tank.callbacks = tank.callbacks.filter(function(item) { return item.id != 'absorbHit'; });
+            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'absorbHit'; });
             d_explodeSound.get(); // play explode sound
         }, 8000);
     };
@@ -211,12 +268,12 @@ function ReactiveArmor(x, y) {
         image   : PowerUpImages.get('reactive-armor')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         // remove any callbacks, buff doesnt stack
         clearTimeout(tank.ra_timeout);
         tank.armorBuff = tank.armorBuff > 0 ? tank.armorBuff : 0;
         
-        var increaseArmorWhenHit = function() {
+        var increaseArmorWhenHit = function () {
             // increase armor each hit
             tank.armorBuff += 10;
             tank.config.armor += 10;
@@ -225,11 +282,11 @@ function ReactiveArmor(x, y) {
         
         tank.callbacks.push(increaseArmorWhenHit);
         
-        tank.ra_timeout = setTimeout(function() {
+        tank.ra_timeout = setTimeout(function () {
             tank.config.armor -= tank.armorBuff;
             delete tank.armorBuff; // remove temp variable
             delete tank.ra_timeout; // remove temp variable
-            tank.callbacks = tank.callbacks.filter(function(item) { return item.id != 'increaseArmorWhenHit'; });
+            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'increaseArmorWhenHit'; });
         }, 20000);
     };
 }
@@ -245,16 +302,16 @@ function Regeneration(x, y) {
         image   : PowerUpImages.get('regeneration')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         clearInterval(tank.regenIntervalID);
-        tank.regenIntervalID = setInterval(function() {
+        tank.regenIntervalID = setInterval(function () {
             tank.config.health = tank.config.maxHealth - tank.config.health < 0.01 ? tank.config.maxHealth : tank.config.health + 0.01;
             if (tank.config.health == tank.config.maxHealth) {
                 clearInterval(tank.regenIntervalID);
             }
         }, 1);
     
-        var dispellRegen = function() {
+        var dispellRegen = function () {
             // dispell regen
             clearInterval(tank.regenIntervalID);
         };
@@ -262,10 +319,10 @@ function Regeneration(x, y) {
         
         tank.callbacks.push(dispellRegen);
         
-        setTimeout(function() {
+        setTimeout(function () {
             clearInterval(tank.regenIntervalID);
             delete tank.regenIntervalID; // remove temp variable
-            tank.callbacks = tank.callbacks.filter(function(item) { return item.id != 'dispellRegen'; });
+            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
         }, 20000);
     };
 }
@@ -281,7 +338,7 @@ function Ammo(x, y) {
         image   : PowerUpImages.get('ammo')
     };
     
-    this.use = function(tank) {
+    this.use = function (tank) {
         tank.config.ammo += 25;
     };
 }

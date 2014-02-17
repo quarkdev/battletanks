@@ -157,8 +157,9 @@ function Destructible(specs, x, y) {
         
         if (lucky) {
             // ok just got lucky, generate a random powerup
-            var roll = Math.floor(Math.random() * 10) + 1;
+            var roll = Math.floor(Math.random() * 11) + 1;
             var tmp = {};
+
             switch (roll) {
                 case 1:
                     tmp = new RapidFire(this.config.oX, this.config.oY);
@@ -189,6 +190,9 @@ function Destructible(specs, x, y) {
                     break;
                 case 10:
                     tmp = new Ammo(this.config.oX, this.config.oY);
+                    break;
+                case 11:
+                    tmp = new ProjectileBarrier(this.config.oX, this.config.oY);
                     break;
             }
             powerups.push(tmp);
