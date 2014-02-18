@@ -14,7 +14,8 @@ var PUP = (function() {
         'rapid-fire',
         'faster-projectile',
         'increased-damage',
-        'return'
+        'return',
+        'multi-shot'
     ];
     
     my.create = function (name, x, y) {
@@ -55,6 +56,9 @@ var PUP = (function() {
             case 'return':
                 return new Return(x, y);
                 break;
+            case 'multi-shot':
+                return new MultiShot(x, y);
+                break;
             default:
                 break;
         }
@@ -88,6 +92,49 @@ function Random(x, y) {
         var pn = this.tmp.config.name;
         this.config.name += ' | ' + pn;
     }
+}
+
+function MultiShot(x, y) {
+    /* Fires 2 extra projectiles at a slight angle. Adds another 2 extra projectiles for each stack. */
+    this.config = {
+        name    : 'Multi Shot',
+        slug    : 'multi-shot',
+        oX      : x,
+        oY      : y,
+        size    : 32,
+        cRadius : 16,
+        image   : PowerUpImages.get('multi-shot')
+    };
+    
+    this.use = function (tank) {
+        var active = typeof tank.ts_active !== 'undefined';
+        
+        if (!active) {
+            tank.ts_active = true;
+            tank.ts_stack = 1;
+        
+            var multiShot = function (_oX, _oY) {
+                for (var i = 1; i < tank.ts_stack + 1; i++) {
+                    projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                    projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                }
+            };
+            multiShot.id = 'multiShot';
+            
+            tank.fire_callbacks.push(multiShot);
+        }
+        else {
+            tank.ts_stack += 1;
+            clearTimeout(tank.ts_timeout);
+        }
+        
+        tank.ts_timeout = setTimeout(function () {
+            delete tank.ts_active;
+            delete tank.ts_timeout;
+            delete tank.ts_stack;
+            tank.fire_callbacks = tank.fire_callbacks.filter(function (item) { return item.id != 'multiShot'; });
+        }, 20000);
+    };
 }
 
 function Return(x, y) {

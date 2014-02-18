@@ -1,5 +1,6 @@
 /*-------- Tanks --------*/
 function Tank(specs, id, control, x, y) {
+    this.fire_callbacks = [];
     this.hit_callbacks = []; // hit callbacks attached (powerups, etc..)
     this.move_callbacks = []; // callbacks called everytime the tank moves
     this.frame_callbacks = []; // called for each frame update (useful for powerups that require per frame animation)
@@ -312,6 +313,12 @@ function Tank(specs, id, control, x, y) {
         /* solve for (oX, oY) at tSize/2 distance from (oX, oY) */
         var _oY = this.config.oY + ((this.config.tWidth/2) * Math.sin(this.config.tAngle*Math.PI/180));
         var _oX = this.config.oX + ((this.config.tWidth/2) * Math.cos(this.config.tAngle*Math.PI/180));
+        
+        /* when tank is fires */
+        for (var i = 0; i < this.fire_callbacks.length; i++) {
+            this.fire_callbacks[i](_oX, _oY);
+        }
+        
         var proj = new Projectile({speed: this.config.pSpeed, damage: this.config.pDamage, angle:  this.config.tAngle, oX: _oX, oY: _oY, srcId: this.config.id, srcType: this.config.name});
         projectiles.push(proj);
         
@@ -362,7 +369,7 @@ function Tank(specs, id, control, x, y) {
     };
     
     this.frame = function () {
-        /* when tank is hit */
+        /* per frame callback */
         for (var i = 0; i < this.frame_callbacks.length; i++) {
             this.frame_callbacks[i]();
         }

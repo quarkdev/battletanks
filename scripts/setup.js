@@ -24,6 +24,7 @@ PowerUpImages.add('regeneration', 'images/powerups/regeneration.png');
 PowerUpImages.add('ammo', 'images/powerups/ammo.png');
 PowerUpImages.add('projectile-barrier', 'images/powerups/projectile-barrier.png');
 PowerUpImages.add('return', 'images/powerups/return.png');
+PowerUpImages.add('multi-shot', 'images/powerups/multi-shot.png');
 
 DestructibleImages = new ImageLibrary();
 DestructibleImages.add('brick_explosive', 'images/destructibles/brick-explosive.png');
@@ -89,6 +90,7 @@ MAP.addPlaceable('powerup', 'rapid-fire');
 MAP.addPlaceable('powerup', 'faster-projectile');
 MAP.addPlaceable('powerup', 'increased-damage');
 MAP.addPlaceable('powerup', 'return');
+MAP.addPlaceable('powerup', 'multi-shot');
 
 // the default map
 testmap = new Map('default');
