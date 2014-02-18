@@ -241,6 +241,7 @@
         CANVAS.drawDestructibles(ctx);
         CANVAS.drawPowerUps(ctx);
         CANVAS.drawTanks(ctx);
+        CANVAS.drawVisualEffects(ctx);
         CANVAS.drawProjectiles(ctx);
 
     };
@@ -341,6 +342,7 @@
         projectiles.clear();
         destructibles.clear();
         startingpoints.clear();
+        visualeffects.clear();
     
         attachGameEventListeners();
         attachEditorEventListeners();

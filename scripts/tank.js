@@ -339,7 +339,7 @@ function Tank(specs, id, control, x, y) {
         this.reloading = false;
     };
     
-    this.draw = function () {
+    this.draw = function (ctx) {
         if (this.config.active === false) return;
 
         ctx.translate(this.config.oX, this.config.oY);
@@ -378,7 +378,9 @@ function Tank(specs, id, control, x, y) {
     this.death = function () {
         /* Move object offscreen. Set to inactive. */
         this.config.active = false;
-        this.config.oX = canvas.height+250;
-        this.config.oY = 0;
+
+        visualeffects.push(new VisualEffect({name: 'tank_explosion', oX: this.config.oX, oY: this.config.oY, width: 32, height: 32, scaleW: 40, scaleH: 40, framesTillUpdate: 2, loop: false, spriteSheet: 'tank_explosion'}));
+        //this.config.oX = canvas.height+250;
+        //this.config.oY = 0;
     };
 }

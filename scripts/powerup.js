@@ -372,6 +372,10 @@ function AphoticShield(x, y) {
         if (!active) {
             tank.as_active = true;
             tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 0;
+            
+            tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
+            visualeffects.push(tank.as_vfx);
+            
             var absorbHit = function (damage_taken) {
                 // negate all hits and count
                 tank.config.health += damage_taken; // restore hitpoints
@@ -380,7 +384,16 @@ function AphoticShield(x, y) {
             };
             absorbHit.id = 'absorbHit';
             
+            var asAnim = function () {
+                // update animation position
+                tank.as_vfx.updatePos(tank.config.oX, tank.config.oY);
+            };
+            asAnim.id = 'asAnim';
+            
+            tank.frame_callbacks.push(asAnim);
             tank.hit_callbacks.push(absorbHit);
+            
+            
         }
         else {
             clearTimeout(tank.as_timeout);
@@ -408,10 +421,15 @@ function AphoticShield(x, y) {
                 cAngle += aFactor;
             }
             
+            tank.as_vfx.end();
+            
             delete tank.hitsTaken; // remove temp variable
             delete tank.as_active;
             delete tank.as_timeout;
+            delete tank.as_vfx;
+            
             tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'absorbHit'; });
+            tank.frame_callbacks = tank.frame_callbacks.filter(function (item) { return item.id != 'asAnim'; });
             d_explodeSound.get(); // play explode sound
         }, 8000);
     };

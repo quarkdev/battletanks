@@ -28,6 +28,11 @@ var CANVAS = (function () {
             destructibles[i].draw(context);
         }
     };
+    my.drawVisualEffects = function (context) {
+        for (var i = 0; i < visualeffects.length; i++) {
+            visualeffects[i].draw(context);
+        }
+    };
     my.drawProjectiles = function (context) {
         /* draw all the projectiles */
         for (var i = 0; i < projectiles.length; i++) {

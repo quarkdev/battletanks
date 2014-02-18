@@ -40,6 +40,10 @@ AttachmentImages.add('increased-armor', 'images/attachments/chassis/increased-ar
 EditorImages = new ImageLibrary();
 EditorImages.add('starting-point', 'images/editor/starting-point.png');
 
+SpriteSheetImages = new ImageLibrary();
+SpriteSheetImages.add('tank_explosion', 'images/spritesheets/tank_explosion.png');
+SpriteSheetImages.add('aphotic_shield', 'images/spritesheets/aphotic_shield.png');
+
 
 backgroundMusic = new Audio('sounds/bgm.wav');
 backgroundMusic.loop = true;

@@ -199,7 +199,7 @@ function Destructible(specs, x, y) {
         }
     };
     
-    this.draw = function () {
+    this.draw = function (ctx) {
         if (this.config.active === false) return;
         
         var _size = this.config.size / 2;
