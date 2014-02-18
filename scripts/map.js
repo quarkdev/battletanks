@@ -241,7 +241,7 @@ var MAP = (function () {
         current_map = newmap;
     };
     
-    my.exportAsString = function (name) {
+    my.exportToString = function (name) {
         /* Export the current map in the editor in the form of a custom-delimited string. */
         name = name === '' ? 'newmap' : name;
         
@@ -262,6 +262,15 @@ var MAP = (function () {
             map += destructibles[i].config.oY;
         }
         
+        map += '|';
+        
+        for (i = 0; i < powerups.length; i++) {
+            if (i !== 0) map += ',';
+            map += powerups[i].config.slug + ':';
+            map += powerups[i].config.oX + ':';
+            map += powerups[i].config.oY;
+        }
+        
         wdw = window.open("data:text/html," + encodeURIComponent(map), "_blank", "width=200, height=100");
     };
     
@@ -272,6 +281,7 @@ var MAP = (function () {
             name           = name_sp_dt[0],
             startingPoints = name_sp_dt[1].split(','),
             destructibles  = name_sp_dt[2].split(','),
+            powerups       = name_sp_dt[3].split(','),
             newmap         = new Map(name),
             coords         = [],
             type_coords    = [];
@@ -284,6 +294,11 @@ var MAP = (function () {
         for (i = 0; i < destructibles.length; i++) {
             type_coords = destructibles[i].split(':'); // type:x:y
             newmap.destructibles.push([type_coords[0], type_coords[1], type_coords[2]]);
+        }
+        
+        for (i = 0; i < powerups.length; i++) {
+            type_coords = powerups[i].split(':'); // type:x:y
+            newmap.powerups.push([type_coords[0], type_coords[1], type_coords[2]]);
         }
         
         // check map list if it contains a similar map

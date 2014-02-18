@@ -89,7 +89,7 @@ function attachEditorEventListeners() {
         
         var name = document.getElementById('map-name-ex').value;
         
-        MAP.exportAsString(name);
+        MAP.exportToString(name);
         
         // hide menu
         editor();
