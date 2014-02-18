@@ -176,95 +176,103 @@
         -moz-box-shadow:    0px 0px 30px rgba(255, 255, 255, 1);
         box-shadow:         0px 0px 30px rgba(255, 255, 255, 1);
     }
+    
+    #canvas-ui-wrap {
+        width: 1026px;
+        height: 800px;
+        margin: 0 auto;
+    }
 </style>
 <style type="text/css" src="css/style.css"></style>
 <script type="text/javascript" src="scripts/jquery.js"></script>
 </head>
 <body>
-<div id="canvas-wrap" onselectstart="return false;">
-    <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
-    <div id="main-menu" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <div id="start-game" class="menu-btn">START GAME</div>
-            <div id="map-builder" class="menu-btn">MAP BUILDER</div>
+<div id="canvas-ui-wrap">
+    <div id="canvas-wrap" onselectstart="return false;">
+        <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
+        <div id="main-menu" class="overlay">
+            <div class="menu-btn-container mbc-2">
+                <div id="start-game" class="menu-btn">START GAME</div>
+                <div id="map-builder" class="menu-btn">MAP BUILDER</div>
+            </div>
+        </div>
+        <div id="pause-menu" class="overlay">
+            <div class="menu-btn-container mbc-2">
+                <div class="menu-btn main-menu">MAIN MENU</div>
+                <div class="menu-btn continue-game">CONTINUE</div>
+            </div>
+        </div>
+        <div id="editor-menu" class="overlay">
+            <div class="menu-btn-container mbc-5">
+                <div class="menu-btn main-menu">MAIN MENU</div>
+                <div id="save-map" class="menu-btn">SAVE MAP</div>
+                <div id="import-map" class="menu-btn">IMPORT MAP</div>
+                <div id="export-map" class="menu-btn">EXPORT MAP</div>
+                <div class="menu-btn continue-game">CONTINUE</div>
+            </div>
+        </div>
+        <div id="level-cleared-screen" class="overlay">
+            <div class="menu-btn-container mbc-4">
+                <div class="menu-txt">VICTORY!</div>
+                <div class="stat-title">STATISTICS:</div>
+                <div class="stat-txt" >Shots fired -------- <span id="stat-sf"></span></div>
+                <div class="stat-txt" >Hits --------------- <span id="stat-h"></span></div>
+                <div class="stat-txt" >Misses ------------- <span id="stat-m"></span></div>
+                <div class="stat-txt" >Accuracy ----------- <span id="stat-a"></span></div>
+                <div class="stat-txt" >Damage Dealt ------- <span id="stat-dd"></span></div>
+                <div class="stat-txt" >Damage Taken ------- <span id="stat-dt"></span></div>
+                <div class="menu-btn main-menu">MAIN MENU</div>
+            </div>
+        </div>
+        <div id="game-over-screen" class="overlay">
+            <div class="menu-btn-container mbc-2">
+                <div class="menu-txt">GAME OVER!</div>
+                <div class="menu-btn main-menu">MAIN MENU</div>
+            </div>
+        </div>
+        <div id="prompt-pre-game-settings" class="overlay">
+            <div class="menu-btn-container mbc-2">
+                <span style="color: white">MAP: </span>
+                <select  style="width: 152px; padding: 8px 4px; margin-bottom: 12px;">
+                    <option value="0" selected="selected">Default</option>
+                </select>
+                <input id="player-name" class="ui_input" type="text" value="" placeholder="Player Name" />
+                <div id="start-battle-ok" class="menu-btn">START BATTLE!</div>
+            </div>
+        </div>
+        <div id="prompt-map-name" class="overlay">
+            <div class="menu-btn-container mbc-2">
+                <input id="map-name" type="text" value="" placeholder="Map Name" />
+                <div id="save-map-ok" class="menu-btn">OK</div>
+            </div>
+        </div>
+        <div id="prompt-map-name-export" class="overlay">
+            <div class="menu-btn-container mbc-2">
+                <input id="map-name-ex" type="text" value="" placeholder="Map Name" />
+                <div id="save-map-ex-ok" class="menu-btn">OK</div>
+            </div>
+        </div>
+        <div id="prompt-map-import" class="overlay">
+            <div class="menu-btn-container mbc-2">
+                <input id="map-string" class="ui_input" type="text" value="" placeholder="Map String" />
+                <div id="import-map-ok" class="menu-btn">IMPORT</div>
+            </div>
         </div>
     </div>
-    <div id="pause-menu" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <div class="menu-btn main-menu">MAIN MENU</div>
-            <div class="menu-btn continue-game">CONTINUE</div>
+    <div id="external-hud">
+        <div id="health-bar">
+            <div id="current-health-anim">
+                <div id="current-health">
+                </div>  
+            </div>
+            <div id="hNum">
+            </div>
         </div>
+        <div id="combat-log"></div>
+        
     </div>
-    <div id="editor-menu" class="overlay">
-        <div class="menu-btn-container mbc-5">
-            <div class="menu-btn main-menu">MAIN MENU</div>
-            <div id="save-map" class="menu-btn">SAVE MAP</div>
-            <div id="import-map" class="menu-btn">IMPORT MAP</div>
-            <div id="export-map" class="menu-btn">EXPORT MAP</div>
-            <div class="menu-btn continue-game">CONTINUE</div>
-        </div>
-    </div>
-    <div id="level-cleared-screen" class="overlay">
-        <div class="menu-btn-container mbc-4">
-            <div class="menu-txt">VICTORY!</div>
-            <div class="stat-title">STATISTICS:</div>
-            <div class="stat-txt" >Shots fired -------- <span id="stat-sf"></span></div>
-            <div class="stat-txt" >Hits --------------- <span id="stat-h"></span></div>
-            <div class="stat-txt" >Misses ------------- <span id="stat-m"></span></div>
-            <div class="stat-txt" >Accuracy ----------- <span id="stat-a"></span></div>
-            <div class="stat-txt" >Damage Dealt ------- <span id="stat-dd"></span></div>
-            <div class="stat-txt" >Damage Taken ------- <span id="stat-dt"></span></div>
-            <div class="menu-btn main-menu">MAIN MENU</div>
-        </div>
-    </div>
-    <div id="game-over-screen" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <div class="menu-txt">GAME OVER!</div>
-            <div class="menu-btn main-menu">MAIN MENU</div>
-        </div>
-    </div>
-    <div id="prompt-pre-game-settings" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <span style="color: white">MAP: </span>
-            <select  style="width: 152px; padding: 8px 4px; margin-bottom: 12px;">
-                <option value="0" selected="selected">Default</option>
-            </select>
-            <input id="player-name" class="ui_input" type="text" value="" placeholder="Player Name" />
-            <div id="start-battle-ok" class="menu-btn">START BATTLE!</div>
-        </div>
-    </div>
-    <div id="prompt-map-name" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <input id="map-name" type="text" value="" placeholder="Map Name" />
-            <div id="save-map-ok" class="menu-btn">OK</div>
-        </div>
-    </div>
-    <div id="prompt-map-name-export" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <input id="map-name-ex" type="text" value="" placeholder="Map Name" />
-            <div id="save-map-ex-ok" class="menu-btn">OK</div>
-        </div>
-    </div>
-    <div id="prompt-map-import" class="overlay">
-        <div class="menu-btn-container mbc-2">
-            <input id="map-string" class="ui_input" type="text" value="" placeholder="Map String" />
-            <div id="import-map-ok" class="menu-btn">IMPORT</div>
-        </div>
-    </div>
+    <div id="editor-ui"></div>
 </div>
-<div id="external-hud">
-    <div id="health-bar">
-        <div id="current-health-anim">
-            <div id="current-health">
-            </div>  
-        </div>
-        <div id="hNum">
-        </div>
-    </div>
-    <div id="combat-log"></div>
-    
-</div>
-<div id="editor-ui"></div>
 
 <!-- Ok, let's start unloading our Javascript payload -->
 <script type="text/javascript" src="scripts/init.js"></script>

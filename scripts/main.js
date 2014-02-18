@@ -305,8 +305,6 @@
     
     // Faux Main (Map Editor)
     var editor = function () {
-        var now = performance.now();
-        var delta = now - then;
     
         editorUpdate();
         renderCanvas();
@@ -314,7 +312,6 @@
         CANVAS.drawStartingPoints(ctx); 
         MAP.drawPlaceableGhost(ctx);
         
-        then = now;
         editorAnimation = requestAnimationFrame(editor);
     }
     
@@ -328,6 +325,7 @@
         attachGameEventListeners();
         then = performance.now();
         UTIL.playMusic(backgroundMusic);
+        GameStatistics.reset();
 
         main();
     };
@@ -355,8 +353,6 @@
     var showGameOver = function () {
         // stop the main interval
         cancelAnimationFrame(mainAnimation);
-        // clear statistics
-        GameStatistics.reset();
     
         // show game over screen
         $('#game-over-screen').show();
@@ -366,8 +362,6 @@
     var showLevelCleared = function () {
         // stop the main interval
         cancelAnimationFrame(mainAnimation);
-        // clear statistics
-        GameStatistics.reset();
     
         // show game over screen
         $('#level-cleared-screen').show();
