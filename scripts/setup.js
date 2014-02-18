@@ -76,6 +76,17 @@ MAP.addPlaceable('destructible', 'riveted_iron');
 MAP.addPlaceable('destructible', 'wall_rubber');
 MAP.addPlaceable('destructible', 'heavy_rubber');
 MAP.addPlaceable('starting-point', 'starting-point');
+MAP.addPlaceable('powerup', 'random');
+MAP.addPlaceable('powerup', 'haste');
+MAP.addPlaceable('powerup', 'ammo');
+MAP.addPlaceable('powerup', 'projectile-barrier');
+MAP.addPlaceable('powerup', 'aphotic-shield');
+MAP.addPlaceable('powerup', 'increased-armor');
+MAP.addPlaceable('powerup', 'reactive-armor');
+MAP.addPlaceable('powerup', 'regeneration');
+MAP.addPlaceable('powerup', 'rapid-fire');
+MAP.addPlaceable('powerup', 'faster-projectile');
+MAP.addPlaceable('powerup', 'increased-damage');
 
 // the default map
 testmap = new Map('default');

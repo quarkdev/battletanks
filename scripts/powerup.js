@@ -1,8 +1,75 @@
 /*-------- Powerups --------*/
+var PUP = (function() {
+    var my = {};
+    
+    var pSlugs = [
+        'random',
+        'haste',
+        'ammo',
+        'projectile-barrier',
+        'aphotic-shield',
+        'increased-armor',
+        'reactive-armor',
+        'regeneration',
+        'rapid-fire',
+        'faster-projectile',
+        'increased-damage'
+    ];
+    
+    my.create = function (name, x, y) {
+        switch (name) {
+            case 'random':
+                return new Random(x, y);
+                break;
+            case 'haste':
+                return new Haste(x, y);
+                break;
+            case 'ammo':
+                return new Ammo(x, y);
+                break;
+            case 'projectile-barrier':
+                return new ProjectileBarrier(x, y);
+                break;
+            case 'aphotic-shield':
+                return new AphoticShield(x, y);
+                break;
+            case 'increased-armor':
+                return new IncreasedArmor(x, y);
+                break;
+            case 'reactive-armor':
+                return new ReactiveArmor(x, y);
+                break;
+            case 'regeneration':
+                return new Regeneration(x, y);
+                break;
+            case 'rapid-fire':
+                return new RapidFire(x, y);
+                break;
+            case 'faster-projectile':
+                return new FasterProjectile(x, y);
+                break;
+            case 'increased-damage':
+                return new IncreasedDamage(x, y);
+                break;
+            default:
+                break;
+        }
+    };
+    
+    my.createRandom = function (x, y) {
+        var index = Math.floor(Math.random() * pSlugs.length);
+        
+        return PUP.create(pSlugs[index], x, y);
+    };
+    
+    return my;
+}());
+
 function Random(x, y) {
     /* get random effects */
     this.config = {
         name    : 'Random',
+        slug    : 'random',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -10,33 +77,7 @@ function Random(x, y) {
         image   : PowerUpImages.get('random')
     };
     
-    var roll = Math.floor(Math.random() * 8) + 1;
-    switch (roll) {
-        case 1:
-            this.tmp = new RapidFire(x, y);
-            break;
-        case 2:
-            this.tmp = new Haste(x, y);
-            break;
-        case 3:
-            this.tmp = new FasterProjectile(x, y);
-            break;
-        case 4:
-            this.tmp = new IncreasedArmor(x, y);
-            break;
-        case 5:
-            this.tmp = new IncreasedDamage(x, y);
-            break;
-        case 6:
-            this.tmp = new AphoticShield(x, y);
-            break;
-        case 7:
-            this.tmp = new ReactiveArmor(x, y);
-            break;
-        case 8:
-            this.tmp = new Regeneration(x, y);
-            break;
-    }
+    this.tmp = PUP.createRandom(x, y);
     
     this.use = function (tank) {
         this.tmp.use(tank);
@@ -49,6 +90,7 @@ function ProjectileBarrier(x, y) {
     /* causes projectiles that hit the tank to circle around forming a lethal barrier */
     this.config = {
         name    : 'Projectile Barrier',
+        slug    : 'projectile-barrier',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -57,46 +99,55 @@ function ProjectileBarrier(x, y) {
     };
     
     this.use = function (tank) {
-        // array that holds the projectile barriers
-        tank.pBarrier = [];
+        var active = typeof tank.pb_active !== 'undefined';
     
-        var incBarrier = function () {
-            // Increases the barrier projectile count
-            var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, angle: 0, oX: tank.config.oX + 35, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
-            projectiles.push(tmp);
-            tank.pBarrier.push([tmp, 0]);
-        };
-        incBarrier.id = 'incBarrier';
+        if (!active) {
+            // array that holds the projectile barriers
+            tank.pBarrier = [];
+            tank.pb_active = true;
         
-        tank.callbacks.push(incBarrier);
-        
-        var updateBarrierSpin = function () {
-            // Updates the position of each projectile tethered to the tank
-
-            for (var i = 0; i < tank.pBarrier.length; i++) {
-                var newAngle = tank.pBarrier[i][1] === 359 ? 0 : tank.pBarrier[i][1] + 1;
-                var newLoc = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, newAngle, 35);
-                tank.pBarrier[i][0].config.oX = newLoc[0];
-                tank.pBarrier[i][0].config.oY = newLoc[1];
-                tank.pBarrier[i][1] = newAngle;
-            }
-        };
-        updateBarrierSpin.id = 'updateBarrierSpin';
-        
-        tank.move_callbacks.push(updateBarrierSpin);
-        
-        tank.config.armor += 1000; // make tank almost invulnerable
-        
-        setTimeout(function () {
-            tank.config.armor -= 1000;
+            var incBarrier = function (damage_taken) {
+                // Increases the barrier projectile count and negates the damage
+                tank.config.health += damage_taken;
+                tank.config.health = tank.config.maxHealth < tank.config.health ? tank.config.maxHealth : tank.config.health; // keep health at maximum
+                
+                var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, angle: 0, oX: tank.config.oX + 35, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
+                projectiles.push(tmp);
+                tank.pBarrier.push([tmp, 0]);
+            };
+            incBarrier.id = 'incBarrier';
             
+            tank.hit_callbacks.push(incBarrier);
+            
+            var updateBarrierSpin = function () {
+                // Updates the position of each projectile tethered to the tank
+
+                for (var i = 0; i < tank.pBarrier.length; i++) {
+                    var newAngle = tank.pBarrier[i][1] === 356 ? 0 : tank.pBarrier[i][1] + 4;
+                    var newLoc = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, newAngle, 35);
+                    tank.pBarrier[i][0].config.oX = newLoc[0];
+                    tank.pBarrier[i][0].config.oY = newLoc[1];
+                    tank.pBarrier[i][1] = newAngle;
+                }
+            };
+            updateBarrierSpin.id = 'updateBarrierSpin';
+            
+            tank.move_callbacks.push(updateBarrierSpin);
+        }
+        else {
+            clearTimeout(tank.pb_timeout); // reset timer
+        }
+        
+        tank.pb_timeout = setTimeout(function () {    
             // deactivate all projectiles in pBarrier
             for (var i = 0; i < tank.pBarrier.length; i++) {
                 tank.pBarrier[i][0].config.active = false;
             }
             
             delete tank.pBarrier; // remove temp variable
-            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'incBarrier'; });
+            delete tank.pb_timeout;
+            delete tank.pb_active;
+            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'incBarrier'; });
             tank.move_callbacks = tank.move_callbacks.filter(function (item) { return item.id != 'updateBarrierSpin'; });
         }, 20000);
     };
@@ -106,6 +157,7 @@ function RapidFire(x, y) {
     /* increases the firing rate */
     this.config = {
         name    : 'Rapid Fire',
+        slug    : 'rapid-fire',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -123,6 +175,7 @@ function Haste(x, y) {
     /* increases the movement speed */
     this.config = {
         name    : 'Haste',
+        slug    : 'haste',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -141,6 +194,7 @@ function FasterProjectile(x, y) {
     /* increases the velocity of projectiles */
     this.config = {
         name    : 'Faster Projectile',
+        slug    : 'faster-projectile',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -158,6 +212,7 @@ function IncreasedArmor(x, y) {
     /* increases the armor */
     this.config = {
         name    : 'Increased Armor',
+        slug    : 'increased-armor',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -183,6 +238,7 @@ function IncreasedDamage(x, y) {
     /* increases the armor */
     this.config = {
         name    : 'Increased Damage',
+        slug    : 'increased-damage',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -209,6 +265,7 @@ function AphoticShield(x, y) {
     /* increases the armor, absorbs projectiles */
     this.config = {
         name    : 'Aphotic Shield',
+        slug    : 'aphotic-shield',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -217,18 +274,26 @@ function AphoticShield(x, y) {
     };
     
     this.use = function (tank) {
-        tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 0;
-        var absorbHit = function () {
-            // absorb all projectile hits
-            tank.hitsTaken++;
-        };
-        absorbHit.id = 'absorbHit';
+        var active = typeof tank.as_active !== 'undefined';
+    
+        if (!active) {
+            tank.as_active = true;
+            tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 0;
+            var absorbHit = function (damage_taken) {
+                // negate all hits and count
+                tank.config.health += damage_taken; // restore hitpoints
+                tank.config.health = tank.config.maxHealth < tank.config.health ? tank.config.maxHealth : tank.config.health; // keep health at maximum
+                tank.hitsTaken++;
+            };
+            absorbHit.id = 'absorbHit';
+            
+            tank.hit_callbacks.push(absorbHit);
+        }
+        else {
+            clearTimeout(tank.as_timeout);
+        }
         
-        tank.callbacks.push(absorbHit);
-        
-        tank.config.armor += 1000; // make tank almost invulnerable
-        setTimeout(function () {
-            tank.config.armor -= 1000;
+        tank.as_timeout = setTimeout(function () {
             // fire the number of absorbed projectiles in all directions
             var aFactor = 360/tank.hitsTaken;
             var cAngle = 0;
@@ -251,7 +316,9 @@ function AphoticShield(x, y) {
             }
             
             delete tank.hitsTaken; // remove temp variable
-            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'absorbHit'; });
+            delete tank.as_active;
+            delete tank.as_timeout;
+            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'absorbHit'; });
             d_explodeSound.get(); // play explode sound
         }, 8000);
     };
@@ -261,6 +328,7 @@ function ReactiveArmor(x, y) {
     /* increases the armor each time tank is hit, "what doesn't kill you, makes you stronger" */
     this.config = {
         name    : 'Reactive Armor',
+        slug    : 'reactive-armor',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -269,24 +337,31 @@ function ReactiveArmor(x, y) {
     };
     
     this.use = function (tank) {
-        // remove any callbacks, buff doesnt stack
-        clearTimeout(tank.ra_timeout);
-        tank.armorBuff = tank.armorBuff > 0 ? tank.armorBuff : 0;
+        var active = typeof tank.ra_active !== 'undefined';
         
-        var increaseArmorWhenHit = function () {
-            // increase armor each hit
-            tank.armorBuff += 10;
-            tank.config.armor += 10;
-        };
-        increaseArmorWhenHit.id = 'increaseArmorWhenHit';
-        
-        tank.callbacks.push(increaseArmorWhenHit);
+        if (!active) {
+            tank.ra_active = true;
+            tank.armorBuff = 0;
+            
+            var increaseArmorWhenHit = function () {
+                // increase armor each hit
+                tank.armorBuff += 20;
+                tank.config.armor += 20;
+            };
+            increaseArmorWhenHit.id = 'increaseArmorWhenHit';
+            
+            tank.hit_callbacks.push(increaseArmorWhenHit);
+        }
+        else {
+            clearTimeout(tank.ra_timeout);
+        }
         
         tank.ra_timeout = setTimeout(function () {
             tank.config.armor -= tank.armorBuff;
             delete tank.armorBuff; // remove temp variable
             delete tank.ra_timeout; // remove temp variable
-            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'increaseArmorWhenHit'; });
+            delete tank.ra_active;
+            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'increaseArmorWhenHit'; });
         }, 20000);
     };
 }
@@ -295,6 +370,7 @@ function Regeneration(x, y) {
     /* Regenerates the tanks health, dispells on hit */
     this.config = {
         name    : 'Regeneration',
+        slug    : 'regeneration',
         oX      : x,
         oY      : y,
         size    : 32,
@@ -317,12 +393,12 @@ function Regeneration(x, y) {
         };
         dispellRegen.id = 'dispellRegen';
         
-        tank.callbacks.push(dispellRegen);
+        tank.hit_callbacks.push(dispellRegen);
         
         setTimeout(function () {
             clearInterval(tank.regenIntervalID);
             delete tank.regenIntervalID; // remove temp variable
-            tank.callbacks = tank.callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
+            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
         }, 20000);
     };
 }
@@ -331,6 +407,7 @@ function Ammo(x, y) {
     /* additional ammunition */
     this.config = {
         name    : 'Ammo',
+        slug    : 'ammo',
         oX      : x,
         oY      : y,
         size    : 32,

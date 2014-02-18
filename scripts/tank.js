@@ -1,6 +1,6 @@
 /*-------- Tanks --------*/
 function Tank(specs, id, control, x, y) {
-    this.callbacks = []; // hit callbacks attached (powerups, etc..)
+    this.hit_callbacks = []; // hit callbacks attached (powerups, etc..)
     this.move_callbacks = []; // callbacks called everytime the tank moves
     
     this.attachments = { // {id, Image()}
@@ -353,10 +353,10 @@ function Tank(specs, id, control, x, y) {
         ctx.translate(-this.config.oX, -this.config.oY);
     };
     
-    this.hit = function () {
+    this.hit = function (damage_dealt) {
         /* when tank is hit */
-        for (var i = 0; i < this.callbacks.length; i++) {
-            this.callbacks[i]();
+        for (var i = 0; i < this.hit_callbacks.length; i++) {
+            this.hit_callbacks[i](damage_dealt);
         }
     };
     

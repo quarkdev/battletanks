@@ -42,6 +42,8 @@ var MAP = (function () {
             case 'starting-point':
                 startingpoints.push(new StartingPoint(x, y));
                 break;
+            case 'powerup':
+                powerups.push(PUP.create(placeables[cpi][1], x, y));
             default:
                 break;
         }
@@ -84,6 +86,19 @@ var MAP = (function () {
                 y > startingpoints[i].config.oY - 16) {
                 // if mouse lies inside a starting point...
                 startingpoints.splice(i, 1);
+                break;
+            }
+        }
+        
+        // third, the powerups
+        for (i = powerups.length-1; i != -1; i--) {
+            
+            if (x < powerups[i].config.oX + 16 &&
+                x > powerups[i].config.oX - 16 &&
+                y < powerups[i].config.oY + 16 &&
+                y > powerups[i].config.oY - 16) {
+                // if mouse lies inside a starting point...
+                powerups.splice(i, 1);
                 break;
             }
         }
@@ -153,6 +168,8 @@ var MAP = (function () {
             case 'starting-point':
                 ctx.drawImage(EditorImages.get(placeables[cpi][1]), -16, -16);
                 break;
+            case 'powerup':
+                ctx.drawImage(PowerUpImages.get(placeables[cpi][1]), -16, -16);
             default:
                 break;
 
@@ -167,7 +184,11 @@ var MAP = (function () {
         /* Add the map to the maplist and set as current | mapdata is taken from the newgame-ready globals: destructibles, projectiles... and so on */
         var newmap = new Map(name);
         
-        for (var i = 0; i < destructibles.length; i++) {
+        for (var i = 0; i < powerups.length; i++) {
+            newmap.powerups.push([powerups[i].config.slug, powerups[i].config.oX, powerups[i].config.oY]);
+        }
+        
+        for (i = 0; i < destructibles.length; i++) {
             newmap.destructibles.push([destructibles[i].config.name, destructibles[i].config.oX, destructibles[i].config.oY]);
         }
         
@@ -280,6 +301,11 @@ var MAP = (function () {
         projectiles.clear();
         tanks.clear();
         powerups.clear();
+        
+        // push the powerups into the array
+        for (var i = 0; i < map.powerups.length; i++) {
+            powerups.push(PUP.create(map.powerups[i][0], map.powerups[i][1], map.powerups[i][2]));
+        }
 
         // push the destructibles into the array
         for (i = 0; i < map.destructibles.length; i++) {
@@ -309,6 +335,7 @@ function Map(name) {
     "use strict";
     this.name = name;
     
+    this.powerups = [];
     this.destructibles = []; // [destructible_blueprint_string, x, y] : this prevents shallow copy problems (reference problems)
     this.startingPoints = []; // this also dictates the max player
 }

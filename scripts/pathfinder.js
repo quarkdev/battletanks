@@ -139,198 +139,7 @@ function updateGrid(obs) {
     
     // Update grid.
     for (i = 0; i < obs.length; i++) {
-
-        var c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] + 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] + 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] + 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] + 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] - 4);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] - 12);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] - 20);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 28, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 20, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 12, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] - 4, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 4, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 12, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 20, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
-
-        c = transCanvasCoordsToGrid(obs[i][1] + 28, obs[i][2] - 28);
-        if (withinBounds(c.x, c.y)) { grid[c.y][c.x] = 0; }
+        updateGridCell(obs, i, 0);
     }
     
     // Pad the boundaries
@@ -347,6 +156,201 @@ function updateGrid(obs) {
         grid[i][126] = 0;
         grid[i][127] = 0;
     }
+}
+
+function updateGridCell(obs, obstacle_index, value) {
+    /* Update grid area pertaining to obstacle index. */
+    var c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] + 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] + 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] + 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] + 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] - 4);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] - 12);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] - 20);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 28, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 20, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 12, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] - 4, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 4, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 12, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 20, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
+
+    c = transCanvasCoordsToGrid(obs[obstacle_index][1] + 28, obs[obstacle_index][2] - 28);
+    if (withinBounds(c.y, c.x)) { grid[c.y][c.x] = value; }
 }
 
 function withinBounds(x, y) {

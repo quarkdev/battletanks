@@ -30,15 +30,15 @@ function Projectile(specs) {
     */
     this.update = function (modifier) {  
         var p = this.config,
-            angleInDegrees = p.angle * Math.PI / 180;
+            angleInRadians = p.angle * Math.PI / 180;
         
         // Save last position.
         var lastX = p.oX,
             lastY = p.oY;
         
         // Update projectile position.
-        p.oX = p.oX + (p.speed * modifier * Math.cos(angleInDegrees));
-        p.oY = p.oY + (p.speed * modifier * Math.sin(angleInDegrees));
+        p.oX = p.oX + (p.speed * modifier * Math.cos(angleInRadians));
+        p.oY = p.oY + (p.speed * modifier * Math.sin(angleInRadians));
         
         // Check for collisions. First check if it has reached the canvas outer boundary.
         if (_hasHitBoundary(p.oX, p.oY) === true) {
@@ -51,12 +51,13 @@ function Projectile(specs) {
                 this.config.active = false;
                 var t = result.tank;
                 
-                // Call tank hit method.
-                t.hit();
                 var critical_hit = 5 > Math.random()*100 ? true : false; // crit chance, baseline is 5% @ 2x
                 var raw_damage = p.damage; // raw damage
                 var mod_damage = critical_hit ? raw_damage*2.0 : raw_damage; // damage after mods/crit
                 var end_damage = mod_damage/t.config.armor;
+                
+                // Call tank hit method. Pass the damage dealt.
+                t.hit(end_damage);
                 
                 // record hit if source is the player and target is NOT the player
                 if (this.config.srcId === player.config.id && result.tank.config.id !== player.config.id) {
