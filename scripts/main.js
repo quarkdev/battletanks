@@ -6,6 +6,7 @@
         ui_location = 'menu';
         
         $('#external-hud').hide();
+        $('#editor-ui').hide();
     
         // show menu overlay
         $('#main-menu').show();
@@ -70,6 +71,8 @@
             player.fire();
         }
         
+        player.frame(); // run all frame callbacks
+        
         /* turn turret (based on current facing angle) */
         player.turnTurret(modifier, mousePos.mX, mousePos.mY);
        
@@ -77,6 +80,8 @@
         for (var i = 0; i < bots.length; i++) {
             // update tanks only if active | TEST for AI pathfinding
             if (bots[i][0].config.active) {
+                bots[i][0].frame(); // run all frame callbacks
+            
                 // Update turret
                 bots[i][0].turnTurret(modifier, player.config.oX, player.config.oY);
                 
@@ -300,12 +305,16 @@
     
     // Faux Main (Map Editor)
     var editor = function () {
+        var now = performance.now();
+        var delta = now - then;
+    
         editorUpdate();
         renderCanvas();
         
         CANVAS.drawStartingPoints(ctx); 
         MAP.drawPlaceableGhost(ctx);
         
+        then = now;
         editorAnimation = requestAnimationFrame(editor);
     }
     
@@ -337,6 +346,8 @@
     
         attachGameEventListeners();
         attachEditorEventListeners();
+        
+        MAP.loadPlaceablesToUI();
         
         editor();
     };

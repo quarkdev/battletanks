@@ -13,7 +13,8 @@ var PUP = (function() {
         'regeneration',
         'rapid-fire',
         'faster-projectile',
-        'increased-damage'
+        'increased-damage',
+        'return'
     ];
     
     my.create = function (name, x, y) {
@@ -51,6 +52,9 @@ var PUP = (function() {
             case 'increased-damage':
                 return new IncreasedDamage(x, y);
                 break;
+            case 'return':
+                return new Return(x, y);
+                break;
             default:
                 break;
         }
@@ -84,6 +88,48 @@ function Random(x, y) {
         var pn = this.tmp.config.name;
         this.config.name += ' | ' + pn;
     }
+}
+
+function Return(x, y) {
+    /* returns any (except ricochet type) projectiles to their source */
+    this.config = {
+        name    : 'Return',
+        slug    : 'return',
+        oX      : x,
+        oY      : y,
+        size    : 32,
+        cRadius : 16,
+        image   : PowerUpImages.get('return')
+    };
+    
+    this.use = function (tank) {
+        var active = typeof tank.r_active !== 'undefined';
+        
+        if (!active) {
+            tank.r_active = true;
+            
+            var returnHit = function(damage_taken, incProj) {
+                if (incProj.config.srcType === 'ricochet') {
+                    return; // bounce once only please
+                }
+
+                var retProj = new Projectile({speed: incProj.config.speed, damage: incProj.config.damage, angle: (incProj.config.angle + 180) % 360, oX: incProj.config.oX, oY: incProj.config.oY, srcId: incProj.config.srcId, srcType: 'ricochet'});
+                projectiles.push(retProj);
+            };
+            returnHit.id = 'returnHit';
+            
+            tank.hit_callbacks.push(returnHit);
+        }
+        else {
+            clearTimeout(tank.r_timeout);
+        }
+        
+        tank.r_timeout = setTimeout(function () {
+            delete tank.r_active;
+            delete tank.r_timeout;
+            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'returnHit'; });
+        }, 20000);
+    };
 }
 
 function ProjectileBarrier(x, y) {
@@ -132,7 +178,7 @@ function ProjectileBarrier(x, y) {
             };
             updateBarrierSpin.id = 'updateBarrierSpin';
             
-            tank.move_callbacks.push(updateBarrierSpin);
+            tank.frame_callbacks.push(updateBarrierSpin);
         }
         else {
             clearTimeout(tank.pb_timeout); // reset timer
@@ -148,7 +194,7 @@ function ProjectileBarrier(x, y) {
             delete tank.pb_timeout;
             delete tank.pb_active;
             tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'incBarrier'; });
-            tank.move_callbacks = tank.move_callbacks.filter(function (item) { return item.id != 'updateBarrierSpin'; });
+            tank.frame_callbacks = tank.move_callbacks.filter(function (item) { return item.id != 'updateBarrierSpin'; });
         }, 20000);
     };
 }

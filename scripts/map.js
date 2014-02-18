@@ -19,6 +19,38 @@ var MAP = (function () {
         cpi = (cpi + 1) % placeables.length;
     };
     
+    my.loadPlaceablesToUI = function () {
+        /* Loads all placeables to editor-ui. */
+        var ui_div = document.getElementById('editor-ui');
+        
+        ui_div.style.display = 'block';
+        
+        ui_div.innerHTML = '';
+        
+        for (var i = 0; i < placeables.length; i++) {
+            var placeable_img_src = '';
+            
+            switch (placeables[i][0]) {
+                case 'destructible':
+                    placeable_img_src = DestructibleImages.get(placeables[i][1]).src;
+                    break;
+                case 'starting-point':
+                    placeable_img_src = EditorImages.get('starting-point').src;
+                    break;
+                case 'powerup':
+                    placeable_img_src = PowerUpImages.get(placeables[i][1]).src;
+                    break;
+            }
+            var icon = '<img data-index="' + i + '" class="placeable-icon flip-vertical" src="' + placeable_img_src + '" height="32" width="32" onclick="MAP.updateCPI(' + i + ')" />';
+            ui_div.innerHTML += icon; // append icon to div innerHTML
+        }
+    };
+    
+    my.updateCPI = function (value) {
+        /* Change the value of the placeable index. */
+        cpi = value;
+    };
+    
     my.placeObject = function () {
         /* Place game object at current cursor coordinates. */
         

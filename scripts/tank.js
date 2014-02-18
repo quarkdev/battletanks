@@ -2,6 +2,7 @@
 function Tank(specs, id, control, x, y) {
     this.hit_callbacks = []; // hit callbacks attached (powerups, etc..)
     this.move_callbacks = []; // callbacks called everytime the tank moves
+    this.frame_callbacks = []; // called for each frame update (useful for powerups that require per frame animation)
     
     this.attachments = { // {id, Image()}
         turret  : new Array(),
@@ -353,10 +354,17 @@ function Tank(specs, id, control, x, y) {
         ctx.translate(-this.config.oX, -this.config.oY);
     };
     
-    this.hit = function (damage_dealt) {
+    this.hit = function (damage_dealt, projectile) {
         /* when tank is hit */
         for (var i = 0; i < this.hit_callbacks.length; i++) {
-            this.hit_callbacks[i](damage_dealt);
+            this.hit_callbacks[i](damage_dealt, projectile);
+        }
+    };
+    
+    this.frame = function () {
+        /* when tank is hit */
+        for (var i = 0; i < this.frame_callbacks.length; i++) {
+            this.frame_callbacks[i]();
         }
     };
     

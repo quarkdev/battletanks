@@ -134,6 +134,23 @@
         margin: 0 auto;
     }
     
+    .flip-vertical {
+        -moz-transform: scaleY(-1);
+        -webkit-transform: scaleY(-1);
+        -o-transform: scaleY(-1);
+        transform: scaleY(-1);
+        -ms-filter: flipv; /*IE*/
+        filter: flipv; /*IE*/
+    }
+    
+    #editor-ui {
+        display: none;
+    }
+    
+    .placeable-icon {
+        cursor: pointer;
+    }
+    
     .mbc-5 {
         margin: -212px 0 0 -100px;
     }
@@ -245,7 +262,9 @@
         </div>
     </div>
     <div id="combat-log"></div>
+    
 </div>
+<div id="editor-ui"></div>
 
 <!-- Ok, let's start unloading our Javascript payload -->
 <script type="text/javascript" src="scripts/init.js"></script>

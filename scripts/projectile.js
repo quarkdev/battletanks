@@ -57,7 +57,7 @@ function Projectile(specs) {
                 var end_damage = mod_damage/t.config.armor;
                 
                 // Call tank hit method. Pass the damage dealt.
-                t.hit(end_damage);
+                t.hit(end_damage, this);
                 
                 // record hit if source is the player and target is NOT the player
                 if (this.config.srcId === player.config.id && result.tank.config.id !== player.config.id) {
