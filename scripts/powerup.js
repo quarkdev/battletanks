@@ -155,12 +155,14 @@ function Return(x, y) {
         if (!active) {
             tank.r_active = true;
             
-            var returnHit = function(damage_taken, incProj) {
-                if (incProj.config.srcType === 'ricochet') {
+            var returnHit = function(projectile) {
+                var p = projectile.config;
+            
+                if (p.srcType === 'ricochet') {
                     return; // bounce once only please
                 }
 
-                var retProj = new Projectile({speed: incProj.config.speed, damage: incProj.config.damage, angle: (incProj.config.angle + 180) % 360, oX: incProj.config.oX, oY: incProj.config.oY, srcId: incProj.config.srcId, srcType: 'ricochet'});
+                var retProj = new Projectile({speed: p.speed, damage: p.damage, angle: (p.angle + 180) % 360, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'ricochet'});
                 projectiles.push(retProj);
             };
             returnHit.id = 'returnHit';
@@ -198,12 +200,10 @@ function ProjectileBarrier(x, y) {
             // array that holds the projectile barriers
             tank.pBarrier = [];
             tank.pb_active = true;
+            tank.config.invulnerable++;
         
-            var incBarrier = function (damage_taken) {
-                // Increases the barrier projectile count and negates the damage
-                tank.config.health += damage_taken;
-                tank.config.health = tank.config.maxHealth < tank.config.health ? tank.config.maxHealth : tank.config.health; // keep health at maximum
-                
+            var incBarrier = function () {
+                // Increases the barrier projectile count
                 var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, angle: 0, oX: tank.config.oX + 35, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
                 projectiles.push(tmp);
                 tank.pBarrier.push([tmp, 0]);
@@ -233,6 +233,7 @@ function ProjectileBarrier(x, y) {
                     tank.pBarrier[i][0].config.active = false;
                 }
                 
+                tank.config.invulnerable--;
                 delete tank.pBarrier; // remove temp variable
                 delete tank.pb_timeout;
                 delete tank.pb_active;
@@ -376,11 +377,10 @@ function AphoticShield(x, y) {
             
             tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
             visualeffects.push(tank.as_vfx);
+            tank.config.invulnerable++;
             
-            var absorbHit = function (damage_taken) {
-                // negate all hits and count
-                tank.config.health += damage_taken; // restore hitpoints
-                tank.config.health = tank.config.maxHealth < tank.config.health ? tank.config.maxHealth : tank.config.health; // keep health at maximum
+            var absorbHit = function () {
+                // keep count of hits taken
                 tank.hitsTaken++;
             };
             absorbHit.id = 'absorbHit';
@@ -416,6 +416,7 @@ function AphoticShield(x, y) {
                     cAngle += aFactor;
                 }
                 
+                tank.config.invulnerable--;
                 tank.as_vfx.end();
                 
                 delete tank.hitsTaken; // remove temp variable

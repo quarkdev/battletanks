@@ -20,6 +20,8 @@ function Projectile(specs) {
         sideHit : 0 // Side hit (if square)
     };
     
+    var p = this.config;
+    
     /*
     * Public Method: update
     *
@@ -29,8 +31,7 @@ function Projectile(specs) {
     *   modifier - this is the time elapsed since the last frame/update (delta/1000)
     */
     this.update = function (modifier) {  
-        var p = this.config,
-            angleInRadians = p.angle * Math.PI / 180;
+        var angleInRadians = p.angle * Math.PI / 180;
         
         // Save last position.
         var lastX = p.oX,
@@ -42,99 +43,30 @@ function Projectile(specs) {
         
         // Check for collisions. First check if it has reached the canvas outer boundary.
         if (_hasHitBoundary(p.oX, p.oY) === true) {
-            this.config.active = false;
+            p.active = false;
         }
         else {
             // Check if it hit a tank.
             var result = _hasHitTank(tanks, p.oX, p.oY);
             if (result.hit === true) {
-            
-                this.config.active = false;
+                p.active = false;
                 var t = result.tank;
                 
-                var min = p.damage - 3;
-                var max = p.damage + 3;
-                var critical_hit = 5 > Math.random()*100 ? true : false; // crit chance, baseline is 5% @ 2x
-                var raw_damage = p.damage; // raw damage
-                var dmg_base_roll = Math.floor((Math.random() * max) + min);
-                var mod_damage = critical_hit ? dmg_base_roll*2.0 : dmg_base_roll; // damage after mods/crit
-                var end_damage = mod_damage/t.config.armor;
-                
-                // play visual effect
-                var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
-                hit_explosion_scale = critical_hit ? hit_explosion_scale * 1.5 : hit_explosion_scale;
-                visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'tank_explosion'}));
-
-                
-                // Call tank hit method. Pass the damage dealt.
-                t.hit(end_damage, this);
-                
-                // record hit if source is the player and target is NOT the player
-                if (this.config.srcId === player.config.id && result.tank.config.id !== player.config.id) {
-                    // the one hit is an enemy
-                    GameStatistics.inc('total_hits', 1);
-                    GameStatistics.inc('total_damage_dealt', end_damage);
-                }
-                else if (this.config.srcId !== player.config.id && result.tank.config.id === player.config.id) {
-                    // source is enemy tank, and target is the player
-                    GameStatistics.inc('total_damage_taken', end_damage);
-                }
-                
-                // decrease health
-                t.config.health = t.config.health < end_damage ? 0 : t.config.health - end_damage;
-                
-                // Update combat log.
-                var crit_str = critical_hit ? '<span style="color: red">[CRITICAL HIT!]</span>' : '';
-                UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> hit <strong>' + t.config.id + '</strong><span style="color: #FE4902">(' + t.config.name + ')</span> for <span style="color: red">' + end_damage + '</span> damage ' + crit_str + '</span>');
-
-                if (t.config.health <= 0) {
-                    // If tank health is less than or zero, declare it as inactive/dead.
-                    UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> destroyed <strong>' + t.config.id + '</strong><span style="color: #FE4902">(' + t.config.name + ')</span></span>');
-                    
-                    t.death(); // Call tank death method. This changes the tank state to inactive.
-                    
-                    // Play sound effect [random]
-                    var roll = Math.floor(Math.random() * 3) + 1;
-                    switch (roll) {
-                        case 1:
-                            t_destroyedSound.get();
-                            break;
-                        case 2:
-                            t_destroyedSound2.get();
-                            break;
-                        case 3:
-                            t_destroyedSound3.get();
-                            break;
-                    }
-                }
-                else {
-                    // Just play the 'hit' sound effect.
-                    explodeSound.get();
-                }
+                // Call tank hit method. Pass the projectile that hit it.
+                t.hit(this);
             }
             else {
                 // Check if it hit a destructible.
                 var resultD = _hasHitDestructible(destructibles, p.oX, p.oY, lastX, lastY);
                 if (resultD.hit === true) {
-                    this.config.active = false;
+                    p.active = false;
                     var d = resultD.destructible;
                     
                     p.PoI = resultD.poi;
                     p.sideHit = resultD.sideH;
-                    d.config.health -= p.damage/d.config.armor;
 
                     // Call destructible hit method.
                     d.hit(this);
-                    
-                    if (d.config.health <= 0) {
-                        // If destructible health is less than or zero, call death method.
-                        d.death();
-                        
-                        d_destroyedSound.get();
-                    }
-                    else {
-                        d_explodeSound.get();
-                    }
                 }
             }
         }
@@ -150,7 +82,7 @@ function Projectile(specs) {
     */
     this.draw = function (ctx) {
         ctx.beginPath();
-        ctx.arc(this.config.oX, this.config.oY, 3, 0, 2 * Math.PI, false);
+        ctx.arc(p.oX, p.oY, 3, 0, 2 * Math.PI, false);
         ctx.fillStyle = 'red';
         ctx.fill();
     };

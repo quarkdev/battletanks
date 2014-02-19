@@ -23,49 +23,53 @@ function VisualEffect(specs) {
         spriteSheet       : SpriteSheetImages.get(specs.spriteSheet)
     };
     
+    var vx = this.config;
+    
     this.animation = {
         csr    : 0, // current sprite row
         csc    : 0, // current sprite col
         frames : 0 // the number of frames that has passed since last sprite update
     };
     
+    var animation = this.animation;
+    
     this.nextSprite = function () {
-        if (this.animation.csc === this.config.maxColIndex) {
-            this.animation.csc = 0;
-            if (this.animation.csr === this.config.maxRowIndex) {
-                this.animation.csr = 0;
+        if (animation.csc === vx.maxColIndex) {
+            animation.csc = 0;
+            if (animation.csr === vx.maxRowIndex) {
+                animation.csr = 0;
             }
             else {
-                this.animation.csr++;
+                animation.csr++;
             }
         }
         else {
-            this.animation.csc++;
+            animation.csc++;
         }
     };
     
     this.end = function () {
         /* End effect animation by setting active to false. */
-        this.config.active = false;
+        vx.active = false;
     };
     
     this.updatePos = function (x, y) {
-        this.config.oX = x;
-        this.config.oY = y;
+        vx.oX = x;
+        vx.oY = y;
     };
     
     this.update = function () {
-        if (!this.config.active) { return; }
+        if (!vx.active) { return; }
         
-        if (this.animation.frames !== this.config.framesTillUpdate) {
-            this.animation.frames++;
+        if (animation.frames !== vx.framesTillUpdate) {
+            animation.frames++;
         }
         else {
-            this.animation.frames = 0;
+            animation.frames = 0;
             
-            if (this.animation.csr === this.config.maxRowIndex && this.animation.csc === this.config.maxColIndex) {
-                if (!this.config.loop) {
-                    this.config.active = false;
+            if (animation.csr === vx.maxRowIndex && animation.csc === vx.maxColIndex) {
+                if (!vx.loop) {
+                    vx.active = false;
                 }
                 else {
                     this.nextSprite();
@@ -79,17 +83,17 @@ function VisualEffect(specs) {
     };
     
     this.draw = function (ctx) {
-        ctx.translate(this.config.oX, this.config.oY);
+        ctx.translate(vx.oX, vx.oY);
         ctx.drawImage(
-            this.config.spriteSheet,
-            this.animation.csc * this.config.width,
-            this.animation.csr * this.config.height,
-            this.config.width, this.config.height,
-            -this.config._scaleW,
-            -this.config._scaleH,
-            this.config.scaleW,
-            this.config.scaleH
+            vx.spriteSheet,
+            animation.csc * vx.width,
+            animation.csr * vx.height,
+            vx.width, vx.height,
+            -vx._scaleW,
+            -vx._scaleH,
+            vx.scaleW,
+            vx.scaleH
         );
-        ctx.translate(-this.config.oX, -this.config.oY);
+        ctx.translate(-vx.oX, -vx.oY);
     };
 }

@@ -44,7 +44,7 @@ BLUEPRINT.add({
     ammo     : 98.0,                   // ammunition
     fRate    : 2.0,                    // Firing rate
     hAngle   : 90.0,                   // tank head angle (the direction it is currently facing)
-    tAngle   : 45.0,                   // tank turret angle (the direction the turret is facing)
+    tAngle   : 45.0                   // tank turret angle (the direction the turret is facing)
 });
 
 BLUEPRINT.add({
@@ -70,7 +70,7 @@ BLUEPRINT.add({
     ammo     : 98.0,                   // ammunition
     fRate    : 2.0,                    // Firing rate
     hAngle   : 90.0,                   // tank head angle (the direction it is currently facing)
-    tAngle   : 45.0,                   // tank turret angle (the direction the turret is facing)
+    tAngle   : 45.0                  // tank turret angle (the direction the turret is facing)
 });
 
 BLUEPRINT.add({
@@ -96,7 +96,7 @@ BLUEPRINT.add({
     ammo     : 50.0,
     fRate    : 1.0,                    // Firing rate
     hAngle   : 90.0,                   // tank head angle (the direction it is currently facing)
-    tAngle   : 90.0,                   // tank turret angle (the direction the turret is facing)
+    tAngle   : 90.0                   // tank turret angle (the direction the turret is facing)
 });
 
 BLUEPRINT.add({

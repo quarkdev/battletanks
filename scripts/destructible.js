@@ -15,15 +15,39 @@ function Destructible(specs, x, y) {
         mod    : specs.mod      // special modifier, can be: (immortal, rubber, explosive, etc)
     };
     
+    var d = this.config;
+    
     this.hit = function (projectile) {
-        /* things to do (to the projectile) when hit, damage is calculated on the projectile object */
+        /* things to do (to the projectile) when hit... */
+        
+        var p = projectile.config;
 
-        switch (this.config.mod) {
+        var min = p.damage - 3;
+        var max = p.damage + 3;
+        var critical_hit = 5 > Math.random()*100 ? true : false; // crit chance, baseline is 5% @ 2x
+        var raw_damage = p.damage; // raw damage
+        var dmg_base_roll = Math.floor((Math.random() * max) + min);
+        var mod_damage = critical_hit ? dmg_base_roll*2.0 : dmg_base_roll; // damage after mods/crit
+        var end_damage = mod_damage/d.armor;
+            
+        d.health = d.health < end_damage ? 0 : d.health - end_damage;
+        
+        if (d.health === 0) {
+            // If destructible health is less than or zero, call death method.
+            this.death();
+            
+            d_destroyedSound.get();
+        }
+        else {
+            d_explodeSound.get();
+        }
+
+        switch (d.mod) {
             case 'rubber': // bounce the projectile (actually fire a new pojectile)
                 // 1. first determine what side was hit        
                 /*
-                var dX = this.config.oX - projectile.config.oX;
-                var dY = this.config.oY - projectile.config.oY;
+                var dX = d.oX - p.oX;
+                var dY = d.oY - p.oY;
                 
                 var tanA = Math.atan2(dY, dX) * 180/Math.PI;
                 tanA = tanA + 180;
@@ -40,105 +64,105 @@ function Destructible(specs, x, y) {
                 
                 var cBaseAngle = 360;
                 
-                if (projectile.config.sideHit === 0 || projectile.config.sideHit == 2) {
+                if (p.sideHit === 0 || p.sideHit == 2) {
                     cBaseAngle = 360;
                 }
-                else if (projectile.config.sideHit == 1 || projectile.config.sideHit == 3) {
+                else if (p.sideHit == 1 || p.sideHit == 3) {
                     cBaseAngle = 540;
                 }
                 
 
                 // 2. calculate new angle
-                var newAngle = cBaseAngle - projectile.config.angle;
+                var newAngle = cBaseAngle - p.angle;
 
                 // 3. Fire new projectile at new angle. Calculate new base oX and oY at 3 units offset.
-                var _oY = projectile.config.PoI.y + (1 * Math.sin(newAngle*Math.PI/180));
-                var _oX = projectile.config.PoI.x + (1 * Math.cos(newAngle*Math.PI/180));
+                var _oY = p.PoI.y + (1 * Math.sin(newAngle*Math.PI/180));
+                var _oX = p.PoI.x + (1 * Math.cos(newAngle*Math.PI/180));
 
-                projectiles.push(new Projectile({ speed: projectile.config.speed, damage: projectile.config.damage, angle:  newAngle, oX: _oX, oY: _oY, srcId: projectile.config.srcId, srcType: 'ricochet'}));
+                projectiles.push(new Projectile({ speed: p.speed, damage: p.damage, angle:  newAngle, oX: _oX, oY: _oY, srcId: p.srcId, srcType: 'ricochet'}));
 
                 break;
             case 'explosive': // create multiple projectiles that fire in all directions, explosion damage is based on projectile damage
-                if (this.config.health <= 0) { // explode on death only
+                if (d.health <= 0) { // explode on death only
                     
                     // 0
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  0,
-                        oX     : this.config.oX + this.config.cRadius,
-                        oY     : this.config.oY,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX + d.cRadius,
+                        oY     : d.oY,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                     // 45
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  45,
-                        oX     : this.config.oX + this.config.cRadius,
-                        oY     : this.config.oY + this.config.cRadius,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX + d.cRadius,
+                        oY     : d.oY + d.cRadius,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                     // 90
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  90, 
-                        oX     : this.config.oX,
-                        oY     : this.config.oY + this.config.cRadius,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX,
+                        oY     : d.oY + d.cRadius,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                     // 135
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  135,
-                        oX     : this.config.oX + this.config.cRadius,
-                        oY     : this.config.oY - this.config.cRadius,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX + d.cRadius,
+                        oY     : d.oY - d.cRadius,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                     // 180
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  180,
-                        oX     : this.config.oX - this.config.cRadius,
-                        oY     : this.config.oY,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX - d.cRadius,
+                        oY     : d.oY,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                     // 225
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  225,
-                        oX     : this.config.oX - this.config.cRadius,
-                        oY     : this.config.oY - this.config.cRadius,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX - d.cRadius,
+                        oY     : d.oY - d.cRadius,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                     // 270
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  270,
-                        oX     : this.config.oX,
-                        oY     : this.config.oY - this.config.cRadius,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX,
+                        oY     : d.oY - d.cRadius,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                     // 315
                     projectiles.push(new Projectile({
-                        speed  : projectile.config.speed,
-                        damage : projectile.config.damage,
+                        speed  : p.speed,
+                        damage : p.damage,
                         angle  :  315,
-                        oX     : this.config.oX - this.config.cRadius,
-                        oY     : this.config.oY - this.config.cRadius,
-                        srcId  : projectile.config.srcId,
+                        oX     : d.oX - d.cRadius,
+                        oY     : d.oY - d.cRadius,
+                        srcId  : p.srcId,
                         srcType: 'explosion'}));
                     
                 }
@@ -150,7 +174,7 @@ function Destructible(specs, x, y) {
     
     this.death = function () {
         // Set to inactive.
-        this.config.active = false;
+        d.active = false;
    
         /* has a chance to spawn a random powerup on death */
         var lucky = Math.random() > 0.5 ? true : false;
@@ -162,37 +186,37 @@ function Destructible(specs, x, y) {
 
             switch (roll) {
                 case 1:
-                    tmp = new RapidFire(this.config.oX, this.config.oY);
+                    tmp = new RapidFire(d.oX, d.oY);
                     break;
                 case 2:
-                    tmp = new Haste(this.config.oX, this.config.oY);
+                    tmp = new Haste(d.oX, d.oY);
                     break;
                 case 3:
-                    tmp = new FasterProjectile(this.config.oX, this.config.oY);
+                    tmp = new FasterProjectile(d.oX, d.oY);
                     break;
                 case 4:
-                    tmp = new IncreasedArmor(this.config.oX, this.config.oY);
+                    tmp = new IncreasedArmor(d.oX, d.oY);
                     break;
                 case 5:
-                    tmp = new IncreasedDamage(this.config.oX, this.config.oY);
+                    tmp = new IncreasedDamage(d.oX, d.oY);
                     break;
                 case 6:
-                    tmp = new AphoticShield(this.config.oX, this.config.oY);
+                    tmp = new AphoticShield(d.oX, d.oY);
                     break;
                 case 7:
-                    tmp = new ReactiveArmor(this.config.oX, this.config.oY);
+                    tmp = new ReactiveArmor(d.oX, d.oY);
                     break;
                 case 8:
-                    tmp = new Regeneration(this.config.oX, this.config.oY);
+                    tmp = new Regeneration(d.oX, d.oY);
                     break;
                 case 9:
-                    tmp = new Random(this.config.oX, this.config.oY);
+                    tmp = new Random(d.oX, d.oY);
                     break;
                 case 10:
-                    tmp = new Ammo(this.config.oX, this.config.oY);
+                    tmp = new Ammo(d.oX, d.oY);
                     break;
                 case 11:
-                    tmp = new ProjectileBarrier(this.config.oX, this.config.oY);
+                    tmp = new ProjectileBarrier(d.oX, d.oY);
                     break;
             }
             powerups.push(tmp);
@@ -200,11 +224,11 @@ function Destructible(specs, x, y) {
     };
     
     this.draw = function (ctx) {
-        if (this.config.active === false) return;
+        if (d.active === false) return;
         
-        var _size = this.config.size / 2;
-        ctx.translate(this.config.oX, this.config.oY);
-        ctx.drawImage(this.config.nImage, -_size, -_size);
-        ctx.translate(-this.config.oX, -this.config.oY);
+        var _size = d.size / 2;
+        ctx.translate(d.oX, d.oY);
+        ctx.drawImage(d.nImage, -_size, -_size);
+        ctx.translate(-d.oX, -d.oY);
     }
 }
