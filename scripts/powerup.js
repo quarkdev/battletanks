@@ -490,6 +490,8 @@ function Regeneration(x, y) {
     
     this.use = function (tank) {
         // can only use one
+        var active = typeof tank.regen_active !== 'undefined';
+        
         if (!active) {
             tank.regen_active = true;
             
@@ -499,6 +501,7 @@ function Regeneration(x, y) {
                     clearInterval(tank.regenIntervalID);
                     delete tank.regenIntervalID;
                     delete tank.dispellRegen;
+                    delete tank.regen_active;
                     tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
                 }
             }, 1);
