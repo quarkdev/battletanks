@@ -12,6 +12,7 @@ projectiles = [];
 destructibles = [];
 startingpoints = [];
 visualeffects = [];
+timers = [];
 maps = [];
 bots = []; // [tank, movequeue, movelist_status, state] where movelist_status pertains to readiness to execute the movelist, state refers to bot state 'patrolling', 'chasing', 'running'
 

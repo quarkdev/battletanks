@@ -612,3 +612,39 @@ function SoundPool(loc, vol, max) {
         soundIndex = (soundIndex + 1) % size;
     };
 }
+
+function Timer(callback, expire) {
+    this.timerId;
+    this.start,
+    this.remaining = expire;
+    this.expire_init = expire;
+
+    this.pause = function() {
+        window.clearTimeout(this.timerId);
+        this.remaining -= new Date() - this.start;
+    };
+
+    this.resume = function() {
+        this.start = new Date();
+        this.timerId = window.setTimeout(callback, this.remaining);
+    };
+    
+    this.reset = function () {
+        window.clearTimeout(this.timerId);
+        this.start = new Date();
+        this.timerId = window.setTimeout(callback, this.expire_init);
+    }
+    
+    this.clear = function () {
+        window.clearTimeout(this.timerId);
+    };
+    
+    this.isExpired = function () {
+        return (this.remaining - new Date() - this.start) <= 0;
+    };
+    
+    var thisTimer = this;
+    timers.push(thisTimer);
+
+    this.resume();
+}

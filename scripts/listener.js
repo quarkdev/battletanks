@@ -33,7 +33,18 @@ function attachMenuEventListeners() {
         $('.overlay').hide();
         // continue what we were doing
         then = Date.now();
-        if (ui_location == 'game') main();
+        if (ui_location == 'game') {
+            main();
+            // remove all dead timers
+            timers = timers.filter(function (item) {
+                return item.isExpired();
+            });
+            
+            // resume timers
+            for (var i = 0; i < timers.length; i++) {
+                timers[i].resume();
+            }
+        }
         if (ui_location == 'editor') editor();
         
         UTIL.playMusic(backgroundMusic);

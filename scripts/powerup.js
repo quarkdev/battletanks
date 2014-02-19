@@ -122,18 +122,18 @@ function MultiShot(x, y) {
             multiShot.id = 'multiShot';
             
             tank.fire_callbacks.push(multiShot);
+            
+            tank.ts_timeout = new Timer(function () {
+                delete tank.ts_active;
+                delete tank.ts_timeout;
+                delete tank.ts_stack;
+                tank.fire_callbacks = tank.fire_callbacks.filter(function (item) { return item.id != 'multiShot'; });
+            }, 20000);
         }
         else {
             tank.ts_stack += 1;
-            clearTimeout(tank.ts_timeout);
+            tank.ts_timeout.reset();
         }
-        
-        tank.ts_timeout = setTimeout(function () {
-            delete tank.ts_active;
-            delete tank.ts_timeout;
-            delete tank.ts_stack;
-            tank.fire_callbacks = tank.fire_callbacks.filter(function (item) { return item.id != 'multiShot'; });
-        }, 20000);
     };
 }
 
@@ -166,16 +166,16 @@ function Return(x, y) {
             returnHit.id = 'returnHit';
             
             tank.hit_callbacks.push(returnHit);
+            
+            tank.r_timeout = new Timer(function () {
+                delete tank.r_active;
+                delete tank.r_timeout;
+                tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'returnHit'; });
+            }, 20000);
         }
         else {
-            clearTimeout(tank.r_timeout);
+            tank.r_timeout.reset();
         }
-        
-        tank.r_timeout = setTimeout(function () {
-            delete tank.r_active;
-            delete tank.r_timeout;
-            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'returnHit'; });
-        }, 20000);
     };
 }
 
@@ -226,23 +226,23 @@ function ProjectileBarrier(x, y) {
             updateBarrierSpin.id = 'updateBarrierSpin';
             
             tank.frame_callbacks.push(updateBarrierSpin);
+            
+            tank.pb_timeout = new Timer(function () {    
+                // deactivate all projectiles in pBarrier
+                for (var i = 0; i < tank.pBarrier.length; i++) {
+                    tank.pBarrier[i][0].config.active = false;
+                }
+                
+                delete tank.pBarrier; // remove temp variable
+                delete tank.pb_timeout;
+                delete tank.pb_active;
+                tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'incBarrier'; });
+                tank.frame_callbacks = tank.move_callbacks.filter(function (item) { return item.id != 'updateBarrierSpin'; });
+            }, 20000);
         }
         else {
-            clearTimeout(tank.pb_timeout); // reset timer
+            tank.pb_timeout.reset(); // reset timer
         }
-        
-        tank.pb_timeout = setTimeout(function () {    
-            // deactivate all projectiles in pBarrier
-            for (var i = 0; i < tank.pBarrier.length; i++) {
-                tank.pBarrier[i][0].config.active = false;
-            }
-            
-            delete tank.pBarrier; // remove temp variable
-            delete tank.pb_timeout;
-            delete tank.pb_active;
-            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'incBarrier'; });
-            tank.frame_callbacks = tank.move_callbacks.filter(function (item) { return item.id != 'updateBarrierSpin'; });
-        }, 20000);
     };
 }
 
@@ -260,7 +260,7 @@ function RapidFire(x, y) {
     
     this.use = function (tank) {
         tank.config.fRate += 5;
-        setTimeout(function () { tank.config.fRate -= 5; }, 5000);
+        var timer = new Timer(function () { tank.config.fRate -= 5; }, 5000);
     };
 }
 
@@ -279,7 +279,7 @@ function Haste(x, y) {
     this.use = function (tank) {
         tank.config.fSpeed += 100;
         tank.config.rSpeed += 100;
-        setTimeout(function () { tank.config.fSpeed -= 100; tank.config.rSpeed -= 100; }, 10000);
+        var timer = new Timer(function () { tank.config.fSpeed -= 100; tank.config.rSpeed -= 100; }, 10000);
     };
 }
 
@@ -297,7 +297,7 @@ function FasterProjectile(x, y) {
     
     this.use = function (tank) {
         tank.config.pSpeed += 200;
-        setTimeout(function () { tank.config.pSpeed -= 200; }, 8000);
+        var timer = new Timer(function () { tank.config.pSpeed -= 200; }, 8000);
     };
 }
 
@@ -319,7 +319,8 @@ function IncreasedArmor(x, y) {
         tank.attachments.chassis.push({id: unique_id, img: AttachmentImages.get('increased-armor')}); // add attachment
         
         tank.config.armor += 50;
-        setTimeout(function () {
+        
+        var timer = new Timer(function () {
             tank.config.armor -= 50;
             // remove attachment
             tank.attachments.chassis = tank.attachments.chassis.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
@@ -346,7 +347,7 @@ function IncreasedDamage(x, y) {
         tank.attachments.turret.push({id: unique_id, img: AttachmentImages.get('increased-damage')}); // add attachment
         
         tank.config.pDamage += 50;
-        setTimeout(function () { 
+        var timer = new Timer(function () { 
             tank.config.pDamage -= 50;
             // remove attachment
             tank.attachments.turret = tank.attachments.turret.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
@@ -393,45 +394,43 @@ function AphoticShield(x, y) {
             tank.frame_callbacks.push(asAnim);
             tank.hit_callbacks.push(absorbHit);
             
-            
+            tank.as_timeout = new Timer(function () {
+                // fire the number of absorbed projectiles in all directions
+                var aFactor = 360/tank.hitsTaken;
+                var cAngle = 0;
+                var x = 0;
+                var y = 0;
+                
+                for (var i = 0; i < tank.hitsTaken; i++) {
+                    // determine starting coordinates of projectile based on vector info
+                    x = tank.config.oX + Math.cos(cAngle * Math.PI/180) * (tank.config.cRadius+10);
+                    y = tank.config.oY + Math.sin(cAngle * Math.PI/180) * (tank.config.cRadius+10);
+                    
+                    // create new projectile
+                    var proj = new Projectile({ speed: tank.config.pSpeed * 1.25, damage: tank.config.pDamage, angle:  cAngle, oX: x, oY: y, srcId: tank.config.id, srcType: 'blast'});
+                    
+                    // add projectile to array
+                    projectiles.push(proj);
+                    
+                    // set cAngle
+                    cAngle += aFactor;
+                }
+                
+                tank.as_vfx.end();
+                
+                delete tank.hitsTaken; // remove temp variable
+                delete tank.as_active;
+                delete tank.as_vfx;
+                delete tank.as_timeout;
+                
+                tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'absorbHit'; });
+                tank.frame_callbacks = tank.frame_callbacks.filter(function (item) { return item.id != 'asAnim'; });
+                d_explodeSound.get(); // play explode sound
+            }, 8000);
         }
         else {
-            clearTimeout(tank.as_timeout);
-        }
-        
-        tank.as_timeout = setTimeout(function () {
-            // fire the number of absorbed projectiles in all directions
-            var aFactor = 360/tank.hitsTaken;
-            var cAngle = 0;
-            var x = 0;
-            var y = 0;
-            
-            for (var i = 0; i < tank.hitsTaken; i++) {
-                // determine starting coordinates of projectile based on vector info
-                x = tank.config.oX + Math.cos(cAngle * Math.PI/180) * (tank.config.cRadius+10);
-                y = tank.config.oY + Math.sin(cAngle * Math.PI/180) * (tank.config.cRadius+10);
-                
-                // create new projectile
-                var proj = new Projectile({ speed: tank.config.pSpeed * 1.25, damage: tank.config.pDamage, angle:  cAngle, oX: x, oY: y, srcId: tank.config.id, srcType: 'blast'});
-                
-                // add projectile to array
-                projectiles.push(proj);
-                
-                // set cAngle
-                cAngle += aFactor;
-            }
-            
-            tank.as_vfx.end();
-            
-            delete tank.hitsTaken; // remove temp variable
-            delete tank.as_active;
-            delete tank.as_timeout;
-            delete tank.as_vfx;
-            
-            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'absorbHit'; });
-            tank.frame_callbacks = tank.frame_callbacks.filter(function (item) { return item.id != 'asAnim'; });
-            d_explodeSound.get(); // play explode sound
-        }, 8000);
+            tank.as_timeout.reset();
+        } 
     };
 }
 
@@ -462,18 +461,18 @@ function ReactiveArmor(x, y) {
             increaseArmorWhenHit.id = 'increaseArmorWhenHit';
             
             tank.hit_callbacks.push(increaseArmorWhenHit);
+            
+            tank.ra_timeout = new Timer(function () {
+                tank.config.armor -= tank.armorBuff;
+                delete tank.armorBuff; // remove temp variable
+                delete tank.ra_timeout; // remove temp variable
+                delete tank.ra_active;
+                tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'increaseArmorWhenHit'; });
+            }, 20000);
         }
         else {
-            clearTimeout(tank.ra_timeout);
+            tank.ra_timeout.reset();
         }
-        
-        tank.ra_timeout = setTimeout(function () {
-            tank.config.armor -= tank.armorBuff;
-            delete tank.armorBuff; // remove temp variable
-            delete tank.ra_timeout; // remove temp variable
-            delete tank.ra_active;
-            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'increaseArmorWhenHit'; });
-        }, 20000);
     };
 }
 
@@ -490,27 +489,28 @@ function Regeneration(x, y) {
     };
     
     this.use = function (tank) {
-        clearInterval(tank.regenIntervalID);
-        tank.regenIntervalID = setInterval(function () {
-            tank.config.health = tank.config.maxHealth - tank.config.health < 0.01 ? tank.config.maxHealth : tank.config.health + 0.01;
-            if (tank.config.health == tank.config.maxHealth) {
+        // can only use one
+        if (!active) {
+            tank.regen_active = true;
+            
+            tank.regenIntervalID = setInterval(function () {
+                tank.config.health = tank.config.maxHealth - tank.config.health < 0.01 ? tank.config.maxHealth : tank.config.health + 0.01;
+                if (tank.config.health == tank.config.maxHealth) {
+                    clearInterval(tank.regenIntervalID);
+                    delete tank.regenIntervalID;
+                    delete tank.dispellRegen;
+                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
+                }
+            }, 1);
+        
+            var dispellRegen = function () {
+                // dispell regen
                 clearInterval(tank.regenIntervalID);
-            }
-        }, 1);
-    
-        var dispellRegen = function () {
-            // dispell regen
-            clearInterval(tank.regenIntervalID);
-        };
-        dispellRegen.id = 'dispellRegen';
-        
-        tank.hit_callbacks.push(dispellRegen);
-        
-        setTimeout(function () {
-            clearInterval(tank.regenIntervalID);
-            delete tank.regenIntervalID; // remove temp variable
-            tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
-        }, 20000);
+            };
+            dispellRegen.id = 'dispellRegen';
+            
+            tank.hit_callbacks.push(dispellRegen);
+        }
     };
 }
 

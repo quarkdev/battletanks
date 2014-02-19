@@ -16,6 +16,10 @@
         // stop the main interval
         if (ui_location === 'game') {
             cancelAnimationFrame(mainAnimation);
+            // pause all timers
+            for (var i = 0; i < timers.length; i++) {
+                timers[i].pause();
+            }
         }
         else if (ui_location === 'editor') {
             cancelAnimationFrame(editorAnimation);

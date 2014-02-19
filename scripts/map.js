@@ -349,6 +349,7 @@ var MAP = (function () {
         tanks.clear();
         powerups.clear();
         visualeffects.clear();
+        timers.clear();
         
         // push the powerups into the array
         for (var i = 0; i < map.powerups.length; i++) {
