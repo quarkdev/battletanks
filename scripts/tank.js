@@ -330,6 +330,8 @@ function Tank(specs, id, control, x, y) {
         var that = this; // save context
         setTimeout(function () { that.reload(); }, 1000 / this.config.fRate);
         
+        visualeffects.push(new VisualEffect({name: 'tank_explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'tank_explosion'}));
+        
         // play sound effect
         fireSound.get();
     };
@@ -379,7 +381,7 @@ function Tank(specs, id, control, x, y) {
         /* Move object offscreen. Set to inactive. */
         this.config.active = false;
 
-        visualeffects.push(new VisualEffect({name: 'tank_explosion', oX: this.config.oX, oY: this.config.oY, width: 32, height: 32, scaleW: 40, scaleH: 40, framesTillUpdate: 2, loop: false, spriteSheet: 'tank_explosion'}));
+        visualeffects.push(new VisualEffect({name: 'tank_explosion', oX: this.config.oX, oY: this.config.oY, width: 32, height: 32, scaleW: 40, scaleH: 40,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'tank_explosion'}));
         //this.config.oX = canvas.height+250;
         //this.config.oY = 0;
     };

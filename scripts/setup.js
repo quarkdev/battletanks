@@ -42,6 +42,7 @@ EditorImages.add('starting-point', 'images/editor/starting-point.png');
 
 SpriteSheetImages = new ImageLibrary();
 SpriteSheetImages.add('tank_explosion', 'images/spritesheets/tank_explosion.png');
+SpriteSheetImages.add('volumetric_explosion', 'images/spritesheets/volumetric_explosion.png');
 SpriteSheetImages.add('aphotic_shield', 'images/spritesheets/aphotic_shield.png');
 
 

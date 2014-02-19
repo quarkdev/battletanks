@@ -16,6 +16,8 @@ function VisualEffect(specs) {
         _scaleW           : specs.scaleW/2,
         scaleH            : specs.scaleH,
         _scaleH           : specs.scaleH/2,
+        maxColIndex       : specs.maxCols - 1,
+        maxRowIndex       : specs.maxRows - 1,
         framesTillUpdate  : specs.framesTillUpdate,
         loop              : specs.loop,
         spriteSheet       : SpriteSheetImages.get(specs.spriteSheet)
@@ -28,9 +30,9 @@ function VisualEffect(specs) {
     };
     
     this.nextSprite = function () {
-        if (this.animation.csc === 3) {
+        if (this.animation.csc === this.config.maxColIndex) {
             this.animation.csc = 0;
-            if (this.animation.csr === 3) {
+            if (this.animation.csr === this.config.maxRowIndex) {
                 this.animation.csr = 0;
             }
             else {
@@ -52,7 +54,7 @@ function VisualEffect(specs) {
         this.config.oY = y;
     };
     
-    this.draw = function (ctx) {
+    this.update = function () {
         if (!this.config.active) { return; }
         
         if (this.animation.frames !== this.config.framesTillUpdate) {
@@ -61,7 +63,7 @@ function VisualEffect(specs) {
         else {
             this.animation.frames = 0;
             
-            if (this.animation.csr === 3 && this.animation.csc === 3) {
+            if (this.animation.csr === this.config.maxRowIndex && this.animation.csc === this.config.maxColIndex) {
                 if (!this.config.loop) {
                     this.config.active = false;
                 }
@@ -74,7 +76,9 @@ function VisualEffect(specs) {
             }
             
         }
-        
+    };
+    
+    this.draw = function (ctx) {
         ctx.translate(this.config.oX, this.config.oY);
         ctx.drawImage(
             this.config.spriteSheet,

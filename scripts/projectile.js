@@ -48,13 +48,23 @@ function Projectile(specs) {
             // Check if it hit a tank.
             var result = _hasHitTank(tanks, p.oX, p.oY);
             if (result.hit === true) {
+            
                 this.config.active = false;
                 var t = result.tank;
                 
+                var min = p.damage - 3;
+                var max = p.damage + 3;
                 var critical_hit = 5 > Math.random()*100 ? true : false; // crit chance, baseline is 5% @ 2x
                 var raw_damage = p.damage; // raw damage
-                var mod_damage = critical_hit ? raw_damage*2.0 : raw_damage; // damage after mods/crit
+                var dmg_base_roll = Math.floor((Math.random() * max) + min);
+                var mod_damage = critical_hit ? dmg_base_roll*2.0 : dmg_base_roll; // damage after mods/crit
                 var end_damage = mod_damage/t.config.armor;
+                
+                // play visual effect
+                var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
+                hit_explosion_scale = critical_hit ? hit_explosion_scale * 1.5 : hit_explosion_scale;
+                visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'tank_explosion'}));
+
                 
                 // Call tank hit method. Pass the damage dealt.
                 t.hit(end_damage, this);

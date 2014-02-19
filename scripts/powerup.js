@@ -373,7 +373,7 @@ function AphoticShield(x, y) {
             tank.as_active = true;
             tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 0;
             
-            tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
+            tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
             visualeffects.push(tank.as_vfx);
             
             var absorbHit = function (damage_taken) {

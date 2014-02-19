@@ -163,8 +163,20 @@
             }
         }
         
-        // Remove all inactive projectiles. This keeps the projectile array from accumulating inactive objects.
+        // Update all visual effects.
+        for (i = 0; i < visualeffects.length; i++) {
+            if (visualeffects[i].config.active) {
+                visualeffects[i].update();
+            }
+        }
+        
+        // Remove all inactive projectiles. This keeps the projectiles array from accumulating inactive objects.
         projectiles = projectiles.filter(function (item) {
+            return item.config.active;
+        });
+        
+        // Remove all inactive visualeffects. This keeps the visualeffects array from accumulating inactive objects.
+        visualeffects = visualeffects.filter(function (item) {
             return item.config.active;
         });
     };
