@@ -149,12 +149,12 @@ var MAP = (function () {
                 }
                 break;
             case 'R':
-                if (ccc[0] + 16 < canvas.width) {
+                if (ccc[0] + 16 < WORLD_WIDTH) {
                     ccc[0] += ups;
                 }
                 break;
             case 'U':
-                if (ccc[1] + 16 < canvas.height) {
+                if (ccc[1] + 16 < WORLD_HEIGHT) {
                     ccc[1] += ups;
                 }
                 break;
@@ -173,7 +173,7 @@ var MAP = (function () {
         mode = mode === 0 ? 1 : 0;
     };
     
-    my.drawPlaceableGhost = function (ctx) {
+    my.drawPlaceableGhost = function (ctx, xView, yView) {
         /* Draw current placeable at cursor, at 50% opacity. */
         
         var x, y;

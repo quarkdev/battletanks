@@ -64,6 +64,9 @@ function Tank(specs, id, control, x, y) {
         tAngle       : specs.tAngle                   // tank turret angle (the direction the turret is facing)
     };
     
+    this.x = this.config.oX;
+    this.y = this.config.oY;
+    
     var t = this.config;
     
     this.turnBody = function (modifier, direction, lockAngle) {
@@ -289,7 +292,7 @@ function Tank(specs, id, control, x, y) {
         }
         
         // check if it has reached the boundaries
-        if (t.oX - t.cRadius < 0 || t.oX + t.cRadius > canvas.width || t.oY - t.cRadius < 0 || t.oY + t.cRadius > canvas.height) {
+        if (t.oX - t.cRadius < 0 || t.oX + t.cRadius > WORLD_WIDTH || t.oY - t.cRadius < 0 || t.oY + t.cRadius > WORLD_HEIGHT) {
             t.oX = tmpX;
             t.oY = tmpY;
             this.velocity.forward = 0.0;
@@ -300,6 +303,9 @@ function Tank(specs, id, control, x, y) {
                 bot[2] = 'blocked';
             }
         }
+        
+        this.x = t.oX;
+        this.y = t.oY;
     };
     
     this.fire = function () {
@@ -344,10 +350,10 @@ function Tank(specs, id, control, x, y) {
         this.reloading = false;
     };
     
-    this.draw = function (ctx) {
+    this.draw = function (ctx, xView, yView) {
         if (t.active === false) return;
 
-        ctx.translate(t.oX, t.oY);
+        ctx.translate(t.oX - xView, t.oY - yView);
         // draw body && attachments
         ctx.rotate(t.hAngle * Math.PI/180);
         ctx.drawImage(this.images.chassis, t.cx, t.cy);
@@ -363,7 +369,7 @@ function Tank(specs, id, control, x, y) {
         }
         ctx.rotate(-t.tAngle * Math.PI/180);
         // reverse translate
-        ctx.translate(-t.oX, -t.oY);
+        ctx.translate(-(t.oX - xView), -(t.oY - yView));
     };
     
     this.hit = function (projectile) {

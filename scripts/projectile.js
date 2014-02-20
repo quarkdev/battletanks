@@ -80,9 +80,9 @@ function Projectile(specs) {
     * Parameters:
     *   ctx - the context
     */
-    this.draw = function (ctx) {
+    this.draw = function (ctx, xView, yView) {
         ctx.beginPath();
-        ctx.arc(p.oX, p.oY, 3, 0, 2 * Math.PI, false);
+        ctx.arc(p.oX - xView, p.oY - yView, 3, 0, 2 * Math.PI, false);
         ctx.fillStyle = 'red';
         ctx.fill();
     };
@@ -99,7 +99,7 @@ function Projectile(specs) {
     *   a boolean true if hit, else a boolean false
     */
     var _hasHitBoundary = function (x, y) {      
-        return (x < 0 || x > canvas.width || y < 0 || y > canvas.height);
+        return (x < 0 || x > WORLD_WIDTH || y < 0 || y > WORLD_HEIGHT);
     };
     
     /*

@@ -155,7 +155,7 @@
                     LOAD.worker.sendMessage(bot_id, msg);
                     
                     // set status to:
-                    bots[i][2] = 'waiting'
+                    bots[i][2] = 'waiting';
                 }
             }
         }
@@ -183,6 +183,8 @@
         visualeffects = visualeffects.filter(function (item) {
             return item.config.active;
         });
+        
+        camera.update();
     };
     
     // Editor UPDATE
@@ -202,7 +204,7 @@
             
             clearTimeout(csas_timeout);
             
-            csas_timeout = setTimeout(function() { cs_asset_select_ok = true }, 75);
+            csas_timeout = setTimeout(function() { cs_asset_select_ok = true; }, 75);
         }
         
         if (cs_movement_ok) {
@@ -227,7 +229,7 @@
             
             clearTimeout(csmv_timeout);
             
-            csmv_timeout = setTimeout(function() { cs_movement_ok = true }, 50);
+            csmv_timeout = setTimeout(function() { cs_movement_ok = true; }, 50);
         }
         
         if (cs_placement_ok) {
@@ -247,18 +249,18 @@
             MAP.removeObject();
         }
 
-    }
+    };
 
     // DRAW SCENE
     var renderCanvas = function () {
 
         CANVAS.clear(ctx);
 
-        CANVAS.drawDestructibles(ctx);
-        CANVAS.drawPowerUps(ctx);
-        CANVAS.drawTanks(ctx);
-        CANVAS.drawVisualEffects(ctx);
-        CANVAS.drawProjectiles(ctx);
+        CANVAS.drawDestructibles(ctx, camera.xView, camera.yView);
+        CANVAS.drawPowerUps(ctx, camera.xView, camera.yView);
+        CANVAS.drawTanks(ctx, camera.xView, camera.yView);
+        CANVAS.drawVisualEffects(ctx, camera.xView, camera.yView);
+        CANVAS.drawProjectiles(ctx, camera.xView, camera.yView);
 
     };
     
@@ -290,7 +292,7 @@
             $('#current-health-anim').stop();
             $('#current-health-anim').width(cHealth);
         }
-    }    
+    };    
     
     // MAIN
     var main = function () {
@@ -326,11 +328,11 @@
         editorUpdate();
         renderCanvas();
         
-        CANVAS.drawStartingPoints(ctx); 
-        MAP.drawPlaceableGhost(ctx);
+        CANVAS.drawStartingPoints(ctx, camera.xView, camera.yView); 
+        MAP.drawPlaceableGhost(ctx, camera.xView, camera.yView);
         
         editorAnimation = requestAnimationFrame(editor);
-    }
+    };
     
     // START
     var start = function (player_name) {
@@ -385,7 +387,7 @@
         $('#level-cleared-screen').show();
         UTIL.pauseMusic(backgroundMusic);
     };
-    
+
     menu();
     attachMenuEventListeners();
     //start();

@@ -1,4 +1,6 @@
-var grid = [];
+var grid = [],
+    MAX_COLS = 228,
+    MAX_ROWS = 228;
 
 var Coord = function (x, y) {
     return {
@@ -53,8 +55,8 @@ function getRandomMoveList(S, angle) {
     var row, col, goal_ok = false;
     
    while (!goal_ok) {
-        row = Math.floor(Math.random() * 76);
-        col = Math.floor(Math.random() * 128);
+        row = Math.floor(Math.random() * MAX_ROWS);
+        col = Math.floor(Math.random() * MAX_COLS);
         
         // Check if goal point is open
         goal_ok = grid[row][col] === 1;
@@ -125,15 +127,15 @@ function updateGrid(obs) {
     
     grid = [];
     
-    // Initialize grid. Create a 128--cell row
+    // Initialize grid. Create a MAX_COLS--cell row
     var row = [];
     
-    for (var i = 0; i < 128; i++) {
+    for (var i = 0; i < MAX_COLS; i++) {
         row.push(1);
     }
     
-    // Create a 128x76 grid by pushing a row 76 times
-    for (i = 0; i < 76; i++) {
+    // Create a MAX_COLSxMAX_ROWS grid by pushing a row MAX_ROWS times
+    for (i = 0; i < MAX_ROWS; i++) {
         grid.push(row.slice(0));
     }
     
@@ -143,18 +145,18 @@ function updateGrid(obs) {
     }
     
     // Pad the boundaries
-    for (i = 0; i < 128; i++) {
+    for (i = 0; i < MAX_COLS; i++) {
         grid[0][i] = 0;
         grid[1][i] = 0;
-        grid[74][i] = 0;
-        grid[75][i] = 0;
+        grid[MAX_ROWS - 2][i] = 0;
+        grid[MAX_ROWS - 1][i] = 0;
     }
     
-    for (i = 0; i < 76; i++) {
+    for (i = 0; i < MAX_ROWS; i++) {
         grid[i][0] = 0;
         grid[i][1] = 0;
-        grid[i][126] = 0;
-        grid[i][127] = 0;
+        grid[i][MAX_COLS - 2] = 0;
+        grid[i][MAX_COLS - 1] = 0;
     }
 }
 
@@ -355,17 +357,17 @@ function updateGridCell(obs, obstacle_index, value) {
 
 function withinBounds(x, y) {
     /* Check if grid coords within bounds */
-    return x > -1 && x < 128 && y > -1 && y < 76;
+    return x > -1 && x < MAX_COLS && y > -1 && y < MAX_ROWS;
 }
 
 function transCanvasCoordsToGrid(x, y) {
-    /* Translates the canvas coords to affected grid coords. Based on a 128x76 memory grid. */
-    return { x: Math.round(x/8), y: Math.abs(Math.round(y/8) - 75) };
+    /* Translates the canvas coords to affected grid coords. Based on a MAX_COLSxMAX_ROWS memory grid. */
+    return { x: Math.round(x/8), y: Math.abs(Math.round(y/8) - (MAX_ROWS - 1)) };
 }
 
 function transGridToCanvasCoords(x, y) {
     /* Translates the grid coords to canvas coords. NOTE: swap the x is grid col, y is grid row */
-    return { x: x * 8, y: (75 - y) * 8 };
+    return { x: x * 8, y: (MAX_ROWS - 1 - y) * 8 };
 }
 
 function gridToNonOrigin(x, y) {
@@ -375,7 +377,7 @@ function gridToNonOrigin(x, y) {
     var signY = Math.floor((Math.random() * 2) + 1) === 1 ? 1 : -1;
     
     var _x = x * 8;
-    var _y = (75 - y) * 8;
+    var _y = (MAX_ROWS - 1 - y) * 8;
     
     _x = _x + (signX * offset);
     _y = _y + (signY * offset);

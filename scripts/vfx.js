@@ -82,8 +82,8 @@ function VisualEffect(specs) {
         }
     };
     
-    this.draw = function (ctx) {
-        ctx.translate(vx.oX, vx.oY);
+    this.draw = function (ctx, xView, yView) {
+        ctx.translate(vx.oX - xView, vx.oY - yView);
         ctx.drawImage(
             vx.spriteSheet,
             animation.csc * vx.width,
@@ -94,6 +94,6 @@ function VisualEffect(specs) {
             vx.scaleW,
             vx.scaleH
         );
-        ctx.translate(-vx.oX, -vx.oY);
+        ctx.translate(-(vx.oX - xView), -(vx.oY - yView));
     };
 }

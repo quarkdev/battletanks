@@ -31,9 +31,12 @@ var LOAD = (function () {
         var setup_error = MAP.setup(current_map, playerlist);
 
         if (setup_error === 0) {
+            // setup camera
+            camera = new Viewport.Camera(0, 0, canvas.width, canvas.height, WORLD_WIDTH, WORLD_HEIGHT);
         
             // bind player controls
             player = tanks[0];
+            camera.follow(player, canvas.width/2, canvas.height/2);
             
             // bind ai controls
             enemy = tanks[1];

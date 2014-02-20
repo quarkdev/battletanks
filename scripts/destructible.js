@@ -223,12 +223,12 @@ function Destructible(specs, x, y) {
         }
     };
     
-    this.draw = function (ctx) {
+    this.draw = function (ctx, xView, yView) {
         if (d.active === false) return;
         
         var _size = d.size / 2;
-        ctx.translate(d.oX, d.oY);
+        ctx.translate(d.oX - xView, d.oY - yView);
         ctx.drawImage(d.nImage, -_size, -_size);
-        ctx.translate(-d.oX, -d.oY);
+        ctx.translate(-(d.oX - xView), -(d.oY - yView));
     }
 }

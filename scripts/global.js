@@ -21,6 +21,8 @@ current_map = null;
 mainAnimation = null;
 editorAnimation = null;
 
+camera = null;
+
 ui_location = null; // menu, game, editor
 
 mousePos = {};
