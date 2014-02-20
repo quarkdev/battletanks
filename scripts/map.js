@@ -3,11 +3,20 @@
 var MAP = (function () {
     var my = {};
     
+    var cursor = {
+        x: 16,
+        y: 16
+    };
+    
     var cpi = 0, // the current placeable index
         ups = 8, // units per step. The number of units the cursor is moved per step.
         ccc = [16, 16], // current cursor coordinates
         placeables = [],
         mode = 1; // edit mode, 1 = manhattan, 0 = freeform
+    
+    my.getCursor = function () {
+        return cursor;
+    };
     
     my.addPlaceable = function (type, name) {
         /* Add a new placeable string pair to the placeable array (e.g. 'destructible', 'concrete') */
@@ -57,25 +66,25 @@ var MAP = (function () {
         var x, y;
         
         if (mode === 0) {
-            x = mousePos.mX;
-            y = mousePos.mY;
+            cursor.x = mousePos.mX;
+            cursor.y = mousePos.mY;
         }
         else {
-            x = ccc[0];
-            y = ccc[1];
+            cursor.x = ccc[0];
+            cursor.y = ccc[1];
         }
         
         var asset_type = placeables[cpi][0];
         
         switch (asset_type) {
             case 'destructible':
-                destructibles.push(new Destructible(BLUEPRINT.get(placeables[cpi][1]), x, y));
+                destructibles.push(new Destructible(BLUEPRINT.get(placeables[cpi][1]), cursor.x, cursor.y));
                 break;
             case 'starting-point':
-                startingpoints.push(new StartingPoint(x, y));
+                startingpoints.push(new StartingPoint(cursor.x, cursor.y));
                 break;
             case 'powerup':
-                powerups.push(PUP.create(placeables[cpi][1], x, y));
+                powerups.push(PUP.create(placeables[cpi][1], cursor.x, cursor.y));
             default:
                 break;
         }
@@ -176,18 +185,16 @@ var MAP = (function () {
     my.drawPlaceableGhost = function (ctx, xView, yView) {
         /* Draw current placeable at cursor, at 50% opacity. */
         
-        var x, y;
-        
         if (mode === 0) {
-            x = mousePos.mX;
-            y = mousePos.mY;
+            cursor.x = mousePos.mX;
+            cursor.y = mousePos.mY;
         }
         else {
-            x = ccc[0];
-            y = ccc[1];
+            cursor.x = ccc[0];
+            cursor.y = ccc[1];
         }
         
-        ctx.translate(x, y);
+        ctx.translate(cursor.x - xView, cursor.y - yView);
         ctx.globalAlpha = 0.5;
 
         var asset_type = placeables[cpi][0];
@@ -209,7 +216,7 @@ var MAP = (function () {
 
         ctx.globalAlpha = 1;
         // reverse translate
-        ctx.translate(-x, -y);
+        ctx.translate(-(cursor.x - xView), -(cursor.y - yView));
     };
     
     my.save = function (name) {

@@ -57,10 +57,10 @@ var CANVAS = (function () {
     my.drawStartingPoints = function (context, xView, yView) {
         /* draw all starting points */
         for (var i = 0; i < startingpoints.length; i++) {
-            context.translate((startingpoints[i].config.oX - 16) - xView, (startingpoints[i].config.oY - 16) - yView);
+            context.translate(startingpoints[i].config.oX - xView, startingpoints[i].config.oY - yView);
             context.drawImage(EditorImages.get('starting-point'), -16, -16);
             // reverse translate
-            context.translate(-((startingpoints[i].config.oX - 16) - xView), -((startingpoints[i].config.oY - 16) - yView));
+            context.translate(-(startingpoints[i].config.oX - xView), -(startingpoints[i].config.oY - yView));
         }
     };
     return my;

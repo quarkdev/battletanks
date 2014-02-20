@@ -249,6 +249,7 @@
             MAP.removeObject();
         }
 
+        camera.update();
     };
 
     // DRAW SCENE
@@ -366,6 +367,9 @@
         attachEditorEventListeners();
         
         MAP.loadPlaceablesToUI();
+        
+        camera = new Viewport.Camera(0, 0, canvas.width, canvas.height, WORLD_WIDTH, WORLD_HEIGHT);
+        camera.follow(MAP.getCursor(), canvas.width/2, canvas.height/2);
         
         editor();
     };
