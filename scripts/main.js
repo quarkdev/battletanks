@@ -78,7 +78,7 @@
         player.frame(); // run all frame callbacks
         
         /* turn turret (based on current facing angle) */
-        player.turnTurret(modifier, mousePos.mX, mousePos.mY);
+        player.turnTurret(modifier, mousePos.mX + camera.xView, mousePos.mY + camera.yView);
        
         // AI
         for (var i = 0; i < bots.length; i++) {
