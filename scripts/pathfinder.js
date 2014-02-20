@@ -24,6 +24,8 @@ function messageHandler(event) {
         switch (messageReceived.cmd) {
             case 'update_obstacles':
                 var obstacles = messageReceived.data;
+                MAX_COLS = messageReceived.worldWidth / 8;
+                MAX_ROWS = messageReceived.worldHeight / 8;
                 
                 updateGrid(obstacles);
                 

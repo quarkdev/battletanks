@@ -244,7 +244,7 @@ function Tank(specs, id, control, x, y) {
                 // reset pathfinding
                 var bot = UTIL.getBotReference(t.id);
                 if (typeof bot !== 'undefined') {
-                    if (bot[3] !== 'waiting' && bot[3] !== 'ready') {
+                    if (bot[3] !== 'waiting') {
                         bot[2] = 'blocked';
                     }
                 }
@@ -287,7 +287,7 @@ function Tank(specs, id, control, x, y) {
                 // reset pathfinding
                 var bot = UTIL.getBotReference(t.id);
                 if (typeof bot !== 'undefined') {
-                    if (bot[3] !== 'waiting' && bot[3] !== 'ready') {
+                    if (bot[3] !== 'waiting') {
                         bot[2] = 'blocked';
                     }
                 }
@@ -304,7 +304,7 @@ function Tank(specs, id, control, x, y) {
             // reset pathfinding
             var bot = UTIL.getBotReference(t.id);
             if (typeof bot !== 'undefined') {
-                if (bot[3] !== 'waiting' && bot[3] !== 'ready') {
+                if (bot[3] !== 'waiting') {
                     bot[2] = 'blocked';
                 }
             }

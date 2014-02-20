@@ -130,6 +130,8 @@ LOAD.worker = (function () {
         msg.cmd = 'update_obstacles';
         msg.sender = id;
         msg.data = map.destructibles;
+        msg.worldWidth = WORLD_WIDTH;
+        msg.worldHeight = WORLD_HEIGHT;
         
         pf.postMessage(JSON.stringify(msg));
     };
