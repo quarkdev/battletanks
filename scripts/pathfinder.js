@@ -1,13 +1,15 @@
 var grid = [],
     MAX_COLS = 228,
     MAX_ROWS = 228;
+    
+var graph = null;
 
 var Coord = function (x, y) {
     return {
         x: typeof x === "undefined" ? null : x,
         y: typeof y === "undefined" ? null : y
     };
-}
+};
 
 importScripts('graph.js');
 importScripts('astar.js'); // https://github.com/bgrins/javascript-astar
@@ -15,6 +17,7 @@ importScripts('astar.js'); // https://github.com/bgrins/javascript-astar
 function messageHandler(event) {
     var messageReceived = JSON.parse(event.data);
     var reply = {};
+    var waypoint = [];
         
     reply.sender = messageReceived.sender;
     
@@ -29,7 +32,7 @@ function messageHandler(event) {
                 postMessage(JSON.stringify(reply));
                 break;
             case 'get_waypoint':
-                var waypoint = getMoveList(messageReceived.start, messageReceived.goal, messageReceived.angle);
+                waypoint = getMoveList(messageReceived.start, messageReceived.goal, messageReceived.angle);
                 
                 reply.cmd      = 'waypoint_ok';
                 reply.waypoint = waypoint;
@@ -37,13 +40,13 @@ function messageHandler(event) {
                 postMessage(JSON.stringify(reply));
                 break;
             case 'get_waypoint_random':
-                var waypoint = getRandomMoveList(messageReceived.start, messageReceived.angle);
+                waypoint = getRandomMoveList(messageReceived.start, messageReceived.angle);
                     
                 reply.cmd      = 'waypoint_ok';
                 reply.waypoint = waypoint;
                 
                 postMessage(JSON.stringify(reply));
-                break
+                break;
             default:
                 break;
         }
@@ -69,7 +72,6 @@ function getRandomMoveList(S, angle) {
 
 function getMoveList(S, G, angle) {
     /* Search for a path from S to G then convert to movelist for tank AI. */
-    var graph = new Graph(grid);
     var s = transCanvasCoordsToGrid(S[0], S[1]);
     var g = transCanvasCoordsToGrid(G[0], G[1]);
     var start = graph.nodes[s.y][s.x];
@@ -158,6 +160,8 @@ function updateGrid(obs) {
         grid[i][MAX_COLS - 2] = 0;
         grid[i][MAX_COLS - 1] = 0;
     }
+    
+    graph = new Graph(grid);
 }
 
 function updateGridCell(obs, obstacle_index, value) {

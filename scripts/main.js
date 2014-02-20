@@ -151,11 +151,11 @@
                             break;
                     }
                     
-                    // send message to pathfinder worker asking for directions
-                    LOAD.worker.sendMessage(bot_id, msg);
-                    
                     // set status to:
                     bots[i][2] = 'waiting';
+                    
+                    // send message to pathfinder worker asking for directions
+                    LOAD.worker.sendMessage(bot_id, msg);
                 }
             }
         }
