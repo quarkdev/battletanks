@@ -66,8 +66,8 @@ var MAP = (function () {
         var x, y;
         
         if (mode === 0) {
-            cursor.x = mousePos.mX;
-            cursor.y = mousePos.mY;
+            cursor.x = mousePos.mX + camera.xView;
+            cursor.y = mousePos.mY + camera.yView;
         }
         else {
             cursor.x = ccc[0];
@@ -81,7 +81,18 @@ var MAP = (function () {
                 destructibles.push(new Destructible(BLUEPRINT.get(placeables[cpi][1]), cursor.x, cursor.y));
                 break;
             case 'starting-point':
-                startingpoints.push(new StartingPoint(cursor.x, cursor.y));
+                var last = startingpoints.length-1;
+                if (last === -1) {
+                    startingpoints.push(new StartingPoint(cursor.x, cursor.y));
+                }
+                else {
+                    for (var i = 0; i < startingpoints.length; i++) {
+                        if (UTIL.geometry.pointLiesInsidePointSquare([cursor.x, cursor.y], [startingpoints[i].config.oX, startingpoints[i].config.oY], 32)) {
+                            return;
+                        }
+                    }
+                    startingpoints.push(new StartingPoint(cursor.x, cursor.y));
+                }
                 break;
             case 'powerup':
                 powerups.push(PUP.create(placeables[cpi][1], cursor.x, cursor.y));
@@ -105,45 +116,57 @@ var MAP = (function () {
         }
         
         // first lets check the destructibles, start from the topmost
+        MAP._removeDestructibles(x, y);
+        
+        // second, the starting points
+        MAP._removeStartingPoints(x, y);
+        
+        // third, the powerups
+        MAP._removePowerUps(x, y);
+        
+    };
+    
+    my._removeDestructibles = function (x, y) {
         for (var i = destructibles.length-1; i != -1; i--) {
         
-            if (x < destructibles[i].config.oX + 16 &&
-                x > destructibles[i].config.oX - 16 &&
-                y < destructibles[i].config.oY + 16 &&
-                y > destructibles[i].config.oY - 16) {
+            if (x < destructibles[i].config.oX + 32 &&
+                x > destructibles[i].config.oX - 32 &&
+                y < destructibles[i].config.oY + 32 &&
+                y > destructibles[i].config.oY - 32) {
                 // if mouse lies inside a destructible...
                 destructibles.splice(i, 1);
                 break;
             }
             
         }
-        
-        // second, the starting points
+    };
+    
+    my._removeStartingPoints = function (x, y) {
         for (i = startingpoints.length-1; i != -1; i--) {
             
-            if (x < startingpoints[i].config.oX + 16 &&
-                x > startingpoints[i].config.oX - 16 &&
-                y < startingpoints[i].config.oY + 16 &&
-                y > startingpoints[i].config.oY - 16) {
+            if (x < startingpoints[i].config.oX + 32 &&
+                x > startingpoints[i].config.oX - 32 &&
+                y < startingpoints[i].config.oY + 32 &&
+                y > startingpoints[i].config.oY - 32) {
                 // if mouse lies inside a starting point...
                 startingpoints.splice(i, 1);
                 break;
             }
         }
-        
-        // third, the powerups
+    };
+    
+    my._removePowerUps = function (x, y) {
         for (i = powerups.length-1; i != -1; i--) {
             
-            if (x < powerups[i].config.oX + 16 &&
-                x > powerups[i].config.oX - 16 &&
-                y < powerups[i].config.oY + 16 &&
-                y > powerups[i].config.oY - 16) {
+            if (x < powerups[i].config.oX + 32 &&
+                x > powerups[i].config.oX - 32 &&
+                y < powerups[i].config.oY + 32 &&
+                y > powerups[i].config.oY - 32) {
                 // if mouse lies inside a starting point...
                 powerups.splice(i, 1);
                 break;
             }
         }
-        
     };
     
     my.moveCursor = function (direction) {
@@ -186,8 +209,8 @@ var MAP = (function () {
         /* Draw current placeable at cursor, at 50% opacity. */
         
         if (mode === 0) {
-            cursor.x = mousePos.mX;
-            cursor.y = mousePos.mY;
+            cursor.x = mousePos.mX + xView;
+            cursor.y = mousePos.mY + yView;
         }
         else {
             cursor.x = ccc[0];

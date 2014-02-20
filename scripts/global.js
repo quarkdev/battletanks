@@ -6,6 +6,9 @@ Array.prototype.clear = function() {
   }
 };
 
+LOG_ENABLED = false;
+
+terrain = null;
 powerups = [];
 tanks = [];
 projectiles = [];

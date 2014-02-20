@@ -1,5 +1,8 @@
 /*-------- Setup & Initialization --------*/
 
+TerrainImages = new ImageLibrary();
+TerrainImages.add('testmap', 'images/testmap.png');
+
 TankImages = new ImageLibrary();
 TankImages.add('light-turret-blue', 'images/tanks/light-turret-blue.png');
 TankImages.add('light-turret-red', 'images/tanks/light-turret-red.png');
@@ -41,7 +44,7 @@ EditorImages = new ImageLibrary();
 EditorImages.add('starting-point', 'images/editor/starting-point.png');
 
 SpriteSheetImages = new ImageLibrary();
-SpriteSheetImages.add('tank_explosion', 'images/spritesheets/tank_explosion.png');
+SpriteSheetImages.add('explosion', 'images/spritesheets/explosion.png');
 SpriteSheetImages.add('volumetric_explosion', 'images/spritesheets/volumetric_explosion.png');
 SpriteSheetImages.add('aphotic_shield', 'images/spritesheets/aphotic_shield.png');
 
@@ -111,3 +114,4 @@ testmap.startingPoints.push(new StartingPoint(720, 362));
 
 maps.push(testmap);
 current_map = maps[0];
+terrain = TerrainImages.get('testmap');

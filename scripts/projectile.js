@@ -82,7 +82,7 @@ function Projectile(specs) {
     */
     this.draw = function (ctx, xView, yView) {
         ctx.beginPath();
-        ctx.arc(p.oX - xView, p.oY - yView, 3, 0, 2 * Math.PI, false);
+        ctx.arc(p.oX - xView, p.oY - yView, 2.5, 0, 2 * Math.PI, false);
         ctx.fillStyle = 'red';
         ctx.fill();
     };

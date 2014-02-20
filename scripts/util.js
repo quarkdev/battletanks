@@ -81,6 +81,7 @@ var UTIL = (function () {
     *   message - the string to append
     */
     my.writeToLog = function (message) {
+        if (!LOG_ENABLED) { return; }
         cLog.innerHTML = cLog.innerHTML + message + '<br>';
         cLog.scrollTop = document.getElementById('log-' + logNum).offsetTop;
         logNum++;

@@ -345,7 +345,7 @@ function Tank(specs, id, control, x, y) {
         var that = this; // save context
         setTimeout(function () { that.reload(); }, 1000 / t.fRate);
         
-        visualeffects.push(new VisualEffect({name: 'tank_explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'tank_explosion'}));
+        visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
         
         // play sound effect
         fireSound.get();
@@ -395,7 +395,7 @@ function Tank(specs, id, control, x, y) {
         // play visual effect
         var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
         hit_explosion_scale = critical_hit ? hit_explosion_scale * 1.5 : hit_explosion_scale;
-        visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'tank_explosion'}));
+        visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
 
         // record hit if source is the player and target is NOT the player
         if (p.srcId === player.config.id && t.id !== player.config.id) {
@@ -408,6 +408,7 @@ function Tank(specs, id, control, x, y) {
             GameStatistics.inc('total_damage_taken', end_damage);
         }
         
+        var oldHealth = t.health;
         // decrease health
         t.health = t.health < end_damage ? 0 : t.health - end_damage;
         
@@ -443,13 +444,18 @@ function Tank(specs, id, control, x, y) {
         for (var i = 0; i < this.hit_callbacks.length; i++) {
             this.hit_callbacks[i](projectile);
         }
+        
+        // render extern, only do so if there are changes
+        if (t.control === 'player' && oldHealth !== t.health) {
+            renderExtern();
+        }
     }; 
     
     this.death = function () {
         /* Move object offscreen. Set to inactive. */
         t.active = false;
 
-        visualeffects.push(new VisualEffect({name: 'tank_explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: 40, scaleH: 40,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'tank_explosion'}));
+        visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: 40, scaleH: 40,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
         //t.oX = canvas.height+250;
         //t.oY = 0;
     };

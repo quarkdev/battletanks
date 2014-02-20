@@ -257,6 +257,7 @@
 
         CANVAS.clear(ctx);
 
+        ctx.drawImage(terrain, 0, 0, WORLD_WIDTH, WORLD_HEIGHT, -camera.xView, -camera.yView, WORLD_WIDTH, WORLD_HEIGHT);
         CANVAS.drawDestructibles(ctx, camera.xView, camera.yView);
         CANVAS.drawPowerUps(ctx, camera.xView, camera.yView);
         CANVAS.drawTanks(ctx, camera.xView, camera.yView);
@@ -300,10 +301,9 @@
         var now = performance.now();
         var delta = now - then;
 
-        
         update(delta / 1000);
         renderCanvas(); // render canvas objects
-        renderExtern(); // render external objects
+        //renderExtern(); // render external objects
 
         
         then = now;
@@ -346,6 +346,7 @@
         then = performance.now();
         UTIL.playMusic(backgroundMusic);
         GameStatistics.reset();
+        renderExtern();
 
         main();
     };

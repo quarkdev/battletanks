@@ -68,7 +68,7 @@ LOAD.worker = (function () {
         var ai = _spawnWorker('scripts/bot.js', id);
         
         ai.addEventListener('message', function (event) {
-            UTIL.writeToLog('worker says: ' + event.data);
+            //UTIL.writeToLog('worker says: ' + event.data);
             // terminate worker
             my.terminateAll();
         }, false);
