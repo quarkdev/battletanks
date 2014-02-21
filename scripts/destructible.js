@@ -180,46 +180,8 @@ function Destructible(specs, x, y) {
         var lucky = Math.random() > 0.5 ? true : false;
         
         if (lucky) {
-            // ok just got lucky, generate a random powerup
-            var roll = Math.floor(Math.random() * 11) + 1;
-            var tmp = {};
-
-            switch (roll) {
-                case 1:
-                    tmp = new RapidFire(d.oX, d.oY);
-                    break;
-                case 2:
-                    tmp = new Haste(d.oX, d.oY);
-                    break;
-                case 3:
-                    tmp = new FasterProjectile(d.oX, d.oY);
-                    break;
-                case 4:
-                    tmp = new IncreasedArmor(d.oX, d.oY);
-                    break;
-                case 5:
-                    tmp = new IncreasedDamage(d.oX, d.oY);
-                    break;
-                case 6:
-                    tmp = new AphoticShield(d.oX, d.oY);
-                    break;
-                case 7:
-                    tmp = new ReactiveArmor(d.oX, d.oY);
-                    break;
-                case 8:
-                    tmp = new Regeneration(d.oX, d.oY);
-                    break;
-                case 9:
-                    tmp = new Random(d.oX, d.oY);
-                    break;
-                case 10:
-                    tmp = new Ammo(d.oX, d.oY);
-                    break;
-                case 11:
-                    tmp = new ProjectileBarrier(d.oX, d.oY);
-                    break;
-            }
-            powerups.push(tmp);
+            // ok just got lucky, get a random powerup
+            powerups.push(PUP.createRandom(d.oX, d.oY));
         }
     };
     
