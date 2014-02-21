@@ -3,15 +3,18 @@
 var CANVAS = (function () {
     var my = {};
     
-    my.setup = function (ctx) {
+    my.setup = function (canvas, ctx) {
         // Convert from screen coordinates to cartesian.
         ctx.translate(0, canvas.height);
         ctx.scale(1, -1);
         ctx.save();
+        
+        // default styles
         ctx.lineWidth='1';
         ctx.strokeStyle='#000';
+        ctx.font = '12pt Arial';
     };
-    my.clear = function (ctx) {
+    my.clear = function (canvas, ctx) {
         // Clear the canvas.
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -67,8 +70,12 @@ var CANVAS = (function () {
 }());
 
 canvas = document.getElementById('game-screen');
+
 WORLD_WIDTH = 1824;//canvas.width;
 WORLD_HEIGHT = 1824;//canvas.height;
+
 ctx = canvas.getContext('2d');
+
 canvas.onselectstart = function(){ return false; } // turn off text selection on dragging
-CANVAS.setup(ctx);
+
+CANVAS.setup(canvas, ctx);

@@ -400,10 +400,31 @@ var MAP = (function () {
             } while (coords_taken.indexOf(roll) != -1);
             coords_taken.push(roll);
         
-            tanks.push(new Tank(BLUEPRINT.get(playerList[j][1]), playerList[j][0], playerList[j][2], map.startingPoints[roll].config.oX, map.startingPoints[roll].config.oY));
+            tanks.push(new Tank(BLUEPRINT.get(playerList[j][1]), playerList[j][0], playerList[j][2], map.startingPoints[roll].config.oX, map.startingPoints[roll].config.oY, playerList[j][3]));
         }
 
         return 0;
+    };
+    
+    my.generateTerrain = function (canvas, ctx) {
+        /* Randomly generates a terrain. */
+        
+        var maxCols = WORLD_WIDTH / 32;
+        var maxRows = WORLD_HEIGHT / 32;
+        var x, y;
+        
+        // fill the canvas with grass
+        for (var row = 0; row < maxRows; row++) {
+            for (var col = 0; col < maxCols; col++) {
+                x = col + 16;
+                y = row + 16;
+                ctx.translate(x, y);
+                ctx.drawImage(TerrainImages.get('dirt_and_grass_13'), -16, -16);
+                ctx.translate(-x, -y);
+            }
+        }
+        
+        return canvas.toDataURL();
     };
     
     return my;

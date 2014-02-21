@@ -30,11 +30,11 @@ function Tank(specs, id, control, x, y) {
 
     this.config = {
         active       : true,
-        control      : typeof control === 'undefined' ? 'computer' : control,
-        id           : id,                            // random-gen id
-        name         : specs.name,                    // tank name
-        type         : specs.type,                    // tanks type (light/medium/heavy/destroyer/howitzer)
-        health       : specs.health,                  // tank health
+        control      : control,
+        id           : id,                                                                 // random-gen id
+        name         : specs.name,                                                         // tank name
+        type         : specs.type,                                                         // tanks type (light/medium/heavy/destroyer/howitzer)
+        health       : specs.health,                                                       // tank health
         maxHealth    : specs.health,
         width        : specs.width,
         height       : specs.height,
@@ -44,24 +44,25 @@ function Tank(specs, id, control, x, y) {
         tHeight      : specs.tHeight,
         cxt          : -specs.tWidth/2,
         cyt          : -specs.tHeight/2,
-        armor        : specs.armor,                   // tank armor
+        fireScale    : specs.fireScale,
+        explodeScale : specs.explodeScale,
+        armor        : specs.armor,                                                        // tank armor
         invulnerable : typeof specs.invulnerable === 'undefined' ? 0 : specs.invulnerable, // can be any integer from 0 >
-        bSize        : specs.bSize,                   // tank body Size (in px, must be square)
-        tSize        : specs.tSize,                   // tank turret Size (in px, must be square)
-        cRadius      : specs.bSize/2,                 // ((Math.sqrt(Math.pow(specs.bSize/2, 2)*2) - specs.bSize/2) / 2) + specs.bSize/2, // bounding circle radius
-        sSpeed       : specs.sSpeed,                  // tank turn Speed (in degrees / sec)
-        tSpeed       : specs.tSpeed,                  // turret turn Speed (in degrees / sec)
-        fSpeed       : specs.fSpeed,                  // tank forward Speed
-        rSpeed       : specs.rSpeed,                  // tank reverse Speed
-        accel        : specs.accel,                   // acceleration rate (time it takes for the tank to reach max speed)
-        pSpeed       : specs.pSpeed,                  // Projectile speed
-        pDamage      : specs.pDamage,                 // projectile damage
-        ammo         : specs.ammo,                    // amount of ammo
-        fRate        : specs.fRate,                   // Firing rate (rounds per second)
-        oX           : x,                             // tank x coordinate
-        oY           : y,                             // tank y coordinate
-        hAngle       : specs.hAngle,                  // tank head angle (the direction it is currently facing)
-        tAngle       : specs.tAngle                   // tank turret angle (the direction the turret is facing)
+        tSize        : specs.tSize,                                                        // tank turret Size (in px, must be square)
+        cRadius      : Math.max(specs.width, specs.height) / 2,                            // tank max collision size (the greater value between the chassis width and height)
+        sSpeed       : specs.sSpeed,                                                       // tank turn Speed (in degrees / sec)
+        tSpeed       : specs.tSpeed,                                                       // turret turn Speed (in degrees / sec)
+        fSpeed       : specs.fSpeed,                                                       // tank forward Speed
+        rSpeed       : specs.rSpeed,                                                       // tank reverse Speed
+        accel        : specs.accel,                                                        // acceleration rate (time it takes for the tank to reach max speed)
+        pSpeed       : specs.pSpeed,                                                       // Projectile speed
+        pDamage      : specs.pDamage,                                                      // projectile damage
+        ammo         : specs.ammo,                                                         // amount of ammo
+        fRate        : specs.fRate,                                                        // Firing rate (rounds per second)
+        oX           : x,                                                                  // tank x coordinate
+        oY           : y,                                                                  // tank y coordinate
+        hAngle       : specs.hAngle,                                                       // tank head angle (the direction it is currently facing)
+        tAngle       : specs.tAngle                                                        // tank turret angle (the direction the turret is facing)
     };
     
     this.x = this.config.oX;
@@ -269,7 +270,7 @@ function Tank(specs, id, control, x, y) {
                 pick_powerupSound.get();
                 
                 // write to log
-                UTIL.writeToLog('<span id="log-' + logNum + '"><strong>'+ t.id +'</strong><span style="color: #FE4902">(' + t.name + ')</span> used a powerup: <span style="color: blue">' + powerup_name + '</span></span>');
+                //UTIL.writeToLog('<span id="log-' + logNum + '"><strong>'+ t.id +'</strong><span style="color: #FE4902">(' + t.name + ')</span> used a powerup: <span style="color: blue">' + powerup_name + '</span></span>');
                 
                 break;
             }
@@ -345,7 +346,7 @@ function Tank(specs, id, control, x, y) {
         var that = this; // save context
         setTimeout(function () { that.reload(); }, 1000 / t.fRate);
         
-        visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+        visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: t.fireScale, scaleH: t.fireScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
         
         // play sound effect
         fireSound.get();
@@ -414,11 +415,11 @@ function Tank(specs, id, control, x, y) {
         
         // Update combat log.
         var crit_str = critical_hit ? '<span style="color: red">[CRITICAL HIT!]</span>' : '';
-        UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> hit <strong>' + t.id + '</strong><span style="color: #FE4902">(' + t.name + ')</span> for <span style="color: red">' + end_damage + '</span> damage ' + crit_str + '</span>');
+        //UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> hit <strong>' + t.id + '</strong><span style="color: #FE4902">(' + t.name + ')</span> for <span style="color: red">' + end_damage + '</span> damage ' + crit_str + '</span>');
 
         if (t.health === 0) {
             // If tank health is less than or zero, declare it as inactive/dead.
-            UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> destroyed <strong>' + t.id + '</strong><span style="color: #FE4902">(' + t.name + ')</span></span>');
+            //UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> destroyed <strong>' + t.id + '</strong><span style="color: #FE4902">(' + t.name + ')</span></span>');
             
             this.death(); // Call tank death method. This changes the tank state to inactive.
             
@@ -455,7 +456,7 @@ function Tank(specs, id, control, x, y) {
         /* Move object offscreen. Set to inactive. */
         t.active = false;
 
-        visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: 40, scaleH: 40,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
+        visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: t.explodeScale, scaleH: t.explodeScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
         //t.oX = canvas.height+250;
         //t.oY = 0;
     };

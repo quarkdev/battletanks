@@ -25,7 +25,7 @@ var LOAD = (function () {
         
         for (var i = 1; i < max_players; i++) {
             // start on 1 so that the total bot number is 1 less than the max_players
-            playerlist.push(['bot'+i, 'm4_sherman', 'computer']);
+            playerlist.push(['bot'+i, 'heavy', 'computer']);
         }
         
         var setup_error = MAP.setup(current_map, playerlist);
@@ -39,14 +39,11 @@ var LOAD = (function () {
             camera.follow(player, canvas.width/2, canvas.height/2);
             
             // bind ai controls
-            enemy = tanks[1];
-            enemy2 = tanks[2];
-            
             for (i = 1; i < max_players; i++) {
                 bots.push([tanks[i], [], 'waiting', 'chase']);
             
                 // spawn pathfinders
-                LOAD.worker.pathFinder(current_map, tanks[i].config.id);
+                LOAD.worker.pathFinder(current_map, tanks[i].config.id, tanks[i].config.width);
             }
         }
         
@@ -77,7 +74,7 @@ LOAD.worker = (function () {
         ai.postMessage(JSON.stringify(tanks[1].config));
     };
     
-    my.pathFinder = function (map, id) {
+    my.pathFinder = function (map, id, tankSize) {
         /* Spawn a new pathFinder worker. */
         
         var pf = _spawnWorker('scripts/pathfinder.js', id);
@@ -132,6 +129,7 @@ LOAD.worker = (function () {
         msg.data = map.destructibles;
         msg.worldWidth = WORLD_WIDTH;
         msg.worldHeight = WORLD_HEIGHT;
+        msg.tankSize = tankSize;
         
         pf.postMessage(JSON.stringify(msg));
     };

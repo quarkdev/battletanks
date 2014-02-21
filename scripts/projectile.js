@@ -81,10 +81,17 @@ function Projectile(specs) {
     *   ctx - the context
     */
     this.draw = function (ctx, xView, yView) {
+        /*
+        ctx.translate(p.oX - xView, p.oY - yView);
+            ctx.drawImage(ProjectileImages.get('default'), -2.5, -2.5);
+        ctx.translate(-(p.oX - xView), -(p.oY - yView));
+        */
+        
         ctx.beginPath();
         ctx.arc(p.oX - xView, p.oY - yView, 2.5, 0, 2 * Math.PI, false);
         ctx.fillStyle = 'red';
         ctx.fill();
+        
     };
     
     /*

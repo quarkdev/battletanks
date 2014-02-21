@@ -2,6 +2,23 @@
 
 TerrainImages = new ImageLibrary();
 TerrainImages.add('testmap', 'images/testmap.png');
+TerrainImages.add('dirt_and_grass_02', 'images/terrain/dirt_and_grass/dirt_and_grass_02.png');
+TerrainImages.add('dirt_and_grass_03', 'images/terrain/dirt_and_grass/dirt_and_grass_03.png');
+TerrainImages.add('dirt_and_grass_04', 'images/terrain/dirt_and_grass/dirt_and_grass_04.png');
+TerrainImages.add('dirt_and_grass_06', 'images/terrain/dirt_and_grass/dirt_and_grass_06.png');
+TerrainImages.add('dirt_and_grass_07', 'images/terrain/dirt_and_grass/dirt_and_grass_07.png');
+TerrainImages.add('dirt_and_grass_08', 'images/terrain/dirt_and_grass/dirt_and_grass_08.png');
+TerrainImages.add('dirt_and_grass_09', 'images/terrain/dirt_and_grass/dirt_and_grass_09.png');
+TerrainImages.add('dirt_and_grass_10', 'images/terrain/dirt_and_grass/dirt_and_grass_10.png');
+TerrainImages.add('dirt_and_grass_11', 'images/terrain/dirt_and_grass/dirt_and_grass_11.png');
+TerrainImages.add('dirt_and_grass_13', 'images/terrain/dirt_and_grass/dirt_and_grass_13.png');
+TerrainImages.add('dirt_and_grass_14', 'images/terrain/dirt_and_grass/dirt_and_grass_14.png');
+TerrainImages.add('dirt_and_grass_15', 'images/terrain/dirt_and_grass/dirt_and_grass_15.png');
+TerrainImages.add('dirt_and_grass_16', 'images/terrain/dirt_and_grass/dirt_and_grass_16.png');
+TerrainImages.add('dirt_and_grass_17', 'images/terrain/dirt_and_grass/dirt_and_grass_17.png');
+TerrainImages.add('dirt_and_grass_18', 'images/terrain/dirt_and_grass/dirt_and_grass_18.png');
+TerrainImages.add('dirt_and_grass_19', 'images/terrain/dirt_and_grass/dirt_and_grass_19.png');
+TerrainImages.add('dirt_and_grass_20', 'images/terrain/dirt_and_grass/dirt_and_grass_20.png');
 
 TankImages = new ImageLibrary();
 TankImages.add('light-turret-blue', 'images/tanks/light-turret-blue.png');
@@ -13,6 +30,11 @@ TankImages.add('m4_sherman_turret', 'images/tanks/m4_sherman/turret.png');
 TankImages.add('m4_sherman_chassis', 'images/tanks/m4_sherman/chassis.png');
 TankImages.add('m4_sherman_turret_blue', 'images/tanks/m4_sherman/turret_blue.png');
 TankImages.add('m4_sherman_chassis_blue', 'images/tanks/m4_sherman/chassis_blue.png');
+TankImages.add('heavy_turret', 'images/tanks/heavy/turret.png');
+TankImages.add('heavy_chassis', 'images/tanks/heavy/chassis.png');
+
+ProjectileImages = new ImageLibrary();
+ProjectileImages.add('default', 'images/projectiles/default.png');
 
 PowerUpImages = new ImageLibrary();
 PowerUpImages.add('random', 'images/powerups/random.png');
@@ -46,6 +68,7 @@ EditorImages.add('starting-point', 'images/editor/starting-point.png');
 SpriteSheetImages = new ImageLibrary();
 SpriteSheetImages.add('explosion', 'images/spritesheets/explosion.png');
 SpriteSheetImages.add('volumetric_explosion', 'images/spritesheets/volumetric_explosion.png');
+SpriteSheetImages.add('volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png');
 SpriteSheetImages.add('aphotic_shield', 'images/spritesheets/aphotic_shield.png');
 
 

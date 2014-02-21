@@ -131,7 +131,7 @@ function MultiShot(x, y) {
             }, 20000);
         }
         else {
-            tank.ts_stack += 1;
+            tank.ts_stack = tank.ts_stack > 16 ? tank.ts_stack : tank.ts_stack + 1; // cap at 16 stacks
             tank.ts_timeout.reset();
         }
     };
@@ -498,7 +498,8 @@ function Regeneration(x, y) {
             
             tank.regenIntervalID = setInterval(function () {
                 tank.config.health = tank.config.maxHealth - tank.config.health < 0.01 ? tank.config.maxHealth : tank.config.health + 0.01;
-                if (tank.config.health == tank.config.maxHealth) {
+                renderExtern();
+                if (tank.config.health === tank.config.maxHealth) {
                     clearInterval(tank.regenIntervalID);
                     delete tank.regenIntervalID;
                     delete tank.dispellRegen;

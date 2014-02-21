@@ -255,7 +255,7 @@
     // DRAW SCENE
     var renderCanvas = function () {
 
-        CANVAS.clear(ctx);
+        CANVAS.clear(canvas, ctx);
 
         ctx.drawImage(terrain, 0, 0, WORLD_WIDTH, WORLD_HEIGHT, -camera.xView, -camera.yView, WORLD_WIDTH, WORLD_HEIGHT);
         CANVAS.drawDestructibles(ctx, camera.xView, camera.yView);
