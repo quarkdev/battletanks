@@ -649,26 +649,3 @@ function Timer(callback, expire) {
 
     this.resume();
 }
-
-function Camera(xView, yView, canvasWidth, canvasHeight, cameraBounds, worldBounds) {
-    this.xView = xView || 0;
-    this.yView = yView || 0;
-    
-    
-    this.xDeadZone = 0;
-    this.yDeadZone = 0;
-    
-    this.followed = null;
-
-    this.follow = function (gameObject, xDeadZone, yDeadZone) {
-        this.followed = gameObject;
-        this.xDeadZone = xDeadZone;
-        this.yDeadZone = yDeadZone;
-    };
-    
-    this.update = function () {
-        if (this.followed !== null) {
-        
-        }
-    };
-}
