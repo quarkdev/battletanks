@@ -124,15 +124,15 @@ var UTIL = (function () {
     
     my.writeStats = function () {
         /* Write the game stats to the screen. */
-        var shots_fired = STAT.get('total_shots_fired');
-        var hits = STAT.get('total_hits');
+        var shots_fired  = STAT.get('total_shots_fired');
+        var hits         = STAT.get('total_hits');
         var damage_dealt = STAT.get('total_damage_dealt');
         var damage_taken = STAT.get('total_damage_taken');
         
         document.getElementById('stat-sf').innerHTML = shots_fired;
-        document.getElementById('stat-h').innerHTML = hits;
-        document.getElementById('stat-m').innerHTML = shots_fired - hits;
-        document.getElementById('stat-a').innerHTML = ((hits / shots_fired) * 100).toFixed(2) + '%';
+        document.getElementById('stat-h').innerHTML  = hits;
+        document.getElementById('stat-m').innerHTML  = shots_fired - hits;
+        document.getElementById('stat-a').innerHTML  = ((hits / shots_fired) * 100).toFixed(2) + '%';
         document.getElementById('stat-dd').innerHTML = damage_dealt.toFixed(2);
         document.getElementById('stat-dt').innerHTML = damage_taken.toFixed(2);
     };

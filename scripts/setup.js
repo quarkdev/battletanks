@@ -34,8 +34,8 @@ TankImages.add('jagdpanther_turret', 'images/tanks/jagdpanther/turret.png');
 TankImages.add('jagdpanther_chassis', 'images/tanks/jagdpanther/chassis.png');
 TankImages.add('m4_sherman_turret', 'images/tanks/m4_sherman/turret.png');
 TankImages.add('m4_sherman_chassis', 'images/tanks/m4_sherman/chassis.png');
-TankImages.add('m4_sherman_turret_blue', 'images/tanks/m4_sherman/turret_blue.png');
-TankImages.add('m4_sherman_chassis_blue', 'images/tanks/m4_sherman/chassis_blue.png');
+TankImages.add('m4_sherman_turret_blue', 'images/tanks/m4_sherman_blue/turret.png');
+TankImages.add('m4_sherman_chassis_blue', 'images/tanks/m4_sherman_blue/chassis.png');
 TankImages.add('heavy_turret', 'images/tanks/heavy/turret.png');
 TankImages.add('heavy_chassis', 'images/tanks/heavy/chassis.png');
 
@@ -82,6 +82,10 @@ SpriteSheetImages.add('explosion', 'images/spritesheets/explosion.png');
 SpriteSheetImages.add('volumetric_explosion', 'images/spritesheets/volumetric_explosion.png');
 SpriteSheetImages.add('volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png');
 SpriteSheetImages.add('aphotic_shield', 'images/spritesheets/aphotic_shield.png');
+SpriteSheetImages.add('heavy_recoil', 'images/tanks/heavy/recoil.png');
+SpriteSheetImages.add('jagdpanther_recoil', 'images/tanks/jagdpanther/recoil.png');
+SpriteSheetImages.add('m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.png');
+SpriteSheetImages.add('m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png');
 
 // BGM
 backgroundMusic = new Audio('sounds/bgm.wav');

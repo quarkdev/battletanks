@@ -12,6 +12,7 @@ function VisualEffect(specs) {
         oY                : specs.oY,
         width             : specs.width,
         height            : specs.height,
+        angle             : typeof specs.angle === 'undefined' ? 0 : specs.angle,
         scaleW            : specs.scaleW,
         _scaleW           : specs.scaleW/2,
         scaleH            : specs.scaleH,
@@ -20,6 +21,8 @@ function VisualEffect(specs) {
         maxRowIndex       : specs.maxRows - 1,
         framesTillUpdate  : specs.framesTillUpdate,
         loop              : specs.loop,
+        resettable        : typeof specs.resettable === 'undefined' ? false : specs.resettable,
+        paused            : typeof specs.paused === 'undefined' ? false : specs.paused,
         spriteSheet       : SpriteSheetImages.get(specs.spriteSheet)
     };
     
@@ -58,8 +61,16 @@ function VisualEffect(specs) {
         vx.oY = y;
     };
     
+    this.updateAngle = function (angle) {
+        vx.angle = angle;
+    };
+    
+    this.unPause = function () {
+        vx.paused = false;
+    };
+    
     this.update = function () {
-        if (!vx.active) { return; }
+        if (!vx.active || vx.paused) { return; }
         
         if (animation.frames !== vx.framesTillUpdate) {
             animation.frames++;
@@ -69,7 +80,15 @@ function VisualEffect(specs) {
             
             if (animation.csr === vx.maxRowIndex && animation.csc === vx.maxColIndex) {
                 if (!vx.loop) {
-                    vx.active = false;
+                    if (vx.resettable) {
+                        animation.csr = 0;
+                        animation.csc = 0;
+                        animation.frames = 0;
+                        vx.paused = true;
+                    }
+                    else {
+                        vx.active = false;
+                    }
                 }
                 else {
                     this.nextSprite();
@@ -83,7 +102,10 @@ function VisualEffect(specs) {
     };
     
     this.draw = function (ctx, xView, yView) {
+        var angleInRadians = vx.angle * Math.PI/180;
+    
         ctx.translate(vx.oX - xView, vx.oY - yView);
+        ctx.rotate(angleInRadians);
         ctx.drawImage(
             vx.spriteSheet,
             animation.csc * vx.width,
@@ -94,6 +116,7 @@ function VisualEffect(specs) {
             vx.scaleW,
             vx.scaleH
         );
+        ctx.rotate(-angleInRadians);
         ctx.translate(-(vx.oX - xView), -(vx.oY - yView));
     };
 }

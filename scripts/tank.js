@@ -70,9 +70,16 @@ function Tank(specs, id, control, x, y) {
     
     var t = this.config;
     
+    t.turretAnim = new VisualEffect({name: 'fire_recoil', oX: t.oX, oY: t.oY, width: t.tWidth, height: t.tHeight, scaleW: t.tSize, scaleH: t.tSize,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, resettable: true, paused: true, spriteSheet: t.name + '_recoil'});
+    visualeffects.push(t.turretAnim);
+    
     this.turnBody = function (modifier, direction, lockAngle) {
         /* lockAngle is used by AI. Prevents it from going beyond the lockAngle. */
         if (t.active === false) return;
+        
+        if (t.tSpeed === 0) {
+            t.turretAnim.updateAngle(t.tAngle);
+        }
         
         lockAngle = typeof lockAngle === 'undefined' ? false : lockAngle; 
     
@@ -115,11 +122,14 @@ function Tank(specs, id, control, x, y) {
     
     this.turnTurret = function (modifier, mX, mY) {
         if (t.active === false || t.tSpeed === 0) return;
-    
+        
+        t.turretAnim.updateAngle(t.tAngle);
+        
         /*  1. calculate mouseCoord line angle using oX and oY
             2. calculate angle in between mc angle and current facing angle
             3. decide which angle is shorter (left/right turn)
         */
+        
         var dX = mX - t.oX;
         var dY = mY - t.oY;
         
@@ -173,6 +183,8 @@ function Tank(specs, id, control, x, y) {
         for (var i = 0; i < this.move_callbacks.length; i++) {
             this.move_callbacks[i]();
         }
+        
+        t.turretAnim.updatePos(t.oX, t.oY);
         
         lockPoint = typeof lockPoint === 'undefined' ? false : lockPoint; 
     
@@ -349,6 +361,7 @@ function Tank(specs, id, control, x, y) {
         
         visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: t.fireScale, scaleH: t.fireScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
         
+        t.turretAnim.unPause();
         // play sound effect
         fireSound.get();
     };
@@ -371,13 +384,13 @@ function Tank(specs, id, control, x, y) {
             ctx.drawImage(this.attachments.chassis[i].img, t.cx, t.cy);
         }
         ctx.rotate(-t.hAngle * Math.PI/180);
-         // draw turret && attachments
+        /*// draw turret && attachments
         ctx.rotate(t.tAngle * Math.PI/180);
         ctx.drawImage(this.images.turret, t.cxt, t.cyt);
         for (i = 0; i < this.attachments.turret.length; i++) {
             ctx.drawImage(this.attachments.turret[i].img, t.cxt, t.cyt);
         }
-        ctx.rotate(-t.tAngle * Math.PI/180);
+        ctx.rotate(-t.tAngle * Math.PI/180);*/
         // reverse translate
         ctx.translate(-(t.oX - xView), -(t.oY - yView));
     };
@@ -458,6 +471,7 @@ function Tank(specs, id, control, x, y) {
     this.death = function () {
         /* Move object offscreen. Set to inactive. */
         t.active = false;
+        t.turretAnim.end();
 
         visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: t.explodeScale, scaleH: t.explodeScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
         //t.oX = canvas.height+250;
@@ -466,6 +480,7 @@ function Tank(specs, id, control, x, y) {
     
     this.frame = function () {
         /* per frame callback */
+        
         for (var i = 0; i < this.frame_callbacks.length; i++) {
             this.frame_callbacks[i]();
         }

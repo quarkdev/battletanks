@@ -44,10 +44,9 @@ function attachMenuEventListeners() {
             for (var i = 0; i < timers.length; i++) {
                 timers[i].resume();
             }
+            UTIL.playMusic(backgroundMusic);
         }
         if (ui_location == 'editor') editor();
-        
-        UTIL.playMusic(backgroundMusic);
     });
     
     $('.main-menu').click(function() {
