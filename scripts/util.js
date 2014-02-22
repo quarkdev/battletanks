@@ -211,7 +211,7 @@ var UTIL = (function () {
         
         $('#progress').show();
         var preGameDelay = setInterval(function () {
-            progressBar.value += pseudoInc + (Math.random() * 10);
+            progressBar.value += pseudoInc + (Math.random() * 5);
             
             if (millisecSince > Math.floor(Math.random() * msMax) + msMin) {
                 fti = Math.floor(Math.random() * ftLen);

@@ -13,6 +13,14 @@
         margin: 0px;
     }
     
+    .big-title {
+        font-family: Arial;
+        font-size: 96px;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 0px 3px 2px rgba(150, 150, 150, 1);
+    }
+    
     #health-bar,
     #current-health,
     #current-health-anim,
@@ -59,7 +67,11 @@
         display: none;
     }
     
-    #canvas-wrap { position: relative }
+    #canvas-wrap {
+        position: relative;
+        text-align: center;
+    }
+    
     .overlay {
         position: absolute;
         width: 1026px;
@@ -226,6 +238,7 @@
             <progress id="progress-bar" value="0" max="100"></progress>
         </div>
         <div id="main-menu" class="overlay">
+            <span class="big-title">Battle Tanks</span>
             <div class="menu-btn-container mbc-2">
                 <div id="start-game" class="menu-btn">START GAME</div>
                 <div id="map-builder" class="menu-btn">MAP BUILDER</div>
