@@ -6,14 +6,14 @@ function Tank(specs, id, control, x, y) {
     this.frame_callbacks = []; // called for each frame update (useful for powerups that require per frame animation)
     
     this.attachments = { // {id, Image()}
-        turret  : new Array(),
-        chassis : new Array()
+        turret  : [],
+        chassis : []
     };
 
     this.velocity = {
         forward : 0.0,
         reverse : 0.0
-    }
+    };
     
     this.status = {
         chassisRotateLeft   : false,
@@ -179,6 +179,7 @@ function Tank(specs, id, control, x, y) {
         /* move forward or backward, modifier is time-based*/
         var tmpX = t.oX; // save old coords
         var tmpY = t.oY;
+        var d, bot;
         
         switch(direction) {
             case 'forward':
@@ -233,9 +234,9 @@ function Tank(specs, id, control, x, y) {
         
         // check if there are any objects in new coords, revert coord update if object found
         // check all destructible pos
-        for (var i = 0; i < destructibles.length; i++) {
+        for (i = 0; i < destructibles.length; i++) {
             if (destructibles[i].config.active === false) continue;
-            var d = Math.sqrt(Math.pow(destructibles[i].config.oX - t.oX, 2) + Math.pow(destructibles[i].config.oY - t.oY, 2));
+            d = Math.sqrt(Math.pow(destructibles[i].config.oX - t.oX, 2) + Math.pow(destructibles[i].config.oY - t.oY, 2));
             if (destructibles[i].config.cRadius + t.cRadius >= d) {
                 t.oX = tmpX;
                 t.oY = tmpY;
@@ -243,7 +244,7 @@ function Tank(specs, id, control, x, y) {
                 this.velocity.reverse = 0.0;
                 
                 // reset pathfinding
-                var bot = UTIL.getBotReference(t.id);
+                bot = UTIL.getBotReference(t.id);
                 if (typeof bot !== 'undefined') {
                     if (bot[3] !== 'waiting') {
                         bot[2] = 'blocked';
@@ -254,8 +255,8 @@ function Tank(specs, id, control, x, y) {
         }
         
         // check all powerup pos
-        for (var i = 0; i < powerups.length; i++) {
-            var d = Math.sqrt(Math.pow(powerups[i].config.oX - t.oX, 2) + Math.pow(powerups[i].config.oY - t.oY, 2));
+        for (i = 0; i < powerups.length; i++) {
+            d = Math.sqrt(Math.pow(powerups[i].config.oX - t.oX, 2) + Math.pow(powerups[i].config.oY - t.oY, 2));
             if (powerups[i].config.cRadius + t.cRadius >= d) {
             
                 // apply powerup effects
@@ -286,7 +287,7 @@ function Tank(specs, id, control, x, y) {
                 this.velocity.forward = 0.0;
                 this.velocity.reverse = 0.0;
                 // reset pathfinding
-                var bot = UTIL.getBotReference(t.id);
+                bot = UTIL.getBotReference(t.id);
                 if (typeof bot !== 'undefined') {
                     if (bot[3] !== 'waiting') {
                         bot[2] = 'blocked';
@@ -303,7 +304,7 @@ function Tank(specs, id, control, x, y) {
             this.velocity.forward = 0.0;
             this.velocity.reverse = 0.0;
             // reset pathfinding
-            var bot = UTIL.getBotReference(t.id);
+            bot = UTIL.getBotReference(t.id);
             if (typeof bot !== 'undefined') {
                 if (bot[3] !== 'waiting') {
                     bot[2] = 'blocked';
@@ -322,7 +323,7 @@ function Tank(specs, id, control, x, y) {
         if (this.reloading || t.ammo === 0) { return; } 
         
         if (t.control === 'player') {
-            GameStatistics.inc('total_shots_fired', 1);
+            STAT.inc('total_shots_fired', 1);
         }
         
         // if not, then fire!
@@ -359,19 +360,21 @@ function Tank(specs, id, control, x, y) {
     
     this.draw = function (ctx, xView, yView) {
         if (t.active === false) return;
+        
+        var i = 0;
 
         ctx.translate(t.oX - xView, t.oY - yView);
         // draw body && attachments
         ctx.rotate(t.hAngle * Math.PI/180);
         ctx.drawImage(this.images.chassis, t.cx, t.cy);
-        for (var i = 0; i < this.attachments.chassis.length; i++) {
+        for (i = 0; i < this.attachments.chassis.length; i++) {
             ctx.drawImage(this.attachments.chassis[i].img, t.cx, t.cy);
         }
         ctx.rotate(-t.hAngle * Math.PI/180);
          // draw turret && attachments
         ctx.rotate(t.tAngle * Math.PI/180);
         ctx.drawImage(this.images.turret, t.cxt, t.cyt);
-        for (var i = 0; i < this.attachments.turret.length; i++) {
+        for (i = 0; i < this.attachments.turret.length; i++) {
             ctx.drawImage(this.attachments.turret[i].img, t.cxt, t.cyt);
         }
         ctx.rotate(-t.tAngle * Math.PI/180);
@@ -401,12 +404,12 @@ function Tank(specs, id, control, x, y) {
         // record hit if source is the player and target is NOT the player
         if (p.srcId === player.config.id && t.id !== player.config.id) {
             // the one hit is an enemy
-            GameStatistics.inc('total_hits', 1);
-            GameStatistics.inc('total_damage_dealt', end_damage);
+            STAT.inc('total_hits', 1);
+            STAT.inc('total_damage_dealt', end_damage);
         }
         else if (p.srcId !== player.config.id && t.id === player.config.id) {
             // source is enemy tank, and target is the player
-            GameStatistics.inc('total_damage_taken', end_damage);
+            STAT.inc('total_damage_taken', end_damage);
         }
         
         var oldHealth = t.health;

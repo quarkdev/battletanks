@@ -13,7 +13,7 @@ var GUI = (function () {
             id          : config.id,
             ui_location : config.ui_location,
             ui_elements : [],
-            show = function () {
+            show : function () {
                 /* Show interface layer just above canvas. */
                 
                 // Iterate on all elements and show

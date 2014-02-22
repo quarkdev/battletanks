@@ -1,0 +1,49 @@
+{
+"blueprints" : [
+{
+    "name"     : "brick_explosive",
+    "nImage"   : "brick_explosive",
+    "dImage"   : "brick_explosive",
+    "size"     : 32,
+    "health"   : 25,
+    "armor"    : 12,
+    "mod"      : "explosive"
+},
+{
+    "name"     : "wall_rubber",
+    "nImage"   : "wall_rubber",
+    "dImage"   : "wall_rubber",
+    "size"     : 32,
+    "health"   : 25,
+    "armor"    : 12,
+    "mod"      : "rubber"
+},
+{
+    "name"     : "heavy_rubber",
+    "nImage"   : "heavy_rubber",
+    "dImage"   : "heavy_rubber",
+    "size"     : 32,
+    "health"   : 100,
+    "armor"    : 12,
+    "mod"      : "rubber"
+},
+{
+    "name"     : "concrete",
+    "nImage"   : "concrete",
+    "dImage"   : "concrete",
+    "size"     : 32,
+    "health"   : 35,
+    "armor"    : 20,
+    "mod"      : "normal"
+},
+{
+    "name"     : "riveted_iron",
+    "nImage"   : "riveted_iron",
+    "dImage"   : "riveted_iron",
+    "size"     : 32,
+    "health"   : 50,
+    "armor"    : 50,
+    "mod"      : "normal"
+}
+]
+}

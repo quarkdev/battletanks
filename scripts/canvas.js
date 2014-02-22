@@ -76,6 +76,6 @@ WORLD_HEIGHT = 1824;//canvas.height;
 
 ctx = canvas.getContext('2d');
 
-canvas.onselectstart = function(){ return false; } // turn off text selection on dragging
+canvas.onselectstart = function() { return false; }; // turn off text selection on dragging
 
 CANVAS.setup(canvas, ctx);

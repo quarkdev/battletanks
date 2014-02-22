@@ -192,5 +192,5 @@ function Destructible(specs, x, y) {
         ctx.translate(d.oX - xView, d.oY - yView);
         ctx.drawImage(d.nImage, -_size, -_size);
         ctx.translate(-(d.oX - xView), -(d.oY - yView));
-    }
+    };
 }

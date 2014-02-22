@@ -96,6 +96,7 @@ var MAP = (function () {
                 break;
             case 'powerup':
                 powerups.push(PUP.create(placeables[cpi][1], cursor.x, cursor.y));
+                break;
             default:
                 break;
         }
@@ -232,6 +233,7 @@ var MAP = (function () {
                 break;
             case 'powerup':
                 ctx.drawImage(PowerUpImages.get(placeables[cpi][1]), -16, -16);
+                break;
             default:
                 break;
 
@@ -382,7 +384,7 @@ var MAP = (function () {
         timers.clear();
         
         // push the powerups into the array
-        for (var i = 0; i < map.powerups.length; i++) {
+        for (i = 0; i < map.powerups.length; i++) {
             powerups.push(PUP.create(map.powerups[i][0], map.powerups[i][1], map.powerups[i][2]));
         }
 

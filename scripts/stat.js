@@ -1,19 +1,20 @@
 /*
-* Object: STAT
+* Module: STAT
 *
 * Tracks game/level statistics
 */
-function STAT() {
-
-    this.statistics = []; // [fieldname, value]
+var STAT = (function () {
+    var my = {};
     
-    this.add = function (name) {
+    var statistics = []; // [fieldname, value]
+    
+    my.add = function (name) {
         /* Add new field. */
         // Check if field already exists
         var exists = false;
         
-        for (var i = 0; i < this.statistics.length; i++) {
-            if (this.statistics[i][0] === name) {
+        for (var i = 0; i < statistics.length; i++) {
+            if (statistics[i][0] === name) {
                 exists = true;
                 break;
             }
@@ -21,52 +22,53 @@ function STAT() {
         
         if (!exists) {
             // if it's not already in the stat pool, add it
-            this.statistics.push([name, 0]);
+            statistics.push([name, 0]);
         }
         
     };
     
-    this.inc = function (name, value) {
+    my.inc = function (name, value) {
         /* Increment value of matching field. */
-        for (var i = 0; i < this.statistics.length; i++) {
-            if (this.statistics[i][0] === name) {
-                this.statistics[i][1] += value; 
+        for (var i = 0; i < statistics.length; i++) {
+            if (statistics[i][0] === name) {
+                statistics[i][1] += value; 
             }
         }
     };
     
-    this.dec = function (name, value) {
+    my.dec = function (name, value) {
         /* Decrement value of matching field. */
-        for (var i = 0; i < this.statistics.length; i++) {
-            if (this.statistics[i][0] === name) {
-                this.statistics[i][1] -= value; 
+        for (var i = 0; i < statistics.length; i++) {
+            if (statistics[i][0] === name) {
+                statistics[i][1] -= value; 
             }
         }
     };
     
-    this.update = function (name, value) {
+    my.update = function (name, value) {
         /* Update value of matching field. */
-        for (var i = 0; i < this.statistics.length; i++) {
-            if (this.statistics[i][0] === name) {
-                this.statistics[i][1] = value; 
+        for (var i = 0; i < statistics.length; i++) {
+            if (statistics[i][0] === name) {
+                statistics[i][1] = value; 
             }
         }
     };
     
-    this.reset = function () {
+    my.reset = function () {
         /* Reset the values of all fields. */
-        for (var i = 0; i < this.statistics.length; i++) {
-            this.statistics[i][1] = 0; 
+        for (var i = 0; i < statistics.length; i++) {
+            statistics[i][1] = 0; 
         }
     };
     
-    this.get = function (name) {
+    my.get = function (name) {
         /* Retrieves the value of the matching field. */
-        for (var i = 0; i < this.statistics.length; i++) {
-            if (this.statistics[i][0] === name) {
-                return this.statistics[i][1]; 
+        for (var i = 0; i < statistics.length; i++) {
+            if (statistics[i][0] === name) {
+                return statistics[i][1]; 
             }
         }
     };
     
-};
+    return my;
+}());

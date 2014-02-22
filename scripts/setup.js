@@ -1,5 +1,10 @@
-/*-------- Setup & Initialization --------*/
+/*-------- Asset Initialization and Setup --------*/
 
+// Blueprints
+BLUEPRINT.addMulti('json/blueprints/tanks.json');
+BLUEPRINT.addMulti('json/blueprints/destructibles.json');
+
+// Terrain images
 TerrainImages = new ImageLibrary();
 TerrainImages.add('testmap', 'images/testmap.png');
 TerrainImages.add('dirt_and_grass_02', 'images/terrain/dirt_and_grass/dirt_and_grass_02.png');
@@ -20,6 +25,7 @@ TerrainImages.add('dirt_and_grass_18', 'images/terrain/dirt_and_grass/dirt_and_g
 TerrainImages.add('dirt_and_grass_19', 'images/terrain/dirt_and_grass/dirt_and_grass_19.png');
 TerrainImages.add('dirt_and_grass_20', 'images/terrain/dirt_and_grass/dirt_and_grass_20.png');
 
+// Tank images
 TankImages = new ImageLibrary();
 TankImages.add('light-turret-blue', 'images/tanks/light-turret-blue.png');
 TankImages.add('light-turret-red', 'images/tanks/light-turret-red.png');
@@ -33,9 +39,11 @@ TankImages.add('m4_sherman_chassis_blue', 'images/tanks/m4_sherman/chassis_blue.
 TankImages.add('heavy_turret', 'images/tanks/heavy/turret.png');
 TankImages.add('heavy_chassis', 'images/tanks/heavy/chassis.png');
 
+// Projectile images
 ProjectileImages = new ImageLibrary();
 ProjectileImages.add('default', 'images/projectiles/default.png');
 
+// Powerup images
 PowerUpImages = new ImageLibrary();
 PowerUpImages.add('random', 'images/powerups/random.png');
 PowerUpImages.add('rapid-fire', 'images/powerups/rapid-fire.png');
@@ -51,6 +59,7 @@ PowerUpImages.add('projectile-barrier', 'images/powerups/projectile-barrier.png'
 PowerUpImages.add('return', 'images/powerups/return.png');
 PowerUpImages.add('multi-shot', 'images/powerups/multi-shot.png');
 
+// Destructible images
 DestructibleImages = new ImageLibrary();
 DestructibleImages.add('brick_explosive', 'images/destructibles/brick-explosive.png');
 DestructibleImages.add('wall_rubber', 'images/destructibles/wall-rubber.png');
@@ -58,25 +67,29 @@ DestructibleImages.add('heavy_rubber', 'images/destructibles/heavy-rubber.png');
 DestructibleImages.add('concrete', 'images/destructibles/concrete.png');
 DestructibleImages.add('riveted_iron', 'images/destructibles/riveted-iron.png');
 
+// Attachment images
 AttachmentImages = new ImageLibrary();
 AttachmentImages.add('increased-damage', 'images/attachments/turret/increased-damage.png');
 AttachmentImages.add('increased-armor', 'images/attachments/chassis/increased-armor.png');
 
+// Editor images
 EditorImages = new ImageLibrary();
 EditorImages.add('starting-point', 'images/editor/starting-point.png');
 
+// Spritesheet images
 SpriteSheetImages = new ImageLibrary();
 SpriteSheetImages.add('explosion', 'images/spritesheets/explosion.png');
 SpriteSheetImages.add('volumetric_explosion', 'images/spritesheets/volumetric_explosion.png');
 SpriteSheetImages.add('volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png');
 SpriteSheetImages.add('aphotic_shield', 'images/spritesheets/aphotic_shield.png');
 
-
+// BGM
 backgroundMusic = new Audio('sounds/bgm.wav');
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.15;
 backgroundMusic.load();
 
+// Sound effects
 fireSound         = new SoundPool('sounds/turret_fire.wav', 0.12, 20);
 explodeSound      = new SoundPool('sounds/explosion.wav', 0.1, 20);
 d_explodeSound    = new SoundPool('sounds/destructible_hit.wav', 0.1, 20);
@@ -96,11 +109,10 @@ t_destroyedSound3.init();
 pick_powerupSound.init();
 
 // Init stat fields
-GameStatistics = new STAT();
-GameStatistics.add('total_shots_fired');
-GameStatistics.add('total_hits');
-GameStatistics.add('total_damage_dealt');
-GameStatistics.add('total_damage_taken');
+STAT.add('total_shots_fired');
+STAT.add('total_hits');
+STAT.add('total_damage_dealt');
+STAT.add('total_damage_taken');
 
 // Map editor initiatlization
 MAP.addPlaceable('destructible', 'brick_explosive');

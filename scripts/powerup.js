@@ -22,43 +22,30 @@ var PUP = (function() {
         switch (name) {
             case 'random':
                 return new Random(x, y);
-                break;
             case 'haste':
                 return new Haste(x, y);
-                break;
             case 'ammo':
                 return new Ammo(x, y);
-                break;
             case 'projectile-barrier':
                 return new ProjectileBarrier(x, y);
-                break;
             case 'aphotic-shield':
                 return new AphoticShield(x, y);
-                break;
             case 'increased-armor':
                 return new IncreasedArmor(x, y);
-                break;
             case 'reactive-armor':
                 return new ReactiveArmor(x, y);
-                break;
             case 'regeneration':
                 return new Regeneration(x, y);
-                break;
             case 'rapid-fire':
                 return new RapidFire(x, y);
-                break;
             case 'faster-projectile':
                 return new FasterProjectile(x, y);
-                break;
             case 'increased-damage':
                 return new IncreasedDamage(x, y);
-                break;
             case 'return':
                 return new Return(x, y);
-                break;
             case 'multi-shot':
                 return new MultiShot(x, y);
-                break;
             default:
                 break;
         }
@@ -90,7 +77,7 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
-        }
+        };
     }
 
     function MultiShot(x, y) {

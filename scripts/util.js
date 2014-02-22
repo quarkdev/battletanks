@@ -107,7 +107,6 @@ var UTIL = (function () {
         for (var i = 0; i < bots.length; i++) {
             if (bots[i][0].config.id === id) {
                 return bots[i];
-                break;
             }
         }
     };
@@ -125,10 +124,10 @@ var UTIL = (function () {
     
     my.writeStats = function () {
         /* Write the game stats to the screen. */
-        var shots_fired = GameStatistics.get('total_shots_fired');
-        var hits = GameStatistics.get('total_hits');
-        var damage_dealt = GameStatistics.get('total_damage_dealt');
-        var damage_taken = GameStatistics.get('total_damage_taken');
+        var shots_fired = STAT.get('total_shots_fired');
+        var hits = STAT.get('total_hits');
+        var damage_dealt = STAT.get('total_damage_dealt');
+        var damage_taken = STAT.get('total_damage_taken');
         
         document.getElementById('stat-sf').innerHTML = shots_fired;
         document.getElementById('stat-h').innerHTML = hits;
@@ -136,6 +135,51 @@ var UTIL = (function () {
         document.getElementById('stat-a').innerHTML = ((hits / shots_fired) * 100).toFixed(2) + '%';
         document.getElementById('stat-dd').innerHTML = damage_dealt.toFixed(2);
         document.getElementById('stat-dt').innerHTML = damage_taken.toFixed(2);
+    };
+    
+    my.get = function (url, callback) {
+        /* GET request */
+            var req = new XMLHttpRequest();
+            req.open('GET', url);
+            
+            req.onload = function () {
+                if (req.status == 200) {
+                    callback(req.response);
+                    //return req.response;
+                }
+                else {
+                    console.log('GET failed!');
+                }
+            };
+            
+            req.onerror = function () {
+                console.log('Network Error');
+            };
+            
+            req.send();
+    };
+    
+    my.getPromise = function (url) {
+        /* GET request using Promise. */
+        return new Promise(function (resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open('GET', url);
+            
+            req.onload = function () {
+                if (req.status == 200) {
+                    resolve(req.response);
+                }
+                else {
+                    reject(Error(req.statusText));
+                }
+            };
+            
+            req.onerror = function () {
+                reject(Error('Network Error'));
+            };
+            
+            req.send();
+        });
     };
         
     return my;
@@ -167,7 +211,7 @@ UTIL.geometry = (function() {
             x: typeof x === "undefined" ? null : x,
             y: typeof y === "undefined" ? null : y
         };
-    }
+    };
 
     /*  
     * Private Object: Line
@@ -192,7 +236,7 @@ UTIL.geometry = (function() {
                 y: typeof B.y === "undefined" ? null : B.y
             }
         };
-    }
+    };
 
     /*
     * Public Method: pointLiesInsidePointSquare
@@ -290,15 +334,15 @@ UTIL.geometry = (function() {
            right  : lastPoint.x > lines[1].A.x
         */
         
+        var poi, dist, side, valid;
+        
         // Check each line segment if it intersects with the other line segment.
         for (var i = 0; i < lines.length; i++) {
             
             if (_linesIntersect(new Point(line.Ax, line.Ay), new Point(line.Bx, line.By), new Point(lines[i].A.x, lines[i].A.y), new Point(lines[i].B.x, lines[i].B.y))) {
                 // If it intersects, get PoI, compare it with the nearest_line (if !null) otherwise save it.
-                var poi = _getPofIntLines(lines[i], incidentLine),
-                    dist = _getDistanceBetweenPoints(lastPoint, poi),
-                    side, // Side of the square that was hit. top-right-bottom-left || 0-1-2-3
-                    valid;
+                poi = _getPofIntLines(lines[i], incidentLine);
+                dist = _getDistanceBetweenPoints(lastPoint, poi);
 
                 if (nearest_line) {
                     // Compare distance.
@@ -595,7 +639,7 @@ function SoundPool(loc, vol, max) {
     this.init = function () {
         for (var i = 0; i < size; i++) {
             var sound = new Audio(soundLoc);
-            sound.volume = soundVol,
+            sound.volume = soundVol;
             sound.load();
             pool[i] = sound;
         }
@@ -615,8 +659,6 @@ function SoundPool(loc, vol, max) {
 }
 
 function Timer(callback, expire) {
-    this.timerId;
-    this.start,
     this.remaining = expire;
     this.expire_init = expire;
 
@@ -634,7 +676,7 @@ function Timer(callback, expire) {
         window.clearTimeout(this.timerId);
         this.start = new Date();
         this.timerId = window.setTimeout(callback, this.expire_init);
-    }
+    };
     
     this.clear = function () {
         window.clearTimeout(this.timerId);

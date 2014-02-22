@@ -345,7 +345,7 @@
         attachGameEventListeners();
         then = performance.now();
         UTIL.playMusic(backgroundMusic);
-        GameStatistics.reset();
+        STAT.reset();
         renderExtern();
 
         main();
