@@ -6,13 +6,24 @@ function attachMenuEventListeners() {
         // hide menu
         $('.overlay').hide();
         
+        // append all map options to select element
+        var map_options = '<option value="0" selected="selected">Default</option>';
+        for (var i = 1; i < maps.length; i++) {
+            map_options += '<option value="' + i + '" >' + maps[i].name + '</option>';
+        }
+        
+        $('#map-select').html(map_options);
+        
         // show pre-game settings
-        $('#prompt-pre-game-settings').fadeIn();
+        $('#prompt-pre-game-settings').show();
     });
     
     $('#start-battle-ok').click(function () {
         // hide menu
         $('.overlay').hide();
+        
+        // get map
+        current_map = maps[$('#map-select').val()];
         
         // get player name
         var player_name = document.getElementById('player-name').value;

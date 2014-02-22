@@ -1,5 +1,20 @@
 /*-------- Globals & Setup --------*/
 
+var GLOBALS = (function () {
+    return {
+        assetStatus : {
+            queued : 0,
+            loaded : 0,
+            failed : 0
+        },
+        resetAssetStatus : function () {
+            assetStatus.queued = 0;
+            assetStatus.loaded = 0;
+            assetStatus.failed = 0;
+        }
+    };
+}());
+
 Array.prototype.clear = function () {
   while (this.length > 0) {
     this.pop();

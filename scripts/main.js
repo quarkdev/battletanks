@@ -1,8 +1,7 @@
     
-    /* ------------------------ MAIN ------------------- */
-    $('.overlay').hide();
-    
+    /* ------------------------ MAIN ------------------- */ 
     var menu = function() {
+    
         ui_location = 'menu';
         
         $('#external-hud').hide();
@@ -393,6 +392,5 @@
         UTIL.pauseMusic(backgroundMusic);
     };
 
-    menu();
     attachMenuEventListeners();
-    //start();
+    

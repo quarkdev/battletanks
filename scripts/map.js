@@ -320,17 +320,17 @@ var MAP = (function () {
         
         for (var i = 0; i < startingPoints.length; i++) {
             coords = startingPoints[i].split(':'); // x:y
-            newmap.startingPoints.push([coords[0], coords[1]]);
+            newmap.startingPoints.push(new StartingPoint(parseFloat(coords[0]), parseFloat(coords[1])));
         }
         
         for (i = 0; i < destructibles.length; i++) {
             type_coords = destructibles[i].split(':'); // type:x:y
-            newmap.destructibles.push([type_coords[0], type_coords[1], type_coords[2]]);
+            newmap.destructibles.push([type_coords[0], parseFloat(type_coords[1]), parseFloat(type_coords[2])]);
         }
         
         for (i = 0; i < powerups.length; i++) {
             type_coords = powerups[i].split(':'); // type:x:y
-            newmap.powerups.push([type_coords[0], type_coords[1], type_coords[2]]);
+            newmap.powerups.push([type_coords[0], parseFloat(type_coords[1]), parseFloat(type_coords[2])]);
         }
         
         // check map list if it contains a similar map
@@ -402,7 +402,7 @@ var MAP = (function () {
             } while (coords_taken.indexOf(roll) != -1);
             coords_taken.push(roll);
         
-            tanks.push(new Tank(BLUEPRINT.get(playerList[j][1]), playerList[j][0], playerList[j][2], map.startingPoints[roll].config.oX, map.startingPoints[roll].config.oY, playerList[j][3]));
+            tanks.push(new Tank(BLUEPRINT.get(playerList[j][1]), playerList[j][0], playerList[j][2], map.startingPoints[roll].config.oX, map.startingPoints[roll].config.oY));
         }
 
         return 0;

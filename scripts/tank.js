@@ -393,6 +393,24 @@ function Tank(specs, id, control, x, y) {
         ctx.rotate(-t.tAngle * Math.PI/180);*/
         // reverse translate
         ctx.translate(-(t.oX - xView), -(t.oY - yView));
+        
+        var decPercent = (t.health / t.maxHealth);
+        var lifebarLen = decPercent * t.width;
+        
+        if (decPercent >= 0.75) {
+            ctx.fillStyle = '66CD00';
+        }
+        else if (decPercent >= 0.5) {
+            ctx.fillStyle = 'FFFF00';
+        }
+        else if (decPercent >= 0.25) {
+            ctx.fillStyle = 'FE4902';
+        }
+        else {
+            ctx.fillStyle = 'FF0000';
+        }
+        
+        ctx.fillRect((t.oX - lifebarLen/2) - xView, (t.oY + t.cRadius + 8) - yView, lifebarLen, 4);
     };
     
     this.hit = function (projectile) {

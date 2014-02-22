@@ -22,6 +22,10 @@
         position: relative;
     }
     
+    #external-hud {
+        display: none;
+    }
+    
     #health-bar {
         border: 1px solid black;
         z-index: 1;
@@ -126,6 +130,24 @@
         
     }
     
+    #progress {
+        text-align: center;
+        font-family: Arial;
+    }
+    
+    #progress-bar {
+        width: 300px;
+        height: 20px;
+        position: absolute;
+        left: 362px;
+        top: 284px;
+    }
+    
+    #progress-text {
+        margin-top: 260px;
+        color: #fff;
+    }
+    
     .ui_input,
     #map-name,
     #map-name-ex {
@@ -199,6 +221,10 @@
 <div id="canvas-ui-wrap">
     <div id="canvas-wrap" onselectstart="return false;">
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
+        <div id="progress" class="overlay">
+            <div id="progress-text">Loading Assets...</div>
+            <progress id="progress-bar" value="0" max="100"></progress>
+        </div>
         <div id="main-menu" class="overlay">
             <div class="menu-btn-container mbc-2">
                 <div id="start-game" class="menu-btn">START GAME</div>
@@ -242,10 +268,10 @@
         <div id="prompt-pre-game-settings" class="overlay">
             <div class="menu-btn-container mbc-2">
                 <span style="color: white; font-family: Arial">MAP: </span>
-                <select  style="width: 152px; padding: 8px 4px; margin-bottom: 12px;">
-                    <option value="0" selected="selected">Default</option>
+                <select id="map-select" style="width: 232px; padding: 8px 4px; margin-bottom: 12px;">
                 </select>
-                <input id="player-name" class="ui_input" type="text" value="" placeholder="Player Name" />
+                <span style="color: white; font-family: Arial">PLAYER NAME: </span>
+                <input id="player-name" class="ui_input" type="text" value="unnamed" placeholder="Player Name" />
                 <div id="start-battle-ok" class="menu-btn">START BATTLE!</div>
             </div>
         </div>

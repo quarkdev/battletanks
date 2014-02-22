@@ -27,9 +27,6 @@ TerrainImages.add('dirt_and_grass_20', 'images/terrain/dirt_and_grass/dirt_and_g
 
 // Tank images
 TankImages = new ImageLibrary();
-TankImages.add('light-turret-blue', 'images/tanks/light-turret-blue.png');
-TankImages.add('light-turret-red', 'images/tanks/light-turret-red.png');
-TankImages.add('light-chassis', 'images/tanks/light-chassis.png');
 TankImages.add('jagdpanther_turret', 'images/tanks/jagdpanther/turret.png');
 TankImages.add('jagdpanther_chassis', 'images/tanks/jagdpanther/chassis.png');
 TankImages.add('m4_sherman_turret', 'images/tanks/m4_sherman/turret.png');
@@ -88,7 +85,11 @@ SpriteSheetImages.add('m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.png')
 SpriteSheetImages.add('m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png');
 
 // BGM
+GLOBALS.assetStatus.queued += 1;
 backgroundMusic = new Audio('sounds/bgm.wav');
+backgroundMusic.addEventListener('canplaythrough', function () {
+    GLOBALS.assetStatus.loaded += 1;
+}, false);
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.15;
 backgroundMusic.load();
@@ -152,5 +153,29 @@ testmap.startingPoints.push(new StartingPoint(500, 300));
 testmap.startingPoints.push(new StartingPoint(720, 362));
 
 maps.push(testmap);
+MAP.importFromString('testmap2|312:240,448:456,344:704,488:896,352:1032,512:1216,360:1376,536:1552,776:1736,976:1552,928:1208,1152:920|heavy_rubber:1368:608,heavy_rubber:1384:624,heavy_rubber:1456:744,heavy_rubber:1440:760,heavy_rubber:1440:840,heavy_rubber:1488:896,heavy_rubber:1408:976,heavy_rubber:1344:1040,heavy_rubber:1264:1120,heavy_rubber:1192:1192,heavy_rubber:1128:1256,heavy_rubber:1040:1232,heavy_rubber:1000:1144,heavy_rubber:920:1088,heavy_rubber:832:1048,heavy_rubber:784:1000|multi-shot:888:800,multi-shot:808:720,multi-shot:704:784,multi-shot:648:864,multi-shot:624:952,multi-shot:536:1040,multi-shot:464:1112,multi-shot:352:1144,multi-shot:240:1248,multi-shot:216:1352,multi-shot:216:1368,multi-shot:288:1456,multi-shot:384:1552,multi-shot:496:1664,rapid-fire:680:1640,rapid-fire:720:1600,rapid-fire:736:1584,rapid-fire:800:1520');
+
 current_map = maps[0];
 terrain = TerrainImages.get('testmap');
+
+// wait for all assets to load
+$('.overlay').hide();
+$('#progress').show();
+var progressText = document.getElementById('progress-text');
+var progressBar = document.getElementById('progress-bar');
+
+var assetLoadCheck = setInterval(function () {
+
+    if (GLOBALS.assetStatus.loaded > 0) {
+        progressBar.value = (179 / GLOBALS.assetStatus.loaded) * 100;
+    }
+    if (GLOBALS.assetStatus.loaded == 179) {
+    
+        progressText.innerHTML = 'Done!';
+        
+        $('#progress').hide();
+        menu();
+        
+        clearInterval(assetLoadCheck);
+    }
+}, 1);

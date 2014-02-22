@@ -137,23 +137,23 @@ var UTIL = (function () {
         document.getElementById('stat-dt').innerHTML = damage_taken.toFixed(2);
     };
     
-    my.get = function (url, callback) {
+    my.get = function (url, callbackSuccess, callBackFailed) {
         /* GET request */
             var req = new XMLHttpRequest();
             req.open('GET', url);
             
             req.onload = function () {
                 if (req.status == 200) {
-                    callback(req.response);
+                    callbackSuccess(req.response);
                     //return req.response;
                 }
                 else {
-                    console.log('GET failed!');
+                    callbackFailed();
                 }
             };
             
             req.onerror = function () {
-                console.log('Network Error');
+                callbackFailed();
             };
             
             req.send();
@@ -590,9 +590,16 @@ function ImageLibrary() {
     * Pushes a new image object into the shelf array
     */
     this.add = function(id, source) {
+        GLOBALS.assetStatus.queued += 1;
         this.tmp = new Image();
         this.tmp.id = id;
-        this.tmp.onload = function() { this.ready = true; };
+        this.tmp.onload = function () {
+            this.ready = true;
+            GLOBALS.assetStatus.loaded += 1;
+        };
+        this.tmp.onerror = function () {
+            GLOBALS.assetStatus.failed += 1;
+        };
         this.tmp.src = source;
         this.shelf.push(this.tmp);
     };
@@ -638,7 +645,11 @@ function SoundPool(loc, vol, max) {
     */
     this.init = function () {
         for (var i = 0; i < size; i++) {
+            GLOBALS.assetStatus.queued += 1;
             var sound = new Audio(soundLoc);
+            sound.addEventListener('canplaythrough', function () {
+                GLOBALS.assetStatus.loaded += 1;
+            }, false);
             sound.volume = soundVol;
             sound.load();
             pool[i] = sound;

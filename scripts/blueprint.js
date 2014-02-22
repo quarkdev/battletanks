@@ -13,12 +13,16 @@ var BLUEPRINT = (function () {
     };
     
     my.addMulti = function (url) {
+        GLOBALS.assetStatus.queued += 1;
         UTIL.get(url, function (response) {
             var arr = JSON.parse(response);
             
             for (var i = 0; i < arr.blueprints.length; i++) {
                 library.push(arr.blueprints[i]);
             }
+            GLOBALS.assetStatus.loaded += 1;
+        }, function () {
+            GLOBALS.assetStatus.failed += 1;
         });
     };
     
