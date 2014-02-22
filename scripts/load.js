@@ -47,6 +47,8 @@ var LOAD = (function () {
             }
         }
         
+        return max_players - 1;
+        
     };
     
     return my;

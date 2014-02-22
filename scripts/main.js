@@ -340,14 +340,18 @@
         
         $('#external-hud').show();
         
-        LOAD.gameSettings(player_name);
-        attachGameEventListeners();
-        then = performance.now();
-        UTIL.playMusic(backgroundMusic);
-        STAT.reset();
-        renderExtern();
+        var workersCreated = LOAD.gameSettings(player_name);
+        var pseudoInc = 5 / workersCreated;
+        
+        UTIL.fancyProgress(pseudoInc, function() {
+            $('#progress').fadeOut();
+            attachGameEventListeners();
+            then = performance.now();
+            UTIL.playMusic(backgroundMusic);
+            renderExtern();
 
-        main();
+            main();
+        });
     };
     
     // Editor START

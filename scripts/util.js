@@ -181,6 +181,60 @@ var UTIL = (function () {
             req.send();
         });
     };
+    
+    my.fancyProgress = function (pseudoInc, callback) {
+        /* Show a fake progress bar to annoy (or entertain?) the player. */
+        STAT.reset();
+        
+        var fancyTalk = [
+            'Playing Flappy Birds...',
+            'Loading Workers...',
+            'Loading Assets...',
+            'Walking the dog...',
+            'Walking the dog some more...',
+            'Walking the human...',
+            '<span style="color: orange;">Dendimon</span> has randomed Goblin Techies',
+            'Nyx Nyx Nyx Nyx Nyx',
+            'Let it go...',
+            'Preparing the battlefield...',
+            '<span style="font-family: \'Comic Sans\', \'Comic Sans MS\'; color: yellow">So doge</span>',
+            '<span style="font-family: \'Comic Sans\', \'Comic Sans MS\'; color: pink">WOW</span>',
+            '<span style="font-family: \'Comic Sans\', \'Comic Sans MS\'; color: purple">so progress</span>',
+            '<span style="font-family: \'Comic Sans\', \'Comic Sans MS\'; color: green">such random</span>',
+            'The <span style="color: orange">Cake</span> was a lie!'
+        ];
+        
+        // Delay start to allow objects and workers to be initialized completely.
+        progressBar.value = 0;
+        progressText.innerHTML = 'Loading Game Objects... Please Wait...';
+        var fti = 0, ftLen = fancyTalk.length, millisecSince = 0, msMin = 1100, msMax = 5000, gsc = 4;
+        
+        $('#progress').show();
+        var preGameDelay = setInterval(function () {
+            progressBar.value += pseudoInc + (Math.random() * 10);
+            
+            if (millisecSince > Math.floor(Math.random() * msMax) + msMin) {
+                fti = Math.floor(Math.random() * ftLen);
+                progressText.innerHTML = fancyTalk[fti];
+                millisecSince = 0;
+            }
+            millisecSince += 50;
+            
+            if (progressBar.value === 100) {
+                var gameStartCount = setInterval(function () {
+                    progressText.innerHTML = 'Game starting in ' + (gsc - 1) + '...';
+                    gsc--;
+                    if (gsc === 1) {
+                        setTimeout(function() {
+                            callback();
+                        }, 1000);
+                        clearInterval(gameStartCount);
+                    }
+                }, 1000);
+                clearInterval(preGameDelay);
+            }
+        }, 50);
+    };
         
     return my;
 }());
