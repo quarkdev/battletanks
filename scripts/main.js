@@ -366,9 +366,6 @@
         destructibles.clear();
         startingpoints.clear();
         visualeffects.clear();
-    
-        attachGameEventListeners();
-        attachEditorEventListeners();
         
         MAP.loadPlaceablesToUI();
         
@@ -397,4 +394,6 @@
     };
 
     attachMenuEventListeners();
+    attachGameEventListeners();
+    attachEditorEventListeners();
     
