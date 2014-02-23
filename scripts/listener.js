@@ -110,7 +110,8 @@ function attachEditorEventListeners() {
         
         var name = document.getElementById('map-name-ex').value;
         
-        MAP.exportToString(name);
+        //MAP.exportToString(name);
+        MAP.exportToJSON(name);
         
         // hide menu
         editor();
@@ -131,7 +132,8 @@ function attachEditorEventListeners() {
         
         var mapStr = document.getElementById('map-string').value;
         
-        MAP.importFromString(mapStr);
+        //MAP.importFromString(mapStr);
+        MAP.importFromJSON(mapStr);
         
         // hide menu
         editor();

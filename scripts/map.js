@@ -270,7 +270,6 @@ var MAP = (function () {
         }
         
         maps.push(newmap);
-        current_map = newmap;
     };
     
     my.exportToString = function (name) {
@@ -303,7 +302,7 @@ var MAP = (function () {
             map += powerups[i].config.oY;
         }
         
-        wdw = window.open("data:text/html," + encodeURIComponent(map), "_blank", "width=200, height=100");
+        window.open("data:text/html," + encodeURIComponent(map), "_blank", "width=200, height=100");
     };
     
     my.importFromString = function (mapStr) {
@@ -332,6 +331,32 @@ var MAP = (function () {
             type_coords = powerups[i].split(':'); // type:x:y
             newmap.powerups.push([type_coords[0], parseFloat(type_coords[1]), parseFloat(type_coords[2])]);
         }
+        
+        // check map list if it contains a similar map
+        for (i = 0; i < maps.length; i++) {
+            if (maps[i].name == newmap.name) {
+                return 1;
+            }
+        }
+        
+        // add new map to maps
+        maps.push(newmap);
+        
+        return 0;
+    };
+    
+    my.exportToJSON = function (name) {
+        /* Export the current map in editor to JSON format. */
+        my.save(name);
+        
+        var json_map = JSON.stringify(maps[maps.length - 1]);
+        
+        window.open("data:text/html," + encodeURIComponent(json_map), "_blank", "width=200, height=100");
+    };
+    
+    my.importFromJSON = function (map_json) {
+        /* Load map to map list from a JSON string. */
+        var newmap = JSON.parse(map_json);
         
         // check map list if it contains a similar map
         for (i = 0; i < maps.length; i++) {

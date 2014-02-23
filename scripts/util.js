@@ -137,7 +137,33 @@ var UTIL = (function () {
         document.getElementById('stat-dt').innerHTML = damage_taken.toFixed(2);
     };
     
-    my.get = function (url, callbackSuccess, callBackFailed) {
+    my.post = function (url, data, callbackSuccess, callbackFailed) {
+        /* POST request as JSON */
+        var req = new XMLHttpRequest();
+        
+        req.onreadystatechange = function () {
+            if (req.readyState === 4) {
+                if (req.status == 200 && req.status < 300) {
+                    // process server response here
+                    if (req.responseText !== 'ok') {
+                        console.log(req.responseText);
+                        callbackFailed();
+                    }
+                    else {
+                        callbackSuccess();
+                    }
+                }
+            }
+        };
+        
+        req.open('POST', url);
+        
+        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        
+        req.send(data);
+    };
+    
+    my.get = function (url, callbackSuccess, callbackFailed) {
         /* GET request */
             var req = new XMLHttpRequest();
             req.open('GET', url);
