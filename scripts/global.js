@@ -2,16 +2,6 @@
 
 var GLOBALS = (function () {
     return {
-        assetStatus : {
-            queued : 0,
-            loaded : 0,
-            failed : 0
-        },
-        resetAssetStatus : function () {
-            assetStatus.queued = 0;
-            assetStatus.loaded = 0;
-            assetStatus.failed = 0;
-        }
     };
 }());
 

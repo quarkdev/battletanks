@@ -630,6 +630,106 @@ UTIL.geometry = (function() {
     return my;
 }());
 
+/* UTIL.asset submodule. */
+UTIL.asset = (function() {
+    var my = {},
+        loadQueue = [],
+        loaded = 0,
+        failed = 0,
+        queued = 0;
+        
+    my.queue = function (type, args) {
+        /* Equeue asset. args: [id, url, libObj] */
+        loadQueue.push([type, args]);
+        queued++;
+    };
+    
+    my.getTotalQueued = function () {
+        return queued;
+    };
+    
+    my.getTotalLoaded = function () {
+        return loaded;
+    };
+    
+    my.getTotalFailed = function () {
+        return failed;
+    };
+    
+    my.clear = function () {
+        /* Clears the loaded, failed, and queued vars for the next loading of assets. */
+        loaded = 0;
+        failed = 0;
+        queued = 0;
+    };
+    
+    my.load = function (onSuccess, onError) {
+        /* Load one asset from front of queue. Call onSuccess if successful, else onError. */
+        var item = loadQueue.shift();
+        var type = item[0];
+        var args = item[1];
+        
+        switch (type) {
+            case 'image': // [id, url, library]
+                args[2].add(args[0], args[1], function (id) {
+                    loaded++;
+                    onSuccess(id);
+                }, function (error) {
+                    failed++;
+                    onError(error);
+                });
+                break;
+            case 'soundpool': // [url, volume, poolmax, poolVar]
+                args.init(function (soundLoc) {
+                    loaded++;
+                    onSuccess(soundLoc);
+                });
+                break;
+            case 'audio': // [url, loop, volume, musicVar]
+                var cpt = args[3].addEventListener('canplaythrough', function () {
+                    loaded++;
+                    onSuccess(args[0]);
+                }, false);
+                args[3].src = args[0];
+                args[3].loop = args[1];
+                args[3].volume = args[2];
+                args[3].load();
+                break;
+            case 'blueprint': // url
+                BLUEPRINT.addMulti(args, function(url) {
+                    loaded++;
+                    onSuccess(url);
+                }, function (error) {
+                    failed++;
+                    onError(error);
+                });
+                break;
+            default:
+                break;
+        }
+    };
+    
+    my.loadAll = function (onSuccess, onError, onAllLoaded) {
+        /*
+        *  Load all assets in queue. Callbacks are called for each successfully loaded or failed asset.
+        *  onAllLoaded is called after everything on queue has been loaded.
+        */
+        while (loadQueue.length > 0) {
+            my.load(function (response) {
+                onSuccess(response);
+                // check if everything's been loaded
+                if (loaded === queued) {
+                    my.clear();
+                    
+                    onAllLoaded();
+                }
+            }, onError);
+        }
+    };
+    
+    return my;
+}());
+
 /*
 * Public Object: ImageLibrary
 *
@@ -643,18 +743,18 @@ function ImageLibrary() {
     *
     * Pushes a new image object into the shelf array
     */
-    this.add = function(id, source) {
-        GLOBALS.assetStatus.queued += 1;
+    
+    this.add = function (id, url, onSuccess, onError) {
         this.tmp = new Image();
         this.tmp.id = id;
         this.tmp.onload = function () {
             this.ready = true;
-            GLOBALS.assetStatus.loaded += 1;
+            onSuccess(url);
         };
         this.tmp.onerror = function () {
-            GLOBALS.assetStatus.failed += 1;
+            onError('Error loading ' + id);
         };
-        this.tmp.src = source;
+        this.tmp.src = url;
         this.shelf.push(this.tmp);
     };
     
@@ -697,12 +797,12 @@ function SoundPool(loc, vol, max) {
     * 
     * Initializes the sound pool for later use
     */
-    this.init = function () {
+    this.init = function (onSuccess) {
         for (var i = 0; i < size; i++) {
-            GLOBALS.assetStatus.queued += 1;
             var sound = new Audio(soundLoc);
-            sound.addEventListener('canplaythrough', function () {
-                GLOBALS.assetStatus.loaded += 1;
+            var cpt = sound.addEventListener('canplaythrough', function () {
+                onSuccess(soundLoc);
+                removeEventListener('canplaythrough', cpt, false);
             }, false);
             sound.volume = soundVol;
             sound.load();
