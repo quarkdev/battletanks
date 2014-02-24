@@ -6,6 +6,12 @@ function attachMenuEventListeners() {
         // hide menu
         $('.overlay').hide();
         
+        // retrieve all tank blueprints
+        GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks');
+        
+        // update initial stats
+        UTIL.gui.updateTankStats();
+        
         // append all map options to select element
         var map_options = '<option value="0" selected="selected">Default</option>';
         for (var i = 1; i < maps.length; i++) {
@@ -26,10 +32,14 @@ function attachMenuEventListeners() {
         current_map = maps[$('#map-select').val()];
         
         // get player name
-        var player_name = document.getElementById('player-name').value;
+        var player_name = GLOBALS.player.name;
         
         // start game
         start(player_name);
+    });
+    
+    $('#tank-next').click(function () {
+        UTIL.gui.updateTankStats();
     });
     
     $('#map-builder').click(function () {

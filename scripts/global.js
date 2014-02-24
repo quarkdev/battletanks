@@ -2,6 +2,13 @@
 
 var GLOBALS = (function () {
     return {
+        tankSelection: {
+            blueprints : [],
+            selectedIndex: 0
+        },
+        player : {
+            name : 'player1'
+        }
     };
 }());
 

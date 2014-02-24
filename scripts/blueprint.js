@@ -5,19 +5,19 @@ var BLUEPRINT = (function () {
     var my = {},
         library = [];
 
-    my.add = function (url) {
+    my.add = function (type, url) {
         // Add new blueprint. Form: {identifier: 'value', ...} Must contain a 'name' identifier. For single items
         UTIL.get(url, function (response) {
-            library.push(JSON.parse(response));
+            library.push([type, JSON.parse(response)]);
         });
     };
     
-    my.addMulti = function (url, onSuccess, onError) {
+    my.addMulti = function (type, url, onSuccess, onError) {
         UTIL.get(url, function (response) {
             var arr = JSON.parse(response);
             
             for (var i = 0; i < arr.blueprints.length; i++) {
-                library.push(arr.blueprints[i]);
+                library.push([type, arr.blueprints[i]]);
             }
             
             onSuccess(url);
@@ -29,10 +29,21 @@ var BLUEPRINT = (function () {
     my.get = function (name) {
         // Try to retrieve blueprint. If found, return it
         for (var i = 0; i < library.length; i++) {
-            if (library[i].name === name) {
-                return library[i];
+            if (library[i][1].name === name) {
+                return library[i][1];
             }
         }
+    };
+    
+    my.getByType = function (type) {
+        var sublib = [];
+        for (var i = 0; i < library.length; i++) {
+            if (library[i][0] === type) {
+                sublib.push(library[i][1]);
+            }
+        }
+        
+        return sublib;
     };
 
     return my;

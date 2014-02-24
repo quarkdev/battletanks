@@ -29,6 +29,7 @@ function messageHandler(event) {
                 MAX_ROWS = messageReceived.worldHeight / 8;
                 tank_size = messageReceived.tankSize;
                 
+                clearGrid();
                 updateGrid(obstacles);
                 
                 reply.cmd = 'update_ok';
@@ -128,9 +129,8 @@ function getMoveList(S, G, angle) {
     return movelist.reverse(); // send a reversed movelist for easy popping
 }
 
-function updateGrid(obs) {
-    /* Construct an obstacle grid from destructible array. */
-    
+function clearGrid() {
+    /* Clear the grid */
     grid = [];
     
     // Initialize grid. Create a MAX_COLS--cell row
@@ -143,11 +143,6 @@ function updateGrid(obs) {
     // Create a MAX_COLSxMAX_ROWS grid by pushing a row MAX_ROWS times
     for (i = 0; i < MAX_ROWS; i++) {
         grid.push(row.slice(0));
-    }
-    
-    // Update grid.
-    for (i = 0; i < obs.length; i++) {
-        updateGridCell(obs[i][1], obs[i][2], 0, tank_size);
     }
     
     // Pad the boundaries
@@ -163,6 +158,15 @@ function updateGrid(obs) {
         grid[i][1] = 0;
         grid[i][MAX_COLS - 2] = 0;
         grid[i][MAX_COLS - 1] = 0;
+    }
+}
+
+function updateGrid(obs) {
+    /* Construct an obstacle grid from destructible array. */
+    
+    // Update grid.
+    for (i = 0; i < obs.length; i++) {
+        updateGridCell(obs[i][1], obs[i][2], 0, tank_size);
     }
     
     graph = new Graph(grid);

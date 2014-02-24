@@ -19,9 +19,10 @@ var LOAD = (function () {
         
         // build playerlist (first is the player, populate the rest with bots)
         var playerlist = [];
+        var player_tank = GLOBALS.tankSelection.blueprints[GLOBALS.tankSelection.selectedIndex].name;
         
         // push the player first
-        playerlist.push([player_name, 'm4_sherman_blue', 'player']);
+        playerlist.push([player_name, player_tank, 'player']);
         
         for (var i = 1; i < max_players; i++) {
             // start on 1 so that the total bot number is 1 less than the max_players
@@ -99,21 +100,10 @@ LOAD.worker = (function () {
                 switch (cmd) {
                     case 'update_ok':
                         bots[bot_index][2] = 'ready';
-                        /*var str = '';
-                        for (var i = 0; i < 76; i++) {
-                            str += '<br>' + data[i].join(' ');
-                        }
-                        window.open("data:text/html," + encodeURIComponent(str), "_blank", "width=200, height=100");
-                        */
                         break;
                     case 'waypoint_ok':
                         bots[bot_index][1] = messageReceived.waypoint;
                         bots[bot_index][2] = 'ready';
-                        /*var str = '';
-                        for (var i = 0; i < data.length; i++) {
-                            str += '[' + data[i][0] + ', ' + data[i][1] + ', ' + data[i][2] + '], ';
-                        }
-                        alert(str);*/
                         break;
                     default:
                         break;

@@ -1,8 +1,8 @@
 /*-------- Asset Initialization and Setup --------*/
 
 // Blueprints
-UTIL.asset.queue('blueprint', 'json/blueprints/tanks.json');
-UTIL.asset.queue('blueprint', 'json/blueprints/destructibles.json');
+UTIL.asset.queue('blueprint', ['tanks', 'json/blueprints/tanks.json']);
+UTIL.asset.queue('blueprint', ['destructibles', 'json/blueprints/destructibles.json']);
 
 // Terrain images
 TerrainImages = new ImageLibrary();

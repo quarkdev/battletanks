@@ -225,6 +225,121 @@
         height: 800px;
         margin: 0 auto;
     }
+    
+    #tank-select {
+        position: absolute;
+        width: 420px;
+        padding: 12px;
+        left: 50%;
+        top: 60px;
+        margin-left: -210px;
+        border: 1px solid #fff;
+    }
+    
+    #tank-info-wrapper {
+        width: 100%;
+        height: 40px;
+        clear: both;
+        overflow: hidden;
+        font-family: Arial;
+        font-size: 14px;
+        color: #fff;
+        font-weight: bold;
+    }
+    
+    #tank-name {
+        width: 280px;
+        height: 24px;
+        padding-top: 6px;
+        border: 1px solid #fff;
+        float: left;
+    }
+    
+    #tank-next {
+        width: 120px;
+        height: 24px;
+        padding-top: 6px;
+        border: 1px solid #fff;
+        float: right;
+        cursor: pointer;
+    }
+    
+    #tank-is-wrapper {
+        width: 100%;
+        clear: both;
+        overflow: hidden;
+    }
+    
+    #tank-img {
+        width: 150px;
+        height: 150px;
+        float: left;
+        border: 1px solid #fff;
+        background-color: #000;
+    }
+    
+    #tank-chassis-img,
+    #tank-turret-img {
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    
+    #tank-chassis-img {
+        -webkit-animation:spin 22s linear infinite;
+        -moz-animation:spin 22s linear infinite;
+        animation:spin 22s linear infinite;
+    }
+    
+    #tank-turret-img {
+        -webkit-animation:spin 16s linear infinite;
+        -moz-animation:spin 16s linear infinite;
+        animation:spin 16s linear infinite;
+    }
+    
+    @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+    @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+    @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+    
+    #tank-stats {
+        width: 255px;
+        height: 150px;
+        float: right;
+    }
+    
+    .ts-bar {
+        margin-top: 5px;
+        width: 100%;
+        height: 32px;
+        font-family: Arial;
+        font-size: 10px;
+        text-align: left;
+        color: #fff;
+    }
+    
+    #ts-firepower,
+    #ts-armor,
+    #ts-mobility,
+    #ts-size {
+        height: 16px;
+        width: 0;
+        background-color: #fff;
+        color: red;
+    }
+    
+    #map-select-wrapper {
+        position: absolute;
+        left: 390px;
+        top: 300px;
+    }
+    
+    #start-battle-ok {
+        position: absolute;
+        left: 50%;
+        top: 360px;
+        margin-left: -100px;
+    }
 </style>
 <style type="text/css" src="css/style.css"></style>
 <script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
@@ -279,14 +394,31 @@
             </div>
         </div>
         <div id="prompt-pre-game-settings" class="overlay">
-            <div class="menu-btn-container mbc-2">
-                <span style="color: white; font-family: Arial">MAP: </span>
-                <select id="map-select" style="width: 232px; padding: 8px 4px; margin-bottom: 12px;">
-                </select>
-                <span style="color: white; font-family: Arial">PLAYER NAME: </span>
-                <input id="player-name" class="ui_input" type="text" value="unnamed" placeholder="Player Name" />
+                <div id="tank-select">
+                    <div id="tank-info-wrapper">
+                        <div id="tank-name"></div>
+                        <div id="tank-next">NEXT</div>
+                    </div>
+                    <div id="tank-is-wrapper">
+                        <div id="tank-img">
+                            <div id="tank-chassis-img">
+                                <div id="tank-turret-img"></div>
+                            </div>
+                        </div>
+                        <div id="tank-stats">
+                            <div class="ts-bar">Firepower<div id="ts-firepower"></div></div>
+                            <div class="ts-bar">Armor<div id="ts-armor"></div></div>
+                            <div class="ts-bar">Mobility<div id="ts-mobility"></div></div>
+                            <div class="ts-bar">Size<div id="ts-size"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="map-select-wrapper">
+                    <span style="color: white; font-family: Arial">MAP: </span>
+                    <select id="map-select" style="width: 232px; padding: 8px 4px; margin-bottom: 12px;">
+                    </select>
+                </div>
                 <div id="start-battle-ok" class="menu-btn">START BATTLE!</div>
-            </div>
         </div>
         <div id="prompt-map-name" class="overlay">
             <div class="menu-btn-container mbc-2">

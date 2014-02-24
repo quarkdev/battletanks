@@ -6,6 +6,10 @@
 var UTIL = (function () {
     var my = {};
     
+    my.toTitleCase = function (str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    };
+    
     /*
     * Private Method: _idInArray
     *
@@ -656,6 +660,53 @@ UTIL.geometry = (function() {
     return my;
 }());
 
+UTIL.gui = (function () {
+    var my = {};
+    
+    my.updateTankStats = function () {
+        /* Update the tank selection stats. */
+        
+        /*
+        * Max values for stat comparison:
+        *   firepower - 2000
+        *   armor     - 500
+        *   mobility  - 400
+        *   size      - 100
+        */
+        
+        var ts = GLOBALS.tankSelection;
+        
+        ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
+        
+        var firepower = ts.blueprints[ts.selectedIndex].pDamage,
+            armor = ts.blueprints[ts.selectedIndex].armor,
+            mobility = ts.blueprints[ts.selectedIndex].fSpeed,
+            size = ts.blueprints[ts.selectedIndex].width,
+            name = UTIL.toTitleCase((ts.blueprints[ts.selectedIndex].name).split('_').join(' ')),
+            chassis_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].bImage).src,
+            turret_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].tImage).src;
+       
+            
+        $('#ts-firepower').animate({
+            width: (firepower / 2000) * 255
+        });
+        $('#ts-armor').animate({
+            width: (armor / 500) * 255
+        });
+        $('#ts-mobility').animate({
+            width: (mobility / 400) * 255
+        });
+        $('#ts-size').animate({
+            width: (size / 100) * 255
+        });
+        $('#tank-name').html(name);
+        $('#tank-chassis-img').css('backgroundImage', 'url(' + chassis_img_url + ')');
+        $('#tank-turret-img').css('backgroundImage', 'url(' + turret_img_url + ')');
+    };
+    
+    return my;
+}());
+
 /* UTIL.asset submodule. */
 UTIL.asset = (function() {
     var my = {},
@@ -722,7 +773,7 @@ UTIL.asset = (function() {
                 args[3].load();
                 break;
             case 'blueprint': // url
-                BLUEPRINT.addMulti(args, function(url) {
+                BLUEPRINT.addMulti(args[0], args[1], function(url) {
                     loaded++;
                     onSuccess(url);
                 }, function (error) {
