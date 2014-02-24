@@ -380,9 +380,10 @@ function Tank(specs, id, control, x, y) {
         // draw body && attachments
         ctx.rotate(t.hAngle * Math.PI/180);
         ctx.drawImage(this.images.chassis, t.cx, t.cy);
-        for (i = 0; i < this.attachments.chassis.length; i++) {
+        /*for (i = 0; i < this.attachments.chassis.length; i++) {
             ctx.drawImage(this.attachments.chassis[i].img, t.cx, t.cy);
         }
+        */
         ctx.rotate(-t.hAngle * Math.PI/180);
         /*// draw turret && attachments
         ctx.rotate(t.tAngle * Math.PI/180);
@@ -489,6 +490,7 @@ function Tank(specs, id, control, x, y) {
     this.death = function () {
         /* Move object offscreen. Set to inactive. */
         t.active = false;
+        GLOBALS.flags.clean.tanks++;
         t.turretAnim.end();
 
         visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: t.explodeScale, scaleH: t.explodeScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));

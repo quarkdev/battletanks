@@ -175,6 +175,7 @@ function Destructible(specs, x, y) {
     this.death = function () {
         // Set to inactive.
         d.active = false;
+        GLOBALS.flags.clean.destructibles++;
    
         /* has a chance to spawn a random powerup on death */
         var lucky = Math.random() > 0.5 ? true : false;
@@ -187,7 +188,6 @@ function Destructible(specs, x, y) {
     
     this.draw = function (ctx, xView, yView) {
         if (d.active === false) return;
-        
         var _size = d.size / 2;
         ctx.translate(d.oX - xView, d.oY - yView);
         ctx.drawImage(d.nImage, -_size, -_size);

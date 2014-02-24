@@ -2,6 +2,15 @@
 
 var GLOBALS = (function () {
     return {
+        flags : {
+            clean : {
+                threshold : 20,
+                destructibles : 0,
+                visualeffects : 0,
+                projectiles : 0,
+                tanks : 0
+            }
+        },
         tankSelection: {
             blueprints : [],
             selectedIndex: 0

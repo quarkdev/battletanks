@@ -44,12 +44,14 @@ function Projectile(specs) {
         // Check for collisions. First check if it has reached the canvas outer boundary.
         if (_hasHitBoundary(p.oX, p.oY) === true) {
             p.active = false;
+            GLOBALS.flags.clean.projectiles++;
         }
         else {
             // Check if it hit a tank.
             var result = _hasHitTank(tanks, p.oX, p.oY);
             if (result.hit === true) {
                 p.active = false;
+                GLOBALS.flags.clean.projectiles++;
                 var t = result.tank;
                 
                 // Call tank hit method. Pass the projectile that hit it.
@@ -60,6 +62,7 @@ function Projectile(specs) {
                 var resultD = _hasHitDestructible(destructibles, p.oX, p.oY, lastX, lastY);
                 if (resultD.hit === true) {
                     p.active = false;
+                    GLOBALS.flags.clean.projectiles++;
                     var d = resultD.destructible;
                     
                     p.PoI = resultD.poi;
@@ -131,6 +134,12 @@ function Projectile(specs) {
             var d = destructibles[i].config;
             
             if (d.active === false) continue; // Skip inactive destructibles
+            
+            // let's check if they're even remotely colliding
+            if (!UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size + d.size/2)) {
+                // nope they're too far to even collide, check the next one
+                continue;
+            }
             
             var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY });
             if (lineX.yes) {

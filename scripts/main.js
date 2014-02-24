@@ -174,14 +174,36 @@
         }
         
         // Remove all inactive projectiles. This keeps the projectiles array from accumulating inactive objects.
-        projectiles = projectiles.filter(function (item) {
-            return item.config.active;
-        });
+        if (GLOBALS.flags.clean.projectiles > GLOBALS.flags.clean.threshold) {
+            projectiles = projectiles.filter(function (item) {
+                return item.config.active;
+            });
+            GLOBALS.flags.clean.projectiles = 0;
+        }
         
         // Remove all inactive visualeffects. This keeps the visualeffects array from accumulating inactive objects.
-        visualeffects = visualeffects.filter(function (item) {
-            return item.config.active;
-        });
+        if (GLOBALS.flags.clean.visualeffects > GLOBALS.flags.clean.threshold) {
+            visualeffects = visualeffects.filter(function (item) {
+                return item.config.active;
+            });
+            GLOBALS.flags.clean.visualeffects = 0;
+        }
+        
+        // Remove all inactive destructibles
+        if (GLOBALS.flags.clean.destructibles > GLOBALS.flags.clean.threshold) {
+            destructibles = destructibles.filter(function (item) {
+                return item.config.active;
+            });
+            GLOBALS.flags.clean.destructibles = 0;
+        }
+        
+        // Remove all inactive tanks
+        if (GLOBALS.flags.clean.tanks > GLOBALS.flags.clean.threshold) {
+            tanks = tanks.filter(function (item) {
+                return item.config.active;
+            });
+            GLOBALS.flags.clean.tanks = 0;
+        }
         
         camera.update();
     };

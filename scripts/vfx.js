@@ -88,6 +88,7 @@ function VisualEffect(specs) {
                     }
                     else {
                         vx.active = false;
+                        GLOBALS.flags.clean.visualeffects++;
                     }
                 }
                 else {
@@ -102,6 +103,8 @@ function VisualEffect(specs) {
     };
     
     this.draw = function (ctx, xView, yView) {
+        if (!vx.active) { return; }
+    
         var angleInRadians = vx.angle * Math.PI/180;
     
         ctx.translate(vx.oX - xView, vx.oY - yView);
