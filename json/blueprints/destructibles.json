@@ -44,6 +44,15 @@
     "health"   : 50,
     "armor"    : 50,
     "mod"      : "normal"
+},
+{
+    "name"     : "tree",
+    "nImage"   : "tree",
+    "dImage"   : "tree",
+    "size"     : 32,
+    "health"   : 15,
+    "armor"    : 1,
+    "mod"      : "normal"
 }
 ]
 }

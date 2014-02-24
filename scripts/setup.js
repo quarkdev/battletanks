@@ -63,6 +63,7 @@ UTIL.asset.queue('image', ['wall_rubber', 'images/destructibles/wall-rubber.png'
 UTIL.asset.queue('image', ['heavy_rubber', 'images/destructibles/heavy-rubber.png', DestructibleImages]);
 UTIL.asset.queue('image', ['concrete', 'images/destructibles/concrete.png', DestructibleImages]);
 UTIL.asset.queue('image', ['riveted_iron', 'images/destructibles/riveted-iron.png', DestructibleImages]);
+UTIL.asset.queue('image', ['tree', 'images/destructibles/tree.png', DestructibleImages]);
 
 // Attachment images
 AttachmentImages = new ImageLibrary();
@@ -119,6 +120,7 @@ MAP.addPlaceable('destructible', 'concrete');
 MAP.addPlaceable('destructible', 'riveted_iron');
 MAP.addPlaceable('destructible', 'wall_rubber');
 MAP.addPlaceable('destructible', 'heavy_rubber');
+MAP.addPlaceable('destructible', 'tree');
 MAP.addPlaceable('starting-point', 'starting-point');
 MAP.addPlaceable('powerup', 'random');
 MAP.addPlaceable('powerup', 'haste');
@@ -147,7 +149,7 @@ testmap.startingPoints.push(new StartingPoint(500, 300));
 testmap.startingPoints.push(new StartingPoint(720, 362));
 
 maps.push(testmap);
-MAP.importFromString('testmap2|312:240,448:456,344:704,488:896,352:1032,512:1216,360:1376,536:1552,776:1736,976:1552,928:1208,1152:920|heavy_rubber:1368:608,heavy_rubber:1384:624,heavy_rubber:1456:744,heavy_rubber:1440:760,heavy_rubber:1440:840,heavy_rubber:1488:896,heavy_rubber:1408:976,heavy_rubber:1344:1040,heavy_rubber:1264:1120,heavy_rubber:1192:1192,heavy_rubber:1128:1256,heavy_rubber:1040:1232,heavy_rubber:1000:1144,heavy_rubber:920:1088,heavy_rubber:832:1048,heavy_rubber:784:1000|multi-shot:888:800,multi-shot:808:720,multi-shot:704:784,multi-shot:648:864,multi-shot:624:952,multi-shot:536:1040,multi-shot:464:1112,multi-shot:352:1144,multi-shot:240:1248,multi-shot:216:1352,multi-shot:216:1368,multi-shot:288:1456,multi-shot:384:1552,multi-shot:496:1664,rapid-fire:680:1640,rapid-fire:720:1600,rapid-fire:736:1584,rapid-fire:800:1520');
+MAP.importFromJSON('{"name":"map with trees","powerups":[],"destructibles":[["tree",848,704],["tree",832,720],["tree",776,736],["tree",704,712],["tree",656,744],["tree",712,808],["tree",760,856],["tree",816,856],["tree",968,704],["tree",984,688],["tree",1000,640],["tree",1000,632],["tree",960,592],["tree",960,576],["tree",960,552],["tree",960,472],["tree",952,456],["tree",912,416],["tree",880,384],["tree",864,368],["tree",864,320],["tree",864,304],["tree",904,264],["tree",912,264],["tree",968,232],["tree",1032,184],["tree",1080,200],["tree",1264,440],["tree",1272,456],["tree",1312,496],["tree",1320,504],["tree",1384,536],["tree",1448,480],["tree",1432,480],["tree",1424,480],["tree",1384,472],["tree",1344,432],["tree",1344,416],["tree",1376,376],["tree",1416,336],["tree",1392,288],["tree",1376,272],["tree",1384,224],["tree",1432,160],["tree",1496,176],["tree",1440,208],["tree",1400,176],["tree",1376,192],["tree",1416,232],["tree",1432,256],["tree",1400,296],["tree",1424,336],["tree",1408,368],["tree",1392,384],["tree",1368,408],["tree",1320,456],["tree",1280,464],["tree",1248,448],["tree",1016,216],["tree",992,216],["tree",952,192],["tree",936,208],["tree",968,248],["tree",944,256],["tree",888,272],["tree",896,312],["tree",896,344],["tree",880,344],["tree",856,344],["tree",880,400],["tree",896,416],["tree",912,440],["tree",888,480],["tree",904,512],["tree",912,512],["tree",944,480],["tree",872,456],["tree",912,560],["tree",928,536],["tree",960,640],["tree",968,648],["tree",952,680],["tree",920,696],["tree",864,736],["tree",840,744],["tree",800,712],["tree",768,704],["tree",720,736],["tree",696,728],["tree",672,752],["tree",512,840],["tree",464,824],["tree",440,848],["tree",424,848],["tree",400,840],["tree",368,808],["tree",304,744],["tree",192,632],["tree",120,560],["tree",160,520],["tree",152,480],["tree",112,440],["tree",144,400],["tree",128,376],["tree",168,392],["tree",168,432],["tree",168,448],["tree",144,472],["tree",144,520],["tree",160,576],["tree",192,616],["tree",208,656],["tree",224,680],["tree",328,784],["tree",360,816],["tree",368,856],["tree",376,896],["tree",400,920],["tree",560,1080],["tree",600,1136],["tree",568,1168],["tree",552,1184],["tree",576,1208],["tree",616,1248],["tree",640,1272],["tree",624,1296],["tree",608,1312],["tree",584,1320],["tree",536,1296],["tree",512,1280]],"startingPoints":[{"config":{"oX":408,"oY":296}},{"config":{"oX":528,"oY":472}},{"config":{"oX":736,"oY":568}},{"config":{"oX":416,"oY":1400}},{"config":{"oX":640,"oY":1520}},{"config":{"oX":816,"oY":1352}},{"config":{"oX":952,"oY":1120}}]}');
 
 current_map = maps[0];
 
