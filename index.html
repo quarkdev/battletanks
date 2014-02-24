@@ -2,6 +2,10 @@
 <html>
 <head>
 <style type="text/css">
+    body {
+        background-color: #000;
+    }
+
     #game-screen {
         border: 1px solid grey;
         cursor: crosshair;
@@ -220,9 +224,13 @@
     }
     
     #canvas-ui-wrap {
+        position: absolute;
         width: 1026px;
-        height: 800px;
-        margin: 0 auto;
+        height: 700px;
+        top: 50%;
+        left: 50%;
+        margin-top: -350px;
+        margin-left: -513px;
     }
     
     #tank-select {
