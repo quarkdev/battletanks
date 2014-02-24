@@ -76,8 +76,7 @@
         position: absolute;
         width: 1026px;
         height: 610px;
-        background-color: #000;
-        opacity: 0.75;
+        background-color: rgba(0, 0, 0, 0.75);
         top: 0;
         left: 0;
     }
@@ -233,7 +232,7 @@
         left: 50%;
         top: 60px;
         margin-left: -210px;
-        border: 1px solid #fff;
+        border: 1px solid rgba(255, 255, 255, 0.5);
     }
     
     #tank-info-wrapper {
@@ -251,17 +250,24 @@
         width: 280px;
         height: 24px;
         padding-top: 6px;
-        border: 1px solid #fff;
+        border: 1px solid rgba(255, 255, 255, 0.5);
         float: left;
     }
     
-    #tank-next {
-        width: 120px;
+    #tank-next,
+    #tank-prev {
+        width: 60px;
         height: 24px;
         padding-top: 6px;
-        border: 1px solid #fff;
+        border: 1px solid rgba(255, 255, 255, 0.5);
         float: right;
         cursor: pointer;
+    }
+    
+    #tank-next:hover,
+    #tank-prev:hover {
+        background-color: #fff;
+        color: #000;
     }
     
     #tank-is-wrapper {
@@ -274,7 +280,6 @@
         width: 150px;
         height: 150px;
         float: left;
-        border: 1px solid #fff;
         background-color: #000;
     }
     
@@ -321,7 +326,7 @@
     #ts-firepower,
     #ts-armor,
     #ts-mobility,
-    #ts-size {
+    #ts-firingrate {
         height: 16px;
         width: 0;
         background-color: #fff;
@@ -397,6 +402,7 @@
                 <div id="tank-select">
                     <div id="tank-info-wrapper">
                         <div id="tank-name"></div>
+                        <div id="tank-prev">PREV</div>
                         <div id="tank-next">NEXT</div>
                     </div>
                     <div id="tank-is-wrapper">
@@ -406,10 +412,10 @@
                             </div>
                         </div>
                         <div id="tank-stats">
-                            <div class="ts-bar">Firepower<div id="ts-firepower"></div></div>
-                            <div class="ts-bar">Armor<div id="ts-armor"></div></div>
-                            <div class="ts-bar">Mobility<div id="ts-mobility"></div></div>
-                            <div class="ts-bar">Size<div id="ts-size"></div></div>
+                            <div class="ts-bar">FIREPOWER<div id="ts-firepower"></div></div>
+                            <div class="ts-bar">RATE OF FIRE<div id="ts-firingrate"></div></div>
+                            <div class="ts-bar">ARMOR<div id="ts-armor"></div></div>
+                            <div class="ts-bar">MOBILITY<div id="ts-mobility"></div></div>
                         </div>
                     </div>
                 </div>

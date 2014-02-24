@@ -39,7 +39,11 @@ function attachMenuEventListeners() {
     });
     
     $('#tank-next').click(function () {
-        UTIL.gui.updateTankStats();
+        UTIL.gui.updateTankStats('next');
+    });
+    
+    $('#tank-prev').click(function () {
+        UTIL.gui.updateTankStats('prev');
     });
     
     $('#map-builder').click(function () {

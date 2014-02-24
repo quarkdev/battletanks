@@ -663,7 +663,7 @@ UTIL.geometry = (function() {
 UTIL.gui = (function () {
     var my = {};
     
-    my.updateTankStats = function () {
+    my.updateTankStats = function (dir) {
         /* Update the tank selection stats. */
         
         /*
@@ -676,12 +676,17 @@ UTIL.gui = (function () {
         
         var ts = GLOBALS.tankSelection;
         
-        ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
+        if (dir === 'next') {
+            ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
+        }
+        else if (dir === 'prev') {
+            ts.selectedIndex = ts.selectedIndex !== 0 ? ts.selectedIndex - 1 : ts.blueprints.length-1;
+        }
         
         var firepower = ts.blueprints[ts.selectedIndex].pDamage,
+            firing_rate = ts.blueprints[ts.selectedIndex].fRate,
             armor = ts.blueprints[ts.selectedIndex].armor,
             mobility = ts.blueprints[ts.selectedIndex].fSpeed,
-            size = ts.blueprints[ts.selectedIndex].width,
             name = UTIL.toTitleCase((ts.blueprints[ts.selectedIndex].name).split('_').join(' ')),
             chassis_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].bImage).src,
             turret_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].tImage).src;
@@ -696,8 +701,8 @@ UTIL.gui = (function () {
         $('#ts-mobility').animate({
             width: (mobility / 400) * 255
         });
-        $('#ts-size').animate({
-            width: (size / 100) * 255
+        $('#ts-firingrate').animate({
+            width: (firing_rate / 12) * 255
         });
         $('#tank-name').html(name);
         $('#tank-chassis-img').css('backgroundImage', 'url(' + chassis_img_url + ')');
