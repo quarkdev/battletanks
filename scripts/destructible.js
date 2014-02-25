@@ -177,7 +177,7 @@ function Destructible(specs, x, y) {
         d_destroyedSound.get();
    
         /* has a chance to spawn a random powerup on death */
-        var lucky = Math.random() > 2 ? true : false;
+        var lucky = Math.random() > 0.5 ? true : false;
         
         if (lucky) {
             // ok just got lucky, get a random powerup
