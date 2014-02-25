@@ -140,6 +140,13 @@ function Projectile(specs) {
                 // nope they're too far to even collide, check the next one
                 continue;
             }
+            else if (d.mod !== 'rubber') {
+                // if the current destructible we're checking is not rubbery, then we can skip the expensive intersection cd algorithm
+                // this time check if point is inside using the actual destructible size
+                if (UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size)) {
+                    return { hit: true, poi: { x: x, y: y }, sideH: 0, destructible: destructibles[i] };
+                }
+            }
             
             var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY });
             if (lineX.yes) {
@@ -164,6 +171,12 @@ function Projectile(specs) {
     var _hasHitTank = function (tanks, x, y) {
         for (var i = 0; i < tanks.length; i++) {
             if (tanks[i].config.active === false) continue; // Skip inactive tanks
+        
+            // let's check if they're even remotely colliding
+            if (!UTIL.geometry.pointLiesInsidePointSquare([x, y], [tanks[i].config.oX, tanks[i].config.oY], tanks[i].config.width + tanks[i].config.width/2)) {
+                // nope they're too far to even collide, check the next one
+                continue;
+            }
         
             if (UTIL.geometry.pointInsideRectangle({w: tanks[i].config.width, h: tanks[i].config.height, a: tanks[i].config.hAngle, x: tanks[i].config.oX, y: tanks[i].config.oY}, {x: x, y: y})) {
                 return { hit: true, tank: tanks[i] };

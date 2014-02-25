@@ -497,6 +497,7 @@ var PUP = (function() {
                 var dispellRegen = function () {
                     // dispell regen
                     clearInterval(tank.regenIntervalID);
+                    delete tank.regen_active;
                 };
                 dispellRegen.id = 'dispellRegen';
                 

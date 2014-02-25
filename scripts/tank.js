@@ -247,19 +247,37 @@ function Tank(specs, id, control, x, y) {
         // check if there are any objects in new coords, revert coord update if object found
         // check all destructible pos
         for (i = 0; i < destructibles.length; i++) {
-            if (destructibles[i].config.active === false) continue;
-            d = Math.sqrt(Math.pow(destructibles[i].config.oX - t.oX, 2) + Math.pow(destructibles[i].config.oY - t.oY, 2));
-            if (destructibles[i].config.cRadius + t.cRadius >= d) {
-                t.oX = tmpX;
-                t.oY = tmpY;
-                this.velocity.forward = 0.0;
-                this.velocity.reverse = 0.0;
-                
-                // reset pathfinding
-                bot = UTIL.getBotReference(t.id);
-                if (typeof bot !== 'undefined') {
-                    if (bot[3] !== 'waiting') {
-                        bot[2] = 'blocked';
+            var des = destructibles[i].config;
+        
+            if (des.active === false) continue;
+            d = Math.sqrt(Math.pow(des.oX - t.oX, 2) + Math.pow(des.oY - t.oY, 2));
+            
+            if (des.cRadius + t.cRadius >= d) {
+                // check if this destructible is a weak one
+                if (des.health < 20 && des.armor < 20 && t.width > des.size) {
+                    // yep, its pretty weak, so mow it over
+                    destructibles[i].death();
+                    switch (direction) {
+                        case 'forward':
+                            this.velocity.forward -= des.health * des.armor;
+                            break;
+                        case 'reverse':
+                            this.velocity.reverse -= des.health * des.armor;
+                            break;
+                    }
+                }
+                else {
+                    t.oX = tmpX;
+                    t.oY = tmpY;
+                    this.velocity.forward = 0.0;
+                    this.velocity.reverse = 0.0;
+                    
+                    // reset pathfinding
+                    bot = UTIL.getBotReference(t.id);
+                    if (typeof bot !== 'undefined') {
+                        if (bot[3] !== 'waiting') {
+                            bot[2] = 'blocked';
+                        }
                     }
                 }
                 break;

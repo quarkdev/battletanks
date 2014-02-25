@@ -35,8 +35,6 @@ function Destructible(specs, x, y) {
         if (d.health === 0) {
             // If destructible health is less than or zero, call death method.
             this.death();
-            
-            d_destroyedSound.get();
         }
         else {
             d_explodeSound.get();
@@ -176,9 +174,10 @@ function Destructible(specs, x, y) {
         // Set to inactive.
         d.active = false;
         GLOBALS.flags.clean.destructibles++;
+        d_destroyedSound.get();
    
         /* has a chance to spawn a random powerup on death */
-        var lucky = Math.random() > 0.5 ? true : false;
+        var lucky = Math.random() > 2 ? true : false;
         
         if (lucky) {
             // ok just got lucky, get a random powerup
