@@ -61,14 +61,10 @@ function attachMenuEventListeners() {
         if (ui_location == 'game') {
             main();
             // remove all dead timers
-            timers = timers.filter(function (item) {
-                return item.isExpired();
-            });
+            UTIL.cleanTimers();
             
             // resume timers
-            for (var i = 0; i < timers.length; i++) {
-                timers[i].resume();
-            }
+            UTIL.resumeTimers();
             UTIL.playMusic(backgroundMusic);
         }
         if (ui_location == 'editor') editor();

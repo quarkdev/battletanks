@@ -265,6 +265,35 @@ var UTIL = (function () {
             }
         }, 50);
     };
+    
+    my.pauseTimers = function () {
+        for (var i = 0; i < timers.length; i++) {
+            timers[i].pause();
+        }
+    };
+    
+    my.resumeTimers = function () {
+        /* Resume all timers. */
+        for (var i = 0; i < timers.length; i++) {
+            timers[i].resume();
+        }
+    };
+    
+    my.killTimers = function () {
+        /* Kill all running timers in the timers array. */
+        for (var i = 0; i < timers.length; i++) {
+            timers[i].clear();
+        }
+        
+        timers = [];
+    };
+    
+    my.cleanTimers = function () {
+        /* Remove all inactive timers in timers array. */
+        timers = timers.filter(function (item) {
+            return item.isExpired();
+        });
+    };
         
     return my;
 }());

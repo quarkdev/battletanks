@@ -13,7 +13,25 @@ var MAP = (function () {
         ccc = [16, 16], // current cursor coordinates
         placeables = [],
         mode = 1; // edit mode, 1 = manhattan, 0 = freeform
-    
+
+    // Map object
+    function Map(name) {
+        "use strict";
+        this.name = name;
+        
+        this.powerups = [];
+        this.destructibles = []; // [destructible_blueprint_string, x, y] : this prevents shallow copy problems (reference problems)
+        this.startingPoints = []; // this also dictates the max player
+    }
+
+    // StartingPoint object
+    function StartingPoint(x, y) {
+        this.config = {
+            oX: x,
+            oY: y
+        };
+    }
+        
     my.getCursor = function () {
         return cursor;
     };
@@ -383,21 +401,3 @@ var MAP = (function () {
     
     return my;
 }());
-
-// Map object
-function Map(name) {
-    "use strict";
-    this.name = name;
-    
-    this.powerups = [];
-    this.destructibles = []; // [destructible_blueprint_string, x, y] : this prevents shallow copy problems (reference problems)
-    this.startingPoints = []; // this also dictates the max player
-}
-
-// StartingPoint object
-function StartingPoint(x, y) {
-    this.config = {
-        oX: x,
-        oY: y
-    };
-}

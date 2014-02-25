@@ -405,14 +405,14 @@ var PUP = (function() {
                     tank.config.invulnerable--;
                     tank.as_vfx.end();
                     
+                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'absorbHit'; });
+                    tank.frame_callbacks = tank.frame_callbacks.filter(function (item) { return item.id != 'asAnim'; });
+                    d_explodeSound.get(); // play explode sound
+                    
                     delete tank.hitsTaken; // remove temp variable
                     delete tank.as_active;
                     delete tank.as_vfx;
                     delete tank.as_timeout;
-                    
-                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'absorbHit'; });
-                    tank.frame_callbacks = tank.frame_callbacks.filter(function (item) { return item.id != 'asAnim'; });
-                    d_explodeSound.get(); // play explode sound
                 }, 8000);
             }
             else {

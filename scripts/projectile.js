@@ -140,7 +140,7 @@ function Projectile(specs) {
                 // nope they're too far to even collide, check the next one
                 continue;
             }
-            else if (d.mod !== 'rubber') {
+            else if (d.mod !== 'rubber' || p.speed === 0) {
                 // if the current destructible we're checking is not rubbery, then we can skip the expensive intersection cd algorithm
                 // this time check if point is inside using the actual destructible size
                 if (UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size)) {
