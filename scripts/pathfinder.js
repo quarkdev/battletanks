@@ -166,16 +166,16 @@ function updateGrid(obs) {
     
     // Update grid.
     for (i = 0; i < obs.length; i++) {
-        updateGridCell(obs[i][1], obs[i][2], 0, tank_size);
+        updateGridCell(obs[i][1], obs[i][2], obs[i][3], 0);
     }
     
     graph = new Graph(grid);
 }
 
-function updateGridCell(x, y, value, tank_size) {
+function updateGridCell(x, y, destructible_size, value) {
     /* Update grid area pertaining to obstacle index. tank_size is the tank chassis size. */
     
-    var q = 2 + Math.ceil(tank_size / 16); // # of cells (x/y) for each quadrant to update
+    var q = Math.ceil(destructible_size / 16) + Math.ceil(tank_size / 16); // # of cells (x/y) for each quadrant to update
     var c, row, col;
     
     // update first quadrant (+x, +y)

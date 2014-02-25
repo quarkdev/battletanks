@@ -253,7 +253,7 @@ var MAP = (function () {
         }
         
         for (i = 0; i < destructibles.length; i++) {
-            newmap.destructibles.push([destructibles[i].config.name, destructibles[i].config.oX, destructibles[i].config.oY]);
+            newmap.destructibles.push([destructibles[i].config.name, destructibles[i].config.oX, destructibles[i].config.oY, destructibles[i].config.size]);
         }
         
         for (i = 0; i < startingpoints.length; i++) {
