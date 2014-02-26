@@ -400,8 +400,8 @@ var MAP = (function () {
         // fill the canvas with grass
         for (var row = 0; row < maxRows; row++) {
             for (var col = 0; col < maxCols; col++) {
-                x = col + 16;
-                y = row + 16;
+                x = col * 32;
+                y = row * 32;
                 bufferCtx.translate(x, y);
                 bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_13'), -16, -16);
                 bufferCtx.translate(-x, -y);
