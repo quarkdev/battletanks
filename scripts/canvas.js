@@ -12,6 +12,7 @@ var CANVAS = (function () {
         // default styles
         ctx.lineWidth='1';
         ctx.strokeStyle='#000';
+        ctx.fillStyle = 'red';
         ctx.font = '12pt Arial';
     };
     my.clear = function (canvas, ctx) {
@@ -24,6 +25,17 @@ var CANVAS = (function () {
     my.drawTanks = function (context, xView, yView) {
         for (var i = 0; i < tanks.length; i++) {
             tanks[i].draw(context, xView, yView);
+                if (tanks[i].config.active) {
+                minimapCtx.beginPath();
+                minimapCtx.arc(tanks[i].config.oX/8, tanks[i].config.oY/8, 3, 0, 2 * Math.PI, false);
+                if (tanks[i].config.control === 'player') {
+                    minimapCtx.fillStyle = 'blue';
+                }
+                else {
+                    minimapCtx.fillStyle = 'orange';
+                }
+                minimapCtx.fill();
+            }
         }
     };
     my.drawDestructibles = function (context, xView, yView) {
