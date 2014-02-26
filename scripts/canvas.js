@@ -25,7 +25,8 @@ var CANVAS = (function () {
     my.drawTanks = function (context, xView, yView) {
         for (var i = 0; i < tanks.length; i++) {
             tanks[i].draw(context, xView, yView);
-                if (tanks[i].config.active) {
+            // draw tank position on minimap
+            if (tanks[i].config.active) {
                 minimapCtx.beginPath();
                 minimapCtx.arc(tanks[i].config.oX/8, tanks[i].config.oY/8, 3, 0, 2 * Math.PI, false);
                 if (tanks[i].config.control === 'player') {
