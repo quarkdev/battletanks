@@ -275,7 +275,8 @@ var editorUpdate = function() {
 var renderCanvas = function () {
 
     CANVAS.clear(canvas, ctx);
-
+    CANVAS.clear(minimap, minimapCtx);
+    CANVAS.drawMinimap(minimapCtx, camera.xView, camera.yView);
     ctx.drawImage(terrain, 0, 0, WORLD_WIDTH, WORLD_HEIGHT, -camera.xView, -camera.yView, WORLD_WIDTH, WORLD_HEIGHT);
     CANVAS.drawDestructibles(ctx, camera.xView, camera.yView);
     CANVAS.drawPowerUps(ctx, camera.xView, camera.yView);
@@ -369,7 +370,7 @@ var start = function (player_name) {
         then = performance.now();
         UTIL.playMusic(backgroundMusic);
         renderExtern();
-
+        minimapBGCtx.drawImage(terrain, 0, 0, WORLD_WIDTH / 8, WORLD_HEIGHT / 8);
         main();
     });
 };
@@ -386,9 +387,10 @@ var startMapEditor = function () {
     destructibles.clear();
     startingpoints.clear();
     visualeffects.clear();
-    
+
     MAP.loadPlaceablesToUI();
     
+    minimapBGCtx.drawImage(terrain, 0, 0, WORLD_WIDTH / 8, WORLD_HEIGHT / 8);
     camera = new Viewport.Camera(0, 0, canvas.width, canvas.height, WORLD_WIDTH, WORLD_HEIGHT);
     camera.follow(MAP.getCursor(), canvas.width/2, canvas.height/2);
     

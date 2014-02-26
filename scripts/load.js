@@ -15,7 +15,7 @@ var LOAD = (function () {
         player_name = player_name === '' ? 'player' : player_name;
         
         // get the max players for current map : can be taken from the startingpoint length
-        var max_players = current_map.startingPoints.length;
+        var max_players = GLOBALS.map.current.startingPoints.length;
         
         // build playerlist (first is the player, populate the rest with bots)
         var playerlist = [];
@@ -29,7 +29,7 @@ var LOAD = (function () {
             playerlist.push(['bot'+i, 'heavy', 'computer']);
         }
         
-        var setup_error = MAP.setup(current_map, playerlist);
+        var setup_error = MAP.setup(GLOBALS.map.current, playerlist);
 
         if (setup_error === 0) {
             // setup camera
@@ -44,7 +44,7 @@ var LOAD = (function () {
                 bots.push([tanks[i], [], 'waiting', 'chase']);
             
                 // spawn pathfinders
-                LOAD.worker.pathFinder(current_map, tanks[i].config.id, tanks[i].config.width);
+                LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
             }
         }
         

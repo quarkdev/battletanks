@@ -378,25 +378,41 @@ var MAP = (function () {
         return 0;
     };
     
-    my.generateTerrain = function (canvas, ctx) {
+    my.spawnEnemy = function () {
+        /* Spawns an enemy tank at any of the current map's starting points. */
+        var current_map = GLOBALS.map.current;
+        var i = Math.floor(Math.random() * current_map.startingpoints.length);
+    };
+    
+    my.generateTerrain = function () {
         /* Randomly generates a terrain. */
         
         var maxCols = WORLD_WIDTH / 32;
         var maxRows = WORLD_HEIGHT / 32;
         var x, y;
+        var bufferCanvas = document.createElement('canvas');
+        bufferCanvas.width = WORLD_WIDTH;
+        bufferCanvas.height = WORLD_HEIGHT;
+        var bufferCtx = bufferCanvas.getContext('2d');
+        
+        CANVAS.setup(bufferCanvas, bufferCtx);
         
         // fill the canvas with grass
         for (var row = 0; row < maxRows; row++) {
             for (var col = 0; col < maxCols; col++) {
                 x = col + 16;
                 y = row + 16;
-                ctx.translate(x, y);
-                ctx.drawImage(TerrainImages.get('dirt_and_grass_13'), -16, -16);
-                ctx.translate(-x, -y);
+                bufferCtx.translate(x, y);
+                bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_13'), -16, -16);
+                bufferCtx.translate(-x, -y);
             }
         }
         
-        return canvas.toDataURL();
+        var img = new Image();
+        img.onload = function () {
+            terrain = img;
+        };
+        img.src = bufferCanvas.toDataURL();
     };
     
     return my;

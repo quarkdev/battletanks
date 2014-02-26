@@ -139,7 +139,7 @@ MAP.addPlaceable('powerup', 'multi-shot');
 // the default map
 MAP.importFromJSON('{"name":"forest","powerups":[],"destructibles":[["tree",976,336,32],["tree",968,344,32],["tree",912,400,32],["tree",848,416,32],["tree",840,408,32],["tree",808,392,32],["tree",808,392,32],["tree",816,400,32],["tree",784,432,32],["tree",760,424,32],["tree",712,400,32],["tree",680,432,32],["tree",608,504,32],["tree",592,512,32],["tree",560,512,32],["tree",520,480,32],["tree",504,480,32],["tree",480,488,32],["tree",432,448,32],["tree",432,376,32],["tree",464,320,32],["tree",480,248,32],["tree",456,224,32],["tree",424,176,32],["tree",448,152,32],["tree",432,120,32],["tree",408,104,32],["tree",432,104,32],["tree",496,136,32],["tree",528,120,32],["tree",520,104,32],["tree",496,80,32],["tree",464,48,32],["tree",432,48,32],["tree",136,344,32],["tree",128,368,32],["tree",208,416,32],["tree",232,424,32],["tree",216,456,32],["tree",192,480,32],["tree",160,480,32],["tree",160,432,32],["tree",184,432,32],["tree",200,448,32],["tree",256,504,32],["tree",280,544,32],["tree",272,568,32]],"startingPoints":[{"config":{"oX":136,"oY":72}},{"config":{"oX":240,"oY":176}},{"config":{"oX":368,"oY":296}},{"config":{"oX":544,"oY":368}},{"config":{"oX":840,"oY":272}}]}');
 
-current_map = maps[0];
+GLOBALS.map.current = maps[0];
 
 // show progress bar
 $('.overlay').hide();
@@ -153,7 +153,7 @@ var totalFailed = UTIL.asset.getTotalFailed();
 
 // start loading assets
 UTIL.asset.loadAll(function (item) {
-    // everytime a queued item is loaded, updated the progressbar
+    // everytime a queued item is loaded, update the progressbar
     totalLoaded = UTIL.asset.getTotalLoaded();
     progressText.innerHTML = item;
     progressBar.value = (totalAssets / totalLoaded) * 100;

@@ -29,7 +29,7 @@ function attachMenuEventListeners() {
         $('.overlay').hide();
         
         // get map
-        current_map = maps[$('#map-select').val()];
+        GLOBALS.map.current = maps[$('#map-select').val()];
         
         // get player name
         var player_name = GLOBALS.player.name;

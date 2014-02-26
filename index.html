@@ -353,6 +353,16 @@
         top: 360px;
         margin-left: -100px;
     }
+    
+    #minimap,
+    #minimap-bg {
+        pointer-events: none;
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        border: 1px solid #000;
+        opacity: 0.5;
+    }
 </style>
 <style type="text/css" src="css/style.css"></style>
 <script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
@@ -361,6 +371,8 @@
 <div id="canvas-ui-wrap">
     <div id="canvas-wrap" onselectstart="return false;">
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
+        <canvas id="minimap-bg" width="228" height="228"></canvas>
+        <canvas id="minimap" width="228" height="228"></canvas>
         <div id="progress" class="overlay">
             <div id="progress-text">Loading Assets...</div>
             <progress id="progress-bar" value="0" max="100"></progress>

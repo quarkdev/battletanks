@@ -66,16 +66,28 @@ var CANVAS = (function () {
             context.translate(-(startingpoints[i].config.oX - xView), -(startingpoints[i].config.oY - yView));
         }
     };
+    my.drawMinimap = function (context, xView, yView) {
+        /* Draw the minimap. */
+        context.strokeRect(xView / 8, yView / 8, 128, 76);
+    };
     return my;
 }());
 
 canvas = document.getElementById('game-screen');
+minimap = document.getElementById('minimap');
+minimapBG = document.getElementById('minimap-bg');
 
 WORLD_WIDTH = 1824;//canvas.width;
 WORLD_HEIGHT = 1824;//canvas.height;
 
 ctx = canvas.getContext('2d');
+minimapCtx = minimap.getContext('2d');
+minimapBGCtx = minimapBG.getContext('2d');
 
 canvas.onselectstart = function() { return false; }; // turn off text selection on dragging
 
 CANVAS.setup(canvas, ctx);
+CANVAS.setup(minimap, minimapCtx);
+CANVAS.setup(minimapBG, minimapBGCtx);
+minimapCtx.lineWidth = '2px';
+minimapCtx.strokeStyle = '#fff';
