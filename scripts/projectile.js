@@ -8,16 +8,17 @@
 */
 function Projectile(specs) {
     this.config = {
-        active  : true,
-        speed   : specs.speed,
-        damage  : specs.damage,
-        angle   : specs.angle,
-        oX      : specs.oX,
-        oY      : specs.oY,
-        srcId   : specs.srcId,
-        srcType : specs.srcType,
-        PoI     : {x: 0, y: 0}, // Point of impact of the last collision
-        sideHit : 0 // Side hit (if square)
+        active     : true,
+        speed      : specs.speed,
+        damage     : specs.damage,
+        critChance : specs.critChance,
+        angle      : specs.angle,
+        oX         : specs.oX,
+        oY         : specs.oY,
+        srcId      : specs.srcId,
+        srcType    : specs.srcType,
+        PoI        : {x: 0, y: 0}, // Point of impact of the last collision
+        sideHit    : 0 // Side hit (if square)
     };
     
     var p = this.config;

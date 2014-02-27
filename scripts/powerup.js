@@ -101,8 +101,8 @@ var PUP = (function() {
             
                 var multiShot = function (_oX, _oY) {
                     for (var i = 1; i < tank.ts_stack + 1; i++) {
-                        projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
-                        projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                        projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                        projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
                     }
                 };
                 multiShot.id = 'multiShot';
@@ -148,7 +148,7 @@ var PUP = (function() {
                         return; // bounce once only please
                     }
 
-                    var retProj = new Projectile({speed: p.speed, damage: p.damage, angle: (p.angle + 180) % 360, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'ricochet'});
+                    var retProj = new Projectile({speed: p.speed, damage: p.damage, critChance: p.critChance, angle: (p.angle + 180) % 360, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'ricochet'});
                     projectiles.push(retProj);
                 };
                 returnHit.id = 'returnHit';
@@ -190,7 +190,7 @@ var PUP = (function() {
             
                 var incBarrier = function () {
                     // Increases the barrier projectile count
-                    var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, angle: 0, oX: tank.config.oX + 35, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
+                    var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: 0, oX: tank.config.oX + 35, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
                     projectiles.push(tmp);
                     tank.pBarrier.push([tmp, 0]);
                 };
@@ -393,7 +393,7 @@ var PUP = (function() {
                         y = tank.config.oY + Math.sin(cAngle * Math.PI/180) * (tank.config.cRadius+10);
                         
                         // create new projectile
-                        var proj = new Projectile({ speed: tank.config.pSpeed * 1.25, damage: tank.config.pDamage, angle:  cAngle, oX: x, oY: y, srcId: tank.config.id, srcType: 'blast'});
+                        var proj = new Projectile({ speed: tank.config.pSpeed * 1.25, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  cAngle, oX: x, oY: y, srcId: tank.config.id, srcType: 'blast'});
                         
                         // add projectile to array
                         projectiles.push(proj);

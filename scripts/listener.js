@@ -164,6 +164,9 @@ function gameKeyDownEvent(e) {
     if (e.keyCode == 27) {
         pause(); // pause the game
     }
+    else if (e.keyCode == 77) {
+        UTIL.toggleMiniMap();
+    }
     else {
         keysDown[e.keyCode] = true;
     }

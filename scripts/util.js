@@ -294,6 +294,21 @@ var UTIL = (function () {
             return item.isExpired();
         });
     };
+    
+    my.toggleMiniMap = function () {
+        /* Toggles minimap visibility. */
+        var minimap = document.getElementById('minimap');
+        var minimap_bg = document.getElementById('minimap-bg');
+        
+        if (minimap.style.visibility === 'hidden') {
+            minimap.style.visibility = 'visible';
+            minimap_bg.style.visibility = 'visible';
+        }
+        else {
+            minimap.style.visibility = 'hidden';
+            minimap_bg.style.visibility = 'hidden';
+        }
+    };
         
     return my;
 }());

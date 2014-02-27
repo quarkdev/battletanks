@@ -77,7 +77,7 @@ function Destructible(specs, x, y) {
                 var _oY = p.PoI.y + (1 * Math.sin(newAngle*Math.PI/180));
                 var _oX = p.PoI.x + (1 * Math.cos(newAngle*Math.PI/180));
 
-                projectiles.push(new Projectile({ speed: p.speed, damage: p.damage, angle:  newAngle, oX: _oX, oY: _oY, srcId: p.srcId, srcType: 'ricochet'}));
+                projectiles.push(new Projectile({ speed: p.speed, damage: p.damage, critChance: 5, angle:  newAngle, oX: _oX, oY: _oY, srcId: p.srcId, srcType: 'ricochet'}));
 
                 break;
             case 'explosive': // create multiple projectiles that fire in all directions, explosion damage is based on projectile damage
