@@ -135,8 +135,8 @@ var UTIL = (function () {
         
         document.getElementById('stat-sf').innerHTML = shots_fired;
         document.getElementById('stat-h').innerHTML  = hits;
-        document.getElementById('stat-m').innerHTML  = shots_fired - hits;
-        document.getElementById('stat-a').innerHTML  = ((hits / shots_fired) * 100).toFixed(2) + '%';
+        document.getElementById('stat-td').innerHTML  = STAT.get('total_tanks_destroyed');
+        document.getElementById('stat-ts').innerHTML  = GLOBALS.botCount;
         document.getElementById('stat-dd').innerHTML = damage_dealt.toFixed(2);
         document.getElementById('stat-dt').innerHTML = damage_taken.toFixed(2);
     };

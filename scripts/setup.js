@@ -80,6 +80,7 @@ UTIL.asset.queue('image', ['explosion', 'images/spritesheets/explosion.png', Spr
 UTIL.asset.queue('image', ['volumetric_explosion', 'images/spritesheets/volumetric_explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['aphotic_shield', 'images/spritesheets/aphotic_shield.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['spawn_vortex', 'images/spritesheets/spawn_vortex.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['heavy_recoil', 'images/tanks/heavy/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['jagdpanther_recoil', 'images/tanks/jagdpanther/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.png', SpriteSheetImages]);
@@ -113,6 +114,7 @@ STAT.add('total_shots_fired');
 STAT.add('total_hits');
 STAT.add('total_damage_dealt');
 STAT.add('total_damage_taken');
+STAT.add('total_tanks_destroyed');
 
 // Map editor initiatlization
 MAP.addPlaceable('destructible', 'brick_explosive');
@@ -137,9 +139,23 @@ MAP.addPlaceable('powerup', 'return');
 MAP.addPlaceable('powerup', 'multi-shot');
 
 // the default map
-MAP.importFromJSON('{"name":"forest","powerups":[],"destructibles":[["tree",976,336,32],["tree",968,344,32],["tree",912,400,32],["tree",848,416,32],["tree",840,408,32],["tree",808,392,32],["tree",808,392,32],["tree",816,400,32],["tree",784,432,32],["tree",760,424,32],["tree",712,400,32],["tree",680,432,32],["tree",608,504,32],["tree",592,512,32],["tree",560,512,32],["tree",520,480,32],["tree",504,480,32],["tree",480,488,32],["tree",432,448,32],["tree",432,376,32],["tree",464,320,32],["tree",480,248,32],["tree",456,224,32],["tree",424,176,32],["tree",448,152,32],["tree",432,120,32],["tree",408,104,32],["tree",432,104,32],["tree",496,136,32],["tree",528,120,32],["tree",520,104,32],["tree",496,80,32],["tree",464,48,32],["tree",432,48,32],["tree",136,344,32],["tree",128,368,32],["tree",208,416,32],["tree",232,424,32],["tree",216,456,32],["tree",192,480,32],["tree",160,480,32],["tree",160,432,32],["tree",184,432,32],["tree",200,448,32],["tree",256,504,32],["tree",280,544,32],["tree",272,568,32]],"startingPoints":[{"config":{"oX":136,"oY":72}},{"config":{"oX":240,"oY":176}},{"config":{"oX":368,"oY":296}},{"config":{"oX":544,"oY":368}},{"config":{"oX":840,"oY":272}}]}');
+MAP.importFromJSON('{"name":"test3","powerups":[],"destructibles":[["tree",416,312,32],["tree",464,360,32],["tree",472,400,32],["tree",448,448,32],["tree",488,488,32],["tree",544,544,32],["tree",528,568,32],["tree",512,584,32],["tree",512,616,32],["tree",560,664,32],["tree",592,664,32],["tree",632,680,32],["tree",664,712,32],["tree",720,768,32],["tree",760,808,32],["tree",808,832,32],["tree",864,856,32],["tree",776,1024,32],["tree",752,1048,32],["tree",736,1064,32],["tree",768,1096,32],["tree",792,1104,32],["tree",808,1120,32],["tree",840,1128,32],["tree",848,1128,32],["tree",896,1120,32],["tree",936,1080,32],["tree",1024,992,32],["tree",1064,952,32],["tree",1104,904,32],["tree",1072,840,32],["tree",1104,808,32],["tree",1096,792,32],["tree",1072,768,32],["tree",1008,704,32],["tree",1024,680,32],["tree",1040,664,32],["tree",1072,656,32],["tree",1088,680,32],["tree",1088,696,32],["tree",1112,704,32],["tree",1136,680,32],["tree",1112,648,32],["tree",1072,608,32],["tree",1040,576,32],["tree",1008,568,32],["tree",1000,568,32],["tree",952,536,32],["tree",920,504,32],["tree",920,496,32],["tree",952,464,32],["tree",968,448,32],["tree",992,440,32],["tree",1040,472,32],["tree",1064,488,32],["tree",1096,472,32],["tree",1128,440,32],["tree",1120,424,32],["tree",1096,400,32],["tree",1088,368,32],["tree",1136,400,32],["tree",1072,416,32],["tree",992,480,32],["tree",816,336,32],["tree",832,312,32],["tree",864,280,32],["tree",840,240,32],["tree",824,208,32],["tree",872,176,32],["tree",904,192,32],["tree",896,216,32],["tree",912,232,32],["tree",928,232,32],["tree",952,232,32],["tree",984,200,32],["tree",1032,200,32],["tree",1104,248,32],["tree",1328,416,32],["tree",1360,416,32],["tree",1432,344,32],["tree",1440,312,32],["tree",1408,280,32],["tree",1368,240,32],["tree",1360,200,32],["tree",1360,176,32],["tree",1360,144,32],["tree",1376,104,32],["tree",1408,72,32],["tree",1424,32,32],["tree",1392,16,32],["tree",1376,16,32],["tree",1464,264,32],["tree",1472,344,32],["tree",1432,392,32],["tree",1392,528,32],["tree",1384,536,32],["tree",1352,568,32],["tree",1384,600,32],["tree",1416,624,32],["tree",1424,624,32],["tree",1456,656,32],["tree",1504,704,32],["tree",1544,744,32],["tree",1552,792,32],["tree",1528,816,32],["tree",1528,848,32],["tree",1536,864,32],["tree",1504,896,32],["tree",1496,920,32],["tree",1512,936,32],["tree",1544,968,32],["tree",1584,1008,32],["tree",1624,1056,32],["tree",1592,1088,32],["tree",424,1064,32],["tree",352,1040,32],["tree",296,1016,32],["tree",256,1024,32],["tree",208,1072,32],["tree",136,1128,32],["tree",104,1144,32],["tree",72,1144,32],["tree",32,1104,32],["tree",16,1088,32],["tree",16,1056,32],["tree",48,1048,32],["tree",64,1056,32],["tree",88,1072,32],["tree",120,1056,32],["tree",120,1024,32],["tree",88,992,32],["tree",48,952,32],["tree",16,920,32],["tree",32,888,32],["tree",72,848,32],["tree",128,792,32],["tree",232,688,32],["tree",256,680,32],["tree",304,680,32],["tree",328,680,32],["tree",480,760,32],["tree",496,768,32],["tree",520,768,32],["tree",544,752,32],["tree",560,736,32],["tree",592,728,32],["tree",624,760,32],["tree",648,784,32],["tree",688,824,32],["tree",1064,952,32],["tree",1096,976,32],["tree",1128,976,32],["tree",1168,960,32],["tree",1192,984,32],["tree",1184,1008,32],["tree",1192,1040,32],["tree",1224,1072,32],["tree",1376,1104,32],["tree",1408,1072,32],["tree",1416,1064,32],["tree",1448,1040,32],["tree",1472,1048,32],["tree",1520,1088,32],["tree",1544,1080,32],["tree",1576,1048,32],["tree",1608,1032,32],["tree",1640,1032,32],["tree",1656,1040,32],["tree",1680,1064,32],["tree",1760,1192,32],["tree",1776,1216,32],["tree",1792,1232,32],["tree",1792,1264,32],["tree",1768,1288,32],["tree",1768,1320,32],["tree",1760,1400,32],["tree",1720,1400,32],["tree",1680,1368,32],["tree",1640,1352,32],["tree",1608,1360,32],["tree",1584,1384,32]],"startingPoints":[{"config":{"oX":1224,"oY":1456}},{"config":{"oX":1040,"oY":1304}},{"config":{"oX":856,"oY":672}},{"config":{"oX":656,"oY":368}},{"config":{"oX":248,"oY":512}},{"config":{"oX":432,"oY":952}}],"triggers":[],"timedEvents":[]}');
 
 GLOBALS.map.current = maps[0];
+
+// test spawn, unlimited spawning (only spawns if total tanks in map is less than 30)
+GLOBALS.map.current.timedEvents.push([function () {
+    var looped_spawn = function() {
+        if (tanks.length < 30) {
+            MAP.spawnEnemyAtAllPoints('m4_sherman');
+        }
+        timers.push(new Timer(function () {
+            looped_spawn();
+        }, 12000));
+    };
+    
+    looped_spawn();
+}, 12000]);
 
 // show progress bar
 $('.overlay').hide();

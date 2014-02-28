@@ -513,8 +513,10 @@ function Tank(specs, id, control, x, y) {
         t.turretAnim.end();
 
         visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: t.explodeScale, scaleH: t.explodeScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
-        //t.oX = canvas.height+250;
-        //t.oY = 0;
+        
+        if (t.control === 'computer') {
+            STAT.inc('total_tanks_destroyed', 1);
+        }
     };
     
     this.frame = function () {

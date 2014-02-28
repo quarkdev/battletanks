@@ -11,6 +11,7 @@ var LOAD = (function () {
         projectiles.length = 0;
         destructibles.length = 0;
         startingpoints.length = 0;
+        GLOBALS.botCount = 0; // reset botcount
         
         player_name = player_name === '' ? 'player' : player_name;
         
@@ -26,7 +27,8 @@ var LOAD = (function () {
         
         for (var i = 1; i < max_players; i++) {
             // start on 1 so that the total bot number is 1 less than the max_players
-            playerlist.push(['bot'+i, 'heavy', 'computer']);
+            GLOBALS.botCount++;
+            playerlist.push(['bot' + GLOBALS.botCount, 'heavy', 'computer']);
         }
         
         var setup_error = MAP.setup(GLOBALS.map.current, playerlist);
@@ -45,6 +47,13 @@ var LOAD = (function () {
             
                 // spawn pathfinders
                 LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
+            }
+            
+            var tEvents = GLOBALS.map.current.timedEvents;
+
+            // setup timed events
+            for (i = 0; i < tEvents.length; i++) {
+                timers.push(new Timer(tEvents[i][0], tEvents[i][1]));
             }
         }
         
@@ -97,17 +106,17 @@ LOAD.worker = (function () {
                 }
             }
                 
-                switch (cmd) {
-                    case 'update_ok':
-                        bots[bot_index][2] = 'ready';
-                        break;
-                    case 'waypoint_ok':
-                        bots[bot_index][1] = messageReceived.waypoint;
-                        bots[bot_index][2] = 'ready';
-                        break;
-                    default:
-                        break;
-                }
+            switch (cmd) {
+                case 'update_ok':
+                    bots[bot_index][2] = 'ready';
+                    break;
+                case 'waypoint_ok':
+                    bots[bot_index][1] = messageReceived.waypoint;
+                    bots[bot_index][2] = 'ready';
+                    break;
+                default:
+                    break;
+            }
             
             // Save the movement commands to the moveCmds action array
             
@@ -143,6 +152,15 @@ LOAD.worker = (function () {
         while (workerPool.length > 0) {
             workerPool[0][0].terminate();
             workerPool.splice(0, 1);
+        }
+    };
+    
+    my.terminate = function (workerId) {
+        /* Terminate a specific worker. */
+        for (var i = 0; i < workerPool.length; i++) {
+            if (workerPool[i][1] === workerId) {
+                workerPool[i][0].terminate();
+            }
         }
     };
     

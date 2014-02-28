@@ -20,7 +20,8 @@ var GLOBALS = (function () {
         },
         map : {
             current : null
-        }
+        },
+        botCount : 0 // the number of bots currently active
     };
 }());
 

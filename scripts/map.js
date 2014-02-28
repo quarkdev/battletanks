@@ -22,6 +22,8 @@ var MAP = (function () {
         this.powerups = [];
         this.destructibles = []; // [destructible_blueprint_string, x, y] : this prevents shallow copy problems (reference problems)
         this.startingPoints = []; // this also dictates the max player
+        this.triggers = []; // triggers (spawn, camera event, victory, etc) Triggers and their linked triggers are destroyed once proc'd and callbacks called
+        this.timedEvents = []; // Timed events are setup at initial load of the map, timers are spawned including their attached callbacks/events
     }
 
     // StartingPoint object
@@ -378,10 +380,68 @@ var MAP = (function () {
         return 0;
     };
     
-    my.spawnEnemy = function () {
+    my.spawnEnemyAtAnyPoint = function (blueprint) {
         /* Spawns an enemy tank at any of the current map's starting points. */
         var current_map = GLOBALS.map.current;
-        var i = Math.floor(Math.random() * current_map.startingpoints.length);
+        var i = Math.floor(Math.random() * current_map.startingPoints.length);
+        var x = current_map.startingPoints[i].config.oX;
+        var y = current_map.startingPoints[i].config.oY;
+        
+        my.spawnEnemy(blueprint, x, y);
+    };
+    
+    my.spawnEnemyAtAllPoints = function (blueprint) {
+        /* Spawns enemies at all starting points. */
+        var current_map = GLOBALS.map.current;
+        
+        for (var i = 0; i < current_map.startingPoints.length; i++) {
+            my.spawnEnemy(blueprint, current_map.startingPoints[i].config.oX, current_map.startingPoints[i].config.oY);
+        }
+    };
+    
+    my.spawnEnemyAtEveryPoint = function (spawnMap) {
+        /* Spawns an enemy tank at every point in spawn map. Spawn map format: each item, [blueprint, x, y] */
+        for (var i = 0; i < spawnMap.length; i++) {
+            my.spawnEnemt(spawnMap[0], spawnMap[1], spawnMap[2]);
+        }
+    };
+    
+    my.spawnEnemy = function (blueprint, x, y) {
+        /* Spawns an enemy tank at a target point */
+        GLOBALS.botCount++;
+        var enemyId = 'bot' + GLOBALS.botCount;
+        
+        // add the spawn vortex effect
+        var vfx = new VisualEffect({
+            name: 'spawn_vortex',
+            oX: x,
+            oY: y,
+            width: 64,
+            height: 64,
+            scaleW: 64,
+            scaleH: 64,
+            maxCols: 4,
+            maxRows: 4,
+            framesTillUpdate: 1,
+            loop: true,
+            spriteSheet: 'spawn_vortex'
+        });
+        visualeffects.push(vfx);
+        
+        timers.push(new Timer(function () {
+            // end the spawn vortex animation
+            vfx.end();
+        
+            // spawn enemy at starting point
+            var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'computer', x, y);
+            tanks.push(enemy);
+            
+            // add to bot pool
+            bots.push([enemy, [], 'waiting', 'patrol']);
+            
+            // load its pathfinder
+            LOAD.worker.pathFinder(GLOBALS.map.current, enemyId, enemy.config.width);
+        }, 3000));
     };
     
     my.generateTerrain = function () {

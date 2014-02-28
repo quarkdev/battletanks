@@ -87,6 +87,12 @@ function attachMenuEventListeners() {
 }
 
 function attachEditorEventListeners() {
+
+    $('#map-properties').click(function () {
+        $('.overlay').hide();
+        $('#map-properties-screen').show();
+    });
+
     $('#save-map').click(function () {
 
         // hide menu

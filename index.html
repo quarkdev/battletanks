@@ -197,6 +197,10 @@
         border: 3px solid white;
     }
     
+    .mbc-6 {
+        margin: -254px 0 0 -100px;
+    }
+    
     .mbc-5 {
         margin: -212px 0 0 -100px;
     }
@@ -364,6 +368,14 @@
         opacity: 0.5;
         display: visible;
     }
+    
+    #map-properties-screen {
+        text-align: left;
+        font-family: Arial;
+        font-size: 16px;
+        color: #fff;
+        background-color: 
+    }
 </style>
 <style type="text/css" src="css/style.css"></style>
 <script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
@@ -374,10 +386,12 @@
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
         <canvas id="minimap-bg" width="228" height="228"></canvas>
         <canvas id="minimap" width="228" height="228"></canvas>
+        
         <div id="progress" class="overlay">
             <div id="progress-text">Loading Assets...</div>
             <progress id="progress-bar" value="0" max="100"></progress>
         </div>
+        
         <div id="main-menu" class="overlay">
             <span class="big-title">Battle Tanks</span>
             <div class="menu-btn-container mbc-2">
@@ -385,40 +399,54 @@
                 <div id="map-builder" class="menu-btn">MAP BUILDER</div>
             </div>
         </div>
+        
         <div id="pause-menu" class="overlay">
             <div class="menu-btn-container mbc-2">
                 <div class="menu-btn main-menu">MAIN MENU</div>
                 <div class="menu-btn continue-game">CONTINUE</div>
             </div>
         </div>
+        
         <div id="editor-menu" class="overlay">
             <div class="menu-btn-container mbc-5">
                 <div class="menu-btn main-menu">MAIN MENU</div>
+                <div id="map-properties" class="menu-btn">PROPERTIES</div>
                 <div id="save-map" class="menu-btn">SAVE MAP</div>
                 <div id="import-map" class="menu-btn">IMPORT MAP</div>
                 <div id="export-map" class="menu-btn">EXPORT MAP</div>
                 <div class="menu-btn continue-game">CONTINUE</div>
             </div>
         </div>
-        <div id="level-cleared-screen" class="overlay">
+        
+        <div id="map-properties-screen" class="overlay">
+            <form>
+                <fieldset>
+                    <legend>Timed Events</legend>
+                    <label for="te-type">Event Type</label>
+                    <input id="te-type" name="te-type" type="text" value="spawn" readonly="true">
+                    <label for="te-timeout">Timeout</label>
+                    <input id="te-timeout" name="te-timeout" type="text" value="50">
+                    <input id="te-update" type="button" value="Update" />
+                    <input id="te-remove" type="button" value="Remove" />
+                </fieldset>
+            </form>
+            <div class="menu-btn continue-game">CONTINUE</div>
+        </div>
+        
+        <div id="game-over-screen" class="overlay">
             <div class="menu-btn-container mbc-4">
-                <div class="menu-txt">VICTORY!</div>
+                <div class="menu-txt" id="mt-title">GAME OVER!</div>
                 <div class="stat-title">STATISTICS:</div>
                 <div class="stat-txt" >Shots fired -------- <span id="stat-sf"></span></div>
                 <div class="stat-txt" >Hits --------------- <span id="stat-h"></span></div>
-                <div class="stat-txt" >Misses ------------- <span id="stat-m"></span></div>
-                <div class="stat-txt" >Accuracy ----------- <span id="stat-a"></span></div>
+                <div class="stat-txt" >Tanks Spawned ------ <span id="stat-ts"></span></div>
+                <div class="stat-txt" >Tanks Destroyed ---- <span id="stat-td"></span></div>
                 <div class="stat-txt" >Damage Dealt ------- <span id="stat-dd"></span></div>
                 <div class="stat-txt" >Damage Taken ------- <span id="stat-dt"></span></div>
                 <div class="menu-btn main-menu">MAIN MENU</div>
             </div>
         </div>
-        <div id="game-over-screen" class="overlay">
-            <div class="menu-btn-container mbc-2">
-                <div class="menu-txt">GAME OVER!</div>
-                <div class="menu-btn main-menu">MAIN MENU</div>
-            </div>
-        </div>
+        
         <div id="prompt-pre-game-settings" class="overlay">
                 <div id="tank-select">
                     <div id="tank-info-wrapper">
@@ -447,18 +475,21 @@
                 </div>
                 <div id="start-battle-ok" class="menu-btn">START BATTLE!</div>
         </div>
+        
         <div id="prompt-map-name" class="overlay">
             <div class="menu-btn-container mbc-2">
                 <input id="map-name" type="text" value="" placeholder="Map Name" />
                 <div id="save-map-ok" class="menu-btn">OK</div>
             </div>
         </div>
+        
         <div id="prompt-map-name-export" class="overlay">
             <div class="menu-btn-container mbc-2">
                 <input id="map-name-ex" type="text" value="" placeholder="Map Name" />
                 <div id="save-map-ex-ok" class="menu-btn">OK</div>
             </div>
         </div>
+        
         <div id="prompt-map-import" class="overlay">
             <div class="menu-btn-container mbc-2">
                 <input id="map-string" class="ui_input" type="text" value="" placeholder="Map String" />
@@ -466,6 +497,7 @@
             </div>
         </div>
     </div>
+    
     <div id="external-hud">
         <div id="health-bar">
             <div id="current-health-anim">
@@ -476,6 +508,7 @@
             </div>
         </div>
     </div>
+    
     <div id="combat-log"></div>
     <div id="editor-ui"></div>
 </div>

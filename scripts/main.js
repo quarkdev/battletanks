@@ -79,6 +79,8 @@ var update = function(modifier) {
    
     // AI
     for (var i = 0; i < bots.length; i++) {
+        var bot_id = bots[i][0].config.id;
+    
         // update tanks only if active | TEST for AI pathfinding
         if (bots[i][0].config.active) {
             bots[i][0].frame(); // run all frame callbacks
@@ -127,8 +129,6 @@ var update = function(modifier) {
             else if (bots[i][2] !== 'waiting') {
                 // movequeue is empty and bot is not waiting for reply from worker, so ask for movelist from pathfinder
                 
-                var bot_id = bots[i][0].config.id;
-                
                 var msg = {};
                 
                 msg.sender = bot_id;
@@ -154,6 +154,10 @@ var update = function(modifier) {
                 // send message to pathfinder worker asking for directions
                 LOAD.worker.sendMessage(bot_id, msg);
             }
+        }
+        else {
+            // tank is dead, time to terminate its associated pathfinder also
+            LOAD.worker.terminate(bot_id);
         }
     }
     
@@ -197,6 +201,11 @@ var update = function(modifier) {
     
     // Remove all inactive tanks
     if (GLOBALS.flags.clean.tanks > GLOBALS.flags.clean.threshold) {
+        // clean the bots first
+        bots = bots.filter(function (item) {
+            return item[0].config.active;
+        });
+        // then clean the tanks
         tanks = tanks.filter(function (item) {
             return item.config.active;
         });
@@ -333,13 +342,14 @@ var main = function () {
     if (!player.config.active) {
         // if player is dead, show game over screen
         ui_location = 'post_game';
-        showGameOver();
+        UTIL.writeStats();
+        showGameOver('gameover');
     }
     else if (UTIL.levelCleared()) {
         // level is cleared (i.e. all enemy tanks are destroyed)
         UTIL.writeStats();
         ui_location = 'post_game';
-        showLevelCleared();
+        showGameOver('victory');
     }
 };
 
@@ -397,25 +407,25 @@ var startMapEditor = function () {
     editor();
 };
 
-var showGameOver = function () {
+var showGameOver = function (state) {
     // stop the main interval
     cancelAnimationFrame(mainAnimation);
     
     UTIL.killTimers();
+    
+    switch (state) {
+        case 'victory':
+            $('#mt-title').html('VICTORY!');
+            break;
+        case 'gameover':
+            $('#mt-title').html('GAME OVER!');
+            break;
+        default:
+            break;
+    }
 
     // show game over screen
     $('#game-over-screen').show();
-    UTIL.pauseMusic(backgroundMusic);
-};
-
-var showLevelCleared = function () {
-    // stop the main interval
-    cancelAnimationFrame(mainAnimation);
-    
-    UTIL.killTimers();
-
-    // show game over screen
-    $('#level-cleared-screen').show();
     UTIL.pauseMusic(backgroundMusic);
 };
 
