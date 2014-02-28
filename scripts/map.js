@@ -346,12 +346,12 @@ var MAP = (function () {
         }
 
         // Clear the destructible, projectile, tank, and powerup arrays.
-        destructibles.clear();
-        projectiles.clear();
-        tanks.clear();
-        powerups.clear();
-        visualeffects.clear();
-        timers.clear();
+        destructibles.length = 0;
+        projectiles.length = 0;
+        tanks.length = 0;
+        powerups.length = 0;
+        visualeffects.length = 0;
+        timers.length = 0;
         
         // push the powerups into the array
         for (i = 0; i < map.powerups.length; i++) {

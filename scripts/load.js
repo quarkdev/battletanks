@@ -5,12 +5,12 @@ var LOAD = (function () {
     
     my.gameSettings = function (player_name) {
         /* Load game settings before game starts. */
-        powerups.clear();
-        tanks.clear();
-        bots.clear();
-        projectiles.clear();
-        destructibles.clear();
-        startingpoints.clear();
+        powerups.length = 0;
+        tanks.length = 0;
+        bots.length = 0;
+        projectiles.length = 0;
+        destructibles.length = 0;
+        startingpoints.length = 0;
         
         player_name = player_name === '' ? 'player' : player_name;
         

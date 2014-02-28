@@ -381,12 +381,12 @@ var startMapEditor = function () {
     ui_location = 'editor';
 
     // clear the arrays
-    powerups.clear();
-    tanks.clear();
-    projectiles.clear();
-    destructibles.clear();
-    startingpoints.clear();
-    visualeffects.clear();
+    powerups.length = 0;
+    tanks.length = 0;
+    projectiles.length = 0;
+    destructibles.length = 0;
+    startingpoints.length = 0;
+    visualeffects.length = 0;
 
     MAP.loadPlaceablesToUI();
     

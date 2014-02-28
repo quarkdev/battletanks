@@ -4,11 +4,11 @@ var GLOBALS = (function () {
     return {
         flags : {
             clean : {
-                threshold : 20,
-                destructibles : 0,
+                threshold     : 20, // the max number of inactive objects (e.g. destructibles) before filter-based cleaning is done
+                destructibles : 0,  // the current inactive object count (in this case, the current inactive destructibles) 
                 visualeffects : 0,
-                projectiles : 0,
-                tanks : 0
+                projectiles   : 0,
+                tanks         : 0
             }
         },
         tankSelection: {
@@ -30,44 +30,44 @@ Array.prototype.clear = function () {
   }
 };
 
-LOG_ENABLED = false;
+var LOG_ENABLED = false;
 
-terrain = null;
-powerups = [];
-tanks = [];
-projectiles = [];
-destructibles = [];
-startingpoints = [];
-visualeffects = [];
-timers = [];
-maps = [];
-bots = []; // [tank, movequeue, movelist_status, state] where movelist_status pertains to readiness to execute the movelist, state refers to bot state 'patrolling', 'chasing', 'running'
+var terrain = null;
+var powerups = [];
+var tanks = [];
+var projectiles = [];
+var destructibles = [];
+var startingpoints = [];
+var visualeffects = [];
+var timers = [];
+var maps = [];
+var bots = []; // [tank, movequeue, movelist_status, state] where movelist_status pertains to readiness to execute the movelist, state refers to bot state 'patrolling', 'chasing', 'running'
 
-mainAnimation = null;
-editorAnimation = null;
+var mainAnimation = null;
+var editorAnimation = null;
 
-camera = null;
+var camera = null;
 
-ui_location = null; // menu, game, editor
+var ui_location = null; // menu, game, editor
 
-mousePos = {};
-mouseDownLeft = false; // left mouse
-mouseDownRight = false; // right mouse
-cycles = 0;
-logNum = 0;
-keysDown = {};
-then = Date.now();
+var mousePos = {};
+var mouseDownLeft = false; // left mouse
+var mouseDownRight = false; // right mouse
+var cycles = 0;
+var logNum = 0;
+var keysDown = {};
+var then = Date.now();
 
 /* map editor */
-cs_placement_ok = true;
-cspo_timeout = null; // timeout for cs_placement_ok
+var cs_placement_ok = true;
+var cspo_timeout = null; // timeout for cs_placement_ok
 
-cs_asset_select_ok = true;
-csas_timeout = null;
+var cs_asset_select_ok = true;
+var csas_timeout = null;
 
-cs_movement_ok = true;
-csmv_timeout = null;
+var cs_movement_ok = true;
+var csmv_timeout = null;
 
-cLog = document.getElementById('combat-log');
-hNum = document.getElementById('hNum');
-hp = document.getElementById('current-health');
+var cLog = document.getElementById('combat-log');
+var hNum = document.getElementById('hNum');
+var hp = document.getElementById('current-health');
