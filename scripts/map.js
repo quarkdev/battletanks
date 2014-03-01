@@ -283,7 +283,7 @@ var MAP = (function () {
         // check and verify all timed events
         var tes = document.getElementsByClassName('timed-event');
         var eventPool = [];
-        var eventData = []; // [blueprint, freq, timeout, constraint-a, eventPool[i][4], contraint-b, constraint-a2, eventPool[i][4]2, constraint-b2]
+        var eventData = []; // [blueprint, freq, timeout, constraint-a, eventPool[i][4], contraint-b, constraint-a2, comp2, constraint-b2]
         
         for (i = 0; i < tes.length; i++) {
             var te = tes[i];
@@ -455,7 +455,7 @@ var MAP = (function () {
             vfx.end();
         
             // spawn enemy at starting point
-            var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'eventPool[i][4]uter', x, y);
+            var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'computer', x, y);
             tanks.push(enemy);
             
             // add to bot pool
