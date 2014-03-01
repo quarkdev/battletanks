@@ -22,7 +22,7 @@
     "pSpeed"       : 640.0,
     "pDamage"      : 260.0,
     "critChance"   : 5,
-    "ammo"         : 180.0,
+    "ammo"         : 300.0,
     "fRate"        : 0.8,
     "hAngle"       : 90.0,
     "tAngle"       : 45.0
@@ -49,7 +49,7 @@
     "pSpeed"       : 520.0,
     "pDamage"      : 52.5,
     "critChance"   : 5,
-    "ammo"         : 98.0,
+    "ammo"         : 300.0,
     "fRate"        : 2.0,
     "hAngle"       : 90.0,
     "tAngle"       : 45.0
@@ -76,7 +76,7 @@
     "pSpeed"       : 520.0,
     "pDamage"      : 52.5,
     "critChance"   : 5,
-    "ammo"         : 98.0,
+    "ammo"         : 300.0,
     "fRate"        : 2.0,
     "hAngle"       : 90.0,
     "tAngle"       : 45.0
@@ -103,7 +103,7 @@
     "pSpeed"       : 860.0,
     "pDamage"      : 1200.0,
     "critChance"   : 15,
-    "ammo"         : 50.0,
+    "ammo"         : 300.0,
     "fRate"        : 0.5,
     "hAngle"       : 90.0,
     "tAngle"       : 90.0

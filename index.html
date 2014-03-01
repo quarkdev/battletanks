@@ -372,7 +372,7 @@
     #map-properties-screen {
         text-align: left;
         font-family: Arial;
-        font-size: 16px;
+        font-size: 12px;
         color: #fff;
         background-color: 
     }
@@ -421,16 +421,17 @@
         <div id="map-properties-screen" class="overlay">
             <form>
                 <fieldset>
-                    <legend>Timed Events</legend>
-                    <label for="te-type">Event Type</label>
-                    <input id="te-type" name="te-type" type="text" value="spawn" readonly="true">
-                    <label for="te-timeout">Timeout</label>
-                    <input id="te-timeout" name="te-timeout" type="text" value="50">
-                    <input id="te-update" type="button" value="Update" />
-                    <input id="te-remove" type="button" value="Remove" />
+                    <legend style="font-weight: bold">TIMED EVENTS</legend>
+                    <div style="text-align: right">
+                        <input id="te-new" type="button" value="New Event">
+                        <input id="te-remove-all" type="button" value="Clear Events">
+                    </div>
+                    <hr>
+                    <div id="timed-event-container">
+                    </div>
                 </fieldset>
             </form>
-            <div class="menu-btn continue-game">CONTINUE</div>
+            <div class="menu-btn continue-game" style="position: absolute; bottom: 10px; right: 20px">CONTINUE</div>
         </div>
         
         <div id="game-over-screen" class="overlay">

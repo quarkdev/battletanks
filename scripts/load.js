@@ -49,11 +49,55 @@ var LOAD = (function () {
                 LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
             }
             
-            var tEvents = GLOBALS.map.current.timedEvents;
+            var eventPool = GLOBALS.map.current.timedEvents;
 
             // setup timed events
-            for (i = 0; i < tEvents.length; i++) {
-                timers.push(new Timer(tEvents[i][0], tEvents[i][1]));
+            var compare = {
+                'less_than': function(a, b) { return a < b },
+                'equals': function(a, b) { return a == b },
+                'greater_than': function(a, b) { return a > b }
+            };
+            
+            var cons_a = {
+                'active_tanks': function () { return tanks.length },
+                'player_health': function () { return player.config.health }
+            };
+            
+            var cons_a2 = {
+                'total_spawned': function () { return GLOBALS.botCount }
+            };
+            
+            // load timed events
+            for (i = 0; i < eventPool.length; i++) {
+                (function (i) {
+                    switch (eventPool[i][1]) {
+                        case 'after':
+                            // occurs only once
+                            timers.push(new Timer(function () {
+                                if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
+                                    MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
+                                }
+                            }, eventPool[i][2] * 1000));
+                            break;
+                        case 'every':
+                            // occurs at set intervals
+                            timers.push(new Timer(function () {
+                                var looped_spawn = function () {
+                                    if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
+                                        MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
+                                    }
+                                    timers.push(new Timer(function () {
+                                        looped_spawn();
+                                    }, eventPool[i][2] * 1000));
+                                }
+                                
+                                looped_spawn();
+                            }, eventPool[i][2] * 1000));
+                            break;
+                        default:
+                            break;
+                    }
+                }(i));
             }
         }
         
