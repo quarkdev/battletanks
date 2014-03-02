@@ -169,9 +169,9 @@ function attachEditorEventListeners() {
         // retrieve all tank blueprints
         GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks');
         
-        str += '<option value="' + GLOBALS.tankSelection.blueprints[0].name + '" selected="selected">' + GLOBALS.tankSelection.blueprints[0].name + '</option>'; // set the first blueprint as default
+        str += '<option value="powerup" selected="selected">Power-Up</option>'; // set the first blueprint as default
         
-        for (var i = 1; i < GLOBALS.tankSelection.blueprints.length; i++) {
+        for (var i = 0; i < GLOBALS.tankSelection.blueprints.length; i++) {
             str += '<option value="' + GLOBALS.tankSelection.blueprints[i].name + '">' + GLOBALS.tankSelection.blueprints[i].name + '</option>';
         }
                 

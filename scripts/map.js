@@ -466,6 +466,14 @@ var MAP = (function () {
         }, 3000));
     };
     
+    my.spawnPowerUp = function () {
+        /* Spawns a random powerup anywhere on the map. */
+        var x = Math.random() * WORLD_WIDTH;
+        var y = Math.random() * WORLD_HEIGHT;
+        
+        powerups.push(PUP.createRandom(x, y));
+    };
+    
     my.generateTerrain = function () {
         /* Randomly generates a terrain. */
         

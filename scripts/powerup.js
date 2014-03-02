@@ -114,7 +114,7 @@ var PUP = (function() {
                     delete tank.ts_timeout;
                     delete tank.ts_stack;
                     tank.fire_callbacks = tank.fire_callbacks.filter(function (item) { return item.id != 'multiShot'; });
-                }, 20000);
+                }, 30000);
             }
             else {
                 tank.ts_stack = tank.ts_stack > 16 ? tank.ts_stack : tank.ts_stack + 1; // cap at 16 stacks
@@ -247,7 +247,7 @@ var PUP = (function() {
         
         this.use = function (tank) {
             tank.config.fRate += 5;
-            var timer = new Timer(function () { tank.config.fRate -= 5; }, 5000);
+            var timer = new Timer(function () { tank.config.fRate -= 5; }, 12000);
         };
     }
 
@@ -284,7 +284,7 @@ var PUP = (function() {
         
         this.use = function (tank) {
             tank.config.pSpeed += 200;
-            var timer = new Timer(function () { tank.config.pSpeed -= 200; }, 8000);
+            var timer = new Timer(function () { tank.config.pSpeed -= 200; }, 30000);
         };
     }
 
@@ -311,7 +311,7 @@ var PUP = (function() {
                 tank.config.armor -= 50;
                 // remove attachment
                 tank.attachments.chassis = tank.attachments.chassis.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
-            }, 20000);
+            }, 30000);
         };
     }
 
@@ -338,7 +338,7 @@ var PUP = (function() {
                 tank.config.pDamage -= 50;
                 // remove attachment
                 tank.attachments.turret = tank.attachments.turret.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
-            }, 20000);
+            }, 30000);
         };
     }
 

@@ -75,7 +75,12 @@ var LOAD = (function () {
                             // occurs only once
                             timers.push(new Timer(function () {
                                 if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
-                                    MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
+                                    if (eventPool[i][0] === 'powerup') {
+                                        MAP.spawnPowerUp();
+                                    }
+                                    else {
+                                        MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
+                                    }
                                 }
                             }, eventPool[i][2] * 1000));
                             break;
@@ -84,7 +89,12 @@ var LOAD = (function () {
                             timers.push(new Timer(function () {
                                 var looped_spawn = function () {
                                     if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
-                                        MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
+                                        if (eventPool[i][0] === 'powerup') {
+                                            MAP.spawnPowerUp();
+                                        }
+                                        else {
+                                            MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
+                                        }
                                     }
                                     timers.push(new Timer(function () {
                                         looped_spawn();
