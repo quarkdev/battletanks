@@ -6,7 +6,7 @@ UTIL.asset.queue('blueprint', ['destructibles', 'json/blueprints/destructibles.j
 
 // Terrain images
 TerrainImages = new ImageLibrary();
-UTIL.asset.queue('image', ['testmap', 'images/testmap.png', TerrainImages]);
+UTIL.asset.queue('image', ['default', 'images/testmap.png', TerrainImages]);
 UTIL.asset.queue('image', ['dirt_and_grass_02', 'images/terrain/dirt_and_grass/dirt_and_grass_02.png', TerrainImages]);
 UTIL.asset.queue('image', ['dirt_and_grass_03', 'images/terrain/dirt_and_grass/dirt_and_grass_03.png', TerrainImages]);
 UTIL.asset.queue('image', ['dirt_and_grass_04', 'images/terrain/dirt_and_grass/dirt_and_grass_04.png', TerrainImages]);
@@ -167,7 +167,7 @@ UTIL.asset.loadAll(function (item) {
     console.log(error);
 }, function () {
     // if everything has been loaded, go to main menu
-    terrain = TerrainImages.get('testmap'); // default terrain
+    terrain = TerrainImages.get('default'); // default terrain
     $('#progress').hide();
     menu();
 });

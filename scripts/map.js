@@ -24,6 +24,7 @@ var MAP = (function () {
         this.startingPoints = []; // this also dictates the max player
         this.triggers = []; // triggers (spawn, camera event, victory, etc) Triggers and their linked triggers are destroyed once proc'd and callbacks called
         this.timedEvents = []; // Timed events are setup at initial load of the map, timers are spawned including their attached callbacks/events
+        this.terrain = null; // The background terrain used
     }
 
     // StartingPoint object
@@ -376,6 +377,16 @@ var MAP = (function () {
         powerups.length = 0;
         visualeffects.length = 0;
         timers.length = 0;
+        
+        // check if map has a custom terrain
+        if (typeof map.terrain !== 'null' && typeof map.terrain !== 'undefined') {
+            // load it into the terrain global var
+            terrain = TerrainImages.get(map.terrain);
+        }
+        else {
+            // load the default one
+            terrain = TerrainImages.get('default');
+        }
         
         // push the powerups into the array
         for (i = 0; i < map.powerups.length; i++) {
