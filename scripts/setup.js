@@ -100,14 +100,14 @@ t_destroyedSound2 = new SoundPool('sounds/tank_destroyed2.wav', 0.2, 10);
 t_destroyedSound3 = new SoundPool('sounds/tank_destroyed3.wav', 0.2, 10);
 pick_powerupSound = new SoundPool('sounds/pick-powerup.wav', 0.2, 20);
     
-UTIL.asset.queue('soundpool', fireSound);
-UTIL.asset.queue('soundpool', explodeSound);
-UTIL.asset.queue('soundpool', d_explodeSound);
-UTIL.asset.queue('soundpool', d_destroyedSound);
-UTIL.asset.queue('soundpool', t_destroyedSound);
-UTIL.asset.queue('soundpool', t_destroyedSound2);
-UTIL.asset.queue('soundpool', t_destroyedSound3);
-UTIL.asset.queue('soundpool', pick_powerupSound);
+UTIL.asset.queue('soundpool', ['fire', fireSound]);
+UTIL.asset.queue('soundpool', ['explode', explodeSound]);
+UTIL.asset.queue('soundpool', ['explode_destructible', d_explodeSound]);
+UTIL.asset.queue('soundpool', ['destroyed_destructible', d_destroyedSound]);
+UTIL.asset.queue('soundpool', ['destroyed_tank', t_destroyedSound]);
+UTIL.asset.queue('soundpool', ['destroyed_tank2', t_destroyedSound2]);
+UTIL.asset.queue('soundpool', ['destroyed_tank3', t_destroyedSound3]);
+UTIL.asset.queue('soundpool', ['pick_powerup', pick_powerupSound]);
 
 // Init stat fields
 STAT.add('total_shots_fired');
@@ -149,6 +149,7 @@ GLOBALS.map.current = maps[0];
 $('#progress').show();
 var progressText = document.getElementById('progress-text');
 var progressBar = document.getElementById('progress-bar');
+var progressTextDone = document.getElementById('progress-text-done');
 
 var totalAssets = UTIL.asset.getTotalQueued();
 var totalLoaded = UTIL.asset.getTotalLoaded();
@@ -156,10 +157,13 @@ var totalFailed = UTIL.asset.getTotalFailed();
 
 $(document).ready(function () {
     // start loading assets
-    UTIL.asset.loadAll(function (item) {
+    UTIL.asset.loadAll(function (info) {
+        // everytime a queued item starts downloading, update progress text
+        progressText.innerHTML = 'Loading: ' + info;
+    }, function (item) {
         // everytime a queued item is loaded, update the progressbar
         totalLoaded = UTIL.asset.getTotalLoaded();
-        progressText.innerHTML = item;
+        progressTextDone.innerHTML = item + 'loaded.';
         progressBar.value = (totalLoaded / totalAssets) * 100;
     }, function (error) {
         // if we encountered an error while loading, log it

@@ -806,7 +806,7 @@ UTIL.asset = (function() {
                 });
                 break;
             case 'soundpool': // [url, volume, poolmax, poolVar]
-                args.init(function (soundLoc) {
+                args[1].init(function (soundLoc) {
                     loaded++;
                     onSuccess(soundLoc);
                 });
@@ -835,12 +835,13 @@ UTIL.asset = (function() {
         }
     };
     
-    my.loadAll = function (onSuccess, onError, onAllLoaded) {
+    my.loadAll = function (onInfo, onSuccess, onError, onAllLoaded) {
         /*
         *  Load all assets in queue. Callbacks are called for each successfully loaded or failed asset.
         *  onAllLoaded is called after everything on queue has been loaded.
         */
-        while (loadQueue.length > 0) {
+        var loadRecursively = function () {
+            onInfo(loadQueue[0][1][0]);
             my.load(function (response) {
                 onSuccess(response);
                 // check if everything's been loaded
@@ -849,8 +850,12 @@ UTIL.asset = (function() {
                     
                     onAllLoaded();
                 }
+                else {
+                    loadRecursively();
+                }
             }, onError);
-        }
+        };
+        loadRecursively();
     };
     
     return my;
