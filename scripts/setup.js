@@ -163,7 +163,7 @@ $(document).ready(function () {
     }, function (item) {
         // everytime a queued item is loaded, update the progressbar
         totalLoaded = UTIL.asset.getTotalLoaded();
-        progressTextDone.innerHTML = item + 'loaded.';
+        progressTextDone.innerHTML = item + ' loaded';
         progressBar.value = (totalLoaded / totalAssets) * 100;
     }, function (error) {
         // if we encountered an error while loading, log it

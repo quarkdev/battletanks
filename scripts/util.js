@@ -841,7 +841,8 @@ UTIL.asset = (function() {
         *  onAllLoaded is called after everything on queue has been loaded.
         */
         var loadRecursively = function () {
-            onInfo(loadQueue[0][1][0]);
+            var lq = loadQueue[0];
+            onInfo(lq[0] + '/' + lq[1][0]);
             my.load(function (response) {
                 onSuccess(response);
                 // check if everything's been loaded
