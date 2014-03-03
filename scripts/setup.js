@@ -154,19 +154,21 @@ var totalAssets = UTIL.asset.getTotalQueued();
 var totalLoaded = UTIL.asset.getTotalLoaded();
 var totalFailed = UTIL.asset.getTotalFailed();
 
-// start loading assets
-UTIL.asset.loadAll(function (item) {
-    // everytime a queued item is loaded, update the progressbar
-    totalLoaded = UTIL.asset.getTotalLoaded();
-    progressText.innerHTML = item;
-    progressBar.value = (totalLoaded / totalAssets) * 100;
-}, function (error) {
-    // if we encountered an error while loading, log it
-    totalFailed = UTIL.asset.getTotalFailed();
-    console.log(error);
-}, function () {
-    // if everything has been loaded, go to main menu
-    terrain = TerrainImages.get('default'); // default terrain
-    $('#progress').hide();
-    menu();
+$(document).ready(function () {
+    // start loading assets
+    UTIL.asset.loadAll(function (item) {
+        // everytime a queued item is loaded, update the progressbar
+        totalLoaded = UTIL.asset.getTotalLoaded();
+        progressText.innerHTML = item;
+        progressBar.value = (totalLoaded / totalAssets) * 100;
+    }, function (error) {
+        // if we encountered an error while loading, log it
+        totalFailed = UTIL.asset.getTotalFailed();
+        console.log(error);
+    }, function () {
+        // if everything has been loaded, go to main menu
+        terrain = TerrainImages.get('default'); // default terrain
+        $('#progress').hide();
+        menu();
+    });
 });
