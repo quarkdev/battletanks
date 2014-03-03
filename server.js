@@ -1,7 +1,7 @@
 // A very basic web server in node.js
 // Stolen from: Node.js for Front-End Developers by Garann Means (p. 9-10) 
  
-var port = 1337;
+var port = process.env.PORT || 3000;
 var serverUrl = "127.0.0.1";
  
 var http = require("http");
