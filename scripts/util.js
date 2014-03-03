@@ -871,17 +871,17 @@ function ImageLibrary() {
     */
     
     this.add = function (id, url, onSuccess, onError) {
-        this.tmp = new Image();
-        this.tmp.id = id;
-        this.tmp.onload = function () {
+        var tmp = new Image();
+        tmp.id = id;
+        tmp.onload = function () {
             this.ready = true;
             onSuccess(url);
         };
-        this.tmp.onerror = function () {
+        tmp.onerror = function () {
             onError('Error loading ' + id);
         };
-        this.tmp.src = url;
-        this.shelf.push(this.tmp);
+        tmp.src = url;
+        this.shelf.push(tmp);
     };
     
     /*
