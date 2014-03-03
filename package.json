@@ -1,0 +1,23 @@
+{
+  "name": "battletanks",
+  "version": "0.1.0",
+  "description": "A simple HTML5 Canvas game inspired by Battle City",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quarkdev/battletanks.git"
+  },
+  "keywords": [
+    "html5"
+  ],
+  "author": "Chrissan Sy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/quarkdev/battletanks/issues"
+  },
+  "homepage": "https://github.com/quarkdev/battletanks"
+}

@@ -1,0 +1,13 @@
+CACHE MANIFEST
+index.html
+scripts/pathfinder.js
+scripts/astar.js
+scripts/graph.js
+scripts/blueprint.js
+scripts/canvas.js
+scripts/destructible.js
+scripts/global.js
+scripts/listener.js
+scripts/load.js
+scripts/main.js
+scripts/map.js
