@@ -876,6 +876,7 @@ function ImageLibrary() {
         tmp.onload = function () {
             this.ready = true;
             onSuccess(url);
+            tmp.onload = null;
         };
         tmp.onerror = function () {
             onError('Error loading ' + id);
@@ -917,6 +918,7 @@ function SoundPool(loc, vol, max) {
     
     var pool = [];
     this.pool = pool;
+    this.loaded = 0;
     
     /*
     * Public Method: init
@@ -924,12 +926,16 @@ function SoundPool(loc, vol, max) {
     * Initializes the sound pool for later use
     */
     this.init = function (onSuccess) {
+        var loaded = this.loaded;
         for (var i = 0; i < size; i++) {
             var sound = new Audio(soundLoc);
-            var cpt = sound.addEventListener('canplaythrough', function () {
-                onSuccess(soundLoc);
+            var cpt = sound.addEventListener('canplaythrough', (function (scope) {
+                scope.loaded++;
+                if (scope.loaded === max) {
+                    onSuccess(soundLoc);
+                }
                 removeEventListener('canplaythrough', cpt, false);
-            }, false);
+            }(this)), false);
             sound.volume = soundVol;
             sound.load();
             pool[i] = sound;
