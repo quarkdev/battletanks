@@ -835,14 +835,12 @@ UTIL.asset = (function() {
         }
     };
     
-    my.loadAll = function (onInfo, onSuccess, onError, onAllLoaded) {
+    my.loadAll = function (onSuccess, onError, onAllLoaded) {
         /*
         *  Load all assets in queue. Callbacks are called for each successfully loaded or failed asset.
         *  onAllLoaded is called after everything on queue has been loaded.
         */
-        var loadRecursively = function () {
-            var lq = loadQueue[0];
-            onInfo(lq[0] + '/' + lq[1][0]);
+        while (loadQueue.length > 0) {
             my.load(function (response) {
                 onSuccess(response);
                 // check if everything's been loaded
@@ -852,11 +850,10 @@ UTIL.asset = (function() {
                     onAllLoaded();
                 }
                 else {
-                    loadRecursively();
+                    
                 }
             }, onError);
-        };
-        loadRecursively();
+        }
     };
     
     return my;

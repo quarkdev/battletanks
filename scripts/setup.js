@@ -150,6 +150,7 @@ $('#progress').show();
 var progressText = document.getElementById('progress-text');
 var progressBar = document.getElementById('progress-bar');
 var progressTextDone = document.getElementById('progress-text-done');
+progressText.innerHTML = 'Loading Game Assets...';
 
 var totalAssets = UTIL.asset.getTotalQueued();
 var totalLoaded = UTIL.asset.getTotalLoaded();
@@ -157,10 +158,7 @@ var totalFailed = UTIL.asset.getTotalFailed();
 
 $(document).ready(function () {
     // start loading assets
-    UTIL.asset.loadAll(function (info) {
-        // everytime a queued item starts downloading, update progress text
-        progressText.innerHTML = 'Loading: ' + info;
-    }, function (item) {
+    UTIL.asset.loadAll(function (item) {
         // everytime a queued item is loaded, update the progressbar
         totalLoaded = UTIL.asset.getTotalLoaded();
         progressTextDone.innerHTML = item + ' loaded';
