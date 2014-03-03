@@ -160,7 +160,7 @@ UTIL.asset.loadAll(function (item) {
     // everytime a queued item is loaded, update the progressbar
     totalLoaded = UTIL.asset.getTotalLoaded();
     progressText.innerHTML = item;
-    progressBar.value = (totalAssets / totalLoaded) * 100;
+    progressBar.value = (totalLoaded / totalAssets) * 100;
 }, function (error) {
     // if we encountered an error while loading, log it
     totalFailed = UTIL.asset.getTotalFailed();
