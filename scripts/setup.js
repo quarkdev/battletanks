@@ -146,7 +146,6 @@ GLOBALS.map.current = maps[0];
 
 
 // show progress bar
-$('.overlay').hide();
 $('#progress').show();
 var progressText = document.getElementById('progress-text');
 var progressBar = document.getElementById('progress-bar');
