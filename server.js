@@ -49,7 +49,7 @@ http.createServer( function(req, res) {
 		console.log("Invalid file extension detected: " + ext)
 	}
  
-}).listen(port, serverUrl);
+}).listen(port);
  
 function getFile(localPath, res, mimeType) {
 	fs.readFile(localPath, function(err, contents) {
