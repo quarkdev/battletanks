@@ -171,6 +171,7 @@ $(document).ready(function () {
         console.log(error);
     }, function () {
         // if everything has been loaded, go to main menu
+        progressTextDone.innerHTML = '';
         terrain = TerrainImages.get('default'); // default terrain
         $('#progress').hide();
         menu();
