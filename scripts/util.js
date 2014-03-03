@@ -799,7 +799,6 @@ UTIL.asset = (function() {
             case 'image': // [id, url, library]
                 args[2].add(args[0], args[1], function (id) {
                     loaded++;
-                    args[2].get(args[0]);
                     onSuccess(id);
                 }, function (error) {
                     failed++;
