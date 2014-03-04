@@ -865,7 +865,7 @@ UTIL.asset = (function() {
 *  An image library constructor
 */
 function ImageLibrary() {
-    this.shelf = [];
+    this.shelf = {};
     
     /*
     * Public Method: add
@@ -885,7 +885,7 @@ function ImageLibrary() {
             onError('Error loading ' + id);
         };
         tmp.src = url;
-        this.shelf.push(tmp);
+        this.shelf[id] = tmp;
     };
     
     /*
@@ -894,12 +894,7 @@ function ImageLibrary() {
     * Returns the image object which contains id
     */
     this.get = function(id) {
-        for (var i = 0; i < this.shelf.length; i++) {
-            if (this.shelf[i].id == id) {
-                return this.shelf[i];
-            }
-        }
-        return false;
+        return this.shelf[id];
     };
 }
 
