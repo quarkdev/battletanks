@@ -5,6 +5,7 @@ var grid = [],
 var tank_size = 32;    
 var graph = null;
 var obstacles = null;
+var msgQueue = [];
 
 var Coord = function (x, y) {
     return {
@@ -18,10 +19,20 @@ importScripts('astar.js'); // https://github.com/bgrins/javascript-astar
 
 function messageHandler(event) {
     var messageReceived = JSON.parse(event.data);
+
+    msgQueue.push(messageReceived);
+}
+
+function readMsg() {
+    var messageReceived = {};
     var reply = {};
     var waypoint = [];
+
+    if (msgQueue.length > 0) {
+        messageReceived = msgQueue.shift();
         
-    reply.sender = messageReceived.sender;
+        // handle message
+        reply.sender = messageReceived.sender;
     
         switch (messageReceived.cmd) {
             case 'update_obstacles':
@@ -77,6 +88,7 @@ function messageHandler(event) {
             default:
                 break;
         }
+    }
 }
 
 function checkLineOfSight(A, B, C) {
@@ -320,3 +332,7 @@ function gridToNonOrigin(x, y) {
 }
     
 this.addEventListener('message', messageHandler, false);
+
+setInterval(function() {
+    readMsg();
+}, 1);

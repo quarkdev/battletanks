@@ -47,7 +47,7 @@ var LOAD = (function () {
                 _x = Math.floor(Math.random() * WORLD_WIDTH);
                 _y = Math.floor(Math.random() * WORLD_HEIGHT);
             
-                bots.push([tanks[i], [], 'waiting', 'chase', {los: false, x: _x, y: _y}, null]);
+                bots.push([tanks[i], [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]); // [tank_ref, movequeue, move_status, state, LOS, pf_ref]
             
                 // spawn pathfinders
                 var pf = LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
