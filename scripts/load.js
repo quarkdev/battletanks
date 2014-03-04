@@ -127,7 +127,7 @@ var LOAD = (function () {
  */
 LOAD.worker = (function () {
     var my = {},
-        workerPool = []; // format of each item [worker, id]
+        workerPool = {}; // format of each prop id: {id: id, worker: worker}
     
     my.bot = function (id) {
         /* Spawn a new bot worker. */
@@ -207,39 +207,31 @@ LOAD.worker = (function () {
     
     my.sendMessage = function (id, msg) {
         /* Send message to worker corresponding to id. msg is an object containing the properties: cmd and data. */
-        for (var i = 0; i < workerPool.length; i++) {
-            if (id === workerPool[i][1]) {
-                workerPool[i][0].postMessage(JSON.stringify(msg));
-                break;
-            }
-        }
+        workerPool[id].worker.postMessage(JSON.stringify(msg));
         
         // if no matching id is found, fail silently.
     };
     
     my.terminateAll = function () {
         /* Terminate all workers in pool. */
-        while (workerPool.length > 0) {
-            workerPool[0][0].terminate();
-            workerPool.splice(0, 1);
+        for (var key in workerPool) {
+            key.worker.terminate();
         }
+        workerPool = {};
     };
     
     my.terminate = function (workerId) {
         /* Terminate a specific worker. */
-        for (var i = 0; i < workerPool.length; i++) {
-            if (workerPool[i][1] === workerId) {
-                workerPool[i][0].terminate();
-            }
-        }
+        workerPool[workerId].worker.terminate();
+        delete workerPool.workerId;
     };
     
     var _spawnWorker = function (src, id) {
-        /* Spawn a new worker. */
+        /* Spawn a new worker. Make sure id is unique. */
         
         var worker = new Worker(src);
         
-        workerPool.push([worker, id]);
+        workerPool[id] = {id: id, worker: worker};
         
         return worker;
     };
