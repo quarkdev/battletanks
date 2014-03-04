@@ -4,6 +4,7 @@ var grid = [],
 
 var tank_size = 32;    
 var graph = null;
+var obstacles = null;
 
 var Coord = function (x, y) {
     return {
@@ -24,7 +25,7 @@ function messageHandler(event) {
     
         switch (messageReceived.cmd) {
             case 'update_obstacles':
-                var obstacles = messageReceived.data;
+                obstacles = messageReceived.data;
                 MAX_COLS = messageReceived.worldWidth / 8;
                 MAX_ROWS = messageReceived.worldHeight / 8;
                 tank_size = messageReceived.tankSize;
@@ -52,9 +53,74 @@ function messageHandler(event) {
                 
                 postMessage(JSON.stringify(reply));
                 break;
+            case 'get_line_of_sight':
+                /* Check if bot can see player, if yes, return last known player location {los: true, x: x, y: y} else {los: false, x: null, y: null} */
+                var lkl = checkLineOfSight(messageReceived.playerLoc, messageReceived.botLoc, messageReceived.lastKnown);
+                
+                reply.cmd = 'get_los_ok';
+                reply.lkl = lkl;
+                
+                postMessage(JSON.stringify(reply));
+                break;
             default:
                 break;
         }
+}
+
+function checkLineOfSight(A, B, C) {
+    /* Check if there are no obstacles between point A and point B. {X: x, Y: y} */
+    for (var i = 0; i < obstacles.length; i++) {
+        var ob = obstacles[i];
+        if (LineIntersectsRect(A, B, {x: ob[1], y: ob[2], w: 32, h: 32})) {
+            return {los: false, x: C.x, y: C.y};
+        }
+    }
+    return {los: true, x: A.x, y: A.y};
+}
+
+function LineIntersectsRect(p1, p2, r) {
+    return (LineIntersectsLine(p1, p2, {x: r.x, y: r.y}, {x: r.x + r.w, y: r.y}) ||
+           LineIntersectsLine(p1, p2, {x: r.x + r.w, y: r.y}, {x: r.x + r.w, y: r.y + r.h}) ||
+           LineIntersectsLine(p1, p2, {x: r.x + r.w, y: r.y + r.h}, {x: r.x, y: r.y + r.h}) ||
+           LineIntersectsLine(p1, p2, {x: r.x, y: r.y + r.h}, {x: r.x, y: r.y}) ||
+           (pointInsideRectangle(r, p1) && pointInsideRectangle(r, p2)));
+}
+
+function LineIntersectsLine(l1p1, l1p2, l2p1, l2p2) {
+    q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
+    d = (l1p2.x - l1p1.x) * (l2p2.y - l2p1.y) - (l1p2.y - l1p1.y) * (l2p2.x - l2p1.x);
+
+    if ( d == 0 ) {
+        return false;
+    }
+
+    r = q / d;
+
+    q = (l1p1.y - l2p1.y) * (l1p2.x - l1p1.x) - (l1p1.x - l2p1.x) * (l1p2.y - l1p1.y);
+    s = q / d;
+
+    if ( r < 0 || r > 1 || s < 0 || s > 1 ) {
+        return false;
+    }
+
+    return true;
+}
+
+function pointInsideRectangle(rect, P) {
+    var c         = Math.cos(-rect.a*Math.PI/180);
+    var s         = Math.sin(-rect.a*Math.PI/180);
+    
+    // UNrotate the point depending on the rotation of the rectangle.
+    var rotatedX  = rect.x + c * (P.x - rect.x) - s * (P.y - rect.y);
+    var rotatedY  = rect.y + s * (P.x - rect.x) + c * (P.y - rect.y);
+    
+    // Perform a normal check if the new point is inside the bounds of the UNrotated rectangle.
+    var leftX     = rect.x - rect.w / 2;
+    var rightX    = rect.x + rect.w / 2;
+    var topY      = rect.y - rect.h / 2;
+    var bottomY   = rect.y + rect.h / 2;
+    
+    return leftX <= rotatedX && rotatedX <= rightX && topY <= rotatedY && rotatedY <= bottomY;
 }
 
 function getRandomMoveList(S, angle) {

@@ -285,7 +285,7 @@ var UTIL = (function () {
             timers[i].clear();
         }
         
-        timers = [];
+        timers.length = 0;
     };
     
     my.cleanTimers = function () {

@@ -378,16 +378,6 @@ var MAP = (function () {
         visualeffects.length = 0;
         timers.length = 0;
         
-        // check if map has a custom terrain
-        if (typeof map.terrain !== 'null' && typeof map.terrain !== 'undefined') {
-            // load it into the terrain global var
-            terrain = TerrainImages.get(map.terrain);
-        }
-        else {
-            // load the default one
-            terrain = TerrainImages.get('default');
-        }
-        
         // push the powerups into the array
         for (i = 0; i < map.powerups.length; i++) {
             powerups.push(PUP.create(map.powerups[i][0], map.powerups[i][1], map.powerups[i][2]));
@@ -435,7 +425,7 @@ var MAP = (function () {
     my.spawnEnemyAtEveryPoint = function (spawnMap) {
         /* Spawns an enemy tank at every point in spawn map. Spawn map format: each item, [blueprint, x, y] */
         for (var i = 0; i < spawnMap.length; i++) {
-            my.spawnEnemt(spawnMap[0], spawnMap[1], spawnMap[2]);
+            my.spawnEnemy(spawnMap[0], spawnMap[1], spawnMap[2]);
         }
     };
     
@@ -469,8 +459,11 @@ var MAP = (function () {
             var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'computer', x, y);
             tanks.push(enemy);
             
+            var _x = Math.floor(Math.random() * WORLD_WIDTH);
+            var _y = Math.floor(Math.random() * WORLD_HEIGHT);
+            
             // add to bot pool
-            bots.push([enemy, [], 'waiting', 'patrol']);
+            bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}]);
             
             // load its pathfinder
             LOAD.worker.pathFinder(GLOBALS.map.current, enemyId, enemy.config.width);

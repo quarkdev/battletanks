@@ -85,12 +85,30 @@ var update = function(modifier) {
         if (bots[i][0].config.active) {
             bots[i][0].frame(); // run all frame callbacks
         
-            // Update turret
-            bots[i][0].turnTurret(modifier, player.config.oX, player.config.oY);
+            // randomize the chance for bot to ask for LOS
+            var askForLos = 15 > Math.random() * 100;
             
-            // Fire
-            if (1 > Math.random() * 100) {
-                bots[i][0].fire();
+            if (askForLos) {
+                // send message to pathfinder asking for LOS calculation
+                var query = {};
+                query.sender = bot_id;
+                query.playerLoc = {x: player.config.oX, y: player.config.oY};
+                query.botLoc = {x: bots[i][0].config.oX, y: bots[i][0].config.oY};
+                query.lastKnown = {x: bots[i][4].x, y: bots[i][4].y};
+                query.cmd = 'get_line_of_sight';
+                
+                LOAD.worker.sendMessage(bot_id, query);
+            }
+            
+            // Update turret to last known location of player
+            bots[i][0].turnTurret(modifier, bots[i][4].x, bots[i][4].y);
+            
+            // Check if bot can see player
+            if (bots[i][4].los) {
+                // Fire
+                if (1 > Math.random() * 100) {
+                    bots[i][0].fire();
+                }
             }
             
             // Check if movequeue has commands
@@ -127,7 +145,7 @@ var update = function(modifier) {
                 }
             }
             else if (bots[i][2] !== 'waiting') {
-                // movequeue is empty and bot is not waiting for reply from worker, so ask for movelist from pathfinder
+                // movequeue is empty or bot is not waiting for reply from worker, so ask for movelist from pathfinder
                 
                 var msg = {};
                 
@@ -140,7 +158,7 @@ var update = function(modifier) {
                         msg.cmd = 'get_waypoint_random';
                         break;
                     case 'chase':
-                        msg.goal  = [player.config.oX, player.config.oY];
+                        msg.goal  = [bots[i][4].x, bots[i][4].y]; // use the last known location of player
                         msg.cmd = 'get_waypoint';
                         break;
                     default:

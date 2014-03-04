@@ -12,6 +12,7 @@ var LOAD = (function () {
         destructibles.length = 0;
         startingpoints.length = 0;
         GLOBALS.botCount = 0; // reset botcount
+        var _x, _y;
         
         player_name = player_name === '' ? 'player' : player_name;
         
@@ -43,7 +44,10 @@ var LOAD = (function () {
             
             // bind ai controls
             for (i = 1; i < max_players; i++) {
-                bots.push([tanks[i], [], 'waiting', 'chase']);
+                _x = Math.floor(Math.random() * WORLD_WIDTH);
+                _y = Math.floor(Math.random() * WORLD_HEIGHT);
+            
+                bots.push([tanks[i], [], 'waiting', 'chase', {los: false, x: _x, y: _y}]);
             
                 // spawn pathfinders
                 LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
@@ -167,6 +171,9 @@ LOAD.worker = (function () {
                 case 'waypoint_ok':
                     bots[bot_index][1] = messageReceived.waypoint;
                     bots[bot_index][2] = 'ready';
+                    break;
+                case 'get_los_ok':
+                    bots[bot_index][4] = messageReceived.lkl;
                     break;
                 default:
                     break;
