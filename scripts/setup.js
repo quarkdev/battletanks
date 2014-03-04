@@ -88,7 +88,7 @@ UTIL.asset.queue('image', ['m4_sherman_blue_recoil', 'images/tanks/m4_sherman_bl
 
 // BGM
 var backgroundMusic = new Audio();
-UTIL.asset.queue('audio', ['sounds/bgm.wav', true, 0.15, backgroundMusic]);
+UTIL.asset.queue('audio', ['sounds/bgm/6.mp3', true, 0.15, backgroundMusic]);
 
 // Sound effects
 fireSound         = new SoundPool('sounds/turret_fire.wav', 0.12, 20);
