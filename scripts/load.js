@@ -47,10 +47,10 @@ var LOAD = (function () {
                 _x = Math.floor(Math.random() * WORLD_WIDTH);
                 _y = Math.floor(Math.random() * WORLD_HEIGHT);
             
-                bots.push([tanks[i], [], 'waiting', 'chase', {los: false, x: _x, y: _y}]);
+                bots.push([tanks[i], [], 'waiting', 'chase', {los: false, x: _x, y: _y}, null]);
             
                 // spawn pathfinders
-                LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
+                var pf = LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
             }
             
             var eventPool = GLOBALS.map.current.timedEvents;
@@ -149,6 +149,13 @@ LOAD.worker = (function () {
         
         var pf = _spawnWorker('scripts/pathfinder.js', id);
         
+        for (var i = 0; i < bots.length; i++) {
+            // find bot matching sender
+            if (bots[i][0].config.id === id) {
+                bots[i][5] = pf; // save index
+            }
+        }
+        
         pf.addEventListener('message', function (event) {
             // Receive data from pathfinder
             var messageReceived  = JSON.parse(event.data),
@@ -194,6 +201,8 @@ LOAD.worker = (function () {
         msg.tankSize = tankSize;
         
         pf.postMessage(JSON.stringify(msg));
+        
+        return pf;
     };
     
     my.sendMessage = function (id, msg) {

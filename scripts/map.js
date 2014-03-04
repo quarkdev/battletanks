@@ -463,7 +463,7 @@ var MAP = (function () {
             var _y = Math.floor(Math.random() * WORLD_HEIGHT);
             
             // add to bot pool
-            bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}]);
+            bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]);
             
             // load its pathfinder
             LOAD.worker.pathFinder(GLOBALS.map.current, enemyId, enemy.config.width);

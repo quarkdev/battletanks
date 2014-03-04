@@ -37,6 +37,18 @@ function messageHandler(event) {
                 
                 postMessage(JSON.stringify(reply));
                 break;
+            case 'rebuild_obstacles':
+                obstacles = obstacles.filter(function (item) {
+                    return item[1] !== messageReceived.x && item[2] !== messageReceived.y;
+                });
+                
+                clearGrid();
+                updateGrid(obstacles);
+                
+                reply.cmd = 'update_ok';
+                
+                postMessage(JSON.stringify(reply));
+                break;
             case 'get_waypoint':
                 waypoint = getMoveList(messageReceived.start, messageReceived.goal, messageReceived.angle);
                 

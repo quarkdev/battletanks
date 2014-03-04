@@ -1,11 +1,14 @@
 /*-------- Destructibles --------*/
 function Destructible(specs, x, y) {
 
+    this.images = {
+        nImage : DestructibleImages.get(specs.nImage),     // object normal image file
+        dImage : DestructibleImages.get(specs.dImage),     // damaged image file
+    };
+
     this.config = {
         active : true,
         name   : specs.name,
-        nImage : DestructibleImages.get(specs.nImage),     // object normal image file
-        dImage : DestructibleImages.get(specs.dImage),     // damaged image file
         oX     : x,
         oY     : y,
         size   : specs.size,   // object size
@@ -189,7 +192,7 @@ function Destructible(specs, x, y) {
         if (d.active === false) return;
         var _size = d.size / 2;
         ctx.translate(d.oX - xView, d.oY - yView);
-        ctx.drawImage(d.nImage, -_size, -_size);
+        ctx.drawImage(this.images.nImage, -_size, -_size);
         ctx.translate(-(d.oX - xView), -(d.oY - yView));
     };
 }

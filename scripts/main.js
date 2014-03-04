@@ -80,6 +80,7 @@ var update = function(modifier) {
     // AI
     for (var i = 0; i < bots.length; i++) {
         var bot_id = bots[i][0].config.id;
+        var query = {};
     
         // update tanks only if active | TEST for AI pathfinding
         if (bots[i][0].config.active) {
@@ -90,14 +91,14 @@ var update = function(modifier) {
             
             if (askForLos) {
                 // send message to pathfinder asking for LOS calculation
-                var query = {};
+                query = {};
                 query.sender = bot_id;
                 query.playerLoc = {x: player.config.oX, y: player.config.oY};
                 query.botLoc = {x: bots[i][0].config.oX, y: bots[i][0].config.oY};
                 query.lastKnown = {x: bots[i][4].x, y: bots[i][4].y};
                 query.cmd = 'get_line_of_sight';
                 
-                LOAD.worker.sendMessage(bot_id, query);
+                bots[i][5].postMessage(JSON.stringify(query));
             }
             
             // Update turret to last known location of player
@@ -170,13 +171,14 @@ var update = function(modifier) {
                 bots[i][2] = 'waiting';
                 
                 // send message to pathfinder worker asking for directions
-                LOAD.worker.sendMessage(bot_id, msg);
+                bots[i][5].postMessage(JSON.stringify(msg));
             }
         }
         else {
             // tank is dead, time to terminate its associated pathfinder also
             LOAD.worker.terminate(bot_id);
         }
+        
     }
     
     // Update all projectiles.
