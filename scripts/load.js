@@ -215,7 +215,7 @@ LOAD.worker = (function () {
     my.terminateAll = function () {
         /* Terminate all workers in pool. */
         for (var key in workerPool) {
-            key.worker.terminate();
+            workerPool[key].worker.terminate();
         }
         workerPool = {};
     };
