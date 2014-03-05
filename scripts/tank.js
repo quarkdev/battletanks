@@ -48,7 +48,7 @@ function Tank(specs, id, control, x, y) {
         fireScale    : specs.fireScale,
         explodeScale : specs.explodeScale,
         armor        : specs.armor,                                                        // tank armor
-        invulnerable : typeof specs.invulnerable === 'undefined' ? 0 : specs.invulnerable, // can be any integer from 0 >
+        invulnerable : typeof specs.invulnerable === 'undefined' ? 0 : specs.invulnerable, // invulnerability count. can be any integer from 0 >
         tSize        : specs.tSize,                                                        // tank turret Size (in px, must be square)
         cRadius      : Math.max(specs.width, specs.height) / 2,                            // tank max collision size (the greater value between the chassis width and height)
         sSpeed       : specs.sSpeed,                                                       // tank turn Speed (in degrees / sec)
