@@ -74,10 +74,11 @@ var LOAD = (function () {
             // load timed events
             for (i = 0; i < eventPool.length; i++) {
                 (function (i) {
+                    var timer = null;
                     switch (eventPool[i][1]) {
                         case 'after':
                             // occurs only once
-                            timers.push(new Timer(function () {
+                            timer = new Timer(function () {
                                 if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
                                     if (eventPool[i][0] === 'powerup') {
                                         MAP.spawnPowerUp();
@@ -86,11 +87,11 @@ var LOAD = (function () {
                                         MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
                                     }
                                 }
-                            }, eventPool[i][2] * 1000));
+                            }, eventPool[i][2] * 1000);
                             break;
                         case 'every':
                             // occurs at set intervals
-                            timers.push(new Timer(function () {
+                            timer = new Timer(function () {
                                 var looped_spawn = function () {
                                     if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
                                         if (eventPool[i][0] === 'powerup') {
@@ -100,13 +101,13 @@ var LOAD = (function () {
                                             MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
                                         }
                                     }
-                                    timers.push(new Timer(function () {
+                                    timer = new Timer(function () {
                                         looped_spawn();
-                                    }, eventPool[i][2] * 1000));
+                                    }, eventPool[i][2] * 1000);
                                 }
                                 
                                 looped_spawn();
-                            }, eventPool[i][2] * 1000));
+                            }, eventPool[i][2] * 1000);
                             break;
                         default:
                             break;

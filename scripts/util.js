@@ -291,7 +291,7 @@ var UTIL = (function () {
     my.cleanTimers = function () {
         /* Remove all inactive timers in timers array. */
         timers = timers.filter(function (item) {
-            return item.isExpired();
+            return !item.isExpired();
         });
     };
     
@@ -954,6 +954,12 @@ function SoundPool(loc, vol, max) {
 }
 
 function Timer(callback, expire) {
+    this.cb = function () {
+        callback();
+        dead = true;
+    };
+    
+    var dead = false;
     this.remaining = expire;
     this.expire_init = expire;
 
@@ -964,13 +970,13 @@ function Timer(callback, expire) {
 
     this.resume = function() {
         this.start = new Date();
-        this.timerId = window.setTimeout(callback, this.remaining);
+        this.timerId = window.setTimeout(this.cb, this.remaining);
     };
     
     this.reset = function () {
         window.clearTimeout(this.timerId);
         this.start = new Date();
-        this.timerId = window.setTimeout(callback, this.expire_init);
+        this.timerId = window.setTimeout(this.cb, this.expire_init);
     };
     
     this.clear = function () {
@@ -978,7 +984,7 @@ function Timer(callback, expire) {
     };
     
     this.isExpired = function () {
-        return (this.remaining - new Date() - this.start) <= 0;
+        return dead;
     };
     
     var thisTimer = this;

@@ -451,7 +451,7 @@ var MAP = (function () {
         });
         visualeffects.push(vfx);
         
-        timers.push(new Timer(function () {
+        var timer = new Timer(function () {
             // end the spawn vortex animation
             vfx.end();
         
@@ -467,7 +467,7 @@ var MAP = (function () {
             
             // load its pathfinder
             LOAD.worker.pathFinder(GLOBALS.map.current, enemyId, enemy.config.width);
-        }, 3000));
+        }, 3000);
     };
     
     my.spawnPowerUp = function () {

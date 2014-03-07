@@ -15,6 +15,9 @@ var pause = function () {
     // stop the main interval
     if (ui_location === 'game') {
         cancelAnimationFrame(mainAnimation);
+        // remove all dead timers
+        UTIL.cleanTimers();
+        
         // pause all timers
         UTIL.pauseTimers();
     }

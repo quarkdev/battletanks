@@ -60,9 +60,7 @@ function attachMenuEventListeners() {
         then = Date.now();
         if (ui_location == 'game') {
             main();
-            // remove all dead timers
-            UTIL.cleanTimers();
-            
+
             // resume timers
             UTIL.resumeTimers();
             UTIL.playMusic(backgroundMusic);
