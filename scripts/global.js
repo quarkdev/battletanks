@@ -57,7 +57,7 @@ var mouseDownRight = false; // right mouse
 var cycles = 0;
 var logNum = 0;
 var keysDown = {};
-var then = Date.now();
+var then = performance.now();
 
 /* map editor */
 var cs_placement_ok = true;

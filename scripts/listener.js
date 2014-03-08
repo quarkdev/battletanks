@@ -57,7 +57,7 @@ function attachMenuEventListeners() {
         // hide menu
         $('.overlay').hide();
         // continue what we were doing
-        then = Date.now();
+        then = performance.now();
         if (ui_location == 'game') {
             main();
 
