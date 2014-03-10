@@ -21,7 +21,8 @@ var GLOBALS = (function () {
         map : {
             current : null
         },
-        botCount : 0 // the number of bots currently active
+        botCount : 0, // the number of bots currently active
+        rdd : 0 // number of recently destroyed destructibles (that the pathfinders are not aware of)
     };
 }());
 

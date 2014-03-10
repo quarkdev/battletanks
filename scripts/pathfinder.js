@@ -20,6 +20,7 @@ importScripts('astar.js'); // https://github.com/bgrins/javascript-astar
 function messageHandler(event) {
     var messageReceived = JSON.parse(event.data);
 
+    // Check if last pushed is not the same command
     msgQueue.push(messageReceived);
 }
 
@@ -36,7 +37,7 @@ function readMsg() {
     
         switch (messageReceived.cmd) {
             case 'update_obstacles':
-                obstacles = messageReceived.data;
+                obstacles = messageReceived.obs;
                 MAX_COLS = messageReceived.worldWidth / 8;
                 MAX_ROWS = messageReceived.worldHeight / 8;
                 tank_size = messageReceived.tankSize;
@@ -49,15 +50,25 @@ function readMsg() {
                 postMessage(JSON.stringify(reply));
                 break;
             case 'rebuild_obstacles':
+                var match = false;
+                var deletedObs = messageReceived.obs;
+               
                 obstacles = obstacles.filter(function (item) {
-                    return item[1] !== messageReceived.x && item[2] !== messageReceived.y;
+                
+                    for (var i = 0; i < deletedObs.length; i++) {
+                        // Keep all obstacles that are not found in the deletedObs array (the deletedObs array holds the recently destroyed obstacle coordinates)
+                        if (deletedObs[i][0] === item[1] && deletedObs[i][1] === item[2]) {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
                 });
                 
                 clearGrid();
                 updateGrid(obstacles);
                 
-                reply.cmd = 'update_ok';
-                
+                reply.cmd = 'rebuild_ok';
                 postMessage(JSON.stringify(reply));
                 break;
             case 'get_waypoint':

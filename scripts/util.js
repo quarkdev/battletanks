@@ -309,6 +309,23 @@ var UTIL = (function () {
             minimap_bg.style.visibility = 'hidden';
         }
     };
+    
+    my.packDestructibles = function () {
+        /* Save the active destructibles into a simple [x, y, size] array for the pathfinders. */
+        var packedDestructibles = [];
+        for (var i = 0; i < destructibles.length; i++) {
+            if (destructibles[i].config.active) {
+                packedDestructibles.push([
+                    destructibles[i].config.name,
+                    destructibles[i].config.oX,
+                    destructibles[i].config.oY,
+                    destructibles[i].config.size
+                ]);
+            }
+        }
+        
+        return packedDestructibles;
+    };
         
     return my;
 }());

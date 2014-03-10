@@ -466,7 +466,7 @@ var MAP = (function () {
             bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]);
             
             // load its pathfinder
-            LOAD.worker.pathFinder(GLOBALS.map.current, enemyId, enemy.config.width);
+            LOAD.worker.pathFinder(UTIL.packDestructibles(), enemyId, enemy.config.width);
         }, 3000);
     };
     

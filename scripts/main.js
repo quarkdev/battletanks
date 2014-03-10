@@ -79,6 +79,9 @@ var update = function(modifier) {
     
     /* turn turret (based on current facing angle) */
     player.turnTurret(modifier, mousePos.mX + camera.xView, mousePos.mY + camera.yView);
+    
+    // save current rdd value
+    var cRdd = GLOBALS.rdd;
    
     // AI
     for (var i = 0; i < bots.length; i++) {
@@ -116,6 +119,7 @@ var update = function(modifier) {
             }
             
             // Check if movequeue has commands
+            var msg = {};
             var mq = bots[i][1];
             if (mq.length > 0 && bots[i][2] === 'ready') {
                 // if it has commands execute them starting from the last (since its reversed)
@@ -148,10 +152,30 @@ var update = function(modifier) {
                         break;
                 }
             }
+            else if (cRdd > 0 && bots[i][2] !== 'waiting') {
+                // there are recently destroyed destructibles, so we need to let the pathfinders know
+                GLOBALS.rdd = 0;
+                
+                msg = {};
+                
+                msg.sender = bot_id;
+                msg.cmd = 'update_obstacles';
+                msg.sender = bot_id;
+                msg.obs = UTIL.packDestructibles();
+                msg.worldWidth = WORLD_WIDTH;
+                msg.worldHeight = WORLD_HEIGHT;
+                msg.tankSize = bots[i][0].config.width;
+                
+                // set status to:
+                bots[i][2] = 'waiting';
+                
+                // send message to pathfinder worker asking for directions
+                bots[i][5].postMessage(JSON.stringify(msg));
+            }
             else if (bots[i][2] !== 'waiting') {
                 // movequeue is empty or bot is not waiting for reply from worker, so ask for movelist from pathfinder
                 
-                var msg = {};
+                msg = {};
                 
                 msg.sender = bot_id;
                 msg.start = [bots[i][0].config.oX, bots[i][0].config.oY];
@@ -215,6 +239,7 @@ var update = function(modifier) {
             return item.config.active;
         });
         GLOBALS.flags.clean.destructibles = 0;
+        GLOBALS.pd = UTIL.packDestructibles();
     }
     
     // Remove all inactive tanks

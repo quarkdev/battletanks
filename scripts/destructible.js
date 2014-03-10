@@ -177,6 +177,7 @@ function Destructible(specs, x, y) {
         // Set to inactive.
         d.active = false;
         GLOBALS.flags.clean.destructibles++;
+        GLOBALS.rdd++;
         d_destroyedSound.get();
    
         /* has a chance to spawn a random powerup on death */

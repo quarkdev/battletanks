@@ -50,7 +50,7 @@ var LOAD = (function () {
                 bots.push([tanks[i], [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]); // [tank_ref, movequeue, move_status, state, LOS, pf_ref]
             
                 // spawn pathfinders
-                var pf = LOAD.worker.pathFinder(GLOBALS.map.current, tanks[i].config.id, tanks[i].config.width);
+                var pf = LOAD.worker.pathFinder(UTIL.packDestructibles(), tanks[i].config.id, tanks[i].config.width);
             }
             
             var eventPool = GLOBALS.map.current.timedEvents;
@@ -145,7 +145,7 @@ LOAD.worker = (function () {
         ai.postMessage(JSON.stringify(tanks[1].config));
     };
     
-    my.pathFinder = function (map, id, tankSize) {
+    my.pathFinder = function (obs, id, tankSize) {
         /* Spawn a new pathFinder worker. */
         
         var pf = _spawnWorker('scripts/pathfinder.js', id);
@@ -196,7 +196,7 @@ LOAD.worker = (function () {
         var msg = {};
         msg.cmd = 'update_obstacles';
         msg.sender = id;
-        msg.data = map.destructibles;
+        msg.obs = obs;
         msg.worldWidth = WORLD_WIDTH;
         msg.worldHeight = WORLD_HEIGHT;
         msg.tankSize = tankSize;
