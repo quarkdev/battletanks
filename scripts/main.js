@@ -177,11 +177,6 @@ var update = function(modifier) {
                 bots[i][5].postMessage(JSON.stringify(msg));
             }
         }
-        else {
-            // tank is dead, time to terminate its associated pathfinder also
-            LOAD.worker.terminate(bot_id);
-        }
-        
     }
     
     // Update all projectiles.
@@ -226,7 +221,14 @@ var update = function(modifier) {
     if (GLOBALS.flags.clean.tanks > GLOBALS.flags.clean.threshold) {
         // clean the bots first
         bots = bots.filter(function (item) {
-            return item[0].config.active;
+            if (item[0].config.active) {
+                return true;
+            }
+            else {
+                // tank is dead, time to terminate its associated pathfinder also
+                LOAD.worker.terminate(item[0].config.id);
+                return false;
+            }
         });
         // then clean the tanks
         tanks = tanks.filter(function (item) {
