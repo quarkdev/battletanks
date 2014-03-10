@@ -42,6 +42,8 @@ var LOAD = (function () {
             player = tanks[0];
             camera.follow(player, canvas.width/2, canvas.height/2);
             
+            GLOBALS.packedDestructibles = UTIL.packDestructibles();
+            
             // bind ai controls
             for (i = 1; i < max_players; i++) {
                 _x = Math.floor(Math.random() * WORLD_WIDTH);
@@ -50,7 +52,7 @@ var LOAD = (function () {
                 bots.push([tanks[i], [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]); // [tank_ref, movequeue, move_status, state, LOS, pf_ref]
             
                 // spawn pathfinders
-                var pf = LOAD.worker.pathFinder(UTIL.packDestructibles(), tanks[i].config.id, tanks[i].config.width);
+                var pf = LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tanks[i].config.id, tanks[i].config.width);
             }
             
             var eventPool = GLOBALS.map.current.timedEvents;

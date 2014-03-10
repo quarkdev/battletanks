@@ -405,6 +405,7 @@ var MAP = (function () {
     
     my.spawnEnemyAtAnyPoint = function (blueprint) {
         /* Spawns an enemy tank at any of the current map's starting points. */
+        GLOBALS.packedDestructibles = UTIL.packDestructibles();
         var current_map = GLOBALS.map.current;
         var i = Math.floor(Math.random() * current_map.startingPoints.length);
         var x = current_map.startingPoints[i].config.oX;
@@ -415,6 +416,8 @@ var MAP = (function () {
     
     my.spawnEnemyAtAllPoints = function (blueprint) {
         /* Spawns enemies at all starting points. */
+        GLOBALS.packedDestructibles = UTIL.packDestructibles();
+        
         var current_map = GLOBALS.map.current;
         
         for (var i = 0; i < current_map.startingPoints.length; i++) {
@@ -423,6 +426,7 @@ var MAP = (function () {
     };
     
     my.spawnEnemyAtEveryPoint = function (spawnMap) {
+        GLOBALS.packedDestructibles = UTIL.packDestructibles();
         /* Spawns an enemy tank at every point in spawn map. Spawn map format: each item, [blueprint, x, y] */
         for (var i = 0; i < spawnMap.length; i++) {
             my.spawnEnemy(spawnMap[0], spawnMap[1], spawnMap[2]);
@@ -466,7 +470,7 @@ var MAP = (function () {
             bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]);
             
             // load its pathfinder
-            LOAD.worker.pathFinder(UTIL.packDestructibles(), enemyId, enemy.config.width);
+            LOAD.worker.pathFinder(GLOBALS.packedDestructibles, enemyId, enemy.config.width);
         }, 3000);
     };
     
