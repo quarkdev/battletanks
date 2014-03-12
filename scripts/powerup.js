@@ -266,7 +266,9 @@ var PUP = (function() {
         this.use = function (tank) {
             tank.config.fSpeed += 100;
             tank.config.rSpeed += 100;
-            var timer = new Timer(function () { tank.config.fSpeed -= 100; tank.config.rSpeed -= 100; }, 10000);
+            tank.config.tSpeed += 40;
+            tank.config.sSpeed += 20;
+            var timer = new Timer(function () { tank.config.fSpeed -= 100; tank.config.rSpeed -= 100; tank.config.tSpeed -= 40; tank.config.sSpeed -= 20; }, 20000);
         };
     }
 
