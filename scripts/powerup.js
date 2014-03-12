@@ -185,12 +185,13 @@ var PUP = (function() {
             if (!active) {
                 // array that holds the projectile barriers
                 tank.pBarrier = [];
+                tank.pb_radius = tank.config.width;
                 tank.pb_active = true;
                 tank.config.invulnerable++;
             
                 var incBarrier = function () {
                     // Increases the barrier projectile count
-                    var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: 0, oX: tank.config.oX + 35, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
+                    var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: 0, oX: tank.config.oX + tank.pb_radius, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
                     projectiles.push(tmp);
                     tank.pBarrier.push([tmp, 0]);
                 };
@@ -203,7 +204,7 @@ var PUP = (function() {
 
                     for (var i = 0; i < tank.pBarrier.length; i++) {
                         var newAngle = tank.pBarrier[i][1] === 356 ? 0 : tank.pBarrier[i][1] + 4;
-                        var newLoc = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, newAngle, 35);
+                        var newLoc = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, newAngle, tank.pb_radius);
                         tank.pBarrier[i][0].config.oX = newLoc[0];
                         tank.pBarrier[i][0].config.oY = newLoc[1];
                         tank.pBarrier[i][1] = newAngle;
@@ -221,6 +222,7 @@ var PUP = (function() {
                     
                     tank.config.invulnerable--;
                     delete tank.pBarrier; // remove temp variable
+                    delete tank.pb_radius;
                     delete tank.pb_timeout;
                     delete tank.pb_active;
                     tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'incBarrier'; });
@@ -228,6 +230,7 @@ var PUP = (function() {
                 }, 20000);
             }
             else {
+                tank.pb_radius += 5; // increase projectile barrier radius
                 tank.pb_timeout.reset(); // reset timer
             }
         };
