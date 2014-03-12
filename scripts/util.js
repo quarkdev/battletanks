@@ -117,6 +117,11 @@ var UTIL = (function () {
     
     my.levelCleared = function () {
         /* Check if all enemy tanks have been destroyed. */
+        if (!GLOBALS.flags.initSpawn) {
+            // if initial spawn hasn't started...
+            return false;
+        }
+        
         for (var i = 0; i < bots.length; i++) {
             if (bots[i][0].config.active) {
                 return false;

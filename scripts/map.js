@@ -435,6 +435,12 @@ var MAP = (function () {
     
     my.spawnEnemy = function (blueprint, x, y) {
         /* Spawns an enemy tank at a target point */
+        
+        // don't spawn if MAX_BOTS have been reached
+        if (bots.length === MAX_BOTS) {
+            return;
+        }
+        
         GLOBALS.botCount++;
         var enemyId = 'bot' + GLOBALS.botCount;
         
@@ -462,6 +468,11 @@ var MAP = (function () {
             // spawn enemy at starting point
             var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'computer', x, y);
             tanks.push(enemy);
+            
+            if (!GLOBALS.flags.initSpawn) {
+                // set initial spawn flag to true
+                GLOBALS.flags.initSpawn = true;
+            }
             
             var _x = Math.floor(Math.random() * WORLD_WIDTH);
             var _y = Math.floor(Math.random() * WORLD_HEIGHT);

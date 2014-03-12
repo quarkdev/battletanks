@@ -9,7 +9,8 @@ var GLOBALS = (function () {
                 visualeffects : 0,
                 projectiles   : 0,
                 tanks         : 0
-            }
+            },
+            initSpawn : false
         },
         tankSelection: {
             blueprints : [],
@@ -34,6 +35,7 @@ Array.prototype.clear = function () {
 };
 
 var LOG_ENABLED = false;
+var MAX_BOTS = 20;
 
 var terrain = null;
 var powerups = [];

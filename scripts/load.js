@@ -12,6 +12,7 @@ var LOAD = (function () {
         destructibles.length = 0;
         startingpoints.length = 0;
         GLOBALS.botCount = 0; // reset botcount
+        GLOBALS.flags.initSpawn = false;
         var _x, _y;
         
         player_name = player_name === '' ? 'player' : player_name;
@@ -26,12 +27,6 @@ var LOAD = (function () {
         // push the player first
         playerlist.push([player_name, player_tank, 'player']);
         
-        for (var i = 1; i < max_players; i++) {
-            // start on 1 so that the total bot number is 1 less than the max_players
-            GLOBALS.botCount++;
-            playerlist.push(['bot' + GLOBALS.botCount, 'heavy', 'computer']);
-        }
-        
         var setup_error = MAP.setup(GLOBALS.map.current, playerlist);
 
         if (setup_error === 0) {
@@ -43,17 +38,6 @@ var LOAD = (function () {
             camera.follow(player, canvas.width/2, canvas.height/2);
             
             GLOBALS.packedDestructibles = UTIL.packDestructibles();
-            
-            // bind ai controls
-            for (i = 1; i < max_players; i++) {
-                _x = Math.floor(Math.random() * WORLD_WIDTH);
-                _y = Math.floor(Math.random() * WORLD_HEIGHT);
-            
-                bots.push([tanks[i], [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]); // [tank_ref, movequeue, move_status, state, LOS, pf_ref]
-            
-                // spawn pathfinders
-                var pf = LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tanks[i].config.id, tanks[i].config.width);
-            }
             
             var eventPool = GLOBALS.map.current.timedEvents;
 

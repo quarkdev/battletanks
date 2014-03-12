@@ -190,7 +190,7 @@ function attachEditorEventListeners() {
                     '<option value="equals">&equals;</option>' +
                     '<option value="greater_than">&gt;</option>' +
                 '</select> ' +
-                '<input class="te-constraint-b" type="number" value="30" style="width: 42px;"> ' +
+                '<input class="te-constraint-b" type="number" value="20" style="width: 42px;"> ' +
                 '<span>and</span> ' +
                 '<select class="te-constraint-a2">' +
                     '<option value="total_spawned" selected="selected">Total Spawned</option>' +
