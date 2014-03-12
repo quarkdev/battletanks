@@ -90,8 +90,6 @@ var update = function(modifier) {
     
         // update tanks only if active | TEST for AI pathfinding
         if (bots[i][0].config.active) {
-            bots[i][0].frame(); // run all frame callbacks
-        
             // randomize the chance for bot to ask for LOS
             var askForLos = 15 > Math.random() * 100;
             
@@ -200,6 +198,8 @@ var update = function(modifier) {
                 // send message to pathfinder worker asking for directions
                 bots[i][5].postMessage(JSON.stringify(msg));
             }
+            
+            bots[i][0].frame(); // run all frame callbacks
         }
     }
     
