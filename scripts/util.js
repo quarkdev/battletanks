@@ -1001,12 +1001,24 @@ function Timer(callback, expire) {
         this.timerId = window.setTimeout(this.cb, this.expire_init);
     };
     
+    this.extend = function (extension) {
+        window.clearTimeout(this.timerId);
+        this.remaining = this.getRemaining() + extension;
+        this.start = new Date();
+        this.timerId = window.setTimeout(this.cb, this.remaining);
+    };
+    
     this.clear = function () {
         window.clearTimeout(this.timerId);
     };
     
     this.isExpired = function () {
         return dead;
+    };
+    
+    this.getRemaining = function () {
+        this.remaining -= new Date() - this.start;
+        return this.remaining;
     };
     
     var thisTimer = this;

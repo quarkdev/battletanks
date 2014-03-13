@@ -118,7 +118,7 @@ var PUP = (function() {
             }
             else {
                 tank.ts_stack = tank.ts_stack > 16 ? tank.ts_stack : tank.ts_stack + 1; // cap at 16 stacks
-                tank.ts_timeout.reset();
+                tank.ts_timeout.extend(12000);
             }
         };
     }
@@ -162,7 +162,7 @@ var PUP = (function() {
                 }, 20000);
             }
             else {
-                tank.r_timeout.reset();
+                tank.r_timeout.extend(12000);
             }
         };
     }
@@ -231,7 +231,7 @@ var PUP = (function() {
             }
             else {
                 tank.pb_radius += 5; // increase projectile barrier radius
-                tank.pb_timeout.reset(); // reset timer
+                tank.pb_timeout.extend(6000); // reset timer
             }
         };
     }
@@ -249,8 +249,26 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            tank.config.fRate += 5;
-            var timer = new Timer(function () { tank.config.fRate -= 5; }, 12000);
+            var active = typeof tank.rf_active !== 'undefined';
+            
+            if (!active) {
+                tank.config.fRate += 5;
+                
+                tank.rf_active = true;
+                tank.rf_stacks = 1;
+                
+                tank.rf_timeout = new Timer(function () {
+                    tank.config.fRate -= 5 * tank.rf_stacks;
+                    delete tank.rf_active;
+                    delete tank.rf_stacks;
+                    delete tank.rf_timeout;
+                }, 12000);
+            }
+            else {
+                tank.config.fRate += 5;
+                tank.rf_stacks++;
+                tank.rf_timeout.extend(12000);
+            }
         };
     }
 
@@ -267,11 +285,36 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            tank.config.fSpeed += 100;
-            tank.config.rSpeed += 100;
-            tank.config.tSpeed += 40;
-            tank.config.sSpeed += 20;
-            var timer = new Timer(function () { tank.config.fSpeed -= 100; tank.config.rSpeed -= 100; tank.config.tSpeed -= 40; tank.config.sSpeed -= 20; }, 20000);
+            var active = typeof tank.h_active !== 'undefined';
+        
+            if (!active) {
+                tank.config.fSpeed += 100;
+                tank.config.rSpeed += 100;
+                tank.config.tSpeed += 40;
+                tank.config.sSpeed += 20;
+                
+                tank.h_active = true;
+                tank.h_stacks = 1;
+                
+                tank.h_timeout = new Timer(function () {
+                    tank.config.fSpeed -= 100 * tank.h_stacks;
+                    tank.config.rSpeed -= 100 * tank.h_stacks;
+                    tank.config.tSpeed -= 40 * tank.h_stacks;
+                    tank.config.sSpeed -= 20 * tank.h_stacks;
+                    
+                    delete tank.h_active;
+                    delete tank.h_stacks;
+                    delete tank.h_timeout;
+                }, 20000);
+            }
+            else {
+                tank.config.fSpeed += 100;
+                tank.config.rSpeed += 100;
+                tank.config.tSpeed += 40;
+                tank.config.sSpeed += 20;
+                tank.h_stacks++;
+                tank.h_timeout.extend(3000);
+            }
         };
     }
 
@@ -288,8 +331,27 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            tank.config.pSpeed += 200;
-            var timer = new Timer(function () { tank.config.pSpeed -= 200; }, 30000);
+            var active = typeof tank.fp_active !== 'undefined';
+            
+            if (!active) {
+                tank.config.pSpeed += 200;
+                
+                tank.fp_active = true;
+                tank.fp_stacks = 1;
+                
+                tank.fp_timeout = new Timer(function () {
+                    tank.config.pSpeed -= 200 * tank.fp_stacks;
+                    
+                    delete tank.fp_active;
+                    delete tank.fp_stacks;
+                    delete tank.fp_timeout;
+                }, 30000);
+            }
+            else {
+                tank.config.pSpeed += 200;
+                tank.fp_stacks++;
+                tank.fp_timeout.extend(6000);
+            }
         };
     }
 
@@ -306,17 +368,27 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            // add chassis attachment, no cleanup needed since this is an infinitely stackable powerup
-            var unique_id = UTIL.genArrayId(tank.attachments.chassis);
-            tank.attachments.chassis.push({id: unique_id, img: AttachmentImages.get('increased-armor')}); // add attachment
+            var active = typeof tank.ia_active !== 'undefined';
             
-            tank.config.armor += 50;
-            
-            var timer = new Timer(function () {
-                tank.config.armor -= 50;
-                // remove attachment
-                tank.attachments.chassis = tank.attachments.chassis.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
-            }, 30000);
+            if (!active) {
+                tank.config.armor += 50;
+                
+                tank.ia_active = true;
+                tank.ia_stacks = 1;
+                
+                tank.ia_timeout = new Timer(function () {
+                    tank.config.armor -= 50 * tank.ia_stacks;
+                    
+                    delete tank.ia_active;
+                    delete tank.ia_stacks;
+                    delete tank.ia_timeout;
+                }, 30000);
+            }
+            else {
+                tank.config.armor += 50;
+                tank.ia_stacks++;
+                tank.ia_timeout.extend(12000);
+            }
         };
     }
 
@@ -333,17 +405,27 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {   
-            // add turret attachment, no cleanup needed since this is an infinitely stackable powerup
-            var unique_id = UTIL.genArrayId(tank.attachments.turret);
-            //tank.attachments.turret = tank.attachments.turret.filter(function (item) { return item.id != unique_id; }); // cleanup
-            tank.attachments.turret.push({id: unique_id, img: AttachmentImages.get('increased-damage')}); // add attachment
+            var active = typeof tank.id_active !== 'undefined';
             
-            tank.config.pDamage += 50;
-            var timer = new Timer(function () { 
-                tank.config.pDamage -= 50;
-                // remove attachment
-                tank.attachments.turret = tank.attachments.turret.filter(function (item) { return item.id != unique_id; }); // remove all instances of unique_id
-            }, 30000);
+            if (!active) {
+                tank.config.pDamage += 50;
+                
+                tank.id_active = true;
+                tank.id_stacks = 1;
+                
+                tank.id_timeout = new Timer(function () { 
+                    tank.config.pDamage -= 50 * tank.id_stacks;
+
+                    delete tank.id_active;
+                    delete tank.id_stacks;
+                    delete tank.id_timeout;
+                }, 30000);
+            }
+            else {
+                tank.config.pDamage += 50;
+                tank.id_stacks++;
+                tank.id_timeout.extend(12000);
+            }
         };
     }
 
@@ -421,7 +503,7 @@ var PUP = (function() {
                 }, 8000);
             }
             else {
-                tank.as_timeout.reset();
+                tank.as_timeout.extend(6000);
             } 
         };
     }
@@ -463,7 +545,7 @@ var PUP = (function() {
                 }, 20000);
             }
             else {
-                tank.ra_timeout.reset();
+                tank.ra_timeout.extend(6000);
             }
         };
     }
@@ -486,15 +568,17 @@ var PUP = (function() {
             
             if (!active) {
                 tank.regen_active = true;
+                tank.regen_rate = 0.01;
                 
                 tank.regenIntervalID = setInterval(function () {
-                    tank.config.health = tank.config.maxHealth - tank.config.health < 0.01 ? tank.config.maxHealth : tank.config.health + 0.01;
+                    tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen_rate ? tank.config.maxHealth : tank.config.health + tank.regen_rate;
                     renderExtern();
                     if (tank.config.health === tank.config.maxHealth) {
                         clearInterval(tank.regenIntervalID);
                         delete tank.regenIntervalID;
                         delete tank.dispellRegen;
                         delete tank.regen_active;
+                        delete tank.regen_rate;
                         tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
                     }
                 }, 1);
@@ -502,11 +586,17 @@ var PUP = (function() {
                 var dispellRegen = function () {
                     // dispell regen
                     clearInterval(tank.regenIntervalID);
+                    delete tank.regenIntervalID;
+                    delete tank.dispellRegen;
                     delete tank.regen_active;
+                    delete tank.regen_rate;
                 };
                 dispellRegen.id = 'dispellRegen';
                 
                 tank.hit_callbacks.push(dispellRegen);
+            }
+            else {
+                tank.regen_rate += 0.01;
             }
         };
     }
