@@ -110,7 +110,7 @@ var PUP = (function() {
                     if (p.objectHit.type === 'tank') {
                         var t = p.objectHit.obj;
                         var debuff_amount = 5;
-                        var debuff_min = 20;
+                        var debuff_min = 12;
                         var debuff_active = typeof t.debuff_cs_active !== 'undefined';
                         
                         if (!debuff_active) {

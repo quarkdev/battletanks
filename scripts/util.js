@@ -349,16 +349,20 @@ var UTIL = (function () {
             }
         }
         
-        var dist = UTIL.geometry.getDistanceBetweenPoints({x: x, y: y}, {x: tanks[1].config.oX, y: tanks[1].config.oY});
+        var dist = 0;
         var _dist = 0;
-        var nearest_tank = tanks[1];
+        var nearest_tank = -1;
         
-        for (var i = 2; i < tanks.length; i++) {
+        for (var i = 1; i < tanks.length; i++) {
             if (!tanks[i].config.active) { continue; } // skip dead tanks
             _dist = UTIL.geometry.getDistanceBetweenPoints({x: x, y: y}, {x: tanks[i].config.oX, y: tanks[i].config.oY});
             
             if (_dist < dist) {
                 // if this is nearer than the last, save it
+                dist = _dist;
+                nearest_tank = tanks[i];
+            }
+            else if (dist === 0) {
                 dist = _dist;
                 nearest_tank = tanks[i];
             }
