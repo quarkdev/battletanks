@@ -7,6 +7,8 @@
 *   specs - contains the following properties: speed, damage, angle, oX, oY, srcId, srcType
 */
 function Projectile(specs) {
+    this.mods = typeof specs.mods === 'undefined' ? [] : specs.mods;
+
     this.config = {
         active     : true,
         speed      : specs.speed,
@@ -31,7 +33,12 @@ function Projectile(specs) {
     * Parameters:
     *   modifier - this is the time elapsed since the last frame/update (delta/1000)
     */
-    this.update = function (modifier) {  
+    this.update = function (modifier) {
+        // Apply all mods
+        for (var i = 0; i < this.mods.length; i++) {
+            this.mods[i](this);
+        }
+    
         var angleInRadians = p.angle * Math.PI / 180;
         
         // Save last position.

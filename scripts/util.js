@@ -331,6 +331,35 @@ var UTIL = (function () {
         
         return packedDestructibles;
     };
+    
+    my.getNearestEnemyTank = function (x, y) {
+        /* Get the nearest enemy tank to point. */
+        
+        if (tanks.length === 1) {
+            // there's no enemy tank, so return -1
+            return -1;
+        }
+        else if (tanks.length === 2) {
+            // there's only 1 enemy tank, nothing else to compare to
+            return tanks[1];
+        }
+        
+        var dist = UTIL.geometry.getDistanceBetweenPoints({x: x, y: y}, {x: tanks[1].config.oX, y: tanks[1].config.oY});
+        var _dist = 0;
+        var nearest_tank = tanks[1];
+        
+        for (var i = 2; i < tanks.length; i++) {
+            _dist = UTIL.geometry.getDistanceBetweenPoints({x: x, y: y}, {x: tanks[i].config.oX, y: tanks[i].config.oY});
+            
+            if (_dist < dist) {
+                // if this is nearer than the last, save it
+                dist = _dist;
+                nearest_tank = tanks[i];
+            }
+        }
+        
+        return nearest_tank;
+    };
         
     return my;
 }());

@@ -15,7 +15,8 @@ var PUP = (function() {
         'faster-projectile',
         'increased-damage',
         'return',
-        'multi-shot'
+        'multi-shot',
+        'homing-missile'
     ];
     
     my.create = function (name, x, y) {
@@ -46,6 +47,8 @@ var PUP = (function() {
                 return new Return(x, y);
             case 'multi-shot':
                 return new MultiShot(x, y);
+            case 'homing-missile':
+                return new HomingMissile(x, y);
             default:
                 break;
         }
@@ -79,6 +82,77 @@ var PUP = (function() {
             this.config.name += ' | ' + pn;
         };
     }
+    
+    function HomingMissile(x, y) {
+        /* Projectiles home into nearest target. */
+        this.config = {
+            name    : 'Homing Missile',
+            slug    : 'homing-missile',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('homing-missile')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.hm_active !== 'undefined';
+            
+            if (!active) {
+                tank.hm_active = true;
+                
+                var homingMissile = function (projectile) {
+                    var p = projectile.config;
+                    
+                    // Get nearest enemy tank.
+                    var nearest_tank = UTIL.getNearestEnemyTank(p.oX, p.oY);
+                    
+                    if (nearest_tank === -1) { return; }
+                    
+                    // Determine which way to adjust projectile angle.
+                    var dX = nearest_tank.config.oX - p.oX;
+                    var dY = nearest_tank.config.oY - p.oY;
+                    var angle_adj = 5;
+                    
+                    var tanA = Math.atan2(dY, dX) * 180/Math.PI;
+                    tanA = tanA < 0 ? tanA + 360 : tanA;
+                    tanA = tanA > p.angle ? tanA - p.angle : tanA + 360 - p.angle;
+                    
+                    var d_add = tanA;
+                    var d_sub = Math.abs(360 - tanA);
+                    
+                    if (tanA === 360 || tanA === 0) {
+                        // nothing
+                    }
+                    else if (d_add < d_sub) {
+                        // turn left
+                        p.angle = tanA < angle_adj ? tanA + p.angle : p.angle + angle_adj;
+                    }
+                    else if (d_add > d_sub) {
+                        // turn right
+                        p.angle = 360-tanA < angle_adj ? tanA + p.angle : p.angle - angle_adj;
+                    }
+                    
+                    p.angle = p.angle % 360;
+                    if (p.angle < 0) {
+                        p.angle += 360;
+                    }  
+                };
+                homingMissile.id = 'homingMissile';
+                
+                tank.projectile_mods.push(homingMissile);
+                
+                tank.hm_timeout = new Timer(function () {
+                    delete tank.hm_active;
+                    delete tank.hm_timeout;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'homingMissile'; });
+                }, 12000);
+            }
+            else {
+                tank.hm_timeout.extend(6000);
+            }
+        };
+    }
 
     function MultiShot(x, y) {
         /* Fires 2 extra projectiles at a slight angle. Adds another 2 extra projectiles for each stack. */
@@ -101,8 +175,8 @@ var PUP = (function() {
             
                 var multiShot = function (_oX, _oY) {
                     for (var i = 1; i < tank.ts_stack + 1; i++) {
-                        projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
-                        projectiles.push(new Projectile({speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
                     }
                 };
                 multiShot.id = 'multiShot';

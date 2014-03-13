@@ -4,6 +4,7 @@ function Tank(specs, id, control, x, y) {
     this.hit_callbacks = []; // hit callbacks attached (powerups, etc..)
     this.move_callbacks = []; // callbacks called everytime the tank moves
     this.frame_callbacks = []; // called for each frame update (useful for powerups that require per frame animation)
+    this.projectile_mods = [];
     
     this.attachments = { // {id, Image()}
         turret  : [],
@@ -385,7 +386,7 @@ function Tank(specs, id, control, x, y) {
             this.fire_callbacks[i](_oX, _oY);
         }
         
-        var proj = new Projectile({speed: t.pSpeed, damage: t.pDamage, critChance: t.critChance, angle:  t.tAngle, oX: _oX, oY: _oY, srcId: t.id, srcType: t.name});
+        var proj = new Projectile({mods: this.projectile_mods, speed: t.pSpeed, damage: t.pDamage, critChance: t.critChance, angle:  t.tAngle, oX: _oX, oY: _oY, srcId: t.id, srcType: t.name});
         projectiles.push(proj);
         
         // take 1 ammo
