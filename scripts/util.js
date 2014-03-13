@@ -341,7 +341,12 @@ var UTIL = (function () {
         }
         else if (tanks.length === 2) {
             // there's only 1 enemy tank, nothing else to compare to
-            return tanks[1];
+            if (tanks[1].config.active) {
+                return tanks[1];
+            }
+            else {
+                return -1;
+            }
         }
         
         var dist = UTIL.geometry.getDistanceBetweenPoints({x: x, y: y}, {x: tanks[1].config.oX, y: tanks[1].config.oY});
@@ -349,6 +354,7 @@ var UTIL = (function () {
         var nearest_tank = tanks[1];
         
         for (var i = 2; i < tanks.length; i++) {
+            if (!tanks[i].config.active) { continue; } // skip dead tanks
             _dist = UTIL.geometry.getDistanceBetweenPoints({x: x, y: y}, {x: tanks[i].config.oX, y: tanks[i].config.oY});
             
             if (_dist < dist) {
