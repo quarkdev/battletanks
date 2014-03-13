@@ -16,7 +16,8 @@ var PUP = (function() {
         'increased-damage',
         'return',
         'multi-shot',
-        'homing-missile'
+        'homing-missile',
+        'concussive-shell'
     ];
     
     my.create = function (name, x, y) {
@@ -49,6 +50,8 @@ var PUP = (function() {
                 return new MultiShot(x, y);
             case 'homing-missile':
                 return new HomingMissile(x, y);
+            case 'concussive-shell':
+                return new ConcussiveShell(x, y);
             default:
                 break;
         }
@@ -83,8 +86,84 @@ var PUP = (function() {
         };
     }
     
+    function ConcussiveShell(x, y) {
+        /* Slows down targets that are hit. */
+        this.config = {
+            name    : 'Concussive Shell',
+            slug    : 'concussive-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('concussive-shell')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.cs_active !== 'undefined';
+            
+            if (!active) {
+                tank.cs_active = true;
+                
+                var concussiveShell = function (projectile) {
+                    var p = projectile.config;
+                    
+                    if (p.objectHit.type === 'tank') {
+                        var t = p.objectHit.obj;
+                        var debuff_amount = 5;
+                        var debuff_min = 20;
+                        var debuff_active = typeof t.debuff_cs_active !== 'undefined';
+                        
+                        if (!debuff_active) {
+                            // apply base debuff
+                            t.debuff_cs_active = true;
+                            t.debuff_cs_stacks = 1;
+                            
+                            t.config.sSpeed = t.config.sSpeed < debuff_amount+debuff_min ? debuff_min : t.config.sSpeed - debuff_amount;
+                            t.config.tSpeed = t.config.tSpeed < debuff_amount+debuff_min ? debuff_min : t.config.tSpeed - debuff_amount;
+                            t.config.fSpeed = t.config.fSpeed < debuff_amount+debuff_min ? debuff_min : t.config.fSpeed - debuff_amount;
+                            t.config.rSpeed = t.config.rSpeed < debuff_amount+debuff_min ? debuff_min : t.config.rSpeed - debuff_amount;
+                            
+                            t.debuff_cs_timeout = new Timer(function () {
+                                // restore debuffed stats
+                                t.config.sSpeed += debuff_amount * t.debuff_cs_stacks;
+                                t.config.tSpeed += debuff_amount * t.debuff_cs_stacks;
+                                t.config.fSpeed += debuff_amount * t.debuff_cs_stacks;
+                                t.config.rSpeed += debuff_amount * t.debuff_cs_stacks;
+                                
+                                delete t.debuff_cs_active;
+                                delete t.debuff_cs_stacks;
+                                delete t.debuff_cs_timeout;
+                            }, 6000);
+                        }
+                        else {
+                            t.debuff_cs_stacks++;
+                            t.config.sSpeed = t.config.sSpeed < debuff_amount+debuff_min ? debuff_min : t.config.sSpeed - debuff_amount;
+                            t.config.tSpeed = t.config.tSpeed < debuff_amount+debuff_min ? debuff_min : t.config.tSpeed - debuff_amount;
+                            t.config.fSpeed = t.config.fSpeed < debuff_amount+debuff_min ? debuff_min : t.config.fSpeed - debuff_amount;
+                            t.config.rSpeed = t.config.rSpeed < debuff_amount+debuff_min ? debuff_min : t.config.rSpeed - debuff_amount;
+                            
+                            t.debuff_cs_timeout.extend(1500);
+                        }
+                    }
+                };
+                concussiveShell.id = 'concussiveShell';
+                
+                tank.projectile_mods.push(concussiveShell);
+                
+                tank.cs_timeout = new Timer(function () {
+                    delete tank.cs_active;
+                    delete tank.cs_timeout;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'concussiveShell'; });
+                }, 12000);
+            }
+            else {
+                tank.cs_timeout.extend(6000);
+            }
+        };
+    }
+    
     function HomingMissile(x, y) {
-        /* Projectiles home into nearest target. */
+        /* Projectiles home into the nearest target. */
         this.config = {
             name    : 'Homing Missile',
             slug    : 'homing-missile',

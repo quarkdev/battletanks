@@ -56,6 +56,7 @@ UTIL.asset.queue('image', ['projectile-barrier', 'images/powerups/projectile-bar
 UTIL.asset.queue('image', ['return', 'images/powerups/return.png', PowerUpImages]);
 UTIL.asset.queue('image', ['multi-shot', 'images/powerups/multi-shot.png', PowerUpImages]);
 UTIL.asset.queue('image', ['homing-missile', 'images/powerups/homing-missile.png', PowerUpImages]);
+UTIL.asset.queue('image', ['concussive-shell', 'images/powerups/concussive-shell.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -139,6 +140,7 @@ MAP.addPlaceable('powerup', 'increased-damage');
 MAP.addPlaceable('powerup', 'return');
 MAP.addPlaceable('powerup', 'multi-shot');
 MAP.addPlaceable('powerup', 'homing-missile');
+MAP.addPlaceable('powerup', 'concussive-shell');
 
 // the default map
 MAP.importFromJSON('{"name":"timed_events_testmap","powerups":[],"destructibles":[],"startingPoints":[{"config":{"oX":200,"oY":192}},{"config":{"oX":256,"oY":248}},{"config":{"oX":328,"oY":320}},{"config":{"oX":512,"oY":312}},{"config":{"oX":608,"oY":216}}],"triggers":[],"timedEvents":[["heavy","after",30,"active_tanks","less_than",20,"total_spawned","less_than",100],["m4_sherman","every",15,"player_health","greater_than",20,"total_spawned","less_than",100],["m4_sherman_blue","every",5,"player_health","less_than",15,"total_spawned","less_than",100]]}');

@@ -19,6 +19,7 @@ function Projectile(specs) {
         oY         : specs.oY,
         srcId      : specs.srcId,
         srcType    : specs.srcType,
+        objectHit  : {type: 'none', obj: null},
         PoI        : {x: 0, y: 0}, // Point of impact of the last collision
         sideHit    : 0 // Side hit (if square)
     };
@@ -34,11 +35,6 @@ function Projectile(specs) {
     *   modifier - this is the time elapsed since the last frame/update (delta/1000)
     */
     this.update = function (modifier) {
-        // Apply all mods
-        for (var i = 0; i < this.mods.length; i++) {
-            this.mods[i](this);
-        }
-    
         var angleInRadians = p.angle * Math.PI / 180;
         
         // Save last position.
@@ -64,6 +60,8 @@ function Projectile(specs) {
                 
                 // Call tank hit method. Pass the projectile that hit it.
                 t.hit(this);
+                
+                p.objectHit = {type: 'tank', obj: t};
             }
             else {
                 // Check if it hit a destructible.
@@ -78,8 +76,15 @@ function Projectile(specs) {
 
                     // Call destructible hit method.
                     d.hit(this);
+                    
+                    p.objectHit = {type: 'destructible', obj: d};
                 }
             }
+        }
+        
+        // Apply all mods
+        for (var i = 0; i < this.mods.length; i++) {
+            this.mods[i](this);
         }
     };
     
