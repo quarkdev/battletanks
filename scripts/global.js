@@ -4,7 +4,7 @@ var GLOBALS = (function () {
     return {
         flags : {
             clean : {
-                threshold     : 100, // the max number of inactive objects (e.g. destructibles) before filter-based cleaning is done
+                threshold     : 32, // the max number of inactive objects (e.g. destructibles) before filter-based cleaning is done
                 destructibles : 0,  // the current inactive object count (in this case, the current inactive destructibles) 
                 visualeffects : 0,
                 projectiles   : 0,

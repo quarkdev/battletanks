@@ -106,15 +106,19 @@ var PUP = (function() {
             
             if (!active) {
                 tank.fw_active = true;
+                tank.fw_stacks = 1;
                 
                 var split = function (projectile) {
                     var p = projectile.config;
                     
                     var distance_travelled = UTIL.geometry.getDistanceBetweenPoints(p.origin, {x: p.oX, y: p.oY});
-                    if (distance_travelled > 250) {
-                        // if projectile has travelled 100 units, split into 2 lesser projectiles with 75% dmg each (5-degree angle offset)
-                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: p.speed, damage: p.damage * 0.75, critChance: p.critChance, angle:  p.angle - 5, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
-                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: p.speed, damage: p.damage * 0.75, critChance: p.critChance, angle:  p.angle + 5, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
+                    if (distance_travelled > 500) {
+                        // if projectile has travelled 500 units, split into multiple lesser projectiles with 25% dmg each (5-degree angle offset)
+                        var offset = 360 / tank.fw_stacks;
+                        var rotate_offset = Math.random() * 360;
+                        for (var i = 0; i < tank.fw_stacks; i++) {
+                            projectiles.push(new Projectile({mods: [], speed: p.speed, damage: p.damage * 0.25, critChance: p.critChance, angle:  (i * offset) + rotate_offset, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
+                        }
                         
                         p.active = false; // set projectile to inactive
                     }
@@ -126,10 +130,12 @@ var PUP = (function() {
                 tank.fw_timeout = new Timer(function () {
                     delete tank.fw_active;
                     delete tank.fw_timeout;
+                    delete tank.fw_stacks;
                     tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'split'; });
                 }, 12000);
             }
             else {
+                tank.fw_stacks += 1;
                 tank.fw_timeout.extend(3000);
             }
         };
