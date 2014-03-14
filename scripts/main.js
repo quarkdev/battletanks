@@ -426,7 +426,9 @@ var start = function (player_name) {
     $('#external-hud').show();
     
     var workersCreated = LOAD.gameSettings(player_name);
+    workersCreated = workersCreated > 0 ? workersCreated : 1;
     var pseudoInc = 5 / workersCreated;
+    
     
     terrain = TerrainImages.get('default');
     

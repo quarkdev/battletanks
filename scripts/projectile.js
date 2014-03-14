@@ -19,6 +19,7 @@ function Projectile(specs) {
         oY         : specs.oY,
         srcId      : specs.srcId,
         srcType    : specs.srcType,
+        origin     : {x: specs.oX, y: specs.oY},
         objectHit  : {type: 'none', obj: null},
         PoI        : {x: 0, y: 0}, // Point of impact of the last collision
         sideHit    : 0 // Side hit (if square)

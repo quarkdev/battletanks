@@ -17,7 +17,8 @@ var PUP = (function() {
         'return',
         'multi-shot',
         'homing-missile',
-        'concussive-shell'
+        'concussive-shell',
+        'fireworks'
     ];
     
     my.create = function (name, x, y) {
@@ -52,6 +53,8 @@ var PUP = (function() {
                 return new HomingMissile(x, y);
             case 'concussive-shell':
                 return new ConcussiveShell(x, y);
+            case 'fireworks':
+                return new Fireworks(x, y);
             default:
                 break;
         }
@@ -83,6 +86,52 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function Fireworks(x, y) {
+        /* Projectiles split into two lesser projectiles after a set distance. */
+        this.config = {
+            name    : 'Fireworks',
+            slug    : 'fireworks',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('fireworks')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.fw_active !== 'undefined';
+            
+            if (!active) {
+                tank.fw_active = true;
+                
+                var split = function (projectile) {
+                    var p = projectile.config;
+                    
+                    var distance_travelled = UTIL.geometry.getDistanceBetweenPoints(p.origin, {x: p.oX, y: p.oY});
+                    if (distance_travelled > 250) {
+                        // if projectile has travelled 100 units, split into 2 lesser projectiles with 75% dmg each (5-degree angle offset)
+                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: p.speed, damage: p.damage * 0.75, critChance: p.critChance, angle:  p.angle - 5, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
+                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: p.speed, damage: p.damage * 0.75, critChance: p.critChance, angle:  p.angle + 5, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
+                        
+                        p.active = false; // set projectile to inactive
+                    }
+                };
+                split.id = 'split';
+                
+                tank.projectile_mods.push(split);
+                
+                tank.fw_timeout = new Timer(function () {
+                    delete tank.fw_active;
+                    delete tank.fw_timeout;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'split'; });
+                }, 12000);
+            }
+            else {
+                tank.fw_timeout.extend(3000);
+            }
         };
     }
     
