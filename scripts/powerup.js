@@ -106,7 +106,7 @@ var PUP = (function() {
             
             if (!active) {
                 tank.fw_active = true;
-                tank.fw_stacks = 1;
+                tank.fw_stacks = 12;
                 
                 var split = function (projectile) {
                     var p = projectile.config;
