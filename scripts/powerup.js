@@ -117,8 +117,18 @@ var PUP = (function() {
                         // if projectile has travelled 500 units, split into multiple lesser projectiles with 25% dmg each (5-degree angle offset)
                         var offset = 360 / tank.fw_stacks;
                         var rotate_offset = Math.random() * 360;
+                        
                         for (var i = 0; i < tank.fw_stacks; i++) {
                             projectiles.push(new Projectile({mods: [], speed: p.speed, damage: p.damage * 0.25, critChance: p.critChance, angle:  (i * offset) + rotate_offset, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
+                        }
+                        
+                        visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+                        
+                        if (explode_distance > 500) {
+                            fireSound.get();
+                        }
+                        else {
+                            explodeSound.get();
                         }
                         
                         p.active = false; // set projectile to inactive
