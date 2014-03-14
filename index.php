@@ -1,390 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style type="text/css">
-    body {
-        background-color: #000;
-    }
-
-    #game-screen {
-        border: 1px solid grey;
-        cursor: crosshair;
-    }
-    
-    html, body {
-        width:  100%;
-        height: 100%;
-        margin: 0px;
-    }
-    
-    .big-title {
-        font-family: Arial;
-        font-size: 96px;
-        color: #fff;
-        font-weight: bold;
-        text-shadow: 0px 3px 2px rgba(150, 150, 150, 1);
-    }
-    
-    #health-bar,
-    #current-health,
-    #current-health-anim,
-    #hNum    {
-        width: 1024px;
-        height: 20px;
-        position: relative;
-    }
-    
-    #external-hud {
-        display: none;
-    }
-    
-    #health-bar {
-        border: 1px solid black;
-        z-index: 1;
-    }
-    
-    #hNum {
-        font-family: 'Arial Narrow';
-        text-align: center;
-        top: -20px;
-        z-index: 1000;
-    }
-    
-    #current-health {
-        background-color: #66CD00;
-        z-index: 100;
-    }
-    
-    #current-health-anim {
-        background-color: grey;
-        z-index: 10;
-    }
-    
-    #combat-log {
-        height: 100px;
-        width: 1024px;
-        font-family: Consolas, Arial;
-        font-size: 11px;
-        text-align: left;
-        overflow: scroll;
-        border: 1p solid grey;
-        display: none;
-    }
-    
-    #canvas-wrap {
-        position: relative;
-        text-align: center;
-    }
-    
-    .overlay {
-        position: absolute;
-        width: 1026px;
-        height: 610px;
-        background-color: rgba(0, 0, 0, 0.75);
-        top: 0;
-        left: 0;
-        display: none;
-    }
-    
-    #main-menu {
-        background: url('images/background/battle.jpg');
-        opacity: 1.0;
-    }
-    
-    .menu-btn {
-        width: 200px;
-        margin: 12px auto;
-        padding: 12px 18px;
-        text-align: center;
-        background-color: red;
-        color: #fff;
-        font-family: Arial;
-        font-weight: bold;
-        font-size: 24px;
-        cursor: pointer;
-        transition: box-shadow 0.15s;
-    }
-    
-    .menu-txt {
-        width: 200px;
-        margin: 12px auto;
-        padding: 12px 18px;
-        text-align: center;
-        color: #fff;
-        font-family: Arial;
-        font-weight: normal;
-        font-size: 24px;
-    }
-    
-    .stat-title {
-        width: 200px;
-        margin: 12px auto;
-        padding: 6px 18px;
-        text-align: center;
-        color: #fff;
-        font-family: Arial;
-        font-weight: bold;
-        font-size: 16px;
-    }
-    
-    .stat-txt {
-        width: 200px;
-        margin: 2px auto;
-        padding: 2px 18px;
-        text-align: left;
-        color: #fff;
-        font-family: Consolas, "Lucida Console", Monaco, monospace;
-        font-weight: bold;
-        font-size: 12px;
-    }
-    
-    .menu-btn-container {
-        width: 200px;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        
-    }
-    
-    #progress {
-        text-align: center;
-        font-family: Arial;
-    }
-    
-    #progress-bar {
-        width: 300px;
-        height: 20px;
-        position: absolute;
-        left: 362px;
-        top: 284px;
-    }
-    
-    #progress-text {
-        margin-top: 260px;
-        color: #fff;
-    }
-    
-    #progress-text-done {
-        color: #fff;
-        font-size: 12px;
-        margin-top: 32px;
-    }
-    
-    .ui_input,
-    #map-name,
-    #map-name-ex {
-        font-size: 16px;
-        width: 208px;
-        padding: 12px;
-        height: 30px;
-        margin: 0 auto;
-    }
-    
-    .flip-vertical {
-        -moz-transform: scaleY(-1);
-        -webkit-transform: scaleY(-1);
-        -o-transform: scaleY(-1);
-        transform: scaleY(-1);
-        -ms-filter: flipv; /*IE*/
-        filter: flipv; /*IE*/
-    }
-    
-    #editor-ui {
-        display: none;
-        text-align: center;
-    }
-    
-    .placeable-icon {
-        cursor: pointer;
-        border: 3px solid black;
-        transition: border 0.2s;
-    }
-    
-    .placeable-icon:hover {
-        border: 3px solid white;
-    }
-    
-    .mbc-6 {
-        margin: -254px 0 0 -100px;
-    }
-    
-    .mbc-5 {
-        margin: -212px 0 0 -100px;
-    }
-    
-    .mbc-4 {
-        margin: -170px 0 0 -100px;
-    }
-    
-    .mbc-3 {
-        margin: -128px 0 0 -100px;
-    }
-    
-    .mbc-2 {
-        margin: -84px 0 0 -100px; <!-- offset for menus with 2 items -->
-    }
-    
-    .mbc-1 {
-        margin: -42px 0 0 -100px;
-    }
-    
-    .menu-btn:hover {
-        -webkit-box-shadow: 0px 0px 25px rgba(255, 255, 255, 1);
-        -moz-box-shadow:    0px 0px 25px rgba(255, 255, 255, 1);
-        box-shadow:         0px 0px 25px rgba(255, 255, 255, 1);
-    }
-    
-    #canvas-ui-wrap {
-        position: absolute;
-        width: 1026px;
-        height: 700px;
-        top: 50%;
-        left: 50%;
-        margin-top: -350px;
-        margin-left: -513px;
-    }
-    
-    #tank-select {
-        position: absolute;
-        width: 420px;
-        padding: 12px;
-        left: 50%;
-        top: 60px;
-        margin-left: -210px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-    }
-    
-    #tank-info-wrapper {
-        width: 100%;
-        height: 40px;
-        clear: both;
-        overflow: hidden;
-        font-family: Arial;
-        font-size: 14px;
-        color: #fff;
-        font-weight: bold;
-    }
-    
-    #tank-name {
-        width: 280px;
-        height: 24px;
-        padding-top: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        float: left;
-    }
-    
-    #tank-next,
-    #tank-prev {
-        width: 60px;
-        height: 24px;
-        padding-top: 6px;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        float: right;
-        cursor: pointer;
-    }
-    
-    #tank-next:hover,
-    #tank-prev:hover {
-        background-color: #fff;
-        color: #000;
-    }
-    
-    #tank-is-wrapper {
-        width: 100%;
-        clear: both;
-        overflow: hidden;
-    }
-    
-    #tank-img {
-        width: 150px;
-        height: 150px;
-        float: left;
-        background-color: #000;
-    }
-    
-    #tank-chassis-img,
-    #tank-turret-img {
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-    
-    #tank-chassis-img {
-        -webkit-animation:spin 22s linear infinite;
-        -moz-animation:spin 22s linear infinite;
-        animation:spin 22s linear infinite;
-    }
-    
-    #tank-turret-img {
-        -webkit-animation:spin 16s linear infinite;
-        -moz-animation:spin 16s linear infinite;
-        animation:spin 16s linear infinite;
-    }
-    
-    @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-    @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-    @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-    
-    #tank-stats {
-        width: 255px;
-        height: 150px;
-        float: right;
-    }
-    
-    .ts-bar {
-        margin-top: 5px;
-        width: 100%;
-        height: 32px;
-        font-family: Arial;
-        font-size: 10px;
-        text-align: left;
-        color: #fff;
-    }
-    
-    #ts-firepower,
-    #ts-armor,
-    #ts-mobility,
-    #ts-firingrate {
-        height: 16px;
-        width: 0;
-        background-color: #fff;
-        color: red;
-    }
-    
-    #map-select-wrapper {
-        position: absolute;
-        left: 390px;
-        top: 300px;
-    }
-    
-    #start-battle-ok {
-        position: absolute;
-        left: 50%;
-        top: 360px;
-        margin-left: -100px;
-    }
-    
-    #minimap,
-    #minimap-bg {
-        pointer-events: none;
-        position: absolute;
-        top: 1px;
-        left: 1px;
-        border: 1px solid #000;
-        opacity: 0.5;
-        display: visible;
-    }
-    
-    #map-properties-screen {
-        text-align: left;
-        font-family: Arial;
-        font-size: 12px;
-        color: #fff;
-        background-color: 
-    }
-</style>
-<style type="text/css" src="css/style.css"></style>
+<title>BattleTanks</title>
+<link href='http://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/style.css">
 <script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
 </head>
 <body>
@@ -401,7 +21,7 @@
         </div>
         
         <div id="main-menu" class="overlay">
-            <span class="big-title">Battle Tanks</span>
+            <div class="big-title">Battle Tanks</div>
             <div class="menu-btn-container mbc-2">
                 <div id="start-game" class="menu-btn">START GAME</div>
                 <div id="map-builder" class="menu-btn">MAP BUILDER</div>
@@ -478,23 +98,33 @@
                     </div>
                 </div>
                 <div id="map-select-wrapper">
-                    <span style="color: white; font-family: Arial">MAP: </span>
-                    <select id="map-select" style="width: 232px; padding: 8px 4px; margin-bottom: 12px;">
-                    </select>
+                    <div id="ms-prev"></div>
+                    <div id="ms-img"></div>
+                    <div id="ms-info">
+                        <span>MAP NAME: </span>
+                        <p id="ms-name"></p>
+                        <hr>
+                        <span>DESCRIPTION:</span>
+                        <p id="ms-desc"></p>
+                    </div>
+                    <div id="ms-next"></div>
                 </div>
-                <div id="start-battle-ok" class="menu-btn">START BATTLE!</div>
+                <div id="main-menu-gs" class="menu-btn main-menu">< MAIN MENU</div>
+                <div id="start-battle-ok" class="menu-btn">START BATTLE ></div>
         </div>
         
         <div id="prompt-map-name" class="overlay">
-            <div class="menu-btn-container mbc-2">
+            <div class="menu-btn-container mbc-3">
                 <input id="map-name" type="text" value="" placeholder="Map Name" />
+                <textarea id="map-desc" placeholder="Map Description"></textarea>
                 <div id="save-map-ok" class="menu-btn">OK</div>
             </div>
         </div>
         
         <div id="prompt-map-name-export" class="overlay">
-            <div class="menu-btn-container mbc-2">
+            <div class="menu-btn-container mbc-3">
                 <input id="map-name-ex" type="text" value="" placeholder="Map Name" />
+                <textarea id="map-desc-ex" placeholder="Map Description"></textarea>
                 <div id="save-map-ex-ok" class="menu-btn">OK</div>
             </div>
         </div>

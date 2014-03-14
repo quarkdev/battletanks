@@ -15,9 +15,10 @@ var MAP = (function () {
         mode = 1; // edit mode, 1 = manhattan, 0 = freeform
 
     // Map object
-    function Map(name) {
+    function Map(name, desc) {
         "use strict";
         this.name = name;
+        this.desc = desc;
         
         this.powerups = [];
         this.destructibles = []; // [destructible_blueprint_string, x, y] : this prevents shallow copy problems (reference problems)
@@ -265,9 +266,9 @@ var MAP = (function () {
         ctx.translate(-(cursor.x - xView), -(cursor.y - yView));
     };
     
-    my.save = function (name) {
+    my.save = function (name, desc) {
         /* Add the map to the maplist and set as current | mapdata is taken from the newgame-ready globals: destructibles, projectiles... and so on */
-        var newmap = new Map(name);
+        var newmap = new Map(name, desc);
         
         for (var i = 0; i < powerups.length; i++) {
             newmap.powerups.push([powerups[i].config.slug, powerups[i].config.oX, powerups[i].config.oY]);
@@ -315,9 +316,9 @@ var MAP = (function () {
         maps.push(newmap);
     };
     
-    my.exportToJSON = function (name) {
+    my.exportToJSON = function (name, desc) {
         /* Export the current map in editor to JSON format. */
-        my.save(name);
+        my.save(name, desc);
         
         var json_map = JSON.stringify(maps[maps.length - 1]);
         

@@ -1,120 +1,446 @@
-    #game-screen {
-        border: 1px solid grey;
-        cursor: crosshair;
-    }
+body,
+input,
+textarea {
+    font-family: 'Cabin Condensed', sans-serif;
+}
+
+body {
+    background-color: #000;
+}
+
+#game-screen {
+    border: 1px solid grey;
+    cursor: crosshair;
+}
+
+html, body {
+    width:  100%;
+    height: 100%;
+    margin: 0px;
+}
+
+.big-title {
+    margin-top: 56px;
+    font-size: 96px;
+    color: #0058b3;
+    font-weight: bold;
+}
+
+#health-bar,
+#current-health,
+#current-health-anim,
+#hNum    {
+    width: 1024px;
+    height: 20px;
+    position: relative;
+}
+
+#external-hud {
+    display: none;
+}
+
+#health-bar {
+    border: 1px solid black;
+    z-index: 1;
+}
+
+#hNum {
+    text-align: center;
+    top: -20px;
+    z-index: 1000;
+}
+
+#current-health {
+    background-color: #66CD00;
+    z-index: 100;
+}
+
+#current-health-anim {
+    background-color: grey;
+    z-index: 10;
+}
+
+#combat-log {
+    height: 100px;
+    width: 1024px;
+    font-size: 11px;
+    text-align: left;
+    overflow: scroll;
+    border: 1p solid grey;
+    display: none;
+}
+
+#canvas-wrap {
+    position: relative;
+    text-align: center;
+}
+
+.overlay {
+    position: absolute;
+    width: 1026px;
+    height: 610px;
+    background-color: rgba(0, 0, 0, 0.75);
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+#main-menu {
+    background: #000;
+    opacity: 1.0;
+}
+
+.menu-btn {
+    width: 200px;
+    margin: 12px auto;
+    padding: 12px 18px;
+    text-align: center;
+    color: #0058b3;
+    font-weight: bold;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.15s, background-color 0.15s;
+}
+
+.menu-txt {
+    width: 200px;
+    margin: 12px auto;
+    padding: 12px 18px;
+    text-align: center;
+    color: #fff;
+    font-weight: normal;
+    font-size: 24px;
+}
+
+.stat-title {
+    width: 200px;
+    margin: 12px auto;
+    padding: 6px 18px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.stat-txt {
+    font-family: 'Droid Sans Mono', sans-serif;
+    width: 200px;
+    margin: 2px auto;
+    padding: 2px 18px;
+    text-align: left;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.menu-btn-container {
+    width: 200px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
     
-    html, body {
-        width:  100%;
-        height: 100%;
-        margin: 0px;
-    }
-    
-    #health-bar,
-    #current-health,
-    #current-health-anim,
-    #hNum    {
-        width: 1024px;
-        height: 20px;
-        position: relative;
-    }
-    
-    #health-bar {
-        border: 1px solid black;
-        z-index: 1;
-    }
-    
-    #hNum {
-        font-family: 'Arial Narrow';
-        text-align: center;
-        top: -20px;
-        z-index: 1000;
-    }
-    
-    #current-health {
-        background-color: #66CD00;
-        z-index: 100;
-    }
-    
-    #current-health-anim {
-        background-color: grey;
-        z-index: 10;
-    }
-    
-    #combat-log {
-        height: 100px;
-        width: 1024px;
-        font-family: Consolas, Arial;
-        font-size: 11px;
-        text-align: left;
-        overflow: scroll;
-        border: 1p solid grey;
-    }
-    
-    #canvas-wrap { position: relative }
-    .overlay {
-        position: absolute;
-        width: 1026px;
-        height: 610px;
-        background-color: #000;
-        opacity: 0.75;
-        top: 0;
-        left: 0;
-    }
-    
-    #main-menu {
-        background: url('images/background/battle.jpg');
-        opacity: 1.0;
-    }
-    
-    .menu-btn {
-        width: 200px;
-        margin: 12px auto;
-        padding: 12px 18px;
-        text-align: center;
-        background-color: red;
-        color: #fff;
-        font-family: Arial;
-        font-weight: bold;
-        font-size: 24px;
-        cursor: pointer;
-    }
-    
-    .menu-btn-container {
-        width: 200px;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        
-    }
-    
-    .ui_input,
-    #map-name,
-    #map-name-ex {
-        font-size: 16px;
-        width: 208px;
-        padding: 12px;
-        height: 30px;
-        margin: 0 auto;
-    }
-    
-    .mbc-5 {
-        margin: -212px 0 0 -100px;
-    }
-    
-    .mbc-3 {
-        margin: -128px 0 0 -100px;
-    }
-    
-    .mbc-2 {
-        margin: -84px 0 0 -100px; <!-- offset for menus with 2 items -->
-    }
-    
-    .mbc-1 {
-        margin: -42px 0 0 -100px;
-    }
-    
-    .menu-btn:hover {
-        -webkit-box-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
-        -moz-box-shadow:    0px 0px 30px rgba(255, 255, 255, 1);
-        box-shadow:         0px 0px 30px rgba(255, 255, 255, 1);
-    }
+}
+
+#progress {
+    text-align: center;
+}
+
+#progress-bar {
+    width: 300px;
+    height: 20px;
+    position: absolute;
+    left: 362px;
+    top: 284px;
+}
+
+#progress-text {
+    margin-top: 260px;
+    color: #fff;
+}
+
+#progress-text-done {
+    color: #fff;
+    font-size: 12px;
+    margin-top: 32px;
+}
+
+.ui_input,
+#map-name,
+#map-name-ex {
+    font-size: 16px;
+    width: 208px;
+    padding: 12px;
+    height: 30px;
+    margin: 0 auto;
+}
+
+#map-desc,
+#map-desc-ex {
+    margin-top: 12px;
+    font-size: 16px;
+    width: 210px;
+    padding: 12px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.flip-vertical {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    -ms-filter: flipv; /*IE*/
+    filter: flipv; /*IE*/
+}
+
+#editor-ui {
+    display: none;
+    text-align: center;
+}
+
+.placeable-icon {
+    cursor: pointer;
+    border: 3px solid black;
+    transition: border 0.2s;
+}
+
+.placeable-icon:hover {
+    border: 3px solid white;
+}
+
+.mbc-6 {
+    margin: -254px 0 0 -100px;
+}
+
+.mbc-5 {
+    margin: -212px 0 0 -100px;
+}
+
+.mbc-4 {
+    margin: -170px 0 0 -100px;
+}
+
+.mbc-3 {
+    margin: -128px 0 0 -100px;
+}
+
+.mbc-2 {
+    margin: -84px 0 0 -100px; <!-- offset for menus with 2 items -->
+}
+
+.mbc-1 {
+    margin: -42px 0 0 -100px;
+}
+
+.menu-btn:hover {
+    color: #fff;
+    background-color: #0058b3;
+}
+
+#canvas-ui-wrap {
+    position: absolute;
+    width: 1026px;
+    height: 700px;
+    top: 50%;
+    left: 50%;
+    margin-top: -350px;
+    margin-left: -513px;
+}
+
+#tank-select {
+    position: absolute;
+    width: 578px;
+    padding: 8px 8px;
+    left: 50%;
+    top: 60px;
+    margin-left: -292px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#tank-info-wrapper {
+    width: 100%;
+    height: 40px;
+    clear: both;
+    overflow: hidden;
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+}
+
+#tank-name {
+    width: 420px;
+    height: 24px;
+    padding-top: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    float: left;
+}
+
+#tank-next,
+#tank-prev {
+    width: 60px;
+    height: 24px;
+    padding-top: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    float: right;
+    cursor: pointer;
+}
+
+#tank-next:hover,
+#tank-prev:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+#tank-is-wrapper {
+    width: 100%;
+    clear: both;
+    overflow: hidden;
+}
+
+#tank-img {
+    width: 150px;
+    height: 150px;
+    float: left;
+    background-color: #000;
+}
+
+#tank-chassis-img,
+#tank-turret-img {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#tank-chassis-img {
+    -webkit-animation:spin 22s linear infinite;
+    -moz-animation:spin 22s linear infinite;
+    animation:spin 22s linear infinite;
+}
+
+#tank-turret-img {
+    -webkit-animation:spin 16s linear infinite;
+    -moz-animation:spin 16s linear infinite;
+    animation:spin 16s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+#tank-stats {
+    width: 400px;
+    height: 150px;
+    float: left;
+    margin-left: 12px;
+}
+
+.ts-bar {
+    margin-top: 5px;
+    width: 100%;
+    height: 32px;
+    font-size: 10px;
+    text-align: left;
+    color: #fff;
+}
+
+#ts-firepower,
+#ts-armor,
+#ts-mobility,
+#ts-firingrate {
+    height: 16px;
+    width: 0;
+    background-color: #fff;
+    color: red;
+}
+
+#start-battle-ok {
+    position: absolute;
+    left: 80%;
+    top: 520px;
+    margin-left: -100px;
+}
+
+#main-menu-gs {
+    position: absolute;
+    left: 20%;
+    top: 520px;
+    margin-left: -100px;
+}
+
+#minimap,
+#minimap-bg {
+    pointer-events: none;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    border: 1px solid #000;
+    opacity: 0.5;
+    display: visible;
+}
+
+#map-properties-screen {
+    text-align: left;
+    font-size: 12px;
+    color: #fff;
+    background-color: 
+}
+
+/* Map selection */
+#map-select-wrapper {
+    position: absolute;
+    padding: 8px 8px;
+    top: 290px;
+    left: 50%;
+    margin-left: -400px;
+	width: 800px;
+	height: 204px;
+    font-size: 13px;
+    color: grey;
+}
+
+#ms-img {
+    text-align: center;
+    float: left;
+    width: 204px;
+    height: 204px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: url(../images/placeholders/map.png) no-repeat;
+}
+
+#ms-info {
+    padding: 12px;
+    text-align: left;
+    color: #fff;
+    float: left;
+    width: 364px;
+    height: 180px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#ms-info hr {
+    opacity: 0.5;
+}
+
+#ms-prev,
+#ms-next {
+    float: left;
+    width: 100px;
+    height: 204px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+#ms-prev:hover,
+#ms-next:hover {
+    opacity: 1;
+}
+
+#ms-prev {
+    background: url(../images/ui/map-prev.png) no-repeat;
+}
+
+#ms-next {
+    background: url(../images/ui/map-next.png) no-repeat;
+}

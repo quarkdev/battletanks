@@ -768,6 +768,29 @@ UTIL.geometry = (function() {
 UTIL.gui = (function () {
     var my = {};
     
+    my.selectMap = function (dir) {
+        /* Select next/prev maps. */
+        var map = GLOBALS.map;
+        var map_name = document.getElementById('ms-name');
+        var map_desc = document.getElementById('ms-desc');
+        
+        switch (dir) {
+            case 'next':
+                map.index = map.index === maps.length - 1 ? 0 : map.index + 1;
+                break;
+            case 'prev':
+                map.index = map.index === 0 ? maps.length - 1 : map.index - 1;
+                break;
+            default:
+                break;
+        }
+        
+        map.current = maps[map.index];
+        
+        map_name.innerHTML = map.current.name;
+        map_desc.innerHTML = map.current.desc;
+    };
+    
     my.updateTankStats = function (dir) {
         /* Update the tank selection stats. */
         
@@ -796,18 +819,19 @@ UTIL.gui = (function () {
             chassis_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].bImage).src,
             turret_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].tImage).src;
        
-            
+        var bar_cap = 420; // the ui bar max width
+        
         $('#ts-firepower').animate({
-            width: (firepower / 2000) * 255
+            width: (firepower / 2000) * bar_cap
         });
         $('#ts-armor').animate({
-            width: (armor / 500) * 255
+            width: (armor / 500) * bar_cap
         });
         $('#ts-mobility').animate({
-            width: (mobility / 400) * 255
+            width: (mobility / 400) * bar_cap
         });
         $('#ts-firingrate').animate({
-            width: (firing_rate / 12) * 255
+            width: (firing_rate / 12) * bar_cap
         });
         $('#tank-name').html(name);
         $('#tank-chassis-img').css('backgroundImage', 'url(' + chassis_img_url + ')');

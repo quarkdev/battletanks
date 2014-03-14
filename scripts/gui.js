@@ -26,3 +26,15 @@ var GUI = (function () {
     
     return my;
 }());
+
+/*
+* GUI sub-module that holds the different UI elements
+*/
+GUI.objects = (function () {
+    return {
+        button : function () {
+        
+        },
+        
+    };
+}());

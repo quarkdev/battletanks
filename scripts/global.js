@@ -20,6 +20,7 @@ var GLOBALS = (function () {
             name : 'player1'
         },
         map : {
+            index   : 0,
             current : null
         },
         botCount : 0, // the number of bots currently active

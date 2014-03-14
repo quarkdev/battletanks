@@ -12,13 +12,8 @@ function attachMenuEventListeners() {
         // update initial stats
         UTIL.gui.updateTankStats();
         
-        // append all map options to select element
-        var map_options = '<option value="0" selected="selected">Default</option>';
-        for (var i = 1; i < maps.length; i++) {
-            map_options += '<option value="' + i + '" >' + maps[i].name + '</option>';
-        }
-        
-        $('#map-select').html(map_options);
+        GLOBALS.map.current = maps[GLOBALS.map.index];
+        UTIL.gui.selectMap('init');
         
         // show pre-game settings
         $('#prompt-pre-game-settings').show();
@@ -27,9 +22,6 @@ function attachMenuEventListeners() {
     $('#start-battle-ok').click(function () {
         // hide menu
         $('.overlay').hide();
-        
-        // get map
-        GLOBALS.map.current = maps[$('#map-select').val()];
         
         // get player name
         var player_name = GLOBALS.player.name;
@@ -44,6 +36,14 @@ function attachMenuEventListeners() {
     
     $('#tank-prev').click(function () {
         UTIL.gui.updateTankStats('prev');
+    });
+    
+    $('#ms-next').click(function () {
+        UTIL.gui.selectMap('next');
+    });
+    
+    $('#ms-prev').click(function () {
+        UTIL.gui.selectMap('prev');
     });
     
     $('#map-builder').click(function () {
@@ -103,8 +103,12 @@ function attachEditorEventListeners() {
         // we have the map name, so we can save it.
         
         var name = document.getElementById('map-name').value;
+        var desc = document.getElementById('map-desc').value;
         
-        MAP.save(name);
+        name = name === '' ? 'Unnamed Map' : name;
+        desc = desc === '' ? 'No description.' : desc;
+        
+        MAP.save(name, desc);
         
         // hide menu
         editor();
@@ -123,9 +127,13 @@ function attachEditorEventListeners() {
         // we have the map name, so we can save it.
         
         var name = document.getElementById('map-name-ex').value;
+        var desc = document.getElementById('map-desc-ex').value;
+        
+        name = name === '' ? 'Unnamed Map' : name;
+        desc = desc === '' ? 'No description.' : desc;
         
         //MAP.exportToString(name);
-        MAP.exportToJSON(name);
+        MAP.exportToJSON(name, desc);
         
         // hide menu
         editor();
