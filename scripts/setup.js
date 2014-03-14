@@ -75,6 +75,7 @@ UTIL.asset.queue('image', ['increased-armor', 'images/attachments/chassis/increa
 // Editor images
 EditorImages = new ImageLibrary();
 UTIL.asset.queue('image', ['starting-point', 'images/editor/starting-point.png', EditorImages]);
+UTIL.asset.queue('image', ['grass-grid', 'images/editor/grid.png', EditorImages]);
 
 // Spritesheet images
 SpriteSheetImages = new ImageLibrary();

@@ -82,10 +82,21 @@ var MAP = (function () {
         cpi = value;
     };
     
-    my.placeObject = function () {
-        /* Place game object at current cursor coordinates. */
-        
+    my.placeRandom = function () {
+        /* Place a random number of placeables in random points in the world. */
+        var total_objects_to_place = Math.floor(Math.random() * 30) + 10; // min 10, max 29
         var x, y;
+        
+        for (var i = 0; i < total_objects_to_place; i++) {
+            x = Math.random() * WORLD_WIDTH;
+            y = Math.random() * WORLD_HEIGHT;
+            
+            my.placeObject(x, y);
+        }
+    };
+    
+    my.placeObject = function (x, y) {
+        /* Place game object at current cursor coordinates. */
         
         if (mode === 0) {
             cursor.x = mousePos.mX + camera.xView;
@@ -94,6 +105,11 @@ var MAP = (function () {
         else {
             cursor.x = ccc[0];
             cursor.y = ccc[1];
+        }
+        
+        if (typeof x !== 'undefined' && typeof y !== 'undefined') {
+            cursor.x = x;
+            cursor.y = y;
         }
         
         var asset_type = placeables[cpi][0];

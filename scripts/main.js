@@ -316,6 +316,10 @@ var editorUpdate = function() {
             MAP.placeObject();
         }
         
+        if (191 in keysDown) {
+            MAP.placeRandom();
+        }
+        
         cs_placement_ok = false;
         
         clearTimeout(cspo_timeout);
@@ -424,6 +428,8 @@ var start = function (player_name) {
     var workersCreated = LOAD.gameSettings(player_name);
     var pseudoInc = 5 / workersCreated;
     
+    terrain = TerrainImages.get('default');
+    
     UTIL.fancyProgress(pseudoInc, function() {
         $('#progress').fadeOut();
         attachGameEventListeners();
@@ -449,6 +455,8 @@ var startMapEditor = function () {
     visualeffects.length = 0;
 
     MAP.loadPlaceablesToUI();
+    
+    terrain = EditorImages.get('grass-grid');
     
     minimapBGCtx.drawImage(terrain, 0, 0, WORLD_WIDTH / 8, WORLD_HEIGHT / 8);
     camera = new Viewport.Camera(0, 0, canvas.width, canvas.height, WORLD_WIDTH, WORLD_HEIGHT);
