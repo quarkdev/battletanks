@@ -112,7 +112,8 @@ var PUP = (function() {
                     var p = projectile.config;
                     
                     var distance_travelled = UTIL.geometry.getDistanceBetweenPoints(p.origin, {x: p.oX, y: p.oY});
-                    if (distance_travelled > 500) {
+                    var explode_distance = Math.floor(Math.random() * 560) + 440;
+                    if (distance_travelled > explode_distance) {
                         // if projectile has travelled 500 units, split into multiple lesser projectiles with 25% dmg each (5-degree angle offset)
                         var offset = 360 / tank.fw_stacks;
                         var rotate_offset = Math.random() * 360;
