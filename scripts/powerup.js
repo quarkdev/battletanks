@@ -122,7 +122,9 @@ var PUP = (function() {
                             projectiles.push(new Projectile({mods: [], speed: p.speed, damage: p.damage * 0.25, critChance: p.critChance, angle:  (i * offset) + rotate_offset, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
                         }
                         
-                        visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+                        var scale = Math.floor(Math.random() * 18) + 12;
+                        
+                        visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: scale, scaleH: scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
                         
                         if (explode_distance > 500) {
                             fireSound.get();
