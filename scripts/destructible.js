@@ -167,6 +167,8 @@ function Destructible(specs, x, y) {
                         srcType: 'explosion'}));
                     
                 }
+                
+                visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 32, scaleH: 32,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
                 break;
             default:
                 break;
