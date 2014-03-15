@@ -1,5 +1,6 @@
 body,
 input,
+select,
 textarea {
     font-family: 'Cabin Condensed', sans-serif;
 }
@@ -443,4 +444,10 @@ html, body {
 
 #ms-next {
     background: url(../images/ui/map-next.png) no-repeat;
+}
+
+#timed-event-container {
+    padding: 12px;
+    max-height: 220px;
+    overflow: scroll;
 }
