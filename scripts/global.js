@@ -39,6 +39,7 @@ var LOG_ENABLED = false;
 var MAX_BOTS = 20;
 
 var terrain = null;
+var triggers = [];
 var powerups = [];
 var tanks = [];
 var projectiles = [];
