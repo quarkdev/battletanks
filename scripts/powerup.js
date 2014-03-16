@@ -768,7 +768,7 @@ var PUP = (function() {
                 }, 20000);
             }
             else {
-                tank.armorAdd *= 2;
+                tank.armorAdd += 20;
                 tank.ra_timeout.extend(6000);
             }
         };
