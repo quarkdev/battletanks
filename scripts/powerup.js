@@ -747,11 +747,12 @@ var PUP = (function() {
             if (!active) {
                 tank.ra_active = true;
                 tank.armorBuff = 0;
+                tank.armorAdd = 20;
                 
                 var increaseArmorWhenHit = function () {
                     // increase armor each hit
-                    tank.armorBuff += 20;
-                    tank.config.armor += 20;
+                    tank.armorBuff += tank.armorAdd;
+                    tank.config.armor += tank.armorAdd;
                 };
                 increaseArmorWhenHit.id = 'increaseArmorWhenHit';
                 
@@ -762,10 +763,12 @@ var PUP = (function() {
                     delete tank.armorBuff; // remove temp variable
                     delete tank.ra_timeout; // remove temp variable
                     delete tank.ra_active;
+                    delete tank.armorAdd;
                     tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'increaseArmorWhenHit'; });
                 }, 20000);
             }
             else {
+                tank.armorAdd *= 2;
                 tank.ra_timeout.extend(6000);
             }
         };
