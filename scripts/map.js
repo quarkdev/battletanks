@@ -454,7 +454,7 @@ var MAP = (function () {
         /* Spawns an enemy tank at a target point */
         
         // don't spawn if MAX_BOTS have been reached
-        if (bots.length === MAX_BOTS) {
+        if (bots.length >= MAX_BOTS) {
             return;
         }
         
