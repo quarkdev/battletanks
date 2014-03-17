@@ -23,6 +23,7 @@ var MAP = (function () {
         this.powerups = [];
         this.destructibles = []; // [destructible_blueprint_string, x, y] : this prevents shallow copy problems (reference problems)
         this.startingPoints = []; // this also dictates the max player
+        this.waves = []; // waves in sequence, each item: {desc: desc, units: units, delay: delay}
         this.triggers = []; // triggers (spawn, camera event, victory, etc) Triggers and their linked triggers are destroyed once proc'd and callbacks called
         this.timedEvents = []; // Timed events are setup at initial load of the map, timers are spawned including their attached callbacks/events
         this.terrain = null; // The background terrain used

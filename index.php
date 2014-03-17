@@ -175,7 +175,6 @@
 <script type="text/javascript" src="scripts/init.js"></script>
 <script type="text/javascript" src="scripts/util.js"></script>
 <script type="text/javascript" src="scripts/viewport.js"></script>
-<script type="text/javascript" src="scripts/stat.js"></script>
 <script type="text/javascript" src="scripts/canvas.js"></script>
 <script type="text/javascript" src="scripts/global.js"></script>
 <script type="text/javascript" src="scripts/tank.js"></script>

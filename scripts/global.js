@@ -22,7 +22,8 @@ var GLOBALS = (function () {
         },
         map : {
             index   : 0,
-            current : null
+            current : null,
+            wave    : 0 // the current wave
         },
         botCount : 0, // the number of bots currently active
         rdd : 0, // number of recently destroyed destructibles (that the pathfinders are not aware of)

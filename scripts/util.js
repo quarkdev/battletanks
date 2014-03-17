@@ -1070,6 +1070,47 @@ function SoundPool(loc, vol, max) {
     };
 }
 
+function Stat() {
+
+    var fields = {}; // [fieldname, value]
+    
+    this.add = function (name) {
+        /* Add new field. */
+        // Check if field already exists
+        
+        if (!(name in fields)) {
+            fields[name] = 0;
+        }   
+    };
+    
+    this.inc = function (name, value) {
+        /* Increment value of matching field. */
+        fields[name] += value;
+    };
+    
+    this.dec = function (name, value) {
+        /* Decrement value of matching field. */
+        fields[name] -= value;
+    };
+    
+    this.update = function (name, value) {
+        /* Update value of matching field. */
+        fields[name] = value;
+    };
+    
+    this.reset = function () {
+        /* Reset the values of all fields. */
+        for (field in fields) {
+            fields[field] = 0;
+        }
+    };
+    
+    this.get = function (name) {
+        /* Retrieves the value of the matching field. */
+        return fields[name];
+    };
+};
+
 function Timer(callback, expire) {
     this.cb = function () {
         callback();

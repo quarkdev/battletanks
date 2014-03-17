@@ -114,6 +114,7 @@ UTIL.asset.queue('soundpool', ['destroyed_tank3', t_destroyedSound3]);
 UTIL.asset.queue('soundpool', ['pick_powerup', pick_powerupSound]);
 
 // Init stat fields
+var STAT = new Stat();
 STAT.add('total_shots_fired');
 STAT.add('total_hits');
 STAT.add('total_damage_dealt');
