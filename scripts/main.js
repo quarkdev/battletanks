@@ -243,7 +243,7 @@ var update = function(modifier) {
     }
     
     // Remove all inactive tanks
-    if (GLOBALS.flags.clean.tanks > GLOBALS.flags.clean.threshold) {
+    if (GLOBALS.flags.clean.tanks > 0) {
         // clean the bots first
         bots = bots.filter(function (item) {
             if (item[0].config.active) {

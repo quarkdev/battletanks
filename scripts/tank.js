@@ -32,6 +32,7 @@ function Tank(specs, id, control, x, y) {
     this.config = {
         active       : true,
         collision    : false,                                                              // newly spawned units are ethereal until there's nothing else to collide with
+        colliding    : {state: false, type: 'none', object: null},                                               // collision flag, when colliding with objects, colliding is true
         control      : control,
         id           : id,                                                                 // random-gen id
         name         : specs.name,                                                         // tank name
@@ -310,16 +311,14 @@ function Tank(specs, id, control, x, y) {
             }
         }
         
-        var t_collided = false; // tank collision flag
-        
         // check all tank pos
         for (var j = 0; j < tanks.length; j++) {
             if (tanks[j].config.active === false) continue;
             d = Math.sqrt(Math.pow(tanks[j].config.oX - t.oX, 2) + Math.pow(tanks[j].config.oY - t.oY, 2));
             if (tanks[j].config.cRadius + t.cRadius >= d && tanks[j].config.id != t.id) {
-                t_collided = true;
-                if (t.collision) {
-                    // if tank has collision, reset coords back to where there isn't any
+                t.colliding = {state: true, type: 'tank', object: tanks[j]};
+                if (t.collision && tanks[j].config.collision) {
+                    // if both tanks have collision, reset coords back to where there isn't any
                     t.oX = tmpX;
                     t.oY = tmpY;
                     this.velocity.forward = 0.0;
@@ -333,16 +332,20 @@ function Tank(specs, id, control, x, y) {
                     }
                 }
                 else {
-                    // make the other tank ethereal
+                    // make both tanks ethereal
+                    t.collision = false;
                     tanks[j].config.collision = false;
                 }
                 break;
                 
             }
+            else {
+                t.colliding = {state: false, type: 'none', object: null};
+            }
         }
         
         // now check if the tank collision flag is false and the collision setting of the tank is set to false,
-        if (t_collided === false && t.collision === false) {
+        if (t.colliding.state === false && t.collision === false) {
             // then change tank collision state to true, newly spawned units will be ethereal until there is no more object to collide with
             t.collision = true;
         }
