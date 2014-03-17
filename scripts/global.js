@@ -10,7 +10,8 @@ var GLOBALS = (function () {
                 projectiles   : 0,
                 tanks         : 0
             },
-            initSpawn : false
+            initSpawn : false,
+            gamepediaLoaded : false
         },
         tankSelection: {
             blueprints : [],

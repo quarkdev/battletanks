@@ -22,10 +22,29 @@
         
         <div id="main-menu" class="overlay">
             <div class="big-title">Battle Tanks</div>
-            <div class="menu-btn-container mbc-2">
+            <div class="menu-btn-container mbc-3">
                 <div id="start-game" class="menu-btn">START GAME</div>
                 <div id="map-builder" class="menu-btn">MAP BUILDER</div>
+                <div id="gamepedia" class="menu-btn">GAMEPEDIA</div>
             </div>
+        </div>
+        
+        <div id="gamepedia-screen" class="overlay">
+            <h1 class="blue-text">Battletanks Gamepedia</h1>
+            <div id="pedia-content">
+            </div>
+            <div id="content-data">
+                <div id="cd-item-nd-data">
+                    <img id="cd-item-image" class="flip-vertical" />
+                    <h2 id="cd-item-name"></h2>
+                    <p id="cd-item-description"></p>
+                </div>
+                <div id="cd-item-v-data">
+                    <video id="cd-item-video">
+                    </video>
+                </div>
+            </div>
+            <div class="menu-btn main-menu main-menu-gs" onclick="document.getElementById('cd-item-video').pause()">< MAIN MENU</div>
         </div>
         
         <div id="pause-menu" class="overlay">
@@ -109,7 +128,7 @@
                     </div>
                     <div id="ms-next"></div>
                 </div>
-                <div id="main-menu-gs" class="menu-btn main-menu">< MAIN MENU</div>
+                <div class="menu-btn main-menu main-menu-gs">< MAIN MENU</div>
                 <div id="start-battle-ok" class="menu-btn">START BATTLE ></div>
         </div>
         

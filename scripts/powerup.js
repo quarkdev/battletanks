@@ -838,7 +838,7 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            tank.config.ammo += 25;
+            tank.config.ammo += 100;
         };
     }
     

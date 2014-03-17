@@ -838,6 +838,38 @@ UTIL.gui = (function () {
         $('#tank-turret-img').css('backgroundImage', 'url(' + turret_img_url + ')');
     };
     
+    my.loadPediaContents = function () {
+        /* Load gamepedia contents into pedia divs. */
+        
+        if (GLOBALS.flags.gamepediaLoaded) { return; }
+
+        UTIL.get('json/gamepedia.json', function (response) {
+            var pc = document.getElementById('pedia-content');
+            var gp = JSON.parse(response);
+            var pups = gp.powerups;
+
+            for (var i = 0; i < pups.length; i++) {
+                pc.innerHTML += '<div class="pc-item" data-name="' + pups[i].name + '" data-description="' + pups[i].description + '" data-image-url="' + pups[i].image + '" data-video-url="' + pups[i].video + '">' + pups[i].name + '</div>';
+            }
+            
+            $('.pc-item').click(function () {
+                $('.pc-item').removeClass('pc-item-active');
+                $(this).addClass('pc-item-active');
+                
+                $('#cd-item-image').attr('src', $(this).data('image-url'));
+                $('#cd-item-name').html($(this).data('name'));
+                $('#cd-item-description').html($(this).data('description'));
+                $('#cd-item-video').attr('src', $(this).data('video-url'));
+                $('#cd-item-video').attr('controls', 'controls');
+                $('#cd-item-video').get(0).play();
+            });
+            
+            GLOBALS.flags.gamepediaLoaded = true;
+        }, function () {
+            
+        });
+    };
+    
     return my;
 }());
 

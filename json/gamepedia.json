@@ -1,0 +1,100 @@
+{
+    "powerups" : [
+        {
+            "name": "Random",
+            "description": "Transforms into a random powerup on pickup.",
+            "image": "images/powerups/random.png",
+            "video": "videos/gamepedia/powerup_demo/random.mp4"
+        },
+        {
+            "name": "Haste",
+            "description": "Increases movement speed.",
+            "image": "images/powerups/haste.png",
+            "video": "videos/gamepedia/powerup_demo/haste.mp4"
+        },
+        {
+            "name": "Ammo",
+            "description": "Increases ammunition.",
+            "image": "images/powerups/ammo.png",
+            "video": "videos/gamepedia/powerup_demo/ammo.mp4"
+        },
+        {
+            "name": "Projectile Barrier",
+            "description": "Accumulates a spinning barrier of deadly projectiles for every hit taken.",
+            "image": "images/powerups/projectile-barrier.png",
+            "video": "videos/gamepedia/powerup_demo/projectile-barrier.mp4"
+        },
+        {
+            "name": "Aphotic Shield",
+            "description": "Absorbs all hits taken and releasing them all at once on timeout.",
+            "image": "images/powerups/aphotic-shield.png",
+            "video": "videos/gamepedia/powerup_demo/aphotic-shield.mp4"
+        },
+        {
+            "name": "Increased Armor",
+            "description": "Increases armor.",
+            "image": "images/powerups/increased-armor.png",
+            "video": "videos/gamepedia/powerup_demo/increased-armor.mp4"
+        },
+        {
+            "name": "Reactive Armor",
+            "description": "Each hit taken increases armor.",
+            "image": "images/powerups/reactive-armor.png",
+            "video": "videos/gamepedia/powerup_demo/reactive-armor.mp4"
+        },
+        {
+            "name": "Regeneration",
+            "description": "Restores health to full in increments. Cancelled when hit.",
+            "image": "images/powerups/regeneration.png",
+            "video": "videos/gamepedia/powerup_demo/regeneration.mp4"
+        },
+        {
+            "name": "Rapid Fire",
+            "description": "Increases the rate of fire.",
+            "image": "images/powerups/rapid-fire.png",
+            "video": "videos/gamepedia/powerup_demo/rapid-fire.mp4"
+        },
+        {
+            "name": "Faster Projectile",
+            "description": "Increases projectile speed.",
+            "image": "images/powerups/faster-projectile.png",
+            "video": "videos/gamepedia/powerup_demo/faster-projectile.mp4"
+        },
+        {
+            "name": "Increased Damage",
+            "description": "Increases damage.",
+            "image": "images/powerups/increased-damage.png",
+            "video": "videos/gamepedia/powerup_demo/increased-damage.mp4"
+        },
+        {
+            "name": "Return",
+            "description": "Each hit is returned.",
+            "image": "images/powerups/return.png",
+            "video": "videos/gamepedia/powerup_demo/return.mp4"
+        },
+        {
+            "name": "Multi Shot",
+            "description": "Adds extra projectiles to the normal attack.",
+            "image": "images/powerups/multi-shot.png",
+            "video": "videos/gamepedia/powerup_demo/multi-shot.mp4"
+        },
+        {
+            "name": "Homing Missile",
+            "description": "Projectiles track and target the nearest enemy tank.",
+            "image": "images/powerups/homing-missile.png",
+            "video": "videos/gamepedia/powerup_demo/homing-missile.mp4"
+        },
+        {
+            "name": "Concussive Shell",
+            "description": "Each projectile hit applies a stacking slow debuff.",
+            "image": "images/powerups/concussive-shell.png",
+            "video": "videos/gamepedia/powerup_demo/concussive-shell.mp4"
+        },
+        {
+            "name": "Fireworks",
+            "description": "Projectiles explode into lesser projectiles at a randomized travel distance.",
+            "image": "images/powerups/fireworks.png",
+            "video": "videos/gamepedia/powerup_demo/fireworks.mp4"
+        }
+    ]
+}

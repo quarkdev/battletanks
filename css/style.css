@@ -362,7 +362,7 @@ html, body {
     margin-left: -100px;
 }
 
-#main-menu-gs {
+.main-menu-gs {
     position: absolute;
     left: 20%;
     top: 520px;
@@ -449,5 +449,63 @@ html, body {
 #timed-event-container {
     padding: 12px;
     max-height: 220px;
-    overflow: scroll;
+    overflow: auto;
+}
+
+.white-text {
+    color: #fff;
+}
+
+.blue-text {
+    color: #0058b3;
+}
+
+#pedia-content {
+    border: 1px dotted #fff;
+    width: 35%;
+    height: 64%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-left: 22px;
+    padding: 22px 0;
+    text-align: left;
+    float: left;
+}
+
+#content-data {
+    border: 1px dotted #fff;
+    width: 54%;
+    height: 64%;
+    padding: 22px 22px;
+    margin-right: 22px;
+    float: right;
+}
+
+.pc-item {
+    width: 100%;
+    padding: 0 22px;
+    color: #0058b3;
+    cursor: pointer;
+    transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.pc-item:hover,
+.pc-item-active {
+    background-color: #0058b3;
+    color: #fff;
+}
+
+#cd-item-nd-data,
+#cd-item-v-data {
+    width: 100%;
+    color: #0058b3;
+}
+
+#cd-item-image {
+    margin: 0 auto;
+}
+
+#cd-item-video {
+    width: 432px;
+    height: 243px;
 }
