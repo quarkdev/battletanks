@@ -472,6 +472,8 @@ var showGameOver = function (state) {
     cancelAnimationFrame(mainAnimation);
     
     UTIL.killTimers();
+    UTIL.stopMusic(backgroundMusic);
+    LOAD.worker.terminateAll();
     
     switch (state) {
         case 'victory':
