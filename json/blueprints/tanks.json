@@ -96,7 +96,7 @@
             "tHeight"      : 52.0,
             "fireScale"    : 12.0,
             "explodeScale" : 40,
-            "tSpeed"       : 0.0,
+            "tSpeed"       : 20.0,
             "fSpeed"       : 120.0,
             "rSpeed"       : 100.0,
             "accel"        : 0.85,
