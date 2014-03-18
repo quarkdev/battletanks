@@ -398,6 +398,8 @@ html, body {
 
 .hud {
     pointer-events: none;
+    user-select: none;
+    display: none;
 }
 
 #map-properties-screen {
