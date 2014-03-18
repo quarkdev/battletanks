@@ -118,7 +118,7 @@ html, body {
     margin: 12px auto;
     padding: 6px 18px;
     text-align: center;
-    color: #fff;
+    color: #0058b3;
     font-weight: bold;
     font-size: 16px;
 }
@@ -129,7 +129,7 @@ html, body {
     margin: 2px auto;
     padding: 2px 18px;
     text-align: left;
-    color: #fff;
+    color: #0058b3;
     font-weight: bold;
     font-size: 12px;
 }
@@ -156,11 +156,11 @@ html, body {
 
 #progress-text {
     margin-top: 260px;
-    color: #fff;
+    color: #0058b3;
 }
 
 #progress-text-done {
-    color: #fff;
+    color: #0058b3;
     font-size: 12px;
     margin-top: 32px;
 }
@@ -255,7 +255,7 @@ html, body {
     left: 50%;
     top: 60px;
     margin-left: -292px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px dotted rgba(255, 255, 255, 0.5);
 }
 
 #tank-info-wrapper {
@@ -264,7 +264,7 @@ html, body {
     clear: both;
     overflow: hidden;
     font-size: 14px;
-    color: #fff;
+    color: #0058b3;
     font-weight: bold;
 }
 
@@ -272,7 +272,7 @@ html, body {
     width: 420px;
     height: 24px;
     padding-top: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px dotted rgba(255, 255, 255, 0.5);
     float: left;
 }
 
@@ -281,15 +281,17 @@ html, body {
     width: 60px;
     height: 24px;
     padding-top: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #0058b3;
+    border: 1px dotted rgba(255, 255, 255, 0.5);
     float: right;
     cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
 }
 
 #tank-next:hover,
 #tank-prev:hover {
-    background-color: #fff;
-    color: #000;
+    background-color: #0058b3;
+    color: #fff;
 }
 
 #tank-is-wrapper {
@@ -337,10 +339,11 @@ html, body {
 }
 
 .ts-bar {
+    font-family: 'Droid Sans', sans-serif;
     margin-top: 5px;
     width: 100%;
     height: 32px;
-    font-size: 10px;
+    font-size: 11px;
     text-align: left;
     color: #fff;
 }
@@ -349,9 +352,9 @@ html, body {
 #ts-armor,
 #ts-mobility,
 #ts-firingrate {
-    height: 16px;
+    height: 12px;
     width: 0;
-    background-color: #fff;
+    background: url(../images/ui/stat-bar.png) center right no-repeat;
     color: red;
 }
 
@@ -375,7 +378,7 @@ html, body {
     position: absolute;
     top: 1px;
     left: 1px;
-    border: 1px solid #000;
+    border: 1px dotted #000;
     opacity: 0.5;
     display: visible;
 }
@@ -383,7 +386,7 @@ html, body {
 #map-properties-screen {
     text-align: left;
     font-size: 12px;
-    color: #fff;
+    color: #0058b3;
     background-color: 
 }
 
@@ -405,18 +408,18 @@ html, body {
     float: left;
     width: 204px;
     height: 204px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px dotted rgba(255, 255, 255, 0.5);
     background: url(../images/placeholders/map.png) no-repeat;
 }
 
 #ms-info {
     padding: 12px;
     text-align: left;
-    color: #fff;
+    color: #0058b3;
     float: left;
     width: 364px;
     height: 180px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px dotted rgba(255, 255, 255, 0.5);
 }
 
 #ms-info hr {
@@ -461,7 +464,7 @@ html, body {
 }
 
 #pedia-content {
-    border: 1px dotted #fff;
+    border: 1px dotted rgba(255, 255, 255, 0.5);
     width: 35%;
     height: 64%;
     overflow-y: scroll;
@@ -473,7 +476,7 @@ html, body {
 }
 
 #content-data {
-    border: 1px dotted #fff;
+    border: 1px dotted rgba(255, 255, 255, 0.5);
     width: 54%;
     height: 64%;
     padding: 22px 22px;

@@ -120,10 +120,7 @@
                     <div id="ms-prev"></div>
                     <div id="ms-img"></div>
                     <div id="ms-info">
-                        <span>MAP NAME: </span>
-                        <p id="ms-name"></p>
-                        <hr>
-                        <span>DESCRIPTION:</span>
+                        <h2 id="ms-name"></h2>
                         <p id="ms-desc"></p>
                     </div>
                     <div id="ms-next"></div>
