@@ -19,9 +19,13 @@ function attachMenuEventListeners() {
         $('#prompt-pre-game-settings').show();
     });
     
-    $('#start-battle-ok').click(function () {
+    $('.start-battle-ok').click(function () {
         // hide menu
         $('.overlay').hide();
+        
+        // reset and show hud counters
+        $('#kill-count').html('0');
+        $('.hud').show();
         
         // get player name
         var player_name = GLOBALS.player.name;
@@ -79,6 +83,7 @@ function attachMenuEventListeners() {
     
         // hide menu
         $('.overlay').hide();
+        $('.hud').hide();
         // goto menu
         menu();
     });

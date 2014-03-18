@@ -13,6 +13,7 @@
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
         <canvas id="minimap-bg" width="228" height="228"></canvas>
         <canvas id="minimap" width="228" height="228"></canvas>
+        <div id="kill-count" class="hud">0</div>
         
         <div id="progress" class="overlay">
             <div id="progress-text">Loading Assets...</div>
@@ -91,8 +92,9 @@
                 <div class="stat-txt" >Tanks Destroyed ---- <span id="stat-td"></span></div>
                 <div class="stat-txt" >Damage Dealt ------- <span id="stat-dd"></span></div>
                 <div class="stat-txt" >Damage Taken ------- <span id="stat-dt"></span></div>
-                <div class="menu-btn main-menu">MAIN MENU</div>
             </div>
+            <div class="menu-btn main-menu main-menu-gs">< MAIN MENU</div>
+            <div class="start-battle-ok menu-btn">RESTART ></div>
         </div>
         
         <div id="prompt-pre-game-settings" class="overlay">
@@ -126,7 +128,7 @@
                     <div id="ms-next"></div>
                 </div>
                 <div class="menu-btn main-menu main-menu-gs">< MAIN MENU</div>
-                <div id="start-battle-ok" class="menu-btn">START BATTLE ></div>
+                <div class="start-battle-ok menu-btn">START BATTLE ></div>
         </div>
         
         <div id="prompt-map-name" class="overlay">

@@ -538,6 +538,7 @@ function Tank(specs, id, control, x, y) {
         
         if (t.control === 'computer') {
             STAT.inc('total_tanks_destroyed', 1);
+            hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
         }
     };
     

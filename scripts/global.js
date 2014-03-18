@@ -77,6 +77,7 @@ var csas_timeout = null;
 var cs_movement_ok = true;
 var csmv_timeout = null;
 
+var hud_kill_count = document.getElementById('kill-count');
 var cLog = document.getElementById('combat-log');
 var hNum = document.getElementById('hNum');
 var hp = document.getElementById('current-health');
