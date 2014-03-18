@@ -163,6 +163,7 @@ html, body {
     color: #0058b3;
     font-size: 12px;
     margin-top: 32px;
+    display: none;
 }
 
 .ui_input,

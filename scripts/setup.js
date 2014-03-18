@@ -158,6 +158,7 @@ $('#progress').show();
 var progressText = document.getElementById('progress-text');
 var progressBar = document.getElementById('progress-bar');
 var progressTextDone = document.getElementById('progress-text-done');
+progressTextDone.style.display = "block";
 progressText.innerHTML = 'Loading Game Assets...';
 
 var totalAssets = UTIL.asset.getTotalQueued();
@@ -180,6 +181,7 @@ $(document).ready(function () {
         progressTextDone.innerHTML = '';
         terrain = TerrainImages.get('default'); // default terrain
         $('#progress').hide();
+        progressTextDone.style.display = 'none';
         menu();
     });
 });
