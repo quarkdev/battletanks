@@ -254,7 +254,10 @@ var PUP = (function() {
                     // Get nearest enemy tank.
                     var nearest_tank = UTIL.getNearestEnemyTank(p.oX, p.oY);
                     
-                    if (nearest_tank === -1) { return; }
+                    // Check if it is near enough for tracking (can only home into tanks less than 512 units away)
+                    var nearest_dist = UTIL.geometry.getDistanceBetweenPoints({x: p.Ox, y: p.oY}, {x: nearest_tank.config.oX, y: nearest_tank.config.oY});
+                    
+                    if (nearest_tank === -1 || nearest_dist > 512) { return; }
                     
                     // Determine which way to adjust projectile angle.
                     var dX = nearest_tank.config.oX - p.oX;
