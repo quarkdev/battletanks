@@ -247,6 +247,7 @@ var PUP = (function() {
             
             if (!active) {
                 tank.hm_active = true;
+                tank.hm_tracking_dist = 200;
                 
                 var homingMissile = function (projectile) {
                     var p = projectile.config;
@@ -259,7 +260,7 @@ var PUP = (function() {
                     // Check if it is near enough for tracking (can only home into tanks less than 512 units away)
                     var nearest_dist = UTIL.geometry.getDistanceBetweenPoints({x: p.Ox, y: p.oY}, {x: nearest_tank.config.oX, y: nearest_tank.config.oY});
                     
-                    if (nearest_dist > 512) { return; }
+                    if (nearest_dist > tank.hm_tracking_dist) { return; }
                     
                     // Determine which way to adjust projectile angle.
                     var dX = nearest_tank.config.oX - p.oX;
@@ -297,10 +298,12 @@ var PUP = (function() {
                 tank.hm_timeout = new Timer(function () {
                     delete tank.hm_active;
                     delete tank.hm_timeout;
+                    delete tank.hm_tracking_dist;
                     tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'homingMissile'; });
                 }, 12000);
             }
             else {
+                tank.hm_tracking_dist += 20;
                 tank.hm_timeout.extend(6000);
             }
         };
