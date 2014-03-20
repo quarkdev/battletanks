@@ -8,7 +8,7 @@
 <script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
 </head>
 <body>
-<div id="canvas-ui-wrap">
+<div id="canvas-ui-wrap" onselectstart="return false;">
     <div id="canvas-wrap" onselectstart="return false;">
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
         <canvas id="minimap-bg" width="228" height="228"></canvas>
@@ -155,13 +155,13 @@
         </div>
     </div>
     
-    <div id="external-hud">
-        <div id="health-bar">
-            <div id="current-health-anim">
-                <div id="current-health">
+    <div id="external-hud" class="non-interactive">
+        <div id="health-bar" class="non-interactive">
+            <div id="current-health-anim" class="non-interactive">
+                <div id="current-health" class="non-interactive">
                 </div>  
             </div>
-            <div id="hNum">
+            <div id="hNum" class="non-interactive">
             </div>
         </div>
     </div>
