@@ -156,11 +156,11 @@ html, body {
 
 #progress-text {
     margin-top: 260px;
-    color: #0058b3;
+    color: #fff;
 }
 
 #progress-text-done {
-    color: #0058b3;
+    color: #fff;
     font-size: 12px;
     margin-top: 32px;
     display: none;
