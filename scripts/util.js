@@ -332,7 +332,7 @@ var UTIL = (function () {
         return packedDestructibles;
     };
     
-    my.getNearestEnemyTank = function (x, y) {
+    my.getNearestEnemyTank = function (x, y, exceptions) {
         /* Get the nearest enemy tank to point. */
         
         if (tanks.length === 1) {
@@ -355,6 +355,14 @@ var UTIL = (function () {
         
         for (var i = 1; i < tanks.length; i++) {
             if (!tanks[i].config.active) { continue; } // skip dead tanks
+            
+            // check if item is found in exceptions
+            if (typeof exceptions !== 'undefined') {
+                if (exceptions.indexOf(tanks[i].config.id) > -1) {
+                    continue;
+                }
+            }
+            
             _dist = UTIL.geometry.getDistanceBetweenPoints({x: x, y: y}, {x: tanks[i].config.oX, y: tanks[i].config.oY});
             
             if (_dist < dist) {

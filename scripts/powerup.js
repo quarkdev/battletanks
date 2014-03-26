@@ -18,7 +18,8 @@ var PUP = (function() {
         'multi-shot',
         'homing-missile',
         'concussive-shell',
-        'fireworks'
+        'fireworks',
+        'chain'
     ];
     
     my.create = function (name, x, y) {
@@ -55,6 +56,8 @@ var PUP = (function() {
                 return new ConcussiveShell(x, y);
             case 'fireworks':
                 return new Fireworks(x, y);
+            case 'chain':
+                return new Chain(x, y);
             default:
                 break;
         }
@@ -86,6 +89,81 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function Chain(x, y) {
+        /* Projectiles chain into nearby targets on hit. */
+        this.config = {
+            name    : 'Chain',
+            slug    : 'chain',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('chain')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.chain !== 'undefined';
+            
+            if (!active) {
+                tank.chain = {};
+                
+                var jump = function (projectile) {
+                    var p = projectile.config;
+                    
+                    // check if a tank has been hit
+                    if (p.objectHit.type !== 'tank') { return; }
+                    
+                    // check if projectile has jumps left, add the max jumps if undefined
+                    if (typeof projectile.jumps === 'undefined') {
+                        projectile.jumps = 4;
+                    }
+                    else if (projectile.jumps === 0) {
+                        return;
+                    }
+                    else if (projectile.jumps > 0) {
+                        projectile.jumps -= 1;
+                    }
+                    
+                    // Get nearest enemy tank.
+                    var nearest_tank = UTIL.getNearestEnemyTank(p.oX, p.oY, [p.objectHit.obj.config.id]);
+                    
+                    if (nearest_tank === -1) { return; }
+                    
+                    // Check if it is near enough to jump to
+                    var nearest_dist = UTIL.geometry.getDistanceBetweenPoints({x: p.oX, y: p.oY}, {x: nearest_tank.config.oX, y: nearest_tank.config.oY});
+                    
+                    if (nearest_dist > 300) { return; }
+                    
+                    // Determine which way to adjust projectile angle.
+                    var dX = nearest_tank.config.oX - p.oX;
+                    var dY = nearest_tank.config.oY - p.oY;
+                    
+                    var tanA = Math.atan2(dY, dX) * 180/Math.PI;
+                    
+                    // retrieve starting point for new jump
+                    var newp_coords = UTIL.geometry.getPointAtAngleFrom(p.objectHit.obj.config.oX, p.objectHit.obj.config.oY, tanA, (nearest_tank.config.width/2) + 2);
+                
+                    // fire new projectile towards new target
+                    var cProj = new Projectile({mods: projectile.mods, speed: p.speed, damage: p.damage * 0.80, critChance: p.critChance, angle: tanA, oX: newp_coords[0], oY: newp_coords[1], srcId: p.srcId, srcType: 'chain'});
+                    cProj.jumps = projectile.jumps; // save the jumps remaining for the new projectile
+                    
+                    projectiles.push(cProj);
+                };
+                jump.id = 'jump';
+                
+                tank.projectile_mods.push(jump);
+                
+                tank.chain.timeout = new Timer(function () {
+                    delete tank.chain;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'jump'; });
+                }, 12000);
+            }
+            else {
+                tank.chain.timeout.extend(3000);
+            }
         };
     }
     
