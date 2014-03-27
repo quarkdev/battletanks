@@ -95,6 +95,12 @@
             "description": "Projectiles explode into lesser projectiles at a randomized travel distance.",
             "image": "images/powerups/fireworks.png",
             "video": "videos/gamepedia/powerup_demo/fireworks.mp4"
+        },
+        {
+            "name": "Chain",
+            "description": "Projectiles jump to nearby target on hit.",
+            "image": "images/powerups/chain.png",
+            "video": "videos/gamepedia/powerup_demo/chain.mp4"
         }
     ]
 }
