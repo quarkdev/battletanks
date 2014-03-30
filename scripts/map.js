@@ -320,6 +320,18 @@ var MAP = (function () {
         }
         
         newmap.timedEvents = eventPool;
+        
+        // check and verify all waves
+        var waves = [];
+        $('#wave-list').children().each(function (i, obj) {
+            waves.push([
+                $(obj).children('.w-desc').html(),
+                UTIL.gui.makeChildrenATTRIntoArrayElements($(obj).children('.w-spawns'), 'data-blueprint'),
+                $(obj).children('.w-wait-time').html()
+            ]);
+        });
+        
+        newmap.waves = waves;
          
         // check map list for similarly-named map
         for (i = 0; i < maps.length; i++) {

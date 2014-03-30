@@ -2,7 +2,7 @@
     function addSpawn() {
         var bp = $('#spawn-select-blueprint option:selected').val();
         var count = $('#spawn-count').val();
-        var spawn_span = '<span data-blueprint="' + bp + '" data-count="' + count + '" onclick="$(this).remove();">' + UTIL.toTitleCase(bp.split('_').join(' ')) + ' (' + count + ')</span>';
+        var spawn_span = '<span data-blueprint="' + bp + '|' + count + '" onclick="$(this).remove();">' + UTIL.toTitleCase(bp.split('_').join(' ')) + ' (' + count + ')</span>';
         
         if (bp !== 'default') {
             $('#wave-spawns-container').append(spawn_span);

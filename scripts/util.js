@@ -858,6 +858,30 @@ UTIL.gui = (function () {
         return opts;
     };
     
+    my.makeChildrenHTMLIntoArrayElements = function (elem) {
+        /* Converts the html values of an element's children into array elements. */
+        
+        var array = [];
+        
+        $(elem).children().each(function (i, obj) {
+            array.push($(obj).html());
+        });
+        
+        return array;
+    };
+    
+    my.makeChildrenATTRIntoArrayElements = function (elem, attr) {
+        /* Converts the attribute values of an element's children into array elements. */
+        
+        var array = [];
+        
+        $(elem).children().each(function (i, obj) {
+            array.push($(obj).attr(attr));
+        });
+        
+        return array;
+    };
+    
     my.loadPediaContents = function () {
         /* Load gamepedia contents into pedia divs. */
         
