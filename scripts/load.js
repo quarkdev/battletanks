@@ -60,6 +60,7 @@ var LOAD = (function () {
             // Setup waves, initialize
             GLOBALS.map.wave.current = 0;
             GLOBALS.map.wave.enemyCount = 0;
+            GLOBALS.map.wave.spawning = false;
             
             // load timed events
             for (i = 0; i < eventPool.length; i++) {
