@@ -20,6 +20,10 @@ html, body {
     margin: 0px;
 }
 
+button {
+    cursor: pointer;
+}
+
 .big-title {
     margin-top: 56px;
     font-size: 96px;

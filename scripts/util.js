@@ -846,6 +846,18 @@ UTIL.gui = (function () {
         $('#tank-turret-img').css('backgroundImage', 'url(' + turret_img_url + ')');
     };
     
+    my.makeSelectOpts = function (arrayOfObjects, prop) {
+        /* Convert array of objects' property to options (string) of a select element. */
+        
+        var opts = '<option value="default" selected>--Select One--</option>';
+        
+        for (var i = 0; i < arrayOfObjects.length; i++) {
+            opts += '<option value="' + arrayOfObjects[i].name + '">' + UTIL.toTitleCase(arrayOfObjects[i][prop]) + '</option>';
+        }
+        
+        return opts;
+    };
+    
     my.loadPediaContents = function () {
         /* Load gamepedia contents into pedia divs. */
         

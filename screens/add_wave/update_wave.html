@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    function updateWave() { 
+        var _upd = '<li class="w-row"><span class="w-desc">' + $('#update-wave-description').val() + '</span><span class="w-spawns">' + $('#update-wave-spawns-container').html() + '</span><span class="w-wait-time">' + $('#update-wave-delay').val() + '</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span</li>';
+
+        $('#wave-list li:nth-child(' + $('#wave-update-item-index').val() + 1 + ')').html(_upd);
+        
+        $('#dialog-update-wave').hide();
+    }
+</script>
+
+<div id="dialog-update-wave" class="overlay">
+    <input id="wave-update-item-index" type="hidden" value="" />
+    <div id="update-wave-box">
+        <h2>Update Wave</h2>
+        <textarea id="update-wave-description" placeholder="Description"></textarea>
+        <hr>
+        <span>Spawns</span><br>
+        <div id="update-wave-spawns-container">
+        </div>
+        <hr>
+        <span>Wait Time: </span><input id="update-wave-delay" type="number" value="12" min="0" max="60" />
+        <hr>
+        <button onclick="GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks'); $('#spawn-select-blueprint').html(UTIL.gui.makeSelectOpts(GLOBALS.tankSelection.blueprints, 'name')); $('#dialog-add-spawn').show();">Add Spawn</button>
+        <button onclick="updateWave()">Done</button>
+        <button onclick="$('#dialog-update-wave').hide()">Cancel</button>
+    </div>
+</div>

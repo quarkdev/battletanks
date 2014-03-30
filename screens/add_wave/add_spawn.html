@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    function addSpawn() {
+        var bp = $('#spawn-select-blueprint option:selected').val();
+        var count = $('#spawn-count').val();
+        var spawn_span = '<span data-blueprint="' + bp + '" data-count="' + count + '" onclick="$(this).remove();">' + UTIL.toTitleCase(bp.split('_').join(' ')) + ' (' + count + ')</span>';
+        
+        if (bp !== 'default') {
+            $('#wave-spawns-container').append(spawn_span);
+            $('#update-wave-spawns-container').append(spawn_span);
+        }
+        $('#dialog-add-spawn').hide();
+    }
+</script>
+
+<div id="dialog-add-spawn" class="overlay">
+    <div id="add-spawn-box">
+        <h2>Add Spawn</h2>
+        <select id="spawn-select-blueprint">
+        </select>
+        <hr>
+        <span>Count: </span><input id="spawn-count" type="number" value="1" min="0" max="60" />
+        <button onclick="addSpawn()">Done</button>
+    </div>
+</div>

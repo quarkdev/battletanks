@@ -5,6 +5,7 @@
 <link href='http://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/editor.css">
 <script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
 </head>
 <body>
@@ -23,6 +24,10 @@
             include 'screens/pause.html';
             include 'screens/editor.html';
             include 'screens/map_properties.html';
+                include 'screens/add_wave/add_wave.html';
+                include 'screens/add_wave/update_wave.html';
+                    include 'screens/add_wave/add_spawn.html';
+                
             include 'screens/gameover.html';
             include 'screens/pre_game.html';
             include 'screens/prompt_map_name.html';

@@ -1,0 +1,74 @@
+/* Add Wave */
+
+#add-wave-box,
+#update-wave-box,
+#add-spawn-box {
+    background-color: #fff;
+    width: 220px;
+    padding: 12px;
+    margin: 0 auto;
+    color: #000;
+}
+
+#wave-description,
+#update-wave-description {
+    width: 196px;
+    height: 60px;
+    padding: 12px;
+}
+
+#wave-delay,
+#update-wave-delay {
+    text-align: center;
+    width: 90px;
+    height: 22px;
+}
+
+#wave-spawns-container,
+#update-wave-spawns-container {
+    border: 1px dotted #000;
+    overflow: hidden;
+    width: 194px;
+    padding: 12px 12px;
+    margin: 12px 0;
+    text-align: left;
+}
+
+#wave-spawns-container span,
+#update-wave-spawns-container span {
+    padding: 6px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    background-color: red;
+    color: #fff;
+    font-size: 11px;
+    float: left;
+    cursor: pointer;
+    transition: border 0.2s;
+}
+
+#wave-spawns-container span:hover,
+#update-wave-spawns-container span:hover {
+    border: 1px solid #000;
+}
+
+.w-row {
+    width: 100%;
+    height: 32px;
+}
+
+.w-spawns span,
+.span-btn {
+    padding: 0 6px;
+    margin: 0 5px;
+    color: #fff;
+    background-color: red;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.w-spawns span:hover,
+.span-btn:hover {
+    color: red;
+    background-color: #fff;
+}
