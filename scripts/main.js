@@ -399,11 +399,63 @@ var main = function () {
         UTIL.writeStats();
         showGameOver('gameover');
     }
-    else if (UTIL.levelCleared()) {
+    /*else if (UTIL.levelCleared()) {
         // level is cleared (i.e. all enemy tanks are destroyed)
         UTIL.writeStats();
         ui_location = 'post_game';
         showGameOver('victory');
+    }*/
+
+    // Check if there are no enemies and there are none spawning
+    if (GLOBALS.map.wave.enemyCount === 0 && GLOBALS.map.wave.spawning === false) {
+        // if there are unspawned waves, spawn them
+        if (GLOBALS.map.wave.current !== GLOBALS.map.current.waves.length) {         
+            var waves = GLOBALS.map.current.waves;
+            var bp_and_count = [];
+            
+            // inform player that wave is spawning
+            wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
+            cd_timesRun = 0;
+            var waveCountDown = setInterval(function () {
+                cd_timesRun += 1;
+                if (cd_timesRun === wave_delay) {
+                    clearInterval(waveCountDown);
+                    $('#text-overlay-top').html('Wave: ' + GLOBALS.map.wave.current);
+                }
+                else {
+                    $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
+                }
+            }, 1000);
+            
+            $('#text-overlay-center').hide();
+            $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-size: 32px; font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
+            $('#text-overlay-center').fadeIn('slow', function () {
+                $(this).delay(2000).fadeOut();
+            });
+            
+            // spawn for every blueprint
+            GLOBALS.map.wave.spawning = true;
+            
+            var spawn_timer = new Timer(function () {
+                for (var k = 0; k < waves[GLOBALS.map.wave.current][1].length; k++) {
+                    
+                    bp_and_count = waves[GLOBALS.map.wave.current][1][k].split('|');
+                    for (var n = 0; n < bp_and_count[1]; n++) {
+                        GLOBALS.map.wave.enemyCount += 1;
+                        MAP.spawnEnemyAtAnyPoint(bp_and_count[0]);
+                    }
+                }
+                // update current wave
+                GLOBALS.map.wave.current += 1;
+                GLOBALS.map.wave.spawning = false;
+            }, parseInt(waves[GLOBALS.map.wave.current][2]) * 1000);
+        }
+        else {
+            // no more unspawned waves, declare victory!
+            UTIL.writeStats();
+            ui_location = 'post_game';
+            showGameOver('victory');
+        }
     }
 };
 

@@ -12,9 +12,11 @@
 <div id="canvas-ui-wrap" onselectstart="return false;">
     <div id="canvas-wrap" onselectstart="return false;">
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
-        <canvas id="minimap-bg" width="228" height="228"></canvas>
-        <canvas id="minimap" width="228" height="228"></canvas>
+        <canvas id="minimap-bg" width="228" height="228" oncontextmenu="return false;"></canvas>
+        <canvas id="minimap" width="228" height="228" oncontextmenu="return false;"></canvas>
         <div id="kill-count" class="hud">0</div>
+        <div id="text-overlay-center" class="hud"></div>
+        <div id="text-overlay-top" class="hud"></div>
         
         <?php
             // include ui screens

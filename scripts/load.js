@@ -57,6 +57,10 @@ var LOAD = (function () {
                 'total_spawned': function () { return GLOBALS.botCount }
             };
             
+            // Setup waves, initialize
+            GLOBALS.map.wave.current = 0;
+            GLOBALS.map.wave.enemyCount = 0;
+            
             // load timed events
             for (i = 0; i < eventPool.length; i++) {
                 (function (i) {

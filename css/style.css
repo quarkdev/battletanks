@@ -400,6 +400,28 @@ button {
     color: #fff;
 }
 
+#text-overlay-center {
+    padding-top: 292px;
+    width: 1024px;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #fff;
+}
+
+#text-overlay-top {
+    padding-top: 10px;
+    margin-left: 242px;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+}
+
 .hud {
     pointer-events: none;
     user-select: none;

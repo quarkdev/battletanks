@@ -537,6 +537,7 @@ function Tank(specs, id, control, x, y) {
         visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: t.explodeScale, scaleH: t.explodeScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
         
         if (t.control === 'computer') {
+            GLOBALS.map.wave.enemyCount -= 1;
             STAT.inc('total_tanks_destroyed', 1);
             hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
         }

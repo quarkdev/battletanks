@@ -23,7 +23,11 @@ var GLOBALS = (function () {
         map : {
             index   : 0,
             current : null,
-            wave    : 0 // the current wave
+            wave    : {
+                current : 0,
+                enemyCount : 0,
+                spawning : false
+            }
         },
         botCount : 0, // the number of bots currently active
         rdd : 0, // number of recently destroyed destructibles (that the pathfinders are not aware of)
@@ -81,3 +85,6 @@ var hud_kill_count = document.getElementById('kill-count');
 var cLog = document.getElementById('combat-log');
 var hNum = document.getElementById('hNum');
 var hp = document.getElementById('current-health');
+
+var wave_delay = 0;
+var cd_timesRun = 0;
