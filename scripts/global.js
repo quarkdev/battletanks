@@ -88,3 +88,4 @@ var hp = document.getElementById('current-health');
 
 var wave_delay = 0;
 var cd_timesRun = 0;
+var waveCountDown = null;

@@ -411,31 +411,45 @@ var main = function () {
         if (GLOBALS.map.wave.current !== GLOBALS.map.current.waves.length) {         
             var waves = GLOBALS.map.current.waves;
             var bp_and_count = [];
+
+            if (GLOBALS.map.wave.current !== 0) {
+                // inform player that wave have been cleared
+                $('#text-overlay-center').css('font-size', '42px');
+                $('#text-overlay-center').html('<span>Wave Cleared!</span>');
+                $('#text-overlay-center').animate({
+                    opacity: 1,
+                    fontSize: '26px'
+                }, 300, function () {
+                    $(this).delay(2000).animate({
+                        opacity: 0
+                    }, 300);
+                });
+            }
             
-            // inform player that wave is spawning
+            // inform player that wave is spawning after spawn wait time
             wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
             cd_timesRun = 0;
-            var waveCountDown = setInterval(function () {
+            waveCountDown = setInterval(function () {
                 cd_timesRun += 1;
                 if (cd_timesRun === wave_delay) {
                     clearInterval(waveCountDown);
                     $('#text-overlay-top').html('Wave: ' + GLOBALS.map.wave.current);
+                    
+                    $('#text-overlay-center').css('font-size', '42px');
+                    $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
+                    $('#text-overlay-center').animate({
+                        opacity: 1,
+                        fontSize: '26px'
+                    }, 300, function () {
+                        $(this).delay(2000).animate({
+                            opacity: 0
+                        }, 300);
+                    });
                 }
                 else {
                     $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
                 }
             }, 1000);
-            
-            $('#text-overlay-center').css('font-size', '42px');
-            $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
-            $('#text-overlay-center').animate({
-                opacity: 1,
-                fontSize: '26px'
-            }, 300, function () {
-                $(this).delay(2000).animate({
-                    opacity: 0
-                }, 300);
-            });
             
             // spawn for every blueprint
             GLOBALS.map.wave.spawning = true;

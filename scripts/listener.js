@@ -24,6 +24,8 @@ function attachMenuEventListeners() {
         $('.overlay').hide();
         
         // reset and show hud counters
+        $('#text-overlay-top').html('');
+        $('#text-overlay-center').html('');
         $('#kill-count').html('0');
         $('.hud').show();
         
@@ -78,6 +80,8 @@ function attachMenuEventListeners() {
     
         cancelAnimationFrame(mainAnimation);
         cancelAnimationFrame(editorAnimation);
+        
+        clearInterval(waveCountDown);
         
         document.getElementById('combat-log').innerHTML = ''; // clear logs
     
