@@ -111,9 +111,7 @@ var update = function(modifier) {
             // Check if bot can see player
             if (bots[i][4].los) {
                 // Fire
-                if (1 > Math.random() * 100) {
-                    bots[i][0].fire();
-                }
+                bots[i][0].fire();
             }
             
             // Check if movequeue has commands
