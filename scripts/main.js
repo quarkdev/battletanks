@@ -436,7 +436,7 @@ var main = function () {
                     $('#text-overlay-top').html('Wave: ' + GLOBALS.map.wave.current);
                     
                     $('#text-overlay-center').css('font-size', '42px');
-                    $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
+                    $('#text-overlay-center').html('<span>Incoming! Wave #' + GLOBALS.map.wave.current + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
                     $('#text-overlay-center').animate({
                         opacity: 1,
                         fontSize: '26px'
@@ -470,9 +470,20 @@ var main = function () {
         }
         else {
             // no more unspawned waves, declare victory!
-            UTIL.writeStats();
-            ui_location = 'post_game';
-            showGameOver('victory');
+            $('#text-overlay-center').css('font-size', '42px');
+            $('#text-overlay-center').html('<span>Wave Cleared!</span>');
+            $('#text-overlay-center').animate({
+                opacity: 1,
+                fontSize: '26px'
+            }, 300, function () {
+                $(this).delay(2000).animate({
+                    opacity: 0
+                }, 300, function () {
+                    UTIL.writeStats();
+                    ui_location = 'post_game';
+                    showGameOver('victory');
+                });
+            });
         }
     }
 };
