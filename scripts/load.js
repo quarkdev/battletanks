@@ -136,63 +136,78 @@ LOAD.worker = (function () {
         ai.postMessage(JSON.stringify(tanks[1].config));
     };
     
-    my.pathFinder = function (obs, id, tankSize) {
+    my.pathFinder = function (obs, id, botId, tankSize) {
         /* Spawn a new pathFinder worker. */
         
-        var pf = _spawnWorker('scripts/pathfinder.js', id);
+        var pf = {};
+        
+        // Check if there are any free workers
+        var free = LOAD.worker.getFree();
+        if (free) {
+            // we have a worker!
+            free.free = false; // claimed!
+            pf = free;
+        }
+        else {
+            // Nope, no free worker for you. Spawn a new one!
+            pf = _spawnWorker('scripts/pathfinder.js', id, false);
+            
+            pf.worker.addEventListener('message', function (event) {
+                // Receive data from pathfinder
+                var messageReceived  = JSON.parse(event.data),
+                    sender           = messageReceived.sender,
+                    cmd              = messageReceived.cmd;
+                    
+                var bot_index = -1;
+                
+                for (var i = 0; i < bots.length; i++) {
+                    // find bot matching sender
+                    if (bots[i][0].config.id === sender) {
+                        bot_index = i; // save index
+                        break;
+                    }
+                }
+                
+                if (bot_index !== -1) {
+                    switch (cmd) {
+                        case 'update_ok':
+                            bots[bot_index][2] = 'ready';
+                            break;
+                        case 'waypoint_ok':
+                            bots[bot_index][1] = messageReceived.waypoint;
+                            bots[bot_index][2] = 'ready';
+                            break;
+                        case 'get_los_ok':
+                            bots[bot_index][4] = messageReceived.lkl;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                
+                // Save the movement commands to the moveCmds action array
+                
+                
+            }, false);
+        }
         
         for (var i = 0; i < bots.length; i++) {
             // find bot matching sender
-            if (bots[i][0].config.id === id) {
+            if (bots[i][0].config.id === botId) {
                 bots[i][5] = pf; // save index
             }
         }
         
-        pf.addEventListener('message', function (event) {
-            // Receive data from pathfinder
-            var messageReceived  = JSON.parse(event.data),
-                sender           = messageReceived.sender,
-                cmd              = messageReceived.cmd;
-                
-            var bot_index = null;
-            
-            for (var i = 0; i < bots.length; i++) {
-                // find bot matching sender
-                if (bots[i][0].config.id === sender) {
-                    bot_index = i; // save index
-                }
-            }
-                
-            switch (cmd) {
-                case 'update_ok':
-                    bots[bot_index][2] = 'ready';
-                    break;
-                case 'waypoint_ok':
-                    bots[bot_index][1] = messageReceived.waypoint;
-                    bots[bot_index][2] = 'ready';
-                    break;
-                case 'get_los_ok':
-                    bots[bot_index][4] = messageReceived.lkl;
-                    break;
-                default:
-                    break;
-            }
-            
-            // Save the movement commands to the moveCmds action array
-            
-            
-        }, false);
-        
         // start worker
         var msg = {};
         msg.cmd = 'update_obstacles';
-        msg.sender = id;
+        msg.sender = botId;
         msg.obs = obs;
         msg.worldWidth = WORLD_WIDTH;
         msg.worldHeight = WORLD_HEIGHT;
         msg.tankSize = tankSize;
         
-        pf.postMessage(JSON.stringify(msg));
+        pf.worker.postMessage(JSON.stringify(msg));
         
         return pf;
     };
@@ -218,14 +233,28 @@ LOAD.worker = (function () {
         delete workerPool.workerId;
     };
     
-    var _spawnWorker = function (src, id) {
+    my.free = function (workerId) {
+        /* Free a specific worker so that it can be recycled. */
+        workerPool[workerId].free = true;
+    };
+    
+    my.getFree = function () {
+        /* Retrieves a free worker. */
+        for (var key in workerPool) {
+            if (workerPool[key].free) {
+                return workerPool[key];
+            }
+        }
+        return false;
+    };
+    
+    var _spawnWorker = function (src, id, free) {
         /* Spawn a new worker. Make sure id is unique. */
         
         var worker = new Worker(src);
         
-        workerPool[id] = {id: id, worker: worker};
-        
-        return worker;
+        workerPool[id] = {id: id, worker: worker, free: free};
+        return workerPool[id];
     };
     
     return my;

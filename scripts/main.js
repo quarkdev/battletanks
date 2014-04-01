@@ -102,7 +102,7 @@ var update = function(modifier) {
                 query.lastKnown = {x: bots[i][4].x, y: bots[i][4].y};
                 query.cmd = 'get_line_of_sight';
                 
-                bots[i][5].postMessage(JSON.stringify(query));
+                bots[i][5].worker.postMessage(JSON.stringify(query));
             }
             
             // Update turret to last known location of player
@@ -168,7 +168,7 @@ var update = function(modifier) {
                 bots[i][2] = 'waiting';
                 
                 // send message to pathfinder worker asking for directions
-                bots[i][5].postMessage(JSON.stringify(msg));
+                bots[i][5].worker.postMessage(JSON.stringify(msg));
             }
             else if (bots[i][2] !== 'waiting') {
                 // movequeue is empty or bot is not waiting for reply from worker, so ask for movelist from pathfinder
@@ -196,7 +196,7 @@ var update = function(modifier) {
                 bots[i][2] = 'waiting';
                 
                 // send message to pathfinder worker asking for directions
-                bots[i][5].postMessage(JSON.stringify(msg));
+                bots[i][5].worker.postMessage(JSON.stringify(msg));
             }
             
             bots[i][0].frame(); // run all frame callbacks
@@ -250,8 +250,9 @@ var update = function(modifier) {
                 return true;
             }
             else {
-                // tank is dead, time to terminate its associated pathfinder also
-                LOAD.worker.terminate(item[0].config.id);
+                // tank is dead, time to free its associated pathfinder also
+                //LOAD.worker.terminate(item[0].config.id);
+                LOAD.worker.free(item[5].id);
                 return false;
             }
         });

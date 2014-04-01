@@ -409,6 +409,7 @@ button {
     font-size: 26px;
     font-weight: bold;
     color: #fff;
+    text-shadow: 1px 2px 3px #000;
 }
 
 #text-overlay-top {

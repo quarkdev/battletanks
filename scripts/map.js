@@ -433,7 +433,7 @@ var MAP = (function () {
         return 0;
     };
     
-    my.spawnEnemyAtAnyPoint = function (blueprint) {
+    my.spawnEnemyAtAnyPoint = function (blueprint, mods) {
         /* Spawns an enemy tank at any of the current map's starting points. */
         GLOBALS.packedDestructibles = UTIL.packDestructibles();
         var current_map = GLOBALS.map.current;
@@ -441,30 +441,30 @@ var MAP = (function () {
         var x = current_map.startingPoints[i].config.oX;
         var y = current_map.startingPoints[i].config.oY;
         
-        my.spawnEnemy(blueprint, x, y);
+        my.spawnEnemy(blueprint, x, y, mods);
     };
     
-    my.spawnEnemyAtAllPoints = function (blueprint) {
+    my.spawnEnemyAtAllPoints = function (blueprint, mods) {
         /* Spawns enemies at all starting points. */
         GLOBALS.packedDestructibles = UTIL.packDestructibles();
         
         var current_map = GLOBALS.map.current;
         
         for (var i = 0; i < current_map.startingPoints.length; i++) {
-            my.spawnEnemy(blueprint, current_map.startingPoints[i].config.oX, current_map.startingPoints[i].config.oY);
+            my.spawnEnemy(blueprint, current_map.startingPoints[i].config.oX, current_map.startingPoints[i].config.oY, mods);
         }
     };
     
-    my.spawnEnemyAtEveryPoint = function (spawnMap) {
+    my.spawnEnemyAtEveryPoint = function (spawnMap, mods) {
         GLOBALS.packedDestructibles = UTIL.packDestructibles();
         /* Spawns an enemy tank at every point in spawn map. Spawn map format: each item, [blueprint, x, y] */
         for (var i = 0; i < spawnMap.length; i++) {
-            my.spawnEnemy(spawnMap[0], spawnMap[1], spawnMap[2]);
+            my.spawnEnemy(spawnMap[0], spawnMap[1], spawnMap[2], mods);
         }
     };
     
-    my.spawnEnemy = function (blueprint, x, y) {
-        /* Spawns an enemy tank at a target point */
+    my.spawnEnemy = function (blueprint, x, y, mods) {
+        /* Spawns an enemy tank at a target point, mods(optional) are called before tanks are pushed into the tanks array. */
         
         // don't spawn if MAX_BOTS have been reached
         if (bots.length >= MAX_BOTS) {
@@ -497,6 +497,13 @@ var MAP = (function () {
         
             // spawn enemy at starting point
             var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'computer', x, y);
+            
+            if (typeof mods !== 'undefined') {
+                for (var i = 0; i < mods.length; i++) {
+                    mods[i](enemy); // apply mods to tank
+                }
+            }
+            
             tanks.push(enemy);
             
             if (!GLOBALS.flags.initSpawn) {
@@ -511,7 +518,7 @@ var MAP = (function () {
             bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]);
             
             // load its pathfinder
-            LOAD.worker.pathFinder(GLOBALS.packedDestructibles, enemyId, enemy.config.width);
+            LOAD.worker.pathFinder(GLOBALS.packedDestructibles, enemyId, enemy.config.id, enemy.config.width);
         }, 3000);
     };
     
