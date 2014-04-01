@@ -61,6 +61,7 @@ var LOAD = (function () {
             GLOBALS.map.wave.current = 0;
             GLOBALS.map.wave.enemyCount = 0;
             GLOBALS.map.wave.spawning = false;
+            GLOBALS.map.postgame = false;
             
             // load timed events
             for (i = 0; i < eventPool.length; i++) {

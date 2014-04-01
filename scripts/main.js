@@ -431,10 +431,10 @@ var main = function () {
             cd_timesRun = 0;
             waveCountDown = setInterval(function () {
                 cd_timesRun += 1;
+                
+                $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
+                
                 if (cd_timesRun === wave_delay - 1) {
-                    clearInterval(waveCountDown);
-                    $('#text-overlay-top').html('Wave: ' + (GLOBALS.map.wave.current + 1));
-                    
                     $('#text-overlay-center').css('font-size', '42px');
                     $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
                     $('#text-overlay-center').animate({
@@ -446,8 +446,9 @@ var main = function () {
                         }, 300);
                     });
                 }
-                else {
-                    $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
+                else if (cd_timesRun === wave_delay) {
+                    clearInterval(waveCountDown);
+                    $('#text-overlay-top').html('Wave: ' + (GLOBALS.map.wave.current));
                 }
             }, 1000);
             
@@ -470,20 +471,23 @@ var main = function () {
         }
         else {
             // no more unspawned waves, declare victory!
-            $('#text-overlay-center').css('font-size', '42px');
-            $('#text-overlay-center').html('<span>Wave Cleared!</span>');
-            $('#text-overlay-center').animate({
-                opacity: 1,
-                fontSize: '26px'
-            }, 300, function () {
-                $(this).delay(2000).animate({
-                    opacity: 0
+            if (!GLOBALS.map.postgame) {
+                $('#text-overlay-center').css('font-size', '62px');
+                $('#text-overlay-center').html('<span>You are Victorious!</span>');
+                $('#text-overlay-center').animate({
+                    opacity: 1,
+                    fontSize: '36px'
                 }, 300, function () {
-                    UTIL.writeStats();
-                    ui_location = 'post_game';
-                    showGameOver('victory');
+                    $(this).delay(2000).animate({
+                        opacity: 0,
+                    }, 300, function () {
+                        UTIL.writeStats();
+                        ui_location = 'post_game';
+                        showGameOver('victory');
+                    });
                 });
-            });
+                GLOBALS.map.postgame = true;
+            }
         }
     }
 };

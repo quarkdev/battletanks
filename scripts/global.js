@@ -27,7 +27,8 @@ var GLOBALS = (function () {
                 current : 0,
                 enemyCount : 0,
                 spawning : false
-            }
+            },
+            postgame : false
         },
         botCount : 0, // the number of bots currently active
         rdd : 0, // number of recently destroyed destructibles (that the pathfinders are not aware of)
