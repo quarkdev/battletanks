@@ -879,7 +879,7 @@ var PUP = (function() {
             if (!active) {
                 tank.regen = {};
                 tank.regen.stacks = 1;
-                tank.regen.rate = tank.config.maxHealth * 0.01 * tank.regen.stacks;
+                tank.regen.rate = tank.config.maxHealth * 0.0005 * tank.regen.stacks; // 5% per second
                 
                 tank.regen.interval = setInterval(function () {
                     tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen.rate ? tank.config.maxHealth : tank.config.health + tank.regen.rate;
@@ -889,12 +889,13 @@ var PUP = (function() {
                         delete tank.regen;
                         tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
                     }
-                }, 1);
+                }, 10);
             
                 var dispellRegen = function () {
                     // dispell regen
                     clearInterval(tank.regen.interval);
                     delete tank.regen;
+                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
                 };
                 dispellRegen.id = 'dispellRegen';
                 
