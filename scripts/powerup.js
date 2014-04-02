@@ -874,39 +874,33 @@ var PUP = (function() {
         
         this.use = function (tank) {
             // can only use one
-            var active = typeof tank.regen_active !== 'undefined';
+            var active = typeof tank.regen !== 'undefined';
             
             if (!active) {
-                tank.regen_active = true;
-                tank.regen_rate = 0.01;
+                tank.regen = {};
+                tank.regen.rate = tank.config.maxHealth * 0.01 * tank.regen.stacks;
                 
-                tank.regenIntervalID = setInterval(function () {
-                    tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen_rate ? tank.config.maxHealth : tank.config.health + tank.regen_rate;
+                tank.regen.interval = setInterval(function () {
+                    tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen.rate ? tank.config.maxHealth : tank.config.health + tank.regen.rate;
                     renderExtern();
                     if (tank.config.health === tank.config.maxHealth) {
-                        clearInterval(tank.regenIntervalID);
-                        delete tank.regenIntervalID;
-                        delete tank.dispellRegen;
-                        delete tank.regen_active;
-                        delete tank.regen_rate;
+                        clearInterval(tank.regen.interval);
+                        delete tank.regen;
                         tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
                     }
                 }, 1);
             
                 var dispellRegen = function () {
                     // dispell regen
-                    clearInterval(tank.regenIntervalID);
-                    delete tank.regenIntervalID;
-                    delete tank.dispellRegen;
-                    delete tank.regen_active;
-                    delete tank.regen_rate;
+                    clearInterval(tank.regen.interval);
+                    delete tank.regen;
                 };
                 dispellRegen.id = 'dispellRegen';
                 
                 tank.hit_callbacks.push(dispellRegen);
             }
             else {
-                tank.regen_rate += 0.01;
+                tank.regen.stacks += 1;
             }
         };
     }
