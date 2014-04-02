@@ -903,6 +903,7 @@ var PUP = (function() {
             }
             else {
                 tank.regen.stacks += 1;
+                tank.regen.rate = tank.config.maxHealth * 0.0005 * tank.regen.stacks;
             }
         };
     }
