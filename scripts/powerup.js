@@ -878,6 +878,7 @@ var PUP = (function() {
             
             if (!active) {
                 tank.regen = {};
+                tank.regen.stacks = 1;
                 tank.regen.rate = tank.config.maxHealth * 0.01 * tank.regen.stacks;
                 
                 tank.regen.interval = setInterval(function () {
