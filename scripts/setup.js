@@ -104,7 +104,7 @@ t_destroyedSound  = new SoundPool('sounds/tank_destroyed.wav', 0.2, 10);
 t_destroyedSound2 = new SoundPool('sounds/tank_destroyed2.wav', 0.2, 10);
 t_destroyedSound3 = new SoundPool('sounds/tank_destroyed3.wav', 0.2, 10);
 pick_powerupSound = new SoundPool('sounds/pick-powerup.wav', 0.2, 20);
-tick_sound        = new SoundPool('sounds/tick.mp3', 0.2, 60);
+tick_sound        = new SoundPool('sounds/tick.mp3', 1.0, 60);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -123,11 +123,6 @@ STAT.add('total_hits');
 STAT.add('total_damage_dealt');
 STAT.add('total_damage_taken');
 STAT.add('total_tanks_destroyed');
-// Add statfields for all the tanks
-GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks');
-for (var i = 0; i < GLOBALS.tankSelection.blueprints.length; i++) {
-    STAT.add('td_' + GLOBALS.tankSelection.blueprints[i].name);
-}
 
 // Map editor initiatlization
 MAP.addPlaceable('destructible', 'brick_explosive');
@@ -184,7 +179,13 @@ $(document).ready(function () {
         totalFailed = UTIL.asset.getTotalFailed();
         console.log(error);
     }, function () {
-        // if everything has been loaded, go to main menu
+        // If everything has been loaded, Add statfields for all the tanks
+        GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks');
+        for (var i = 0; i < GLOBALS.tankSelection.blueprints.length; i++) {
+            STAT.add('td_' + GLOBALS.tankSelection.blueprints[i].name);
+        }
+        
+        // then finally go to main menu
         progressTextDone.innerHTML = '';
         terrain = TerrainImages.get('default'); // default terrain
         $('#progress').hide();

@@ -13,7 +13,7 @@ var GLOBALS = (function () {
             initSpawn : false,
             gamepediaLoaded : false
         },
-        tankSelection: {
+        tankSelection : {
             blueprints : [],
             selectedIndex: 0
         },
@@ -29,6 +29,11 @@ var GLOBALS = (function () {
                 spawning : false
             },
             postgame : false
+        },
+        statistics : {
+            tank_type_kills : [],
+            tankAppend : 0,
+            tankKillTicks : 0
         },
         botCount : 0, // the number of bots currently active
         rdd : 0, // number of recently destroyed destructibles (that the pathfinders are not aware of)
@@ -87,6 +92,4 @@ var cLog = document.getElementById('combat-log');
 var hNum = document.getElementById('hNum');
 var hp = document.getElementById('current-health');
 
-var wave_delay = 0;
-var cd_timesRun = 0;
 var waveCountDown = null;

@@ -315,7 +315,7 @@ var editorUpdate = function() {
             MAP.placeObject();
         }
         
-        if (191 in keysDown) {
+        if (191 in keysDown) { // ? key
             MAP.placeRandom();
         }
         
@@ -405,7 +405,6 @@ var main = function () {
                     opacity: 0,
                 }, 300, function () {
                     ui_location = 'post_game';
-                    UTIL.writeStats();
                     showGameOver('gameover');
                 });
             });
@@ -435,8 +434,8 @@ var main = function () {
             }
             
             // inform player that wave is spawning after spawn wait time
-            wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
-            cd_timesRun = 0;
+            var wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
+            var cd_timesRun = 0;
             waveCountDown = setInterval(function () {
                 cd_timesRun += 1;
                 
@@ -489,7 +488,6 @@ var main = function () {
                     $(this).delay(2000).animate({
                         opacity: 0,
                     }, 300, function () {
-                        UTIL.writeStats();
                         ui_location = 'post_game';
                         showGameOver('victory');
                     });
@@ -578,10 +576,58 @@ var showGameOver = function (state) {
         default:
             break;
     }
+    
+    UTIL.pauseMusic(backgroundMusic);
 
     // show game over screen
     $('#game-over-screen').show();
-    UTIL.pauseMusic(backgroundMusic);
+    
+    // Animate stats
+     $('#gos-kills').html(''); // clear first
+     
+    var post_stats = STAT.getAll();
+    GLOBALS.statistics.tank_type_kills = [];
+    
+    for (key in post_stats) {
+        if (key.substr(0, 3) == 'td_') {
+            GLOBALS.statistics.tank_type_kills.push({tank: key.substr(3), killed: post_stats[key]});
+        }
+    }
+    
+    GLOBALS.statistics.tankAppend = 0;
+    
+    var looped_stat_tick = function (tank_name) {
+        setTimeout(function () {
+            tick_sound.get();
+            $('#gosk-' + tank_name).html(GLOBALS.statistics.tankKillTicks);
+            if (GLOBALS.statistics.tankKillTicks < STAT.get('td_' + tank_name)) {
+                GLOBALS.statistics.tankKillTicks += 1;
+                looped_stat_tick(tank_name);
+            }
+            else {
+                looped_stat_append();
+            }
+        }, 25);
+    };
+    
+    var looped_stat_append = function () {
+        setTimeout(function () {
+            if (GLOBALS.statistics.tankAppend < GLOBALS.statistics.tank_type_kills.length) {
+                GLOBALS.statistics.tankKillTicks = 0;
+                var tank_name = GLOBALS.statistics.tank_type_kills[GLOBALS.statistics.tankAppend].tank;
+                $('#gos-kills').append('<br><br><span id="gosk-' + tank_name + '" style="background: url(images/tanks/' + tank_name + '/icon.png) left center no-repeat; padding-left: ' + (12 + BLUEPRINT.get(tank_name).tWidth) + 'px; padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;"></span>');
+                looped_stat_tick(tank_name);
+                GLOBALS.statistics.tankAppend += 1;
+            }
+            else {
+                tick_sound.get();
+                $('#gos-kills').append('<br><br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + STAT.get('total_tanks_destroyed') + '</span>');
+            }
+            
+        }, 50);
+    };
+    
+    looped_stat_append();
 };
 
 attachMenuEventListeners();

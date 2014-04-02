@@ -131,21 +131,6 @@ var UTIL = (function () {
         return true;
     };
     
-    my.writeStats = function () {
-        /* Write the game stats to the screen. */
-        var shots_fired  = STAT.get('total_shots_fired');
-        var hits         = STAT.get('total_hits');
-        var damage_dealt = STAT.get('total_damage_dealt');
-        var damage_taken = STAT.get('total_damage_taken');
-        
-        document.getElementById('stat-sf').innerHTML = shots_fired;
-        document.getElementById('stat-h').innerHTML  = hits;
-        document.getElementById('stat-td').innerHTML  = STAT.get('total_tanks_destroyed');
-        document.getElementById('stat-ts').innerHTML  = GLOBALS.botCount;
-        document.getElementById('stat-dd').innerHTML = damage_dealt.toFixed(2);
-        document.getElementById('stat-dt').innerHTML = damage_taken.toFixed(2);
-    };
-    
     my.post = function (url, data, callbackSuccess, callbackFailed) {
         /* POST request as JSON */
         var req = new XMLHttpRequest();
@@ -1152,6 +1137,11 @@ function Stat() {
     this.get = function (name) {
         /* Retrieves the value of the matching field. */
         return fields[name];
+    };
+    
+    this.getAll = function () {
+        /* Retrieves all the fields. */
+        return fields;
     };
 };
 
