@@ -394,16 +394,24 @@ var main = function () {
     // check player state
     if (!player.config.active) {
         // if player is dead, show game over screen
-        ui_location = 'post_game';
-        UTIL.writeStats();
-        showGameOver('gameover');
+        if (!GLOBALS.map.postgame) {
+            $('#text-overlay-center').css('font-size', '62px');
+            $('#text-overlay-center').html('<span>You have been Defeated!</span>');
+            $('#text-overlay-center').animate({
+                opacity: 1,
+                fontSize: '36px'
+            }, 300, function () {
+                $(this).delay(2000).animate({
+                    opacity: 0,
+                }, 300, function () {
+                    ui_location = 'post_game';
+                    UTIL.writeStats();
+                    showGameOver('gameover');
+                });
+            });
+            GLOBALS.map.postgame = true;
+        }
     }
-    /*else if (UTIL.levelCleared()) {
-        // level is cleared (i.e. all enemy tanks are destroyed)
-        UTIL.writeStats();
-        ui_location = 'post_game';
-        showGameOver('victory');
-    }*/
 
     // Check if there are no enemies and there are none spawning
     if (GLOBALS.map.wave.enemyCount === 0 && GLOBALS.map.wave.spawning === false) {

@@ -104,6 +104,7 @@ t_destroyedSound  = new SoundPool('sounds/tank_destroyed.wav', 0.2, 10);
 t_destroyedSound2 = new SoundPool('sounds/tank_destroyed2.wav', 0.2, 10);
 t_destroyedSound3 = new SoundPool('sounds/tank_destroyed3.wav', 0.2, 10);
 pick_powerupSound = new SoundPool('sounds/pick-powerup.wav', 0.2, 20);
+tick_sound        = new SoundPool('sounds/tick.mp3', 0.2, 60);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -113,6 +114,7 @@ UTIL.asset.queue('soundpool', ['destroyed_tank', t_destroyedSound]);
 UTIL.asset.queue('soundpool', ['destroyed_tank2', t_destroyedSound2]);
 UTIL.asset.queue('soundpool', ['destroyed_tank3', t_destroyedSound3]);
 UTIL.asset.queue('soundpool', ['pick_powerup', pick_powerupSound]);
+UTIL.asset.queue('soundpool', ['tick', tick_sound]);
 
 // Init stat fields
 var STAT = new Stat();
@@ -121,6 +123,11 @@ STAT.add('total_hits');
 STAT.add('total_damage_dealt');
 STAT.add('total_damage_taken');
 STAT.add('total_tanks_destroyed');
+// Add statfields for all the tanks
+GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks');
+for (var i = 0; i < GLOBALS.tankSelection.blueprints.length; i++) {
+    STAT.add('td_' + GLOBALS.tankSelection.blueprints[i].name);
+}
 
 // Map editor initiatlization
 MAP.addPlaceable('destructible', 'brick_explosive');

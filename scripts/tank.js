@@ -539,6 +539,7 @@ function Tank(specs, id, control, x, y) {
         if (t.control === 'computer') {
             GLOBALS.map.wave.enemyCount -= 1;
             STAT.inc('total_tanks_destroyed', 1);
+            STAT.inc('td_' + t.name, 1);
             hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
         }
     };
