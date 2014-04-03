@@ -628,7 +628,7 @@ var showGameOver = function (state) {
                 var best = STAT.get('total_tanks_destroyed');
                 var newBest = '';
                 if (typeof GLOBALS.player.bestScores[GLOBALS.map.current.name] !== 'undefined') {
-                    if (GLOBALS.player.bestScores[GLOBALS.map.current.name] > best) {
+                    if (GLOBALS.player.bestScores[GLOBALS.map.current.name] >= best) {
                         best = GLOBALS.player.bestScores[GLOBALS.map.current.name];
                     }
                     else {
