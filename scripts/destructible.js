@@ -15,6 +15,7 @@ function Destructible(specs, x, y) {
         cRadius : specs.size/2, // ((Math.sqrt(Math.pow(specs.size/2, 2)*2) - specs.size/2) / 2) + specs.size/2, // bounding circle radius
         health : specs.health,  // hitpoints
         armor  : specs.armor,   // armor
+        dropRate : typeof specs.dropRate === 'undefined' ? 10 : specs.dropRate,
         mod    : specs.mod      // special modifier, can be: (immortal, rubber, explosive, etc)
     };
     
@@ -183,8 +184,7 @@ function Destructible(specs, x, y) {
         d_destroyedSound.get();
    
         /* has a chance to spawn a random powerup on death */
-        var lucky = Math.random() > 0.5 ? true : false;
-        
+        var lucky = (GLOBALS.map.current.dropRate + d.dropRate) > Math.random()*100;
         if (lucky) {
             // ok just got lucky, get a random powerup
             powerups.push(PUP.createRandom(d.oX, d.oY));

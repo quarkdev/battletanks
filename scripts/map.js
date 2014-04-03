@@ -20,6 +20,8 @@ var MAP = (function () {
         this.name = name;
         this.desc = desc;
         
+        this.dropRate = 10; // 10%
+        
         this.powerups = [];
         this.destructibles = []; // [destructible_blueprint_string, x, y] : this prevents shallow copy problems (reference problems)
         this.startingPoints = []; // this also dictates the max player

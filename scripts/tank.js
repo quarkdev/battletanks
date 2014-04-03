@@ -62,6 +62,7 @@ function Tank(specs, id, control, x, y) {
         pSpeed       : specs.pSpeed,                                                       // Projectile speed
         pDamage      : specs.pDamage,                                                      // projectile damage
         critChance   : specs.critChance,
+        dropRate     : typeof specs.dropRate === 'undefined' ? 10 : specs.dropRate,        // chance of dropping a powerup on death (default: 10%)
         ammo         : specs.ammo,                                                         // amount of ammo
         fRate        : specs.fRate,                                                        // Firing rate (rounds per second)
         oX           : x,                                                                  // tank x coordinate
@@ -563,6 +564,14 @@ function Tank(specs, id, control, x, y) {
             STAT.inc('total_tanks_destroyed', 1);
             STAT.inc('td_' + t.name, 1);
             hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
+        }
+        
+        /* has a chance to spawn a random powerup on death */
+        var lucky = (GLOBALS.map.current.dropRate + t.dropRate) > Math.random()*100;
+        
+        if (lucky) {
+            // ok just got lucky, get a random powerup
+            powerups.push(PUP.createRandom(t.oX, t.oY));
         }
     };
     
