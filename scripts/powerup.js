@@ -58,6 +58,8 @@ var PUP = (function() {
                 return new Fireworks(x, y);
             case 'chain':
                 return new Chain(x, y);
+            case 'gold-coin':
+                return new GoldCoin(x, y);
             default:
                 break;
         }
@@ -89,6 +91,23 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function GoldCoin(x, y) {
+        /* Increases the tank's gold. (which can be used to buy upgrades). Tank gold is dropped on death. Doesn't randomly drop. */
+        this.config = {
+            name    : 'Gold Coin',
+            slug    : 'gold-coin',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('gold-coin')
+        };
+        
+        this.use = function (tank) {
+            tank.config.coins += 1;
         };
     }
     

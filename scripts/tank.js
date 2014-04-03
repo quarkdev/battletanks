@@ -38,6 +38,7 @@ function Tank(specs, id, control, x, y) {
         name         : specs.name,                                                         // tank name
         type         : specs.type,                                                         // tanks type (light/medium/heavy/destroyer/howitzer)
         health       : specs.health,                                                       // tank health
+        coins        : 1,                                                                  // tank currency (can be used to purchase upgrades)
         maxHealth    : specs.health,
         width        : specs.width,
         height       : specs.height,
@@ -564,6 +565,11 @@ function Tank(specs, id, control, x, y) {
             STAT.inc('total_tanks_destroyed', 1);
             STAT.inc('td_' + t.name, 1);
             hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
+        }
+        
+        // Drop all hoarded coins
+        for (var i = 0; i < t.coins; i++) {
+            powerups.push(PUP.create('gold-coin', t.oX, t.oY));
         }
         
         /* has a chance to spawn a random powerup on death */
