@@ -485,6 +485,16 @@ function Tank(specs, id, control, x, y) {
             STAT.inc('total_damage_taken', end_damage);
         }
         
+        if (t.id === player.config.id) {
+            // screenshake effect everytime the player's tank gets hit
+            if (critical_hit && (GLOBALS.settings.screenShake == 1 || GLOBALS.settings.screenShake == 3)) {
+                $('#canvas-ui-wrap').stop().effect('shake', { distance: 6, times: 3 }, 100);
+            }
+            else if (GLOBALS.settings.screenShake == 2 || GLOBALS.settings.screenShake == 3) {
+                $('#canvas-ui-wrap').stop().effect('shake', { distance: 2, times: 1 }, 20);
+            }
+        }
+        
         var oldHealth = t.health;
         // decrease health
         t.health = t.health < end_damage ? 0 : t.health - end_damage;

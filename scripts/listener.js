@@ -97,6 +97,15 @@ function attachMenuEventListeners() {
         $('.overlay').hide();
         $('#gamepedia-screen').show();
     });
+    
+    $('#settings').click(function () {
+        $('.overlay').hide();
+        
+        // load default settings
+        $('#set-screen-shake').val(GLOBALS.settings.screenShake);
+        
+        $('#settings-screen').show();
+    });
 }
 
 function attachEditorEventListeners() {

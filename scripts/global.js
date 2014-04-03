@@ -13,6 +13,9 @@ var GLOBALS = (function () {
             initSpawn : false,
             gamepediaLoaded : false
         },
+        settings : {
+            screenShake : 0 // 0 = false, 1 = on critical hit only, 2 = on normal hit only, 3 = on both
+        },
         tankSelection : {
             blueprints : [],
             selectedIndex: 0

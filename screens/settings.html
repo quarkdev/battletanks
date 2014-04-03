@@ -1,0 +1,11 @@
+<div id="settings-screen" class="overlay">
+    <h1 class="blue-text">GAME SETTINGS</h1>
+    <span style="color: #fff;">Screenshake:</span>
+    <select id="set-screen-shake">
+        <option value=0>None</option>
+        <option value=1>On Critical Hit Only</option>
+        <option value=2>On Normal Hit Only</option>
+        <option value=3>On Both Critical and Normal Hits</option>
+    </select>
+    <div class="menu-btn main-menu main-menu-gs" onclick="GLOBALS.settings.screenShake = $('#set-screen-shake').val()">< MAIN MENU</div>
+</div>

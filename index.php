@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="stylesheet" type="text/css" href="css/editor.css">
 <script type="text/javascript" src="scripts/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui-1.10.4.custom.min.js"></script>
 </head>
 <body>
 <div id="canvas-ui-wrap" onselectstart="return false;">
@@ -22,6 +23,7 @@
             // include ui screens
             include 'screens/progress.html';
             include 'screens/main_menu.html';
+            include 'screens/settings.html';
             include 'screens/gamepedia.html';
             include 'screens/pause.html';
             include 'screens/editor.html';
