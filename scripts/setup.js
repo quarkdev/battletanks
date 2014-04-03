@@ -105,6 +105,9 @@ t_destroyedSound2 = new SoundPool('sounds/tank_destroyed2.wav', 0.2, 10);
 t_destroyedSound3 = new SoundPool('sounds/tank_destroyed3.wav', 0.2, 10);
 pick_powerupSound = new SoundPool('sounds/pick-powerup.wav', 0.2, 20);
 tick_sound        = new SoundPool('sounds/tick.mp3', 1.0, 60);
+wave_cleared_sound = new SoundPool('sounds/wave_cleared.wav', 0.5, 3);
+wave_start_sound   = new SoundPool('sounds/wave_start.wav', 0.5, 3);
+gameover_sound     = new SoundPool('sounds/gameover.wav', 0.5, 3);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -115,6 +118,9 @@ UTIL.asset.queue('soundpool', ['destroyed_tank2', t_destroyedSound2]);
 UTIL.asset.queue('soundpool', ['destroyed_tank3', t_destroyedSound3]);
 UTIL.asset.queue('soundpool', ['pick_powerup', pick_powerupSound]);
 UTIL.asset.queue('soundpool', ['tick', tick_sound]);
+UTIL.asset.queue('soundpool', ['wave_cleared', wave_cleared_sound]);
+UTIL.asset.queue('soundpool', ['wave_start', wave_start_sound]);
+UTIL.asset.queue('soundpool', ['gameover', gameover_sound]);
 
 // Init stat fields
 var STAT = new Stat();

@@ -18,7 +18,8 @@ var GLOBALS = (function () {
             selectedIndex: 0
         },
         player : {
-            name : 'player1'
+            name : 'player1',
+            bestScores : {} // map_name : best_score
         },
         map : {
             index   : 0,

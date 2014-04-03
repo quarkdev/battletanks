@@ -395,6 +395,7 @@ var main = function () {
     if (!player.config.active) {
         // if player is dead, show game over screen
         if (!GLOBALS.map.postgame) {
+            gameover_sound.get();
             $('#text-overlay-center').css('font-size', '62px');
             $('#text-overlay-center').html('<span>You have been Defeated!</span>');
             $('#text-overlay-center').animate({
@@ -421,6 +422,7 @@ var main = function () {
 
             if (GLOBALS.map.wave.current !== 0) {
                 // inform player that wave have been cleared
+                wave_cleared_sound.get();
                 $('#text-overlay-center').css('font-size', '42px');
                 $('#text-overlay-center').html('<span>Wave Cleared!</span>');
                 $('#text-overlay-center').animate({
@@ -442,6 +444,7 @@ var main = function () {
                 $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
                 
                 if (cd_timesRun === wave_delay - 1) {
+                    wave_start_sound.get();
                     $('#text-overlay-center').css('font-size', '42px');
                     $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
                     $('#text-overlay-center').animate({
@@ -479,6 +482,7 @@ var main = function () {
         else {
             // no more unspawned waves, declare victory!
             if (!GLOBALS.map.postgame) {
+                gameover_sound.get();
                 $('#text-overlay-center').css('font-size', '62px');
                 $('#text-overlay-center').html('<span>You are Victorious!</span>');
                 $('#text-overlay-center').animate({
@@ -588,7 +592,7 @@ var showGameOver = function (state) {
     var post_stats = STAT.getAll();
     GLOBALS.statistics.tank_type_kills = [];
     
-    for (key in post_stats) {
+    for (var key in post_stats) {
         if (key.substr(0, 3) == 'td_') {
             GLOBALS.statistics.tank_type_kills.push({tank: key.substr(3), killed: post_stats[key]});
         }
@@ -621,7 +625,21 @@ var showGameOver = function (state) {
             }
             else {
                 tick_sound.get();
-                $('#gos-kills').append('<br><br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + STAT.get('total_tanks_destroyed') + '</span>');
+                var best = STAT.get('total_tanks_destroyed');
+                var newBest = '';
+                if (typeof GLOBALS.player.bestScores[GLOBALS.map.current.name] !== 'undefined') {
+                    if (GLOBALS.player.bestScores[GLOBALS.map.current.name] > best) {
+                        best = GLOBALS.player.bestScores[GLOBALS.map.current.name];
+                    }
+                    else {
+                        newBest = '<span style="padding: 6px; font-size: 24px; color: #fff; background-color: red;">NEW!</span>';
+                    }
+                }
+                else {
+                    GLOBALS.player.bestScores[GLOBALS.map.current.name] = best;
+                    newBest = '<span style="padding: 6px; font-size: 24px; color: #fff; background-color: red;">NEW!</span>';
+                }
+                $('#gos-kills').append('<br><br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + STAT.get('total_tanks_destroyed') + '</span><br><span style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">BEST: ' + best + ' ' + newBest + '</span>');
             }
             
         }, 50);
