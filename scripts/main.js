@@ -60,14 +60,14 @@ var update = function(modifier) {
     if (38 in keysDown) { // up arrow pressed
         player.move(modifier, 'forward');
     }
-    else {
+    else if (!(40 in keysDown)) {
         player.move(modifier, 'forward-stop');
     }
     
     if (40 in keysDown) { // down arrow pressed
         player.move(modifier, 'reverse');
     }
-    else {
+    else if (!(38 in keysDown)) {
         player.move(modifier, 'reverse-stop');
     }
     

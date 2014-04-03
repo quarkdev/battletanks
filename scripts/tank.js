@@ -58,6 +58,7 @@ function Tank(specs, id, control, x, y) {
         fSpeed       : specs.fSpeed,                                                       // tank forward Speed
         rSpeed       : specs.rSpeed,                                                       // tank reverse Speed
         accel        : specs.accel,                                                        // acceleration rate (time it takes for the tank to reach max speed)
+        decel        : specs.width * 3,                                                  // deceleration rate
         pSpeed       : specs.pSpeed,                                                       // Projectile speed
         pDamage      : specs.pDamage,                                                      // projectile damage
         critChance   : specs.critChance,
@@ -188,23 +189,29 @@ function Tank(specs, id, control, x, y) {
             this.move_callbacks[i]();
         }
         
-        t.turretAnim.updatePos(t.oX, t.oY);
-        
         lockPoint = typeof lockPoint === 'undefined' ? false : lockPoint; 
     
         /* move forward or backward, modifier is time-based*/
         var tmpX = t.oX; // save old coords
         var tmpY = t.oY;
         var d, bot;
+        var extraBrake = 0;
+        
+        if (direction == 'forward' && this.velocity.reverse > 0) {
+            extraBrake = t.fSpeed;
+            direction = 'reverse-stop';
+        }
+        else if (direction == 'reverse' && this.velocity.forward > 0) {
+            extraBrake = t.rSpeed;
+            direction = 'forward-stop';
+        }
         
         switch(direction) {
             case 'forward':
-                this.velocity.forward += t.accel;
+                this.velocity.forward += t.accel * modifier;
                 this.velocity.forward = this.velocity.forward > t.fSpeed ? t.fSpeed : this.velocity.forward;
                 
                 var step = modifier*this.velocity.forward;
-                //var slope = Math.tan(t.hAngle * Math.PI/180);
-                //var yIntercept = t.oY - (slope * t.oX);
                                 
                 if (lockPoint !== false) {
                     // Check if AI is near enough target point. Compare step and the required distance to target point
@@ -227,13 +234,16 @@ function Tank(specs, id, control, x, y) {
                 
                 break;
             case 'reverse':
-                this.velocity.reverse += t.accel;
+                this.velocity.reverse += t.accel * modifier;
                 this.velocity.reverse = this.velocity.reverse > t.rSpeed ? t.rSpeed : this.velocity.reverse;
-                t.oX = t.oX +  (modifier*this.velocity.reverse)*Math.cos((t.hAngle+180)*Math.PI/180);
-                t.oY = t.oY +  (modifier*this.velocity.reverse)*Math.sin((t.hAngle+180)*Math.PI/180);
+                
+                var step = modifier*this.velocity.reverse;
+                
+                t.oX = t.oX +  (step)*Math.cos((t.hAngle+180)*Math.PI/180);
+                t.oY = t.oY +  (step)*Math.sin((t.hAngle+180)*Math.PI/180);
                 break;
             case 'forward-stop':
-                this.velocity.forward -= t.accel*3;
+                this.velocity.forward -= (t.decel + extraBrake) * modifier;
                 this.velocity.forward = this.velocity.forward < 0.0 ? 0.0 : this.velocity.forward;
                 if (lockPoint === false) {
                     t.oX = t.oX +  (modifier*this.velocity.forward)*Math.cos(t.hAngle*Math.PI/180);
@@ -241,7 +251,7 @@ function Tank(specs, id, control, x, y) {
                 }
                 break;
             case 'reverse-stop':
-                this.velocity.reverse -= t.accel*3;
+                this.velocity.reverse -= (t.decel + extraBrake) * modifier;
                 this.velocity.reverse = this.velocity.reverse < 0.0 ? 0.0 : this.velocity.reverse;
                 t.oX = t.oX +  (modifier*this.velocity.reverse)*Math.cos((t.hAngle+180)*Math.PI/180);
                 t.oY = t.oY +  (modifier*this.velocity.reverse)*Math.sin((t.hAngle+180)*Math.PI/180);
@@ -367,6 +377,8 @@ function Tank(specs, id, control, x, y) {
         
         this.x = t.oX;
         this.y = t.oY;
+        
+        t.turretAnim.updatePos(t.oX, t.oY);
     };
     
     this.fire = function () {
