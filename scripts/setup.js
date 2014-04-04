@@ -109,6 +109,7 @@ tick_sound        = new SoundPool('sounds/tick.mp3', 1.0, 60);
 wave_cleared_sound = new SoundPool('sounds/wave_cleared.wav', 0.5, 3);
 wave_start_sound   = new SoundPool('sounds/wave_start.wav', 0.5, 3);
 gameover_sound     = new SoundPool('sounds/gameover.wav', 0.5, 3);
+gold_pick_sound    = new SoundPool('sounds/gold-pick.wav', 0.4, 20);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -122,6 +123,7 @@ UTIL.asset.queue('soundpool', ['tick', tick_sound]);
 UTIL.asset.queue('soundpool', ['wave_cleared', wave_cleared_sound]);
 UTIL.asset.queue('soundpool', ['wave_start', wave_start_sound]);
 UTIL.asset.queue('soundpool', ['gameover', gameover_sound]);
+UTIL.asset.queue('soundpool', ['gold_pick', gold_pick_sound]);
 
 // Init stat fields
 var STAT = new Stat();

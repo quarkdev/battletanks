@@ -108,6 +108,7 @@ var PUP = (function() {
         
         this.use = function (tank) {
             tank.config.coins += 1;
+            gold_pick_sound.get();
         };
     }
     

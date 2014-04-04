@@ -308,6 +308,17 @@ function Tank(specs, id, control, x, y) {
                 // apply powerup effects
                 powerups[i].use(this);
                 
+                if (t.id == player.config.id) {
+                    if (powerups[i].config.slug == 'gold-coin') {
+                        // update coin count in hud
+                        $('#gold-count').html(t.coins);
+                    }
+                    
+                    if (powerups[i].config.slug == 'ammo') {
+                        $('#ammo-count').html(t.ammo);
+                    }
+                }
+                
                 var powerup_name = powerups[i].config.name;
                 
                 delete powerups[i];
@@ -567,17 +578,17 @@ function Tank(specs, id, control, x, y) {
             hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
         }
         
-        // Drop all hoarded coins
-        for (var i = 0; i < t.coins; i++) {
-            powerups.push(PUP.create('gold-coin', t.oX, t.oY));
-        }
-        
         /* has a chance to spawn a random powerup on death */
         var lucky = (GLOBALS.map.current.dropRate + t.dropRate) > Math.random()*100;
         
         if (lucky) {
             // ok just got lucky, get a random powerup
             powerups.push(PUP.createRandom(t.oX, t.oY));
+        }
+        
+        // Drop all hoarded coins
+        for (var i = 0; i < t.coins; i++) {
+            powerups.push(PUP.create('gold-coin', t.oX, t.oY));
         }
     };
     

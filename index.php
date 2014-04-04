@@ -16,6 +16,8 @@
         <canvas id="minimap-bg" width="228" height="228" oncontextmenu="return false;"></canvas>
         <canvas id="minimap" width="228" height="228" oncontextmenu="return false;"></canvas>
         <div id="kill-count" class="hud">0</div>
+        <div id="gold-count" class="hud">1</div>
+        <div id="ammo-count" class="hud">0</div>
         <div id="text-overlay-center" class="hud"></div>
         <div id="text-overlay-top" class="hud"></div>
         

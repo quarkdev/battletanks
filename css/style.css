@@ -389,14 +389,38 @@ button {
 }
 
 #kill-count {
-    height: 33px;
+    height: 36px;
     position: absolute;
     top: 10px;
     left: 888px;
-    font-size: 26px;
+    font-size: 28px;
     font-weight: bold;
     padding-left: 62px;
     background: url(../images/ui/dead-tank.png) center left no-repeat;
+    color: #fff;
+}
+
+#gold-count {
+    height: 36px;
+    position: absolute;
+    top: 10px;
+    left: 742px;
+    font-size: 28px;
+    font-weight: bold;
+    padding-left: 36px;
+    background: url(../images/ui/dollar.png) center left no-repeat;
+    color: #fff;
+}
+
+#ammo-count {
+    height: 36px;
+    position: absolute;
+    top: 570px;
+    left: 888px;
+    font-size: 28px;
+    font-weight: bold;
+    padding-left: 40px;
+    background: url(../images/ui/ammo.png) center left no-repeat;
     color: #fff;
 }
 
@@ -410,7 +434,6 @@ button {
     font-size: 26px;
     font-weight: bold;
     color: #fff;
-    text-shadow: 1px 2px 3px #000;
 }
 
 #text-overlay-top {
@@ -428,6 +451,7 @@ button {
     pointer-events: none;
     user-select: none;
     display: none;
+    text-shadow: 1px 2px 3px #000;
 }
 
 .non-interactive {

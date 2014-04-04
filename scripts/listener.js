@@ -27,6 +27,8 @@ function attachMenuEventListeners() {
         $('#text-overlay-top').html('');
         $('#text-overlay-center').html('');
         $('#kill-count').html('0');
+        $('#gold-count').html('0');
+        $('#ammo-count').html('0');
         $('.hud').show();
         
         // get player name

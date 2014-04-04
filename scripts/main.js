@@ -73,6 +73,7 @@ var update = function(modifier) {
     
     if (mouseDownLeft) {
         player.fire();
+        $('#ammo-count').html(player.config.ammo);
     }
     
     player.frame(); // run all frame callbacks
@@ -534,6 +535,8 @@ var start = function (player_name) {
         UTIL.playMusic(backgroundMusic);
         renderExtern();
         minimapBGCtx.drawImage(terrain, 0, 0, WORLD_WIDTH / 8, WORLD_HEIGHT / 8);
+        $('#ammo-count').html(player.config.ammo);
+        $('#gold-count').html(player.config.coins);
         main();
     });
 };
