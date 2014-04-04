@@ -19,7 +19,8 @@ var PUP = (function() {
         'homing-missile',
         'concussive-shell',
         'fireworks',
-        'chain'
+        'chain',
+        'increased-critical-chance'
     ];
     
     my.create = function (name, x, y) {
@@ -60,6 +61,8 @@ var PUP = (function() {
                 return new Chain(x, y);
             case 'gold-coin':
                 return new GoldCoin(x, y);
+            case 'increased-critical-chance':
+                return new IncreasedCriticalChance(x, y);
             default:
                 break;
         }
@@ -91,6 +94,38 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+
+    function IncreasedCriticalChance(x, y) {
+        /* Increases the critical strike roll of a tank. */
+        this.config = {
+            name    : 'Increased Critical Chance',
+            slug    : 'increased-critical-chance',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('increased-critical-chance')
+        };
+
+        this.use = function (tank) {
+            var active = typeof tank.inccc !== 'undefined';
+
+            if (!active) {
+                tank.inccc = {};
+                tank.inccc.stacks = 1;
+
+                tank.inccc.timeout = new Timer(function() {
+                    tank.config.critChance -= tank.inccc.stacks * 5;
+                    delete tank.inccc;
+                }, 12000);
+            }
+            else {
+                tank.inccc.config.critChance += 5;
+                tank.inccc.stacks += 1;
+                tank.inccc.timeout.extend(3000);
+            }
         };
     }
     

@@ -627,7 +627,6 @@ var showGameOver = function (state) {
                 GLOBALS.statistics.tankAppend += 1;
             }
             else {
-                console.log(GLOBALS.map.current.name);
                 tick_sound.get();
                 var best = STAT.get('total_tanks_destroyed');
                 var newBest = '';

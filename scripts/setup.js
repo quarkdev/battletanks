@@ -61,6 +61,7 @@ UTIL.asset.queue('image', ['concussive-shell', 'images/powerups/concussive-shell
 UTIL.asset.queue('image', ['fireworks', 'images/powerups/fireworks.png', PowerUpImages]);
 UTIL.asset.queue('image', ['chain', 'images/powerups/chain.png', PowerUpImages]);
 UTIL.asset.queue('image', ['gold-coin', 'images/powerups/gold-coin.png', PowerUpImages]);
+UTIL.asset.queue('image', ['increased-critical-chance', 'images/powerups/increased-critical-chance.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -160,6 +161,7 @@ MAP.addPlaceable('powerup', 'concussive-shell');
 MAP.addPlaceable('powerup', 'fireworks');
 MAP.addPlaceable('powerup', 'chain');
 MAP.addPlaceable('powerup', 'gold-coin');
+MAP.addPlaceable('powerup', 'increased-critical-chance');
 
 GLOBALS.map.index = 0;
 
