@@ -1,3 +1,25 @@
+/*
+*   TANK Main Module
+*/
+var TANK = (function () {
+    var blueprints = {}; // tank blueprints will be relocated here in the future (currently in the GLOBALS module)
+
+    return {
+    
+    };
+}());
+
+/*
+*   TANK Upgrade Module
+*/
+TANK.upgrade = (function () {
+    var upgrades_tree = {}; // the upgrades tree. Contains all the possible upgrades for the tank (Loaded from JSON)
+    
+    return {
+        
+    };
+}());
+
 /*-------- Tanks --------*/
 function Tank(specs, id, control, x, y) {
     this.fire_callbacks = [];

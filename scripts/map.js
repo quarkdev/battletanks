@@ -372,6 +372,28 @@ var MAP = (function () {
         
         return 0;
     };
+
+    my.importFromBlueprint = function () {
+        // Load all maps from blueprint
+
+        var map_blueprints = BLUEPRINT.getByType('maps');
+
+        for (var i = 0; i < map_blueprints.length; i++) {
+            // check map list if it contains a similar map
+            var dupe = false;
+
+            for (var x = 0; x < maps.length; x++) {
+                if (maps[x].name === map_blueprints[i].name) {
+                    dupe = true; // duplicate found, skip it
+                    break;
+                }
+            }
+
+            if (!dupe) {
+                maps.push(map_blueprints[i]);
+            }
+        }
+    };
     
     my.getIndex = function (name) {
         /* Retrieve the index from maps. Returns the map index if found, otherwise -1. */
