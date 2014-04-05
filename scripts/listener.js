@@ -70,7 +70,7 @@ function attachMenuEventListeners() {
             main();
 
             // resume timers
-            UTIL.resumeTimers();
+            UTIL.timer.resumeAll();
             UTIL.playMusic(backgroundMusic);
         }
         if (ui_location == 'editor') editor();

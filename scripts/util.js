@@ -256,35 +256,6 @@ var UTIL = (function () {
         }, 50);
     };
     
-    my.pauseTimers = function () {
-        for (var i = 0; i < timers.length; i++) {
-            timers[i].pause();
-        }
-    };
-    
-    my.resumeTimers = function () {
-        /* Resume all timers. */
-        for (var i = 0; i < timers.length; i++) {
-            timers[i].resume();
-        }
-    };
-    
-    my.killTimers = function () {
-        /* Kill all running timers in the timers array. */
-        for (var i = 0; i < timers.length; i++) {
-            timers[i].clear();
-        }
-        
-        timers.length = 0;
-    };
-    
-    my.cleanTimers = function () {
-        /* Remove all inactive timers in timers array. */
-        timers = timers.filter(function (item) {
-            return !item.isExpired();
-        });
-    };
-    
     my.toggleMiniMap = function () {
         /* Toggles minimap visibility. */
         var minimap = document.getElementById('minimap');
@@ -1005,6 +976,52 @@ UTIL.asset = (function() {
     return my;
 }());
 
+/* UTIL.timing submodule */
+UTIL.timer = (function() {
+    // all methods apply to both timers and intervals (extended versions)
+    return {
+        pauseAll : function () {
+            /* Pause all timers. */
+            for (var i = 0; i < timers.length; i++) {
+                timers[i].pause();
+            }
+            for (i = 0; i < intervals.length; i++) {
+                intervals[i].pause();
+            }
+        },
+        resumeAll : function () {
+            /* Resume all timers. */
+            for (var i = 0; i < timers.length; i++) {
+                timers[i].resume();
+            }
+            for (i = 0; i < intervals.length; i++) {
+                intervals[i].resume();
+            }
+        },
+        killAll : function () {
+            /* Kill all running timers in the timers array. */
+            for (var i = 0; i < timers.length; i++) {
+                timers[i].clear();
+            }
+            for (i = 0; i < intervals.length; i++) {
+                intervals[i].clear();
+            }
+            
+            timers.length = 0;
+            intervals.length = 0;
+        },
+        cleanAll : function () {
+            /* Remove all inactive timers in timers array. */
+            timers = timers.filter(function (item) {
+                return !item.isExpired();
+            });
+            intervals = intervals.filter(function (item) {
+                return !item.isExpired();
+            });
+        }
+    };
+}());
+
 /*
 * Public Object: ImageLibrary
 *
@@ -1146,6 +1163,7 @@ function Stat() {
 };
 
 function Timer(callback, expire) {
+    /* Extended wrapper for the setTimeout function. */
     this.cb = function () {
         callback();
         dead = true;
@@ -1155,27 +1173,27 @@ function Timer(callback, expire) {
     this.remaining = expire;
     this.expire_init = expire;
 
-    this.pause = function() {
+    this.pause = function () {
         window.clearTimeout(this.timerId);
         this.remaining -= new Date() - this.start;
     };
 
-    this.resume = function() {
-        this.start = new Date();
+    this.resume = function () {
+        this.start   = new Date();
         this.timerId = window.setTimeout(this.cb, this.remaining);
     };
     
     this.reset = function () {
         window.clearTimeout(this.timerId);
-        this.start = new Date();
+        this.start   = new Date();
         this.timerId = window.setTimeout(this.cb, this.expire_init);
     };
     
     this.extend = function (extension) {
         window.clearTimeout(this.timerId);
         this.remaining = this.getRemaining() + extension;
-        this.start = new Date();
-        this.timerId = window.setTimeout(this.cb, this.remaining);
+        this.start     = new Date();
+        this.timerId   = window.setTimeout(this.cb, this.remaining);
     };
     
     this.clear = function () {
@@ -1193,6 +1211,64 @@ function Timer(callback, expire) {
     
     var thisTimer = this;
     timers.push(thisTimer);
+
+    this.resume();
+}
+
+function Interval(callback, delay, ticks) {
+    /* Extended wrapper for the setInterval function. */
+
+    this._ticks = ticks || false; // stores the initial value of ticks
+    this.ticks  = ticks || false;
+
+    this.delay         = delay;
+    this.intervalId    = null;
+
+    var dead = false;
+    var thisInterval = this;
+
+    this.cb   = function () {
+        callback();
+
+        thisInterval.ticks -= 1;
+
+        if (thisInterval.ticks === 0) {
+            window.clearInterval(that.intervalId);
+            dead = true;
+        }
+    };
+
+    this.pause = function () {
+        window.clearInterval(this.intervalId);
+    };
+
+    this.resume = function () {
+        this.intervalId = window.setInterval(this.cb, this.ticks);
+    };
+
+    this.reset = function () {
+        window.clearInterval(this.intervalId);
+        this.intervalId = window.setInterval(this.cb, this._ticks);
+    };
+
+    this.extend = function (extension) {
+        window.clearInterval(this.intervalId);
+        this.intervalId = window.setInterval(this.cb, this.ticks + extension);
+    };
+
+    this.clear = function () {
+        window.clearInterval(this.intervalId);
+    };
+
+    this.isExpired = function () {
+        return dead;
+    };
+
+    this.getRemaining = function () {
+        return this.ticks;
+    };
+
+    intervals.push(thisInterval);
 
     this.resume();
 }

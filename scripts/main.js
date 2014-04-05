@@ -16,10 +16,10 @@ var pause = function () {
     if (ui_location === 'game') {
         cancelAnimationFrame(mainAnimation);
         // remove all dead timers
-        UTIL.cleanTimers();
+        UTIL.timer.cleanAll();
         
         // pause all timers
-        UTIL.pauseTimers();
+        UTIL.timer.pauseAll();
     }
     else if (ui_location === 'editor') {
         cancelAnimationFrame(editorAnimation);
@@ -568,7 +568,7 @@ var showGameOver = function (state) {
     // stop the main interval
     cancelAnimationFrame(mainAnimation);
     
-    UTIL.killTimers();
+    UTIL.timer.killAll();
     UTIL.stopMusic(backgroundMusic);
     LOAD.worker.terminateAll();
     
