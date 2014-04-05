@@ -52,7 +52,7 @@ Array.prototype.clear = function () {
 };
 
 var LOG_ENABLED = false;
-var MAX_BOTS = 20;
+var MAX_BOTS = 50;
 
 var terrain = null;
 var triggers = [];
