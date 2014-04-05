@@ -112,6 +112,8 @@ wave_cleared_sound = new SoundPool('sounds/wave_cleared.wav', 0.5, 3);
 wave_start_sound   = new SoundPool('sounds/wave_start.wav', 0.5, 3);
 gameover_sound     = new SoundPool('sounds/gameover.wav', 0.5, 3);
 gold_pick_sound    = new SoundPool('sounds/gold-pick.wav', 0.4, 20);
+button_hover_sound    = new SoundPool('sounds/button_hover.mp3', 0.5, 8);
+button_click_sound    = new SoundPool('sounds/button_click.mp3', 0.5, 8);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -126,6 +128,8 @@ UTIL.asset.queue('soundpool', ['wave_cleared', wave_cleared_sound]);
 UTIL.asset.queue('soundpool', ['wave_start', wave_start_sound]);
 UTIL.asset.queue('soundpool', ['gameover', gameover_sound]);
 UTIL.asset.queue('soundpool', ['gold_pick', gold_pick_sound]);
+UTIL.asset.queue('soundpool', ['button_hover', button_hover_sound]);
+UTIL.asset.queue('soundpool', ['button_click', button_click_sound]);
 
 // Init stat fields
 var STAT = new Stat();
@@ -197,6 +201,9 @@ $(document).ready(function () {
 
         // Then import all maps from blueprint
         MAP.importFromBlueprint();
+        
+        // Attach menu sfx
+        $('.menu-btn').mouseenter(function () {button_hover_sound.get(); }).click(function() { button_click_sound.get(); });
         
         // then finally go to main menu
         progressTextDone.innerHTML = '';
