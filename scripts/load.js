@@ -142,16 +142,16 @@ LOAD.worker = (function () {
         
         var pf = {};
         
-        // Check if there are any free workers
-        var free = LOAD.worker.getFree();
-        if (free) {
+        // Check if there are any available workers
+        var available = LOAD.worker.getAvailable();
+        if (available) {
             // we have a worker!
-            free.free = false; // claimed!
-            pf = free;
+            available.clients.active += 1; // claimed!
+            pf = available;
         }
         else {
-            // Nope, no free worker for you. Spawn a new one!
-            pf = _spawnWorker('scripts/pathfinder.js', id, false);
+            // Nope, no available worker for you. Spawn a new one!
+            pf = _spawnWorker('scripts/pathfinder.js', id, 1, 5); // max of 5 active clients for each pathfinder
             
             pf.worker.addEventListener('message', function (event) {
                 // Receive data from pathfinder
@@ -233,28 +233,47 @@ LOAD.worker = (function () {
         workerPool[workerId].worker.terminate();
         delete workerPool.workerId;
     };
-    
-    my.free = function (workerId) {
-        /* Free a specific worker so that it can be recycled. */
-        workerPool[workerId].free = true;
-    };
-    
-    my.getFree = function () {
-        /* Retrieves a free worker. */
+
+    my.getAvailable = function () {
+        /* Retrieves returns the worker with the least active clients. */
+        var availableWorker = false;
+        var freeSlots = 0;
+
         for (var key in workerPool) {
-            if (workerPool[key].free) {
-                return workerPool[key];
+            freeSlots = workerPool[key].clients.max - workerPool[key].clients.active;
+
+            if (freeSlots > 0) {
+                if (!availableWorker) {
+                    // There are no saved workers yet, this is the first one.
+                    availableWorker = workerPool[key];
+                }
+                else {
+                    if (freeSlots > (availableWorker.clients.max - availableWorker.clients.active)) {
+                        availableWorker = workerPool[key]; // Replace current worker chosen with one with more free slots.
+                    }
+                }
             }
         }
-        return false;
+
+        return availableWorker;
     };
     
-    var _spawnWorker = function (src, id, free) {
+    var _spawnWorker = function (src, id, active, max) {
         /* Spawn a new worker. Make sure id is unique. */
         
+        active = active || 0;
+        max    = max    || 1;
+
         var worker = new Worker(src);
         
-        workerPool[id] = {id: id, worker: worker, free: free};
+        workerPool[id] = {
+            id: id,
+            worker: worker,
+            clients: {
+                active: active, // current number of active clients
+                max: max // max number of active clients
+            }
+        };
         return workerPool[id];
     };
     

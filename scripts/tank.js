@@ -5,6 +5,7 @@ var TANK = (function () {
     var blueprints = {}; // tank blueprints will be relocated here in the future (currently in the GLOBALS module)
 
     return {
+        // core methods/properties
     
     };
 }());

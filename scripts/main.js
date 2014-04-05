@@ -249,9 +249,8 @@ var update = function(modifier) {
                 return true;
             }
             else {
-                // tank is dead, time to free its associated pathfinder also
-                //LOAD.worker.terminate(item[0].config.id);
-                LOAD.worker.free(item[5].id);
+                // tank is dead, make 1 slot available in its associated pathfinder
+                item[5].clients.active -= 1;
                 return false;
             }
         });
