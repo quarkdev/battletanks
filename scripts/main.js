@@ -438,7 +438,7 @@ var main = function () {
             // inform player that wave is spawning after spawn wait time
             var wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
             var cd_timesRun = 0;
-            waveCountDown = setInterval(function () {
+            waveCountDown = new Interval(function () {
                 cd_timesRun += 1;
                 
                 $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
@@ -457,7 +457,7 @@ var main = function () {
                     });
                 }
                 else if (cd_timesRun === wave_delay) {
-                    clearInterval(waveCountDown);
+                    waveCountDown.clear();
                     $('#text-overlay-top').html('Wave: ' + (GLOBALS.map.wave.current));
                 }
             }, 1000);
@@ -465,7 +465,7 @@ var main = function () {
             // spawn for every blueprint
             GLOBALS.map.wave.spawning = true;
             
-            var spawn_timer = new Timer(function () {
+            spawn_timer = new Timer(function () {
                 for (var k = 0; k < waves[GLOBALS.map.wave.current][1].length; k++) {
                     
                     bp_and_count = waves[GLOBALS.map.wave.current][1][k].split('|');

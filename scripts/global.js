@@ -98,3 +98,4 @@ var hNum = document.getElementById('hNum');
 var hp = document.getElementById('current-health');
 
 var waveCountDown = null;
+var spawn_timer = null;

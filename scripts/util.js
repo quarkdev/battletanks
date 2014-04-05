@@ -1198,6 +1198,7 @@ function Timer(callback, expire) {
     
     this.clear = function () {
         window.clearTimeout(this.timerId);
+        dead = true;
     };
     
     this.isExpired = function () {
@@ -1230,11 +1231,12 @@ function Interval(callback, delay, ticks) {
     this.cb   = function () {
         callback();
 
-        thisInterval.ticks -= 1;
-
-        if (thisInterval.ticks === 0) {
-            window.clearInterval(that.intervalId);
-            dead = true;
+        if (thisInterval.ticks !== false) {
+            thisInterval.ticks -= 1;
+            if (thisInterval.ticks === 0) {
+                window.clearInterval(that.intervalId);
+                dead = true;
+            }
         }
     };
 
@@ -1243,21 +1245,24 @@ function Interval(callback, delay, ticks) {
     };
 
     this.resume = function () {
-        this.intervalId = window.setInterval(this.cb, this.ticks);
+        this.intervalId = window.setInterval(this.cb, this.delay);
     };
 
     this.reset = function () {
         window.clearInterval(this.intervalId);
-        this.intervalId = window.setInterval(this.cb, this._ticks);
+        this.ticks = this._ticks;
+        this.intervalId = window.setInterval(this.cb, this.delay);
     };
 
     this.extend = function (extension) {
         window.clearInterval(this.intervalId);
-        this.intervalId = window.setInterval(this.cb, this.ticks + extension);
+        this.ticks += extension;
+        this.intervalId = window.setInterval(this.cb, this.delay);
     };
 
     this.clear = function () {
         window.clearInterval(this.intervalId);
+        dead = true;
     };
 
     this.isExpired = function () {
