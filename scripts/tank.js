@@ -14,10 +14,13 @@ var TANK = (function () {
 *   TANK Upgrade Module
 */
 TANK.upgrade = (function () {
-    var upgrades_tree = {}; // the upgrades tree. Contains all the possible upgrades for the tank (Loaded from JSON)
-    
+    var upgrades = []; // all the possible upgrades to the tank
+
     return {
-        
+        init : function () {
+            /* Initialize the upgrades var. */
+            upgrades = BLUEPRINT.getByType('upgrades');
+        }
     };
 }());
 

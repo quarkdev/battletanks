@@ -122,7 +122,7 @@ var PUP = (function() {
                 }, 12000);
             }
             else {
-                tank.inccc.config.critChance += 5;
+                tank.config.critChance += 5;
                 tank.inccc.stacks += 1;
                 tank.inccc.timeout.extend(3000);
             }

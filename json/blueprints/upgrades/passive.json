@@ -1,0 +1,112 @@
+{
+	"blueprints": [
+		{
+			"name"        : "Health",
+			"stat"        : "health",
+			"description" : "Increases max health by 10",
+			"image"		  : "images/upgrades/health.png",
+			"increment"   : 10,
+			"cost"        : 2,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Armor",
+			"stat"        : "armor",
+			"description" : "Increases armor by 5",
+			"image"		  : "images/upgrades/armor.png",
+			"increment"   : 5,
+			"cost"        : 1,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Forward Speed",
+			"stat"        : "fSpeed",
+			"description" : "Increases forward speed by 5",
+			"image"		  : "images/upgrades/forward-speed.png",
+			"increment"   : 5,
+			"cost"        : 2,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Reverse Speed",
+			"stat"        : "rSpeed",
+			"description" : "Increases reverse speed by 5",
+			"image"		  : "images/upgrades/reverse-speed.png",
+			"increment"   : 5,
+			"cost"        : 2,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Turret Traverse Speed",
+			"stat"        : "tSpeed",
+			"description" : "Increases turret traverse speed by 5",
+			"image"		  : "images/upgrades/turret-traverse-speed.png",
+			"increment"   : 5,
+			"cost"        : 5,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Chassis Turn Speed",
+			"stat"        : "sSpeed",
+			"description" : "Increases chassis turn speed by 5",
+			"image"		  : "images/upgrades/chassis-turn-speed.png",
+			"increment"   : 5,
+			"cost"        : 5,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Acceleration",
+			"stat"        : "accel",
+			"description" : "Increases acceleration by 5",
+			"image"		  : "images/upgrades/acceleration.png",
+			"increment"   : 5,
+			"cost"        : 10,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Shell Velocity",
+			"stat"        : "pSpeed",
+			"description" : "Increases shell velocity by 20",
+			"image"		  : "images/upgrades/shell-velocity.png",
+			"increment"   : 20,
+			"cost"        : 3,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Shell Damage",
+			"stat"        : "pDamage",
+			"description" : "Increases shell damage by 5",
+			"image"		  : "images/upgrades/shell-damage.png",
+			"increment"   : 5,
+			"cost"        : 2,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Ammunition",
+			"stat"        : "ammo",
+			"description" : "Adds 10 ammo",
+			"image"		  : "images/upgrades/ammunition.png",
+			"increment"   : 10,
+			"cost"        : 1,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Firing Rate",
+			"stat"        : "fRate",
+			"description" : "Increases firing rate by 0.1 shells/second",
+			"image"		  : "images/upgrades/firing-rate.png",
+			"increment"   : 0.1,
+			"cost"        : 5,
+			"level"    	  : 0
+		},
+		{
+			"name"        : "Critical Hit Chance",
+			"stat"        : "critChance",
+			"description" : "Increases critical hit chance by 0.2",
+			"image"		  : "images/upgrades/critical-hit-chance.png",
+			"increment"   : 0.2,
+			"cost"        : 1,
+			"level"    	  : 0
+		}
+	]
+}
