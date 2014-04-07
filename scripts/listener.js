@@ -29,6 +29,7 @@ function attachMenuEventListeners() {
         $('#kill-count').html('0');
         $('#gold-count').html('0');
         $('#ammo-count').html('0');
+        TANK.upgrade.reset();
         $('.hud').show();
         
         // get player name
