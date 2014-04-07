@@ -937,11 +937,11 @@ var PUP = (function() {
                 tank.regen.stacks = 1;
                 tank.regen.rate = tank.config.maxHealth * 0.0005 * tank.regen.stacks; // 5% per second
                 
-                tank.regen.interval = setInterval(function () {
+                tank.regen.interval = new Interval(function () {
                     tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen.rate ? tank.config.maxHealth : tank.config.health + tank.regen.rate;
                     renderExtern();
                     if (tank.config.health === tank.config.maxHealth) {
-                        clearInterval(tank.regen.interval);
+                        tank.regen.interval.clear();
                         delete tank.regen;
                         tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
                     }
@@ -949,7 +949,7 @@ var PUP = (function() {
             
                 var dispellRegen = function () {
                     // dispell regen
-                    clearInterval(tank.regen.interval);
+                    tank.regen.interval.clear();
                     delete tank.regen;
                     tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
                 };

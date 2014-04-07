@@ -47,23 +47,11 @@ function Destructible(specs, x, y) {
         switch (d.mod) {
             case 'rubber': // bounce the projectile (actually fire a new pojectile)
                 // 1. first determine what side was hit        
-                /*
-                var dX = d.oX - p.oX;
-                var dY = d.oY - p.oY;
-                
-                var tanA = Math.atan2(dY, dX) * 180/Math.PI;
-                tanA = tanA + 180;
-                var cBaseAngle = 360;
-                
-                if ((tanA > 45 && tanA < 135) || (tanA > 225 && tanA < 315)) {
-                    // top or bottom is hit
-                    cBaseAngle = 360;
+
+                if (p.srcType === 'projectile-barrier') {
+                    return; // hits from projectile barrier doesn't bounce
                 }
-                else if ((tanA > 135 && tanA < 225) || (tanA > 315 && tanA <= 360 || tanA < 45 && tanA >= 0)) {
-                    // left or right is hit (special case zero)
-                    cBaseAngle = 540;
-                }*/
-                
+
                 var cBaseAngle = 360;
                 
                 if (p.sideHit === 0 || p.sideHit == 2) {
