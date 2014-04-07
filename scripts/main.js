@@ -421,14 +421,21 @@ var main = function () {
             var bp_and_count = [];
 
             if (GLOBALS.map.wave.current !== 0) {
-                // inform player that wave have been cleared
+                // inform player that wave have been cleared, bonus gold is wave*current_gold*10%
+                GLOBALS.botCount = 0; // reset botcount
+
+                var bonusGold = Math.ceil(tanks[0].config.coins * GLOBALS.map.wave.current * 0.1);
+
                 wave_cleared_sound.get();
                 $('#text-overlay-center').css('font-size', '42px');
-                $('#text-overlay-center').html('<span>Wave Cleared!</span>');
+                $('#text-overlay-center').html('<span>Wave Cleared!</span><br><span style="color: #ffd700;">BONUS GOLD: ' + bonusGold + '</span>');
                 $('#text-overlay-center').animate({
                     opacity: 1,
                     fontSize: '26px'
                 }, 300, function () {
+                    tanks[0].config.coins += bonusGold;
+                    $('#gold-count').html(tanks[0].config.coins);
+                    gold_pick_sound.get();
                     $(this).delay(2000).animate({
                         opacity: 0
                     }, 300);

@@ -262,6 +262,14 @@ function gameKeyDownEvent(e) {
     else if (e.keyCode == 77) {
         UTIL.toggleMiniMap();
     }
+    else if (e.keyCode === 85 && e.altKey) {
+        // letter u, show upgrades screen if in-game
+        if (ui_location === 'game' && $('#upgrades-screen').css('display') === 'none' && GLOBALS.botCount === 0) {
+            // show upgrades screen only in-game and when there are no active bots
+            pause();
+            $('#upgrades-screen').show();
+        }
+    }
     else {
         keysDown[e.keyCode] = true;
     }

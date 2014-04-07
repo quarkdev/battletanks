@@ -20,6 +20,7 @@ var PUP = (function() {
         'concussive-shell',
         'fireworks',
         'chain',
+        'gold-coin',
         'increased-critical-chance'
     ];
     

@@ -39,6 +39,7 @@
             include 'screens/prompt_map_name.html';
             include 'screens/prompt_map_name_export.html';
             include 'screens/prompt_map_import.html';
+            include 'screens/upgrades.html';
         ?>
     </div>
     

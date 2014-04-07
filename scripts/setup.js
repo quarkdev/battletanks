@@ -205,6 +205,9 @@ $(document).ready(function () {
         
         // Attach menu sfx
         $('.menu-btn').mouseenter(function () {button_hover_sound.get(); }).click(function() { button_click_sound.get(); });
+
+        // Initialize upgrades
+        TANK.upgrade.init();
         
         // then finally go to main menu
         progressTextDone.innerHTML = '';

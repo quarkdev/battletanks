@@ -19,7 +19,49 @@ TANK.upgrade = (function () {
     return {
         init : function () {
             /* Initialize the upgrades var. */
-            upgrades = BLUEPRINT.getByType('upgrades');
+            upgrades = BLUEPRINT.getByType('upgrades')[0].data;
+
+            // Write the data to the upgrades div
+            $('#upgrades_container').html(''); // empty the container first
+            var box = '';
+
+            for (var key in upgrades) {
+                box += '<div id="' + key + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; padding-top: 32px; text-align: center; background: url(' + upgrades[key].image + ') top center no-repeat; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(this.id));" onmouseover="$(this).children(\'.upgrade-hover-box\').show()" onmouseout="$(this).children(\'.upgrade-hover-box\').hide()">\
+                            <span class="upgrade-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + upgrades[key].cost + '</span>\
+                            <div class="upgrade-hover-box" style="position: absolute; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
+                                <b>' + upgrades[key].name + '</b>\
+                                <p>' + upgrades[key].description + '</p>\
+                                Level: <strong>' + upgrades[key].level + '</strong>\
+                            </div>\
+                        </div>';
+            }
+            $('#upgrades_container').html(box);
+        },
+        buy : function (key) {
+            /* Acquire the upgrade in exchange for a fixed cost. */
+
+            // Check if player can afford
+            if (tanks[0].config.coins >= upgrades[key].cost) {
+                // The player can afford, decrease player gold
+                tanks[0].config.coins -= upgrades[key].cost;
+
+                // Apply upgrade
+                tanks[0].config[upgrades[key].stat] += upgrades[key].increment;
+
+                // Mark upgrade level
+                upgrades[key].level += 1;
+
+                // Update coin count in hud
+                $('#gold-count').html(tanks[0].config.coins);
+
+                // Update ammo count
+                $('#ammo-count').html(tanks[0].config.ammo);
+
+                // Play sound
+                gold_pick_sound.get();
+            }
+
+            return upgrades[key].level;
         }
     };
 }());
@@ -64,7 +106,7 @@ function Tank(specs, id, control, x, y) {
         name         : specs.name,                                                         // tank name
         type         : specs.type,                                                         // tanks type (light/medium/heavy/destroyer/howitzer)
         health       : specs.health,                                                       // tank health
-        coins        : 1,                                                                  // tank currency (can be used to purchase upgrades)
+        coins        : 0,                                                                  // tank currency (can be used to purchase upgrades)
         maxHealth    : specs.health,
         width        : specs.width,
         height       : specs.height,
@@ -602,6 +644,8 @@ function Tank(specs, id, control, x, y) {
             STAT.inc('total_tanks_destroyed', 1);
             STAT.inc('td_' + t.name, 1);
             hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
+            tanks[0].config.coins += 1;
+            $('#gold-count').html(tanks[0].config.coins);
         }
         
         /* has a chance to spawn a random powerup on death */

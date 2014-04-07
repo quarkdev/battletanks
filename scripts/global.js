@@ -16,6 +16,11 @@ var GLOBALS = (function () {
         settings : {
             screenShake : 0 // 0 = false, 1 = on critical hit only, 2 = on normal hit only, 3 = on both
         },
+        ui : {
+            active : {
+                upgrades : false // true if upgrades screen is shown
+            }
+        },
         tankSelection : {
             blueprints : [],
             selectedIndex: 0
