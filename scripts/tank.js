@@ -107,9 +107,12 @@ function Tank(specs, id, control, x, y) {
         id           : id,                                                                 // random-gen id
         name         : specs.name,                                                         // tank name
         type         : specs.type,                                                         // tanks type (light/medium/heavy/destroyer/howitzer)
-        health       : specs.health,                                                       // tank health
         coins        : 0,                                                                  // tank currency (can be used to purchase upgrades)
+        health       : specs.health,                                                       // tank health
         maxHealth    : specs.health,
+        shield       : specs.shield || 10,
+        maxShield    : specs.shield || 10,
+        shieldRegen  : specs.shieldRegen || 1,                                             // per second
         width        : specs.width,
         height       : specs.height,
         cx           : -specs.width/2,
@@ -121,7 +124,7 @@ function Tank(specs, id, control, x, y) {
         fireScale    : specs.fireScale,
         explodeScale : specs.explodeScale,
         armor        : specs.armor,                                                        // tank armor
-        invulnerable : typeof specs.invulnerable === 'undefined' ? 0 : specs.invulnerable, // invulnerability count. can be any integer from 0 >
+        invulnerable : specs.invulnerable || 0,                                            // invulnerability count. can be any integer from 0 >
         tSize        : specs.tSize,                                                        // tank turret Size (in px, must be square)
         cRadius      : Math.max(specs.width, specs.height) / 2,                            // tank max collision size (the greater value between the chassis width and height)
         sSpeed       : specs.sSpeed,                                                       // tank turn Speed (in degrees / sec)
@@ -129,11 +132,11 @@ function Tank(specs, id, control, x, y) {
         fSpeed       : specs.fSpeed,                                                       // tank forward Speed
         rSpeed       : specs.rSpeed,                                                       // tank reverse Speed
         accel        : specs.accel,                                                        // acceleration rate (time it takes for the tank to reach max speed)
-        decel        : specs.width * 3,                                                  // deceleration rate
+        decel        : specs.width * 3,                                                    // deceleration rate
         pSpeed       : specs.pSpeed,                                                       // Projectile speed
         pDamage      : specs.pDamage,                                                      // projectile damage
         critChance   : specs.critChance,
-        dropRate     : typeof specs.dropRate === 'undefined' ? 10 : specs.dropRate,        // chance of dropping a powerup on death (default: 10%)
+        dropRate     : specs.dropRate || 10,                                               // chance of dropping a powerup on death (default: 10%)
         ammo         : specs.ammo,                                                         // amount of ammo
         fRate        : specs.fRate,                                                        // Firing rate (rounds per second)
         oX           : x,                                                                  // tank x coordinate
@@ -533,7 +536,12 @@ function Tank(specs, id, control, x, y) {
         
         var decPercent = (t.health / t.maxHealth);
         var lifebarLen = decPercent * t.width;
+        var shieldbarLen = (t.shield / t.maxShield) * t.width;
         
+        ctx.fillStyle = 'blue';
+        // draw shield bar
+        ctx.fillRect((t.oX - shieldbarLen/2) - xView, (t.oY + t.cRadius + 12) - yView, shieldbarLen, 4);
+
         if (decPercent >= 0.75) {
             ctx.fillStyle = '66CD00';
         }
@@ -546,7 +554,7 @@ function Tank(specs, id, control, x, y) {
         else {
             ctx.fillStyle = 'FF0000';
         }
-        
+        // draw health bar
         ctx.fillRect((t.oX - lifebarLen/2) - xView, (t.oY + t.cRadius + 8) - yView, lifebarLen, 4);
     };
     
@@ -590,9 +598,16 @@ function Tank(specs, id, control, x, y) {
             }
         }
         
+        var oldShield = t.shield;
         var oldHealth = t.health;
-        // decrease health
-        t.health = t.health < end_damage ? 0 : t.health - end_damage;
+        // decrease health by end_damage - shield
+        t.shield = t.shield - end_damage;
+        t.shield = t.shield < 0 ? 0 : t.shield;
+
+        if (t.shield === 0) {
+            // decrease health only if shields are down
+            t.health = t.health < end_damage ? 0 : t.health - end_damage;
+        }
         
         // Update combat log.
         var crit_str = critical_hit ? '<span style="color: red">[CRITICAL HIT!]</span>' : '';
@@ -628,7 +643,7 @@ function Tank(specs, id, control, x, y) {
         }
         
         // render extern, only do so if there are changes
-        if (t.control === 'player' && oldHealth !== t.health) {
+        if (t.control === 'player' && (oldHealth !== t.health || oldShield !== t.shield)) {
             renderExtern();
         }
     }; 
@@ -664,11 +679,15 @@ function Tank(specs, id, control, x, y) {
         }
     };
     
-    this.frame = function () {
+    this.frame = function (modifier) {
         /* per frame callback */
         
+        // regenerate shield
+        t.shield += t.shieldRegen * modifier;
+        t.shield = t.shield > t.maxShield ? t.maxShield : t.shield; // prevent shield from going beyond the max
+
         for (var i = 0; i < this.frame_callbacks.length; i++) {
-            this.frame_callbacks[i]();
+            this.frame_callbacks[i](modifier);
         }
     };
 }

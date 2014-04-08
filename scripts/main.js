@@ -76,7 +76,7 @@ var update = function(modifier) {
         $('#ammo-count').html(player.config.ammo);
     }
     
-    player.frame(); // run all frame callbacks
+    player.frame(modifier); // run all frame callbacks
     
     /* turn turret (based on current facing angle) */
     player.turnTurret(modifier, mousePos.mX + camera.xView, mousePos.mY + camera.yView);
@@ -198,7 +198,7 @@ var update = function(modifier) {
                 bots[i][5].worker.postMessage(JSON.stringify(msg));
             }
             
-            bots[i][0].frame(); // run all frame callbacks
+            bots[i][0].frame(modifier); // run all frame callbacks
         }
     }
     
