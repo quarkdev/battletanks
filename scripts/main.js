@@ -323,7 +323,7 @@ var editorUpdate = function() {
         
         clearTimeout(cspo_timeout);
         
-        cspo_timeout = setTimeout(function() { cs_placement_ok = true; }, 100);
+        cspo_timeout = setTimeout(function() { cs_placement_ok = true; }, 40);
     }
     
     if (110 in keysDown || mouseDownRight ) {

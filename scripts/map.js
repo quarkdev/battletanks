@@ -116,18 +116,32 @@ var MAP = (function () {
         }
         
         var asset_type = placeables[cpi][0];
+        var last = 0,
+            i = 0;
         
         switch (asset_type) {
             case 'destructible':
-                destructibles.push(new Destructible(BLUEPRINT.get(placeables[cpi][1]), cursor.x, cursor.y));
+                last = destructibles.length - 1;
+                if (last === -1) {
+                    destructibles.push(new Destructible(BLUEPRINT.get(placeables[cpi][1]), cursor.x, cursor.y));
+                }
+                else {
+                    for (i = 0; i < destructibles.length; i++) {
+                        if (UTIL.geometry.pointLiesInsidePointSquare([cursor.x, cursor.y], [destructibles[i].config.oX, destructibles[i].config.oY], 32)) {
+                            return;
+                        }
+                    }
+                    destructibles.push(new Destructible(BLUEPRINT.get(placeables[cpi][1]), cursor.x, cursor.y));
+                }
+                
                 break;
             case 'starting-point':
-                var last = startingpoints.length-1;
+                last = startingpoints.length-1;
                 if (last === -1) {
                     startingpoints.push(new StartingPoint(cursor.x, cursor.y));
                 }
                 else {
-                    for (var i = 0; i < startingpoints.length; i++) {
+                    for (i = 0; i < startingpoints.length; i++) {
                         if (UTIL.geometry.pointLiesInsidePointSquare([cursor.x, cursor.y], [startingpoints[i].config.oX, startingpoints[i].config.oY], 32)) {
                             return;
                         }
@@ -515,7 +529,7 @@ var MAP = (function () {
         });
         visualeffects.push(vfx);
         
-        var timer = new Timer(function () {
+        new Timer(function () {
             // end the spawn vortex animation
             vfx.end();
         
