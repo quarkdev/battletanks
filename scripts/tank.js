@@ -504,7 +504,7 @@ function Tank(specs, id, control, x, y) {
             name        : 'muzzle-flash',
             oX          : _oX,
             oY          : _oY,
-            radius      : 40,
+            radius      : t.fireScale * 2,
             intensity   : 0.3
         });
 
@@ -690,7 +690,7 @@ function Tank(specs, id, control, x, y) {
             name        : 'hit-flash',
             oX          : t.oX,
             oY          : t.oY,
-            radius      : t.width,
+            radius      : t.explodeScale,
             intensity   : 0.5
         });
 
