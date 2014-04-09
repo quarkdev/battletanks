@@ -13,6 +13,7 @@
 <div id="canvas-ui-wrap" onselectstart="return false;">
     <div id="canvas-wrap" onselectstart="return false;">
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
+        <!--<div id="light-box-radial" class="hud"></div>-->
         <canvas id="minimap-bg" width="228" height="228" oncontextmenu="return false;"></canvas>
         <canvas id="minimap" width="228" height="228" oncontextmenu="return false;"></canvas>
         <div id="kill-count" class="hud">0</div>
@@ -68,6 +69,7 @@
 <script type="text/javascript" src="scripts/projectile.js"></script>
 <script type="text/javascript" src="scripts/destructible.js"></script>
 <script type="text/javascript" src="scripts/vfx.js"></script>
+<script type="text/javascript" src="scripts/lights.js"></script>
 <script type="text/javascript" src="scripts/powerup.js"></script>
 <script type="text/javascript" src="scripts/blueprint.js"></script>
 <script type="text/javascript" src="scripts/map.js"></script>

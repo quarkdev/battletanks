@@ -49,6 +49,11 @@ var CANVAS = (function () {
             visualeffects[i].draw(context, xView, yView);
         }
     };
+    my.drawLights = function (context, xView, yView) {
+        for (var i = 0; i < lights.length; i++) {
+            lights[i].draw(context, xView, yView);
+        }
+    };
     my.drawProjectiles = function (context, xView, yView) {
         /* draw all the projectiles */
         for (var i = 0; i < projectiles.length; i++) {

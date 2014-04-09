@@ -149,7 +149,7 @@ function Tank(specs, id, control, x, y) {
     this.y = this.config.oY;
     
     var t = this.config;
-    
+
     t.turretAnim = new VisualEffect({name: 'fire_recoil', oX: t.oX, oY: t.oY, width: t.tWidth, height: t.tHeight, scaleW: t.tSize, scaleH: t.tSize,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, resettable: true, paused: true, spriteSheet: t.name + '_recoil'});
     visualeffects.push(t.turretAnim);
     
@@ -500,6 +500,20 @@ function Tank(specs, id, control, x, y) {
         
         visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: t.fireScale, scaleH: t.fireScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
         
+        var flash = new Light({
+            name        : 'muzzle-flash',
+            oX          : _oX,
+            oY          : _oY,
+            radius      : 40,
+            intensity   : 0.3
+        });
+
+        lights.push(flash);
+
+        new Timer(function () {
+            flash.config.active = false;
+        }, 40);
+
         t.turretAnim.unPause();
         // play sound effect
         fireSound.get();
@@ -581,6 +595,21 @@ function Tank(specs, id, control, x, y) {
         hit_explosion_scale = critical_hit ? hit_explosion_scale * 2 : hit_explosion_scale;
         visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
 
+        // show hit flash
+        var flash = new Light({
+            name        : 'hit-flash',
+            oX          : p.oX,
+            oY          : p.oY,
+            radius      : hit_explosion_scale,
+            intensity   : 0.3
+        });
+
+        lights.push(flash);
+
+        new Timer(function () {
+            flash.config.active = false;
+        }, 40);
+
         // record hit if source is the player and target is NOT the player
         if (p.srcId === player.config.id && t.id !== player.config.id) {
             // the one hit is an enemy
@@ -610,7 +639,7 @@ function Tank(specs, id, control, x, y) {
         }
         
         // Update combat log.
-        var crit_str = critical_hit ? '<span style="color: red">[CRITICAL HIT!]</span>' : '';
+        //var crit_str = critical_hit ? '<span style="color: red">[CRITICAL HIT!]</span>' : '';
         //UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> hit <strong>' + t.id + '</strong><span style="color: #FE4902">(' + t.name + ')</span> for <span style="color: red">' + end_damage + '</span> damage ' + crit_str + '</span>');
 
         if (t.health === 0) {

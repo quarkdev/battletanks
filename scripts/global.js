@@ -67,6 +67,7 @@ var projectiles = [];
 var destructibles = [];
 var startingpoints = [];
 var visualeffects = [];
+var lights = [];
 var timers = [];
 var intervals = [];
 var maps = [];

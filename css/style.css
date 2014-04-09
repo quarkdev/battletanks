@@ -588,3 +588,12 @@ button {
     width: 432px;
     height: 243px;
 }
+
+#light-box-radial {
+    position: absolute;
+    width: 1026px;
+    height: 609px;
+    top: 0;
+    left: 0;
+    background: url(../images/ui/light-rectangle.png) center center no-repeat;
+}

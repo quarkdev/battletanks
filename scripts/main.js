@@ -224,6 +224,13 @@ var update = function(modifier) {
         GLOBALS.flags.clean.projectiles = 0;
     }
     
+    // Remove all inactive lights.
+    if (GLOBALS.flags.clean.visualeffects > GLOBALS.flags.clean.threshold) {
+        lights = lights.filter(function (item) {
+            return item.config.active;
+        });
+    }
+
     // Remove all inactive visualeffects. This keeps the visualeffects array from accumulating inactive objects.
     if (GLOBALS.flags.clean.visualeffects > GLOBALS.flags.clean.threshold) {
         visualeffects = visualeffects.filter(function (item) {
@@ -345,6 +352,8 @@ var renderCanvas = function () {
     CANVAS.drawTanks(ctx, camera.xView, camera.yView);
     CANVAS.drawVisualEffects(ctx, camera.xView, camera.yView);
     CANVAS.drawProjectiles(ctx, camera.xView, camera.yView);
+    //LIGHTING.darken(ctx, 0, 0, 1024, 608, '#000', 0.9);
+    CANVAS.drawLights(ctx, camera.xView, camera.yView);
 
 };
 
