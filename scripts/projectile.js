@@ -105,8 +105,8 @@ function Projectile(specs) {
         */
         
         ctx.beginPath();
-        ctx.arc(p.oX - xView, p.oY - yView, 2.5, 0, 2 * Math.PI, false);
-        ctx.fillStyle = 'red';
+        ctx.arc(p.oX - xView, p.oY - yView, 1.5, 0, fullArc, false);
+        ctx.fillStyle = '#fff';
         ctx.fill();
         
     };

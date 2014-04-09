@@ -104,3 +104,5 @@ CANVAS.setup(minimap, minimapCtx);
 CANVAS.setup(minimapBG, minimapBGCtx);
 minimapCtx.lineWidth = '2px';
 minimapCtx.strokeStyle = '#fff';
+
+var fullArc = 2 * Math.PI;
