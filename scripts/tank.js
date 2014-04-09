@@ -110,9 +110,9 @@ function Tank(specs, id, control, x, y) {
         coins        : 0,                                                                  // tank currency (can be used to purchase upgrades)
         health       : specs.health,                                                       // tank health
         maxHealth    : specs.health,
-        shield       : specs.shield || 10,
-        maxShield    : specs.shield || 10,
-        shieldRegen  : specs.shieldRegen || 1,                                             // per second
+        shield       : specs.shield || 1000,
+        maxShield    : specs.shield || 1000,
+        shieldRegen  : specs.shieldRegen || 200,                                            // per second
         width        : specs.width,
         height       : specs.height,
         cx           : -specs.width/2,
@@ -570,7 +570,11 @@ function Tank(specs, id, control, x, y) {
         var raw_damage = p.damage; // raw damage
         var dmg_base_roll = Math.floor((Math.random() * max) + min);
         var mod_damage = critical_hit ? dmg_base_roll*2.0 : dmg_base_roll; // damage after mods/crit
-        var end_damage = t.invulnerable > 0 ? 0 : mod_damage/t.armor;
+        var oldShield = t.shield;
+        var end_damage = mod_damage - oldShield;
+        end_damage = t.invulnerable > 0 ? 0 : end_damage/t.armor;
+        t.shield = t.invulnerable > 0 ? oldShield : t.shield - mod_damage;
+        t.shield = t.shield < 0 ? 0 : t.shield;
         
         // play visual effect
         var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
@@ -598,11 +602,7 @@ function Tank(specs, id, control, x, y) {
             }
         }
         
-        var oldShield = t.shield;
         var oldHealth = t.health;
-        // decrease health by end_damage - shield
-        t.shield = t.shield - end_damage;
-        t.shield = t.shield < 0 ? 0 : t.shield;
 
         if (t.shield === 0) {
             // decrease health only if shields are down
