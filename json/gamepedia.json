@@ -101,6 +101,18 @@
             "description": "Projectiles jump to nearby target on hit.",
             "image": "images/powerups/chain.png",
             "video": "videos/gamepedia/powerup_demo/chain.mp4"
+        },
+        {
+            "name": "Gold Coin",
+            "description": "Gives one coin.",
+            "image": "images/powerups/gold-coin.png",
+            "video": "videos/gamepedia/powerup_demo/gold-coin.mp4"
+        },
+        {
+            "name": "Increased Critical Chance",
+            "description": "Increases the chance to score a critical hit.",
+            "image": "images/powerups/increased-critical-chance.png",
+            "video": "videos/gamepedia/powerup_demo/increased-critical-chance.mp4"
         }
     ]
 }

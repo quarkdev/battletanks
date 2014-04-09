@@ -6,10 +6,10 @@
 				"maxHealth" : {
 					"name"        : "Max Health",
 					"stat"        : "maxHealth",
-					"description" : "Increases max health by 10",
+					"description" : "Increases max health by 20",
 					"image"		  : "images/upgrades/health.png",
-					"increment"   : 10,
-					"cost"        : 2,
+					"increment"   : 20,
+					"cost"        : 1,
 					"level"    	  : 0
 				},
 				"armor" : {
@@ -108,6 +108,24 @@
 					"description" : "Increases critical hit chance by 0.2",
 					"image"		  : "images/upgrades/critical-hit-chance.png",
 					"increment"   : 0.2,
+					"cost"        : 1,
+					"level"    	  : 0
+				},
+				"shield" : {
+					"name"        : "Increased Maximum Shield",
+					"stat"        : "shield",
+					"description" : "Increases maximum shield by 5",
+					"image"		  : "images/upgrades/shield.png",
+					"increment"   : 5,
+					"cost"        : 1,
+					"level"    	  : 0
+				},
+				"shieldRegen" : {
+					"name"        : "Increased Shield Regeneration",
+					"stat"        : "shieldRegen",
+					"description" : "Increases shield regen by 1",
+					"image"		  : "images/upgrades/shield-regen.png",
+					"increment"   : 1,
 					"cost"        : 1,
 					"level"    	  : 0
 				}

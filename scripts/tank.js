@@ -28,7 +28,7 @@ TANK.upgrade = (function () {
 
             for (var key in upgrades) {
                 upgrades[key].level = 0;
-                box += '<div id="' + key + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; padding-top: 32px; text-align: center; background: url(' + upgrades[key].image + ') top center no-repeat; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(this.id));" onmouseover="$(this).children(\'.upgrade-hover-box\').show()" onmouseout="$(this).children(\'.upgrade-hover-box\').hide()">\
+                box += '<div id="' + upgrades[key].stat + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; padding-top: 32px; text-align: center; background: url(' + upgrades[key].image + ') top center no-repeat; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\'));" onmouseover="$(this).children(\'.upgrade-hover-box\').show()" onmouseout="$(this).children(\'.upgrade-hover-box\').hide()">\
                             <span class="upgrade-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + upgrades[key].cost + '</span>\
                             <div class="upgrade-hover-box" style="position: absolute; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
                                 <b>' + upgrades[key].name + '</b>\
