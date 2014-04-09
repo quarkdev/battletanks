@@ -684,7 +684,22 @@ function Tank(specs, id, control, x, y) {
         t.turretAnim.end();
 
         visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: t.explodeScale, scaleH: t.explodeScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
-        
+      
+        // show explosion flash
+        var flash = new Light({
+            name        : 'hit-flash',
+            oX          : t.oX,
+            oY          : t.oY,
+            radius      : t.width,
+            intensity   : 0.5
+        });
+
+        lights.push(flash);
+
+        new Timer(function () {
+            flash.config.active = false;
+        }, 200);
+
         if (t.control === 'computer') {
             GLOBALS.map.wave.enemyCount -= 1;
             STAT.inc('total_tanks_destroyed', 1);

@@ -11,6 +11,9 @@ var LOAD = (function () {
         projectiles.length = 0;
         destructibles.length = 0;
         startingpoints.length = 0;
+        visualeffects.length = 0;
+        lights.length = 0;
+        
         GLOBALS.botCount = 0; // reset botcount
         GLOBALS.flags.initSpawn = false;
         var _x, _y;

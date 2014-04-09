@@ -260,6 +260,21 @@ var PUP = (function() {
                         
                         visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: scale, scaleH: scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
                         
+                        // show explosion flash
+                        var flash = new Light({
+                            name        : 'explosion-flash',
+                            oX          : p.oX,
+                            oY          : p.oY,
+                            radius      : scale,
+                            intensity   : 0.3
+                        });
+
+                        lights.push(flash);
+
+                        new Timer(function () {
+                            flash.config.active = false;
+                        }, 40);
+
                         if (explode_distance > 500) {
                             fireSound.get();
                         }
