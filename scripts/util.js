@@ -770,9 +770,17 @@ UTIL.gui = (function () {
         
         if (dir === 'next') {
             ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
+            if (ts.blueprints[ts.selectedIndex].locked === 1) {
+                // move again
+                ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
+            }
         }
         else if (dir === 'prev') {
             ts.selectedIndex = ts.selectedIndex !== 0 ? ts.selectedIndex - 1 : ts.blueprints.length-1;
+            if (ts.blueprints[ts.selectedIndex].locked === 1) {
+                // move again
+                ts.selectedIndex = ts.selectedIndex !== 0 ? ts.selectedIndex - 1 : ts.blueprints.length-1;
+            }
         }
         
         var firepower = ts.blueprints[ts.selectedIndex].pDamage,
@@ -844,12 +852,21 @@ UTIL.gui = (function () {
         if (GLOBALS.flags.gamepediaLoaded) { return; }
 
         UTIL.get('json/gamepedia.json', function (response) {
-            var pc = document.getElementById('pedia-content');
+            var pc = $('#pedia-content');
+            var pt = $('#pedia-tabs');
             var gp = JSON.parse(response);
-            var pups = gp.powerups;
+            var ins = '';
+            var tab = null;
 
-            for (var i = 0; i < pups.length; i++) {
-                pc.innerHTML += '<div class="pc-item" data-name="' + pups[i].name + '" data-description="' + pups[i].description + '" data-image-url="' + pups[i].image + '" data-video-url="' + pups[i].video + '">' + pups[i].name + '</div>';
+            for (var key in gp) {
+                pt.append('<div class="pc-tabs" style="display: inline-block; width: 52px; height: 52px; background: url(images/ui/' + key + '-tab.png) center center no-repeat; cursor: pointer; margin-left: 10px;" onclick="$(\'.pc-cat\').hide(); $(\'#pc-tc-' + key + '\').fadeIn(200); $(\'.pc-tabs\').css(\'background-color\', \'transparent\'); $(this).css(\'background-color\',\'#0058b3\'); $(\'#cd-item-video\').get(0).pause();"></div>');
+                ins = '<div id="pc-tc-' + key + '" class="pc-cat">';
+                for (var i = 0; i < gp[key].length; i++) {
+                    tab = gp[key];
+                    ins += '<div class="pc-item" data-name="' + tab[i].name + '" data-description="' + tab[i].description + '" data-image-url="' + tab[i].image + '" data-video-url="' + tab[i].video + '">' + tab[i].name + '</div>';
+                }
+                ins += '</div>';
+                pc.append(ins);
             }
             
             $('.pc-item').click(function () {
@@ -859,9 +876,15 @@ UTIL.gui = (function () {
                 $('#cd-item-image').attr('src', $(this).data('image-url'));
                 $('#cd-item-name').html($(this).data('name'));
                 $('#cd-item-description').html($(this).data('description'));
-                $('#cd-item-video').attr('src', $(this).data('video-url'));
-                $('#cd-item-video').attr('controls', 'controls');
-                $('#cd-item-video').get(0).play();
+                if ($(this).data('video-url') !== '') {
+                    $('#cd-item-video').show();
+                    $('#cd-item-video').attr('src', $(this).data('video-url'));
+                    $('#cd-item-video').attr('controls', 'controls');
+                    $('#cd-item-video').get(0).play();
+                }
+                else {
+                    $('#cd-item-video').hide();
+                }
             });
             
             GLOBALS.flags.gamepediaLoaded = true;

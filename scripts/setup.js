@@ -37,6 +37,8 @@ UTIL.asset.queue('image', ['m4_sherman_turret_blue', 'images/tanks/m4_sherman_bl
 UTIL.asset.queue('image', ['m4_sherman_chassis_blue', 'images/tanks/m4_sherman_blue/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['heavy_turret', 'images/tanks/heavy/turret.png', TankImages]);
 UTIL.asset.queue('image', ['heavy_chassis', 'images/tanks/heavy/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['widower_turret', 'images/tanks/widower/turret.png', TankImages]);
+UTIL.asset.queue('image', ['widower_chassis', 'images/tanks/widower/chassis.png', TankImages]);
 
 // Projectile images
 ProjectileImages = new ImageLibrary();
@@ -94,6 +96,7 @@ UTIL.asset.queue('image', ['heavy_recoil', 'images/tanks/heavy/recoil.png', Spri
 UTIL.asset.queue('image', ['jagdpanther_recoil', 'images/tanks/jagdpanther/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['widower_recoil', 'images/tanks/widower/recoil.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
@@ -208,6 +211,9 @@ $(document).ready(function () {
 
         // Initialize upgrades
         TANK.upgrade.init();
+
+        // Load pedia contents
+        UTIL.gui.loadPediaContents();
         
         // then finally go to main menu
         progressTextDone.innerHTML = '';

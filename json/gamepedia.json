@@ -1,28 +1,10 @@
 {
     "powerups" : [
         {
-            "name": "Random",
-            "description": "Transforms into a random powerup on pickup.",
-            "image": "images/powerups/random.png",
-            "video": "videos/gamepedia/powerup_demo/random.mp4"
-        },
-        {
-            "name": "Haste",
-            "description": "Increases movement speed.",
-            "image": "images/powerups/haste.png",
-            "video": "videos/gamepedia/powerup_demo/haste.mp4"
-        },
-        {
             "name": "Ammo",
             "description": "Increases ammunition.",
             "image": "images/powerups/ammo.png",
             "video": "videos/gamepedia/powerup_demo/ammo.mp4"
-        },
-        {
-            "name": "Projectile Barrier",
-            "description": "Accumulates a spinning barrier of deadly projectiles for every hit taken.",
-            "image": "images/powerups/projectile-barrier.png",
-            "video": "videos/gamepedia/powerup_demo/projectile-barrier.mp4"
         },
         {
             "name": "Aphotic Shield",
@@ -31,10 +13,88 @@
             "video": "videos/gamepedia/powerup_demo/aphotic-shield.mp4"
         },
         {
+            "name": "Chain",
+            "description": "Projectiles jump to nearby target on hit.",
+            "image": "images/powerups/chain.png",
+            "video": "videos/gamepedia/powerup_demo/chain.mp4"
+        },
+        {
+            "name": "Concussive Shell",
+            "description": "Each projectile hit applies a stacking slow debuff.",
+            "image": "images/powerups/concussive-shell.png",
+            "video": "videos/gamepedia/powerup_demo/concussive-shell.mp4"
+        },  
+        {
+            "name": "Faster Projectile",
+            "description": "Increases projectile speed.",
+            "image": "images/powerups/faster-projectile.png",
+            "video": "videos/gamepedia/powerup_demo/faster-projectile.mp4"
+        },
+        {
+            "name": "Fireworks",
+            "description": "Projectiles explode into lesser projectiles at a randomized travel distance.",
+            "image": "images/powerups/fireworks.png",
+            "video": "videos/gamepedia/powerup_demo/fireworks.mp4"
+        },
+        {
+            "name": "Gold Coin",
+            "description": "Gives one coin.",
+            "image": "images/powerups/gold-coin.png",
+            "video": "videos/gamepedia/powerup_demo/gold-coin.mp4"
+        },
+        {
+            "name": "Haste",
+            "description": "Increases movement speed.",
+            "image": "images/powerups/haste.png",
+            "video": "videos/gamepedia/powerup_demo/haste.mp4"
+        },
+        {
+            "name": "Homing Missile",
+            "description": "Projectiles track and target the nearest enemy tank.",
+            "image": "images/powerups/homing-missile.png",
+            "video": "videos/gamepedia/powerup_demo/homing-missile.mp4"
+        },
+        {
             "name": "Increased Armor",
             "description": "Increases armor.",
             "image": "images/powerups/increased-armor.png",
             "video": "videos/gamepedia/powerup_demo/increased-armor.mp4"
+        },
+        {
+            "name": "Increased Critical Chance",
+            "description": "Increases the chance to score a critical hit.",
+            "image": "images/powerups/increased-critical-chance.png",
+            "video": "videos/gamepedia/powerup_demo/increased-critical-chance.mp4"
+        },
+        {
+            "name": "Increased Damage",
+            "description": "Increases damage.",
+            "image": "images/powerups/increased-damage.png",
+            "video": "videos/gamepedia/powerup_demo/increased-damage.mp4"
+        },
+        {
+            "name": "Multi Shot",
+            "description": "Adds extra projectiles to the normal attack.",
+            "image": "images/powerups/multi-shot.png",
+            "video": "videos/gamepedia/powerup_demo/multi-shot.mp4"
+        },
+        {
+            "name": "Projectile Barrier",
+            "description": "Accumulates a spinning barrier of deadly projectiles for every hit taken.",
+            "image": "images/powerups/projectile-barrier.png",
+            "video": "videos/gamepedia/powerup_demo/projectile-barrier.mp4"
+        },
+        {
+            "name": "Random",
+            "description": "Transforms into a random powerup on pickup.",
+            "image": "images/powerups/random.png",
+            "video": "videos/gamepedia/powerup_demo/random.mp4"
+        },
+        {
+            "name": "Rapid Fire",
+            "description": "Increases the rate of fire.",
+            "image": "images/powerups/rapid-fire.png",
+            "video": "videos/gamepedia/powerup_demo/rapid-fire.mp4"
         },
         {
             "name": "Reactive Armor",
@@ -49,70 +109,122 @@
             "video": "videos/gamepedia/powerup_demo/regeneration.mp4"
         },
         {
-            "name": "Rapid Fire",
-            "description": "Increases the rate of fire.",
-            "image": "images/powerups/rapid-fire.png",
-            "video": "videos/gamepedia/powerup_demo/rapid-fire.mp4"
-        },
-        {
-            "name": "Faster Projectile",
-            "description": "Increases projectile speed.",
-            "image": "images/powerups/faster-projectile.png",
-            "video": "videos/gamepedia/powerup_demo/faster-projectile.mp4"
-        },
-        {
-            "name": "Increased Damage",
-            "description": "Increases damage.",
-            "image": "images/powerups/increased-damage.png",
-            "video": "videos/gamepedia/powerup_demo/increased-damage.mp4"
-        },
-        {
             "name": "Return",
             "description": "Each hit is returned.",
             "image": "images/powerups/return.png",
             "video": "videos/gamepedia/powerup_demo/return.mp4"
+        }
+    ],
+    "tanks" : [
+        {
+            "name": "Heavy",
+            "description": "A bulky tank that can absorb more hits in exchange for slower movement.",
+            "image": "images/tanks/heavy/icon.png",
+            "video": ""
         },
         {
-            "name": "Multi Shot",
-            "description": "Adds extra projectiles to the normal attack.",
-            "image": "images/powerups/multi-shot.png",
-            "video": "videos/gamepedia/powerup_demo/multi-shot.mp4"
+            "name": "Jagdpanther",
+            "description": "A hard-hitting tank destroyer but a slow moving tank.",
+            "image": "images/tanks/jagdpanther/icon.png",
+            "video": ""
         },
         {
-            "name": "Homing Missile",
-            "description": "Projectiles track and target the nearest enemy tank.",
-            "image": "images/powerups/homing-missile.png",
-            "video": "videos/gamepedia/powerup_demo/homing-missile.mp4"
+            "name": "M4-Sherman",
+            "description": "A light tank that can move swiftly but deal less damage and is fragile.",
+            "image": "images/tanks/m4_sherman/icon.png",
+            "video": ""
         },
         {
-            "name": "Concussive Shell",
-            "description": "Each projectile hit applies a stacking slow debuff.",
-            "image": "images/powerups/concussive-shell.png",
-            "video": "videos/gamepedia/powerup_demo/concussive-shell.mp4"
+            "name": "M4-Sherman Blue",
+            "description": "A light tank similar to the original M4 Sherman but improves on its shield.",
+            "image": "images/tanks/m4_sherman_blue/icon.png",
+            "video": ""
         },
         {
-            "name": "Fireworks",
-            "description": "Projectiles explode into lesser projectiles at a randomized travel distance.",
-            "image": "images/powerups/fireworks.png",
-            "video": "videos/gamepedia/powerup_demo/fireworks.mp4"
+            "name": "Widower",
+            "description": "A fast-moving tank and a hard-hitter. Collision size is huge.",
+            "image": "images/tanks/widower/icon.png",
+            "video": ""
+        }
+    ],
+    "upgrades" : [
+        {
+            "name": "Acceleration",
+            "description": "Increases tank acceleration.",
+            "image": "images/upgrades/acceleration.png",
+            "video": ""
         },
         {
-            "name": "Chain",
-            "description": "Projectiles jump to nearby target on hit.",
-            "image": "images/powerups/chain.png",
-            "video": "videos/gamepedia/powerup_demo/chain.mp4"
+            "name": "Ammunition",
+            "description": "Increases tank ammunition.",
+            "image": "images/upgrades/ammunition.png",
+            "video": ""
         },
         {
-            "name": "Gold Coin",
-            "description": "Gives one coin.",
-            "image": "images/powerups/gold-coin.png",
-            "video": "videos/gamepedia/powerup_demo/gold-coin.mp4"
+            "name": "Armor",
+            "description": "Increases tank armor.",
+            "image": "images/upgrades/armor.png",
+            "video": ""
         },
         {
-            "name": "Increased Critical Chance",
-            "description": "Increases the chance to score a critical hit.",
-            "image": "images/powerups/increased-critical-chance.png",
-            "video": "videos/gamepedia/powerup_demo/increased-critical-chance.mp4"
+            "name": "Chassis Turn Speed",
+            "description": "Increases tank chassis turn speed.",
+            "image": "images/upgrades/chassis-turn-speed.png",
+            "video": ""
+        },
+        {
+            "name": "Critical Hit Chance",
+            "description": "Increases tank critical hit chance.",
+            "image": "images/upgrades/critical-hit-chance.png",
+            "video": ""
+        },
+        {
+            "name": "Firing Rate",
+            "description": "Increases tank firing rate.",
+            "image": "images/upgrades/firing-rate.png",
+            "video": ""
+        },
+        {
+            "name": "Forward Speed",
+            "description": "Increases tank forward speed.",
+            "image": "images/upgrades/forward-speed.png",
+            "video": ""
+        },
+        {
+            "name": "Reverse Speed",
+            "description": "Increases tank reverse speed.",
+            "image": "images/upgrades/reverse-speed.png",
+            "video": ""
+        },
+        {
+            "name": "Shell-Damage",
+            "description": "Increases tank shell damage.",
+            "image": "images/upgrades/shell-damage.png",
+            "video": ""
+        },
+        {
+            "name": "Shell Velocity",
+            "description": "Increases tank shell velocity.",
+            "image": "images/upgrades/shell-velocity.png",
+            "video": ""
+        },
+        {
+            "name": "Shield",
+            "description": "Increases tank maximum shield.",
+            "image": "images/upgrades/shield.png",
+            "video": ""
+        },
+        {
+            "name": "Shield Regeneration",
+            "description": "Increases tank shield regeneration.",
+            "image": "images/upgrades/shield-regen.png",
+            "video": ""
+        },
+        {
+            "name": "Turret Traverse Speed",
+            "description": "Increases tank turret traverse.",
+            "image": "images/upgrades/turret-traverse-speed.png",
+            "video": ""
         }
     ]
 }

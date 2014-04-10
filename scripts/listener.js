@@ -96,7 +96,6 @@ function attachMenuEventListeners() {
     });
     
     $('#gamepedia').click(function () {
-        UTIL.gui.loadPediaContents();
         $('.overlay').hide();
         $('#gamepedia-screen').show();
     });

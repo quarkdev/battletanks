@@ -637,7 +637,7 @@ var showGameOver = function (state) {
             if (GLOBALS.statistics.tankAppend < GLOBALS.statistics.tank_type_kills.length) {
                 GLOBALS.statistics.tankKillTicks = 0;
                 var tank_name = GLOBALS.statistics.tank_type_kills[GLOBALS.statistics.tankAppend].tank;
-                $('#gos-kills').append('<br><br><span id="gosk-' + tank_name + '" style="background: url(images/tanks/' + tank_name + '/icon.png) left center no-repeat; padding-left: ' + (12 + BLUEPRINT.get(tank_name).tWidth) + 'px; padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;"></span>');
+                $('#gos-kills').append('<br><br><span id="gosk-' + tank_name + '" style="background: url(images/tanks/' + tank_name + '/icon.png) left center no-repeat; padding-left: 52px; padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;"></span>');
                 looped_stat_tick(tank_name);
                 GLOBALS.statistics.tankAppend += 1;
             }

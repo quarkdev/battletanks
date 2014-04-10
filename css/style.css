@@ -539,13 +539,21 @@ button {
     color: #0058b3;
 }
 
+#pedia-tabs {
+    width: 7%;
+    height: 64%;
+    margin-left: 22px;
+    padding: 22px 0;
+    text-align: left;
+    float: left;
+}
+
 #pedia-content {
     border: 1px dotted rgba(255, 255, 255, 0.5);
-    width: 35%;
+    width: 28%;
     height: 64%;
     overflow-y: scroll;
     overflow-x: hidden;
-    margin-left: 22px;
     padding: 22px 0;
     text-align: left;
     float: left;
@@ -596,4 +604,8 @@ button {
     top: 0;
     left: 0;
     background: url(../images/ui/light-rectangle.png) center center no-repeat;
+}
+
+.pc-cat {
+    display: none;
 }
