@@ -696,7 +696,12 @@ function Tank(specs, id, control, x, y) {
         t.turretAnim.end();
 
         visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 32, height: 32, scaleW: t.explodeScale, scaleH: t.explodeScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
-      
+
+        // screenshake effect everytime a tank explodes
+        if (GLOBALS.settings.screenShake == 4) {
+            $('#canvas-ui-wrap').stop().effect('shake', { distance: 4, times: 3 }, 50);
+        }
+
         // show explosion flash
         var flash = new Light({
             name        : 'hit-flash',
