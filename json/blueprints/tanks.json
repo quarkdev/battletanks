@@ -63,6 +63,8 @@
             "bImage"       : "m4_sherman_chassis_blue",
             "tImage"       : "m4_sherman_turret_blue",
             "health"       : 25.0,
+            "shield"       : 2000,
+            "shieldRegen"  : 500,
             "armor"        : 20.0,
             "tSize"        : 52.0,
             "sSpeed"       : 150.0,
