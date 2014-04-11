@@ -262,8 +262,8 @@ var update = function(modifier) {
             }
         });
         // then clean the tanks
-        tanks = tanks.filter(function (item) {
-            return item.config.active;
+        tanks = tanks.filter(function (item, index) {
+            return item.config.active || index === 0;
         });
         GLOBALS.flags.clean.tanks = 0;
     }
@@ -670,7 +670,10 @@ var showGameOver = function (state) {
             }
             else {
                 tick_sound.get();
-                var best = STAT.get('total_tanks_destroyed');
+                var totalCoins = tanks[0].config.coins;
+                $('#gos-kills').append('<br><br><span id="gosk-coins" style="background: url(images/ui/dollar.png) left center no-repeat; padding-left: 52px; padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">' + totalCoins + '</span>');
+                
+                var best = STAT.get('total_tanks_destroyed') + totalCoins;
                 var newBest = '';
                 if (typeof GLOBALS.player.bestScores[GLOBALS.map.current.name] !== 'undefined') {
                     if (GLOBALS.player.bestScores[GLOBALS.map.current.name] >= best) {
@@ -685,7 +688,7 @@ var showGameOver = function (state) {
                     GLOBALS.player.bestScores[GLOBALS.map.current.name] = best;
                     newBest = '<span style="padding: 6px; font-size: 24px; color: #fff; background-color: red;">NEW!</span>';
                 }
-                $('#gos-kills').append('<br><br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + STAT.get('total_tanks_destroyed') + '</span><br><span style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">BEST: ' + best + ' ' + newBest + '</span>');
+                $('#gos-kills').append('<br><br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + (STAT.get('total_tanks_destroyed') + totalCoins) + '</span><br><span style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">BEST: ' + best + ' ' + newBest + '</span>');
             }
             
         }, 50);
