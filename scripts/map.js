@@ -27,7 +27,6 @@ var MAP = (function () {
         this.startingPoints = []; // this also dictates the max player
         this.waves = []; // waves in sequence, each item: {desc: desc, units: units, delay: delay}
         this.triggers = []; // triggers (spawn, camera event, victory, etc) Triggers and their linked triggers are destroyed once proc'd and callbacks called
-        this.timedEvents = []; // Timed events are setup at initial load of the map, timers are spawned including their attached callbacks/events
         this.terrain = null; // The background terrain used
     }
 
@@ -314,28 +313,6 @@ var MAP = (function () {
         for (i = 0; i < startingpoints.length; i++) {
             newmap.startingPoints.push(startingpoints[i]);
         }
-        
-        // check and verify all timed events
-        var tes = document.getElementsByClassName('timed-event');
-        var eventPool = [];
-        var eventData = []; // [blueprint, freq, timeout, constraint-a, eventPool[i][4], contraint-b, constraint-a2, comp2, constraint-b2]
-        
-        for (i = 0; i < tes.length; i++) {
-            var te = tes[i];
-            eventData = [];
-            for (var j = 0; j < te.childNodes.length; j++) {
-                var cn = te.childNodes[j];
-                if (cn.className == 'te-blueprint' || cn.className == 'te-freq' || cn.className == 'te-constraint-a' || cn.className == 'te-comp' || cn.className == 'te-constraint-a2' || cn.className == 'te-comp2') {
-                    eventData.push(te.childNodes[j].value);
-                }
-                else if (cn.className == 'te-timeout' || cn.className == 'te-constraint-b' || cn.className == 'te-constraint-b2') {
-                    eventData.push(parseInt(te.childNodes[j].value));
-                }
-            }
-            eventPool.push(eventData);
-        }
-        
-        newmap.timedEvents = eventPool;
         
         // check and verify all waves
         var waves = [];

@@ -42,73 +42,11 @@ var LOAD = (function () {
             
             GLOBALS.packedDestructibles = UTIL.packDestructibles();
             
-            var eventPool = GLOBALS.map.current.timedEvents;
-
-            // setup timed events
-            var compare = {
-                'less_than': function(a, b) { return a < b },
-                'equals': function(a, b) { return a == b },
-                'greater_than': function(a, b) { return a > b }
-            };
-            
-            var cons_a = {
-                'active_tanks': function () { return tanks.length },
-                'player_health': function () { return player.config.health }
-            };
-            
-            var cons_a2 = {
-                'total_spawned': function () { return GLOBALS.botCount }
-            };
-            
             // Setup waves, initialize
             GLOBALS.map.wave.current = 0;
             GLOBALS.map.wave.enemyCount = 0;
             GLOBALS.map.wave.spawning = false;
             GLOBALS.map.postgame = false;
-            
-            // load timed events
-            for (i = 0; i < eventPool.length; i++) {
-                (function (i) {
-                    var timer = null;
-                    switch (eventPool[i][1]) {
-                        case 'after':
-                            // occurs only once
-                            timer = new Timer(function () {
-                                if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
-                                    if (eventPool[i][0] === 'powerup') {
-                                        MAP.spawnPowerUp();
-                                    }
-                                    else {
-                                        MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
-                                    }
-                                }
-                            }, eventPool[i][2] * 1000);
-                            break;
-                        case 'every':
-                            // occurs at set intervals
-                            timer = new Timer(function () {
-                                var looped_spawn = function () {
-                                    if (compare[eventPool[i][4]](cons_a[eventPool[i][3]](), eventPool[i][5]) && compare[eventPool[i][7]](cons_a2[eventPool[i][6]](), eventPool[i][8])) {
-                                        if (eventPool[i][0] === 'powerup') {
-                                            MAP.spawnPowerUp();
-                                        }
-                                        else {
-                                            MAP.spawnEnemyAtAllPoints(eventPool[i][0]);
-                                        }
-                                    }
-                                    timer = new Timer(function () {
-                                        looped_spawn();
-                                    }, eventPool[i][2] * 1000);
-                                }
-                                
-                                looped_spawn();
-                            }, eventPool[i][2] * 1000);
-                            break;
-                        default:
-                            break;
-                    }
-                }(i));
-            }
         }
         
         return max_players - 1;
