@@ -140,7 +140,7 @@
             "pDamage"      : 2000,
             "critChance"   : 25,
             "ammo"         : 300,
-            "fRate"        : 0.7,
+            "fRate"        : 0.8,
             "hAngle"       : 90,
             "tAngle"       : 90
         }

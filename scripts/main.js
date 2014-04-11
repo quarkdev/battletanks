@@ -506,7 +506,7 @@ var main = function () {
                                 {
                                     cb: function (tank, data) {
                                         for (var v = 0; v < data.length; v++) {
-                                            tank.config[data[v][0]] += data[v][1];
+                                            tank.config[data[v][0]] += parseFloat(data[v][1]);
                                         }
                                     },
                                     args: buffs
