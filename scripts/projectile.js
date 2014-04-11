@@ -157,7 +157,7 @@ function Projectile(specs) {
             else if (d.mod !== 'rubber' || p.speed === 0) {
                 // if the current destructible we're checking is not rubbery, then we can skip the expensive intersection cd algorithm
                 // this time check if point is inside using the actual destructible size
-                if (UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size)) {
+                if (UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size/2)) {
                     return { hit: true, poi: { x: x, y: y }, sideH: 0, destructible: destructibles[i] };
                 }
             }

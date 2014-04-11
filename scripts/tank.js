@@ -146,9 +146,9 @@ function Tank(specs, id, control, x, y) {
         coins        : 0,                                                                  // tank currency (can be used to purchase upgrades)
         health       : specs.health,                                                       // tank health
         maxHealth    : specs.health,
-        shield       : specs.shield || 1000,
-        maxShield    : specs.shield || 1000,
-        shieldRegen  : specs.shieldRegen || 200,                                            // per second
+        shield       : specs.shield || 0,
+        maxShield    : specs.shield || 0,
+        shieldRegen  : specs.shieldRegen || 0,                                            // per second
         width        : specs.width,
         height       : specs.height,
         cx           : -specs.width/2,

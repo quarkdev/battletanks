@@ -450,6 +450,9 @@ var main = function () {
                     }, 300);
                 });
             }
+
+            // heal player just before wave starts
+            tanks[0].config.health = tanks[0].config.maxHealth;
             
             // inform player that wave is spawning after spawn wait time
             var wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
