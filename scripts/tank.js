@@ -746,7 +746,7 @@ function Tank(specs, id, control, x, y) {
             STAT.inc('total_tanks_destroyed', 1);
             STAT.inc('td_' + t.name, 1);
             hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
-            tanks[0].config.coins += 1;
+            tanks[0].config.coins += t.coins;
             $('#gold-count').html(tanks[0].config.coins);
         }
         
@@ -756,11 +756,6 @@ function Tank(specs, id, control, x, y) {
         if (lucky) {
             // ok just got lucky, get a random powerup
             powerups.push(PUP.createRandom(t.oX, t.oY));
-        }
-        
-        // Drop all hoarded coins
-        for (var i = 0; i < t.coins; i++) {
-            powerups.push(PUP.create('gold-coin', t.oX, t.oY));
         }
     };
     
