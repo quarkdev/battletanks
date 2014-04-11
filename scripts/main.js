@@ -487,7 +487,28 @@ var main = function () {
                     bp_and_count = waves[GLOBALS.map.wave.current][1][k].split('|');
                     for (var n = 0; n < bp_and_count[1]; n++) {
                         GLOBALS.map.wave.enemyCount += 1;
-                        MAP.spawnEnemyAtAnyPoint(bp_and_count[0]);
+
+                        var buffs = [];
+                        if (typeof bp_and_count[2] !== 'undefined') {
+                            buffs = bp_and_count[2].split(',');
+                            for (var i = 0; i < buffs.length; i++) {
+                                buffs[i] = buffs[i].split(':');
+                            }
+                        }
+
+                        MAP.spawnEnemyAtAnyPoint(
+                            bp_and_count[0],
+                            [ 
+                                {
+                                    cb: function (tank, data) {
+                                        for (var v = 0; v < data.length; v++) {
+                                            tank.config[data[v][0]] += data[v][1];
+                                        }
+                                    },
+                                    args: buffs
+                                }
+                            ]
+                        );
                     }
                 }
                 // update current wave

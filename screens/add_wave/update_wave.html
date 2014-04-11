@@ -20,7 +20,7 @@
         <hr>
         <span>Wait Time: </span><input id="update-wave-delay" type="number" value="12" min="0" max="60" />
         <hr>
-        <button onclick="GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks'); $('#spawn-select-blueprint').html(UTIL.gui.makeSelectOpts(GLOBALS.tankSelection.blueprints, 'name')); $('#dialog-add-spawn').show();">Add Spawn</button>
+        <button onclick="populateSpawnOpts(); $('#dialog-add-spawn').show();">Add Spawn</button>
         <button onclick="updateWave()">Done</button>
         <button onclick="$('#dialog-update-wave').hide()">Cancel</button>
     </div>

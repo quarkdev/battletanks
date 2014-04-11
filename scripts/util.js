@@ -816,7 +816,19 @@ UTIL.gui = (function () {
         var opts = '<option value="default" selected>--Select One--</option>';
         
         for (var i = 0; i < arrayOfObjects.length; i++) {
-            opts += '<option value="' + arrayOfObjects[i].name + '">' + UTIL.toTitleCase(arrayOfObjects[i][prop]) + '</option>';
+            opts += '<option value="' + arrayOfObjects[i][prop] + '">' + UTIL.toTitleCase(arrayOfObjects[i][prop]) + '</option>';
+        }
+        
+        return opts;
+    };
+
+    my.makeSelectOptsFromAoS = function (arrayOfStrings) {
+        /* Convert an array of strings to options for a select element. */
+
+        var opts = '<option value="default" selected>--Select One--</option>';
+        
+        for (var i = 0; i < arrayOfStrings.length; i++) {
+            opts += '<option value="' + arrayOfStrings[i] + '">' + arrayOfStrings[i] + '</option>';
         }
         
         return opts;

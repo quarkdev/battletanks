@@ -538,7 +538,7 @@ var MAP = (function () {
             
             if (typeof mods !== 'undefined') {
                 for (var i = 0; i < mods.length; i++) {
-                    mods[i](enemy); // apply mods to tank
+                    mods[i].cb(enemy, mods[i].args); // apply mods to tank
                 }
             }
             

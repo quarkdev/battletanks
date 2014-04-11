@@ -1,8 +1,9 @@
 <script type="text/javascript">
     function addSpawn() {
+        var buffString = stringifyBuffs();
         var bp = $('#spawn-select-blueprint option:selected').val();
         var count = $('#spawn-count').val();
-        var spawn_span = '<span data-blueprint="' + bp + '|' + count + '" onclick="$(this).remove();">' + UTIL.toTitleCase(bp.split('_').join(' ')) + ' (' + count + ')</span>';
+        var spawn_span = '<span data-blueprint="' + bp + '|' + count + '|' + buffString + '" title="Buffs { ' + buffString + ' }" onclick="$(this).remove();">' + UTIL.toTitleCase(bp.split('_').join(' ')) + ' (' + count + ')</span>';
         
         if (bp !== 'default') {
             $('#wave-spawns-container').append(spawn_span);
@@ -10,13 +11,38 @@
         }
         $('#dialog-add-spawn').hide();
     }
+
+    function addBuff() {
+        var nb = '<span><select class="spawn-select-buff">' + UTIL.gui.makeSelectOptsFromAoS(TANK.getBuffables()) + '</select><input type="number" value="0" style="width: 42px;" /><button onclick="$(this).parent().remove()">-</button></span>';
+        $('#ss-buffs').append(nb);
+    }
+
+    function stringifyBuffs() {
+        // save buffs as a data property using the format data-buffs="stat:val,stat:val..."
+        // stringify all buffs
+        var bf = '';
+
+        $('#ss-buffs').children('span').each(function () {
+            if (bf !== '') { bf += ',' }
+            bf += $(this).children('select').val();
+            bf += ':';
+            bf += $(this).children('input').val();
+        });
+
+        return bf;
+    }
 </script>
 
 <div id="dialog-add-spawn" class="overlay">
     <div id="add-spawn-box">
         <h2>Add Spawn</h2>
-        <select id="spawn-select-blueprint">
-        </select>
+        <label>Blueprint:</label>
+        <select id="spawn-select-blueprint"></select><br>
+        <label>------- Buffs -------</label>
+        <div id="ss-buffs">
+            <span><select class="spawn-select-buff"></select><input type="number" value="0" style="width: 42px;" /><button onclick="$(this).parent().remove()">-</button></span>
+        </div>
+        <button onclick="addBuff()">Add Buff</button>
         <hr>
         <span>Count: </span><input id="spawn-count" type="number" value="1" min="0" max="60" />
         <button onclick="addSpawn()">Done</button>

@@ -12,6 +12,15 @@
         
         $('#dialog-add-wave').hide();
     }
+
+    function populateSpawnOpts() {
+        GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks');
+        $('#spawn-select-blueprint').html(UTIL.gui.makeSelectOpts(GLOBALS.tankSelection.blueprints, 'name'));
+    }
+
+    function populateSpawnBuffs() {
+        $('.spawn-select-buff').html(UTIL.gui.makeSelectOptsFromAoS(TANK.getBuffables()));
+    }
 </script>
 
 <div id="dialog-add-wave" class="overlay">
@@ -25,7 +34,7 @@
         <hr>
         <span>Wait Time: </span><input id="wave-delay" type="number" value="12" min="0" max="60" />
         <hr>
-        <button onclick="GLOBALS.tankSelection.blueprints = BLUEPRINT.getByType('tanks'); $('#spawn-select-blueprint').html(UTIL.gui.makeSelectOpts(GLOBALS.tankSelection.blueprints, 'name')); $('#dialog-add-spawn').show();">Add Spawn</button>
+        <button onclick="populateSpawnOpts(); populateSpawnBuffs(); $('#dialog-add-spawn').show();">Add Spawn</button>
         <button onclick="addWave()">Done</button>
         <button onclick="$('#dialog-add-wave').hide()">Cancel</button>
     </div>

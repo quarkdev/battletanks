@@ -4,9 +4,33 @@
 var TANK = (function () {
     var blueprints = {}; // tank blueprints will be relocated here in the future (currently in the GLOBALS module)
 
+    // tank stats that can be buffed via the wave spawns dialog
+    var buffables = [
+        'maxHealth',
+        'health',
+        'shield',
+        'maxShield',
+        'shieldRegen',
+        'armor',
+        'fRate',
+        'pDamage',
+        'pSpeed',
+        'fSpeed',
+        'rSpeed',
+        'sSpeed',
+        'tSpeed',
+        'accel',
+        'critChance',
+        'dropRate',
+        'ammo',
+        'coins'
+    ];
+
     return {
         // core methods/properties
-    
+        getBuffables : function () {
+            return buffables;
+        }
     };
 }());
 
