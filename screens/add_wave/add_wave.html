@@ -6,9 +6,11 @@
     }
     
     function addWave() {
-        var waveStr = '<li class="w-row"><span class="w-desc">' + $('#wave-description').val() + '</span><span class="w-spawns">' + $('#wave-spawns-container').html() + '</span><span class="w-wait-time">' + $('#wave-delay').val() + '</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span</li>';
-    
-        $('#wave-list').append(waveStr);
+        if ($('#wave-spawns-container').html() != '') {
+            var waveStr = '<li class="w-row"><span class="w-desc">' + $('#wave-description').val() + '</span><span class="w-spawns">' + $('#wave-spawns-container').html() + '</span><span class="w-wait-time">' + $('#wave-delay').val() + '</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span</li>';
+        
+            $('#wave-list').append(waveStr);
+        }
         
         $('#dialog-add-wave').hide();
     }
@@ -29,8 +31,7 @@
         <textarea id="wave-description" placeholder="Description"></textarea>
         <hr>
         <span>Spawns</span><br>
-        <div id="wave-spawns-container">
-        </div>
+        <div id="wave-spawns-container"></div>
         <hr>
         <span>Wait Time: </span><input id="wave-delay" type="number" value="12" min="0" max="60" />
         <hr>

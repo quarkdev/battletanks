@@ -3,7 +3,8 @@
         var buffString = stringifyBuffs();
         var bp = $('#spawn-select-blueprint option:selected').val();
         var count = $('#spawn-count').val();
-        var spawn_span = '<span data-blueprint="' + bp + '|' + count + '|' + buffString + '" title="Buffs { ' + buffString + ' }" onclick="$(this).remove();">' + UTIL.toTitleCase(bp.split('_').join(' ')) + ' (' + count + ')</span>';
+        var bf = buffString === '' ? '' : '|' + buffString;
+        var spawn_span = '<span data-blueprint="' + bp + '|' + count + bf + '" title="Buffs { ' + buffString + ' }" onclick="$(this).remove();">' + UTIL.toTitleCase(bp.split('_').join(' ')) + ' (' + count + ')</span>';
         
         if (bp !== 'default') {
             $('#wave-spawns-container').append(spawn_span);
@@ -23,10 +24,12 @@
         var bf = '';
 
         $('#ss-buffs').children('span').each(function () {
-            if (bf !== '') { bf += ',' }
-            bf += $(this).children('select').val();
-            bf += ':';
-            bf += $(this).children('input').val();
+            if ($(this).children('select').val() !== 'default') {
+                if (bf !== '') { bf += ',' }
+                bf += $(this).children('select').val();
+                bf += ':';
+                bf += $(this).children('input').val();
+            }
         });
 
         return bf;
