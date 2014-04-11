@@ -637,7 +637,9 @@ var showGameOver = function (state) {
     
     for (var key in post_stats) {
         if (key.substr(0, 3) == 'td_') {
-            GLOBALS.statistics.tank_type_kills.push({tank: key.substr(3), killed: post_stats[key]});
+            if (post_stats[key] > 0) {
+                GLOBALS.statistics.tank_type_kills.push({tank: key.substr(3), killed: post_stats[key]});
+            }
         }
     }
     
