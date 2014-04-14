@@ -21,6 +21,18 @@
 					"cost"        : 4,
 					"level"    	  : 0
 				},
+				"admArmor" : {
+					"name"        : "Adamantium Armor",
+					"id"          : "iarmor",
+					"stats"       : [
+						{"stat": "armor", "value": 300},
+						{"stat": "maxShield", "value": 100}
+					],
+					"description" : "Increases armor by 300 and maximum shield by 100",
+					"image"		  : "images/upgrades/adamantium-armor.png",
+					"cost"        : 30,
+					"level"    	  : 0
+				},
 				"fSpeed" : {
 					"name"        : "Forward Speed",
 					"id"          : "ifs",
