@@ -113,19 +113,19 @@
 				},
 				"shield" : {
 					"name"        : "Increased Maximum Shield",
-					"stat"        : "shield",
-					"description" : "Increases maximum shield by 1000",
+					"stat"        : "maxShield",
+					"description" : "Increases maximum shield by 500",
 					"image"		  : "images/upgrades/shield.png",
-					"increment"   : 1000,
+					"increment"   : 500,
 					"cost"        : 10,
 					"level"    	  : 0
 				},
 				"shieldRegen" : {
 					"name"        : "Increased Shield Regeneration",
 					"stat"        : "shieldRegen",
-					"description" : "Increases shield regen by 800/sec",
+					"description" : "Increases shield regen by 250/sec",
 					"image"		  : "images/upgrades/shield-regen.png",
-					"increment"   : 800,
+					"increment"   : 250,
 					"cost"        : 10,
 					"level"    	  : 0
 				}
