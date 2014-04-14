@@ -63,7 +63,7 @@ TANK.upgrade = (function () {
 
             for (var key in upgrades) {
                 upgrades[key].level = 0;
-                box += '<div id="' + upgrades[key].stat + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\'));" onmouseover="$(this).children(\'.upgrade-hover-box\').show()" onmouseout="$(this).children(\'.upgrade-hover-box\').hide()">\
+                box += '<div id="u-passive-' + upgrades[key].id + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\'));" onmouseover="$(this).children(\'.upgrade-hover-box\').show()" onmouseout="$(this).children(\'.upgrade-hover-box\').hide()">\
                             <img class="flip-vertical" src="' + upgrades[key].image + '" />\
                             <span class="upgrade-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + upgrades[key].cost + '</span>\
                             <div class="upgrade-hover-box" style="position: absolute; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
@@ -83,8 +83,10 @@ TANK.upgrade = (function () {
                 // The player can afford, decrease player gold
                 tanks[0].config.coins -= upgrades[key].cost;
 
-                // Apply upgrade
-                tanks[0].config[upgrades[key].stat] += upgrades[key].increment;
+                // Apply upgrades
+                for (var i = 0; i < upgrades[key].stats.length; i++) {
+                    tanks[0].config[upgrades[key].stats[i].stat] += upgrades[key].stats[i].value;
+                }
 
                 // Mark upgrade level
                 upgrades[key].level += 1;

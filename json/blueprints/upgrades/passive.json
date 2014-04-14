@@ -5,127 +5,127 @@
 			"data" : {
 				"maxHealth" : {
 					"name"        : "Max Health",
-					"stat"        : "maxHealth",
+					"id"          : "imh",
+					"stats"       : [{"stat": "maxHealth", "value": 100}],
 					"description" : "Increases max health by 100",
 					"image"		  : "images/upgrades/health.png",
-					"increment"   : 100,
 					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"armor" : {
 					"name"        : "Armor",
-					"stat"        : "armor",
+					"id"          : "iarmor",
+					"stats"       : [{"stat": "armor", "value": 25}],
 					"description" : "Increases armor by 25",
 					"image"		  : "images/upgrades/armor.png",
-					"increment"   : 25,
 					"cost"        : 4,
 					"level"    	  : 0
 				},
 				"fSpeed" : {
 					"name"        : "Forward Speed",
-					"stat"        : "fSpeed",
+					"id"          : "ifs",
+					"stats"       : [{"stat": "fSpeed", "value": 10}],
 					"description" : "Increases forward speed by 10",
 					"image"		  : "images/upgrades/forward-speed.png",
-					"increment"   : 10,
 					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"rSpeed" : {
 					"name"        : "Reverse Speed",
-					"stat"        : "rSpeed",
+					"id"          : "irs",
+					"stats"       : [{"stat": "rSpeed", "value": 10}],
 					"description" : "Increases reverse speed by 10",
 					"image"		  : "images/upgrades/reverse-speed.png",
-					"increment"   : 10,
 					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"tSpeed" : {
 					"name"        : "Turret Traverse Speed",
-					"stat"        : "tSpeed",
+					"id"          : "itts",
+					"stats"       : [{"stat": "tSpeed", "value": 10}],
 					"description" : "Increases turret traverse speed by 10",
 					"image"		  : "images/upgrades/turret-traverse-speed.png",
-					"increment"   : 10,
 					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"sSpeed" : {
 					"name"        : "Chassis Turn Speed",
-					"stat"        : "sSpeed",
+					"id"          : "icts",
+					"stats"       : [{"stat": "sSpeed", "value": 10}],
 					"description" : "Increases chassis turn speed by 10",
 					"image"		  : "images/upgrades/chassis-turn-speed.png",
-					"increment"   : 10,
 					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"accel" : {
 					"name"        : "Acceleration",
-					"stat"        : "accel",
+					"id"          : "iaccel",
+					"stats"       : [{"stat": "accel", "value": 15}],
 					"description" : "Increases acceleration by 15",
 					"image"		  : "images/upgrades/acceleration.png",
-					"increment"   : 15,
 					"cost"        : 10,
 					"level"    	  : 0
 				},
 				"pSpeed" : {
 					"name"        : "Shell Velocity",
-					"stat"        : "pSpeed",
+					"id"          : "isv",
+					"stats"       : [{"stat": "pSpeed", "value": 50}],
 					"description" : "Increases shell velocity by 50",
 					"image"		  : "images/upgrades/shell-velocity.png",
-					"increment"   : 50,
 					"cost"        : 10,
 					"level"    	  : 0
 				},
 				"pDamage" : {
 					"name"        : "Shell Damage",
-					"stat"        : "pDamage",
+					"id"          : "isd",
+					"stats"       : [{"stat": "pDamage", "value": 25}],
 					"description" : "Increases shell damage by 25",
 					"image"		  : "images/upgrades/shell-damage.png",
-					"increment"   : 25,
 					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"ammo" : {
 					"name"        : "Ammunition",
-					"stat"        : "ammo",
+					"id"          : "iammo",
+					"stats"       : [{"stat": "ammo", "value": 15}],
 					"description" : "Adds 15 ammo",
 					"image"		  : "images/upgrades/ammunition.png",
-					"increment"   : 15,
 					"cost"        : 1,
 					"level"    	  : 0
 				},
 				"fRate" : {
 					"name"        : "Firing Rate",
-					"stat"        : "fRate",
+					"id"          : "ifrate",
+					"stats"       : [{"stat": "fRate", "value": 0.2}],
 					"description" : "Increases firing rate by 0.2 shells/second",
 					"image"		  : "images/upgrades/firing-rate.png",
-					"increment"   : 0.2,
 					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"critChance" : {
 					"name"        : "Critical Hit Chance",
-					"stat"        : "critChance",
+					"id"          : "ichc",
+					"stats"       : [{"stat": "critChance", "value": 0.5}],
 					"description" : "Increases critical hit chance by 0.5",
 					"image"		  : "images/upgrades/critical-hit-chance.png",
-					"increment"   : 0.5,
 					"cost"        : 1,
 					"level"    	  : 0
 				},
 				"shield" : {
 					"name"        : "Increased Maximum Shield",
-					"stat"        : "maxShield",
+					"id"          : "imsh",
+					"stats"       : [{"stat": "maxShield", "value": 500}],
 					"description" : "Increases maximum shield by 500",
 					"image"		  : "images/upgrades/shield.png",
-					"increment"   : 500,
 					"cost"        : 10,
 					"level"    	  : 0
 				},
 				"shieldRegen" : {
 					"name"        : "Increased Shield Regeneration",
-					"stat"        : "shieldRegen",
+					"id"          : "ishr",
+					"stats"       : [{"stat": "shieldRegen", "value": 250}],
 					"description" : "Increases shield regen by 250/sec",
 					"image"		  : "images/upgrades/shield-regen.png",
-					"increment"   : 250,
 					"cost"        : 10,
 					"level"    	  : 0
 				}
