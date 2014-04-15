@@ -40,6 +40,13 @@ var TANK = (function () {
 *   Contains special tank behavior (particulary for bosses).
 */
 TANK.behavior = (function () {
+    var behaviors = {};
+
+    behaviors.blitzkrieg = function (tank) {
+        /* Tank gains 1000% increased firing rate, 200% movement and 3000 ammo when health drops below 50%. Can be triggered only once and lasts 16 seconds. */
+
+    };
+
     return {
 
     };
@@ -140,7 +147,7 @@ function Tank(specs, id, control, x, y) {
     this.config = {
         active       : true,
         collision    : false,                                                              // newly spawned units are ethereal until there's nothing else to collide with
-        colliding    : {state: false, type: 'none', object: null},                                               // collision flag, when colliding with objects, colliding is true
+        colliding    : {state: false, type: 'none', object: null},                         // collision flag, when colliding with objects, colliding is true
         control      : control,
         id           : id,                                                                 // random-gen id
         name         : specs.name,                                                         // tank name
@@ -510,6 +517,8 @@ function Tank(specs, id, control, x, y) {
     
         // are we still reloading?
         if (this.reloading || t.ammo === 0) { return; } 
+
+        this.fireEvent('fire');
         
         if (t.control === 'player') {
             STAT.inc('total_shots_fired', 1);
@@ -708,6 +717,8 @@ function Tank(specs, id, control, x, y) {
         for (var i = 0; i < this.hit_callbacks.length; i++) {
             this.hit_callbacks[i](projectile);
         }
+
+        this.fireEvent('hit');
         
         // render extern, only do so if there are changes
         if (t.control === 'player' && (oldHealth !== t.health || oldShield !== t.shield)) {
@@ -773,3 +784,5 @@ function Tank(specs, id, control, x, y) {
         }
     };
 }
+
+Tank.prototype = new EventTarget();
