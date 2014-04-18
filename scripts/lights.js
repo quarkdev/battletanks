@@ -61,11 +61,10 @@ function Light(specs) {
         radius            : specs.radius,
         intensity         : specs.intensity
 	};
-
-	var l = this.config;
-
-	this.draw = function (ctx, xView, yView) {
-		if (!this.config.active) { return; }
-		LIGHTING.lightenGradient(ctx, l.oX - xView, l.oY - yView, l.radius, l.intensity);
-	};
 }
+
+Light.prototype.draw = function (ctx, xView, yView) {
+    var l = this.config;
+    if (!this.config.active) { return; }
+    LIGHTING.lightenGradient(ctx, l.oX - xView, l.oY - yView, l.radius, l.intensity);
+};

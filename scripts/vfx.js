@@ -26,100 +26,106 @@ function VisualEffect(specs) {
         spriteSheet       : SpriteSheetImages.get(specs.spriteSheet)
     };
     
-    var vx = this.config;
-    
     this.animation = {
         csr    : 0, // current sprite row
         csc    : 0, // current sprite col
         frames : 0 // the number of frames that has passed since last sprite update
     };
-    
+}
+
+VisualEffect.prototype.nextSprite = function () {
+    var vx = this.config;
     var animation = this.animation;
-    
-    this.nextSprite = function () {
-        if (animation.csc === vx.maxColIndex) {
-            animation.csc = 0;
-            if (animation.csr === vx.maxRowIndex) {
-                animation.csr = 0;
-            }
-            else {
-                animation.csr++;
-            }
+
+    if (animation.csc === vx.maxColIndex) {
+        animation.csc = 0;
+        if (animation.csr === vx.maxRowIndex) {
+            animation.csr = 0;
         }
         else {
-            animation.csc++;
+            animation.csr++;
         }
-    };
+    }
+    else {
+        animation.csc++;
+    }
+};
+
+VisualEffect.prototype.end = function () {
+    /* End effect animation by setting active to false. */
+    this.config.active = false;
+};
+
+VisualEffect.prototype.updatePos = function (x, y) {
+    var vx = this.config;
+    vx.oX = x;
+    vx.oY = y;
+};
+
+VisualEffect.prototype.updateAngle = function (angle) {
+    this.config.angle = angle;
+};
+
+VisualEffect.prototype.unPause = function () {
+    this.config.paused = false;
+};
+
+VisualEffect.prototype.update = function () {
+    var vx = this.config;
+    var animation = this.animation;
+
+    if (!vx.active || vx.paused) { return; }
     
-    this.end = function () {
-        /* End effect animation by setting active to false. */
-        vx.active = false;
-    };
-    
-    this.updatePos = function (x, y) {
-        vx.oX = x;
-        vx.oY = y;
-    };
-    
-    this.updateAngle = function (angle) {
-        vx.angle = angle;
-    };
-    
-    this.unPause = function () {
-        vx.paused = false;
-    };
-    
-    this.update = function () {
-        if (!vx.active || vx.paused) { return; }
+    if (animation.frames !== vx.framesTillUpdate) {
+        animation.frames++;
+    }
+    else {
+        animation.frames = 0;
         
-        if (animation.frames !== vx.framesTillUpdate) {
-            animation.frames++;
-        }
-        else {
-            animation.frames = 0;
-            
-            if (animation.csr === vx.maxRowIndex && animation.csc === vx.maxColIndex) {
-                if (!vx.loop) {
-                    if (vx.resettable) {
-                        animation.csr = 0;
-                        animation.csc = 0;
-                        animation.frames = 0;
-                        vx.paused = true;
-                    }
-                    else {
-                        vx.active = false;
-                        GLOBALS.flags.clean.visualeffects++;
-                    }
+        if (animation.csr === vx.maxRowIndex && animation.csc === vx.maxColIndex) {
+            if (!vx.loop) {
+                if (vx.resettable) {
+                    animation.csr = 0;
+                    animation.csc = 0;
+                    animation.frames = 0;
+                    vx.paused = true;
                 }
                 else {
-                    this.nextSprite();
+                    vx.active = false;
+                    GLOBALS.flags.clean.visualeffects++;
                 }
             }
             else {
                 this.nextSprite();
             }
-            
         }
-    };
-    
-    this.draw = function (ctx, xView, yView) {
-        if (!vx.active) { return; }
-    
-        var angleInRadians = vx.angle * Math.PI/180;
-    
-        ctx.translate(vx.oX - xView, vx.oY - yView);
-        ctx.rotate(angleInRadians);
-        ctx.drawImage(
-            vx.spriteSheet,
-            animation.csc * vx.width,
-            animation.csr * vx.height,
-            vx.width, vx.height,
-            -vx._scaleW,
-            -vx._scaleH,
-            vx.scaleW,
-            vx.scaleH
-        );
-        ctx.rotate(-angleInRadians);
-        ctx.translate(-(vx.oX - xView), -(vx.oY - yView));
-    };
-}
+        else {
+            this.nextSprite();
+        }
+        
+    }
+};
+
+VisualEffect.prototype.draw = function (ctx, xView, yView) {
+    var vx = this.config;
+    var animation = this.animation;
+
+    if (!vx.active) { return; }
+
+    var angleInRadians = vx.angle * Math.PI/180;
+
+    ctx.translate(vx.oX - xView, vx.oY - yView);
+    ctx.rotate(angleInRadians);
+    ctx.drawImage(
+        vx.spriteSheet,
+        animation.csc * vx.width,
+        animation.csr * vx.height,
+        vx.width, vx.height,
+        -vx._scaleW,
+        -vx._scaleH,
+        vx.scaleW,
+        vx.scaleH
+    );
+    ctx.rotate(-angleInRadians);
+    ctx.translate(-(vx.oX - xView), -(vx.oY - yView));
+};
