@@ -1,51 +1,44 @@
-(function EventEmitter() {
-	var events = {};
-	/*
-	*	Structure:
-	*	event : {[listener],...}
-	*/
-	this.listen = function (event, listener) {
+function EventEmitter() {
+	this._events = {};
+}
+
+EventEmitter.prototype = {
+	
+	constructor: EventEmitter,
+	
+	listen: function (event, listener) {
 		// Attaches a listener
 
 		// Check if event is already registered
-		for (key in events) {
-			if (key === event) {
-				// if registered, push new listener
-				events[event].push(listener);
-			}
-			else {
-				// not registered, so register new event
-				events[event] = [];
-
-				// then push new listener to this event
-				events[event].push(listener);
-			}
+		if (!this._events.hasOwnProperty(event)) {
+			this._events[event] = [];
 		}
-	};
 
-	this.unlisten = function (event, listener) {
+		this._events[event].push(listener);
+	},
+
+	unlisten: function (event, listener) {
 		// Detaches a listener
 
 		// Check if event is registered
-		for (key in events) {
-			if (key === event) {
-				// if registered, detach listener
-				for (var i in events[key]) {
-					if (events[key][i] === listener) {
-						events[key].splice(i, 1);
-						break;
-					}
-				}
-				break;
-			}
-		}
-	};
+	    if (this._events.hasOwnProperty(event)) {
+	        for (var i = 0; i < this._events[event].length; i++) {
+	            if (this._events[event][i] === listener) {
+	                this._events[event].splice(i, 1);
+	            }
+	        }
+	    }
+	},
 
-	this.emit = function (event, data) {
+	emit: function (event, data) {
 		// Emit event
 		data = data || {};
-		for (var i in events[event]) {
-			events[event][i](data);
+		if (!this._events.hasOwnProperty(event)) { return; }
+
+		var listeners = this._events[event];
+
+		for (var i = 0; i < listeners.length; i++) {
+			listeners[i].call(this, data);
 		}
-	};
-}());
+	}
+};

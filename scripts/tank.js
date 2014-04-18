@@ -108,11 +108,9 @@ TANK.upgrade = (function () {
 
 /*-------- Tanks --------*/
 function Tank(specs, id, control, x, y) {
-    this.fire_callbacks = [];
-    this.hit_callbacks = []; // hit callbacks attached (powerups, etc..)
-    this.move_callbacks = []; // callbacks called everytime the tank moves
-    this.frame_callbacks = []; // called for each frame update (useful for powerups that require per frame animation)
+    
     this.projectile_mods = [];
+    this.events = new EventEmitter();
     
     this.attachments = { // {id, Image()}
         turret  : [],
@@ -239,6 +237,8 @@ Tank.prototype.turnBody = function (modifier, direction, lockAngle) {
     }
     
     this.status.chassisRotateAmount = Math.abs(oldAngle - t.hAngle);
+
+    this.events.emit('turnchassis');
 };
 
 Tank.prototype.turnTurret = function (modifier, mX, mY) {
@@ -295,7 +295,9 @@ Tank.prototype.turnTurret = function (modifier, mX, mY) {
     t.tAngle = t.tAngle % 360;
     if (t.tAngle < 0) {
         t.tAngle += 360;
-    }           
+    }
+
+    this.events.emit('turnturret');
 };
 
 Tank.prototype.move = function (modifier, direction, lockPoint) {
@@ -303,11 +305,6 @@ Tank.prototype.move = function (modifier, direction, lockPoint) {
     var t = this.config;
 
     if (t.active === false) return;
-    
-    /* when tank moves */
-    for (var i = 0; i < this.move_callbacks.length; i++) {
-        this.move_callbacks[i]();
-    }
     
     lockPoint = typeof lockPoint === 'undefined' ? false : lockPoint; 
 
@@ -510,6 +507,8 @@ Tank.prototype.move = function (modifier, direction, lockPoint) {
     this.y = t.oY;
     
     t.turretAnim.updatePos(t.oX, t.oY);
+
+    this.events.emit('move');
 };
 
 Tank.prototype.fire = function () {
@@ -528,11 +527,6 @@ Tank.prototype.fire = function () {
     /* solve for (oX, oY) at tSize/2 distance from (oX, oY) */
     var _oY = t.oY + ((t.tWidth/2) * Math.sin(t.tAngle*Math.PI/180));
     var _oX = t.oX + ((t.tWidth/2) * Math.cos(t.tAngle*Math.PI/180));
-    
-    /* when tank is fires */
-    for (var i = 0; i < this.fire_callbacks.length; i++) {
-        this.fire_callbacks[i](_oX, _oY);
-    }
     
     var proj = new Projectile({mods: this.projectile_mods, speed: t.pSpeed, damage: t.pDamage, critChance: t.critChance, angle:  t.tAngle, oX: _oX, oY: _oY, srcId: t.id, srcType: t.name});
     projectiles.push(proj);
@@ -564,6 +558,8 @@ Tank.prototype.fire = function () {
     t.turretAnim.unPause();
     // play sound effect
     fireSound.get();
+
+    this.events.emit('fire', {_oX: _oX, _oY: _oY});
 };
 
 Tank.prototype.reload = function () {
@@ -620,6 +616,8 @@ Tank.prototype.draw = function (ctx, xView, yView) {
     }
     // draw health bar
     ctx.fillRect((t.oX - lifebarLen/2) - xView, (t.oY + t.cRadius + 8) - yView, lifebarLen, 4);
+
+    this.events.emit('draw');
 };
 
 Tank.prototype.hit = function (projectile) {
@@ -717,14 +715,12 @@ Tank.prototype.hit = function (projectile) {
         explodeSound.get();
     }
     
-    for (var i = 0; i < this.hit_callbacks.length; i++) {
-        this.hit_callbacks[i](projectile);
-    }
-    
     // render extern, only do so if there are changes
     if (t.control === 'player' && (oldHealth !== t.health || oldShield !== t.shield)) {
         renderExtern();
     }
+
+    this.events.emit('hit', {projectile: projectile});
 }; 
 
 Tank.prototype.death = function () {
@@ -773,6 +769,8 @@ Tank.prototype.death = function () {
         // ok just got lucky, get a random powerup
         powerups.push(PUP.createRandom(t.oX, t.oY));
     }
+
+    this.events.emit('death');
 };
 
 Tank.prototype.frame = function (modifier) {
@@ -782,7 +780,5 @@ Tank.prototype.frame = function (modifier) {
     t.shield += t.shieldRegen * modifier;
     t.shield = t.shield > t.maxShield ? t.maxShield : t.shield; // prevent shield from going beyond the max
 
-    for (var i = 0; i < this.frame_callbacks.length; i++) {
-        this.frame_callbacks[i](modifier);
-    }
+    this.events.emit('frame', {modifier: modifier});
 };

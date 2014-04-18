@@ -477,21 +477,21 @@ var PUP = (function() {
                 tank.ts_active = true;
                 tank.ts_stack = 1;
             
-                var multiShot = function (_oX, _oY) {
+                var multiShot = function (args) {
+                    var _oX = args._oX;
+                    var _oY = args._oY;
                     for (var i = 1; i < tank.ts_stack + 1; i++) {
                         projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
                         projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
                     }
                 };
-                multiShot.id = 'multiShot';
-                
-                tank.fire_callbacks.push(multiShot);
+                tank.events.listen('fire', multiShot);
                 
                 tank.ts_timeout = new Timer(function () {
                     delete tank.ts_active;
                     delete tank.ts_timeout;
                     delete tank.ts_stack;
-                    tank.fire_callbacks = tank.fire_callbacks.filter(function (item) { return item.id != 'multiShot'; });
+                    tank.events.unlisten('fire', multiShot);
                 }, 30000);
             }
             else {
@@ -519,8 +519,8 @@ var PUP = (function() {
             if (!active) {
                 tank.r_active = true;
                 
-                var returnHit = function(projectile) {
-                    var p = projectile.config;
+                var returnHit = function(args) {
+                    var p = args.projectile.config;
                 
                     if (p.srcType === 'ricochet') {
                         return; // bounce once only please
@@ -529,14 +529,12 @@ var PUP = (function() {
                     var retProj = new Projectile({speed: p.speed, damage: p.damage, critChance: p.critChance, angle: (p.angle + 180) % 360, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'ricochet'});
                     projectiles.push(retProj);
                 };
-                returnHit.id = 'returnHit';
-                
-                tank.hit_callbacks.push(returnHit);
+                tank.events.listen('hit', returnHit);
                 
                 tank.r_timeout = new Timer(function () {
                     delete tank.r_active;
                     delete tank.r_timeout;
-                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'returnHit'; });
+                    tank.events.unlisten('hit', returnHit);
                 }, 20000);
             }
             else {
@@ -573,24 +571,21 @@ var PUP = (function() {
                     projectiles.push(tmp);
                     tank.pBarrier.push([tmp, 0]);
                 };
-                incBarrier.id = 'incBarrier';
+                tank.events.listen('hit', incBarrier);
                 
-                tank.hit_callbacks.push(incBarrier);
-                
-                var updateBarrierSpin = function () {
+                var updateBarrierSpin = function (args) {
                     // Updates the position of each projectile tethered to the tank
 
                     for (var i = 0; i < tank.pBarrier.length; i++) {
-                        var newAngle = tank.pBarrier[i][1] === 356 ? 0 : tank.pBarrier[i][1] + 4;
+                        var newAngle = tank.pBarrier[i][1] + (180 * args.modifier);
+                        newAngle = newAngle % 360;
                         var newLoc = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, newAngle, tank.pb_radius);
                         tank.pBarrier[i][0].config.oX = newLoc[0];
                         tank.pBarrier[i][0].config.oY = newLoc[1];
                         tank.pBarrier[i][1] = newAngle;
                     }
                 };
-                updateBarrierSpin.id = 'updateBarrierSpin';
-                
-                tank.frame_callbacks.push(updateBarrierSpin);
+                tank.events.listen('frame', updateBarrierSpin);
                 
                 tank.pb_timeout = new Timer(function () {    
                     // deactivate all projectiles in pBarrier
@@ -603,8 +598,8 @@ var PUP = (function() {
                     delete tank.pb_radius;
                     delete tank.pb_timeout;
                     delete tank.pb_active;
-                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'incBarrier'; });
-                    tank.frame_callbacks = tank.move_callbacks.filter(function (item) { return item.id != 'updateBarrierSpin'; });
+                    tank.events.unlisten('hit', incBarrier);
+                    tank.events.unlisten('frame', updateBarrierSpin);
                 }, 20000);
             }
             else {
@@ -834,16 +829,13 @@ var PUP = (function() {
                     // keep count of hits taken
                     tank.hitsTaken++;
                 };
-                absorbHit.id = 'absorbHit';
+                tank.events.listen('hit', absorbHit);
                 
                 var asAnim = function () {
                     // update animation position
                     tank.as_vfx.updatePos(tank.config.oX, tank.config.oY);
                 };
-                asAnim.id = 'asAnim';
-                
-                tank.frame_callbacks.push(asAnim);
-                tank.hit_callbacks.push(absorbHit);
+                tank.events.listen('frame', asAnim);
                 
                 tank.as_timeout = new Timer(function () {
                     // fire the number of absorbed projectiles in all directions
@@ -870,8 +862,8 @@ var PUP = (function() {
                     tank.config.invulnerable--;
                     tank.as_vfx.end();
                     
-                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'absorbHit'; });
-                    tank.frame_callbacks = tank.frame_callbacks.filter(function (item) { return item.id != 'asAnim'; });
+                    tank.events.unlisten('hit', absorbHit);
+                    tank.events.unlisten('frame', asAnim);
                     d_explodeSound.get(); // play explode sound
                     
                     delete tank.hitsTaken; // remove temp variable
@@ -911,9 +903,7 @@ var PUP = (function() {
                     tank.armorBuff += tank.armorAdd;
                     tank.config.armor += tank.armorAdd;
                 };
-                increaseArmorWhenHit.id = 'increaseArmorWhenHit';
-                
-                tank.hit_callbacks.push(increaseArmorWhenHit);
+                tank.events.listen('hit', increaseArmorWhenHit);
                 
                 tank.ra_timeout = new Timer(function () {
                     tank.config.armor -= tank.armorBuff;
@@ -921,7 +911,7 @@ var PUP = (function() {
                     delete tank.ra_timeout; // remove temp variable
                     delete tank.ra_active;
                     delete tank.armorAdd;
-                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'increaseArmorWhenHit'; });
+                    tank.events.unlisten('hit', increaseArmorWhenHit);
                 }, 20000);
             }
             else {
@@ -951,26 +941,24 @@ var PUP = (function() {
                 tank.regen = {};
                 tank.regen.stacks = 1;
                 tank.regen.rate = tank.config.maxHealth * 0.0005 * tank.regen.stacks; // 5% per second
-                
+
                 tank.regen.interval = new Interval(function () {
                     tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen.rate ? tank.config.maxHealth : tank.config.health + tank.regen.rate;
                     renderExtern();
                     if (tank.config.health === tank.config.maxHealth) {
                         tank.regen.interval.clear();
                         delete tank.regen;
-                        tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
+                        tank.events.unlisten('hit', dispellRegen);
                     }
                 }, 10);
-            
+
                 var dispellRegen = function () {
                     // dispell regen
                     tank.regen.interval.clear();
                     delete tank.regen;
-                    tank.hit_callbacks = tank.hit_callbacks.filter(function (item) { return item.id != 'dispellRegen'; });
+                    tank.events.unlisten('hit', dispellRegen);
                 };
-                dispellRegen.id = 'dispellRegen';
-                
-                tank.hit_callbacks.push(dispellRegen);
+                tank.events.listen('hit', dispellRegen);
             }
             else {
                 tank.regen.stacks += 1;
