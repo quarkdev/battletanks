@@ -565,11 +565,12 @@ var PUP = (function() {
                 tank.pb_active = true;
                 tank.config.invulnerable++;
             
-                var incBarrier = function () {
+                var incBarrier = function (args) {
                     // Increases the barrier projectile count
-                    var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: 0, oX: tank.config.oX + tank.pb_radius, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
+                    var angle = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: args.projectile.config.oX, y: args.projectile.config.oY});
+                    var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: angle, oX: tank.config.oX + tank.pb_radius, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
                     projectiles.push(tmp);
-                    tank.pBarrier.push([tmp, 0]);
+                    tank.pBarrier.push([tmp, angle]);
                 };
                 tank.events.listen('hit', incBarrier);
                 
@@ -577,7 +578,7 @@ var PUP = (function() {
                     // Updates the position of each projectile tethered to the tank
 
                     for (var i = 0; i < tank.pBarrier.length; i++) {
-                        var newAngle = tank.pBarrier[i][1] + (180 * args.modifier);
+                        var newAngle = tank.pBarrier[i][1] + (360 * args.modifier);
                         newAngle = newAngle % 360;
                         var newLoc = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, newAngle, tank.pb_radius);
                         tank.pBarrier[i][0].config.oX = newLoc[0];
