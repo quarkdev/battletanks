@@ -41,7 +41,7 @@
     "nImage"   : "riveted_iron",
     "dImage"   : "riveted_iron",
     "size"     : 32,
-    "health"   : 50,
+    "health"   : 200,
     "armor"    : 50,
     "mod"      : "normal"
 },

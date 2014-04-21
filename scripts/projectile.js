@@ -14,6 +14,7 @@ function Projectile(specs) {
         speed      : specs.speed,
         damage     : specs.damage,
         critChance : specs.critChance,
+        critMultiplier : specs.critMultiplier || 2,
         angle      : specs.angle,
         oX         : specs.oX,
         oY         : specs.oY,

@@ -172,6 +172,7 @@ function Tank(specs, id, control, x, y) {
         pSpeed       : specs.pSpeed,                                                       // Projectile speed
         pDamage      : specs.pDamage,                                                      // projectile damage
         critChance   : specs.critChance,
+        critMultiplier : specs.critMultiplier || 2,
         dropRate     : specs.dropRate || 10,                                               // chance of dropping a powerup on death (default: 10%)
         ammo         : specs.ammo,                                                         // amount of ammo
         fRate        : specs.fRate,                                                        // Firing rate (rounds per second)
@@ -528,7 +529,7 @@ Tank.prototype.fire = function () {
     var _oY = t.oY + ((t.tWidth/2) * Math.sin(t.tAngle*Math.PI/180));
     var _oX = t.oX + ((t.tWidth/2) * Math.cos(t.tAngle*Math.PI/180));
     
-    var proj = new Projectile({mods: this.projectile_mods, speed: t.pSpeed, damage: t.pDamage, critChance: t.critChance, angle:  t.tAngle, oX: _oX, oY: _oY, srcId: t.id, srcType: t.name});
+    var proj = new Projectile({mods: this.projectile_mods, speed: t.pSpeed, damage: t.pDamage, critChance: t.critChance, critMultiplier: t.critMultiplier, angle:  t.tAngle, oX: _oX, oY: _oY, srcId: t.id, srcType: t.name});
     projectiles.push(proj);
     
     // take 1 ammo
@@ -631,7 +632,7 @@ Tank.prototype.hit = function (projectile) {
     var critical_hit = p.critChance > Math.random()*100 ? true : false; // crit chance, baseline is 5% @ 2x
     var raw_damage = p.damage; // raw damage
     var dmg_base_roll = Math.floor((Math.random() * max) + min);
-    var mod_damage = critical_hit ? dmg_base_roll*2.0 : dmg_base_roll; // damage after mods/crit
+    var mod_damage = critical_hit ? dmg_base_roll*p.critMultiplier : dmg_base_roll; // damage after mods/crit
     var oldShield = t.shield;
     var end_damage = mod_damage - oldShield;
     end_damage = t.invulnerable > 0 ? 0 : end_damage/t.armor;
