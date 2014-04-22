@@ -583,14 +583,14 @@ UTIL.geometry = (function() {
     };
 
     my.getAngleBetweenLineAndHAxis = function (S, E) {
-        /* Returns the angle (in degrees) between a line defined by two points and the x axis. Where S is the line start point and E the end point */
+        /* Returns the angle (in degrees) between a line defined by two points and the horizontal axis. Where S is the line start point and E the end point */
 
         // First find the differece between start/end
         var _x = E.x - S.x;
         var _y = E.y - S.y;
 
         // Calculate angle
-        return Math.atan2(_y, _x) * 180/Math.PI;
+        return ((Math.atan2(_y, _x) * 180/Math.PI) + 360) % 360;
     };
     
     /*
