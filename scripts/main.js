@@ -111,8 +111,10 @@ var update = function(modifier) {
             
             // Check if bot can see player
             if (bots[i][4].los) {
-                // Fire
-                bots[i][0].fire();
+                // Check if tank within firing angle (fire only @ less than 5 degree difference)
+                if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: tanks[0].config.oX, y: tanks[0].config.oY}) - bots[i][0].config.tAngle) < 5) {
+                    bots[i][0].fire();
+                }
             }
             
             // Check if movequeue has commands
