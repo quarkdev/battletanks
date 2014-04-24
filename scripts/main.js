@@ -354,7 +354,8 @@ var renderCanvas = function () {
     CANVAS.drawTanks(ctx, camera.xView, camera.yView);
     CANVAS.drawVisualEffects(ctx, camera.xView, camera.yView);
     CANVAS.drawProjectiles(ctx, camera.xView, camera.yView);
-    //LIGHTING.darken(ctx, 0, 0, 1024, 608, '#000', 0.9);
+    //LIGHTING.darken(ctx, 0, 0, 1024, 608, '#000', 0.7);
+    //LIGHTING.lightenGradient(ctx, player.config.oX - camera.xView, player.config.oY - camera.yView, 420, 1);
     CANVAS.drawLights(ctx, camera.xView, camera.yView);
 
 };
