@@ -845,6 +845,10 @@ var PUP = (function() {
                     var x = 0;
                     var y = 0;
                     
+                    var fireTrailFX = function (projectile) {
+                        visualeffects.push(new VisualEffect({name: 'explosion', oX: projectile.config.oX, oY: projectile.config.oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+                    }
+                    
                     for (var i = 0; i < tank.hitsTaken; i++) {
                         // determine starting coordinates of projectile based on vector info
                         x = tank.config.oX + Math.cos(cAngle * Math.PI/180) * (tank.config.cRadius+10);
@@ -852,6 +856,7 @@ var PUP = (function() {
                         
                         // create new projectile
                         var proj = new Projectile({ speed: tank.config.pSpeed * 1.25, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  cAngle, oX: x, oY: y, srcId: tank.config.id, srcType: 'blast'});
+                        proj.mods.push(fireTrailFX);
                         
                         // add projectile to array
                         projectiles.push(proj);
