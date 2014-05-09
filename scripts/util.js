@@ -288,28 +288,14 @@ var UTIL = (function () {
         return packedDestructibles;
     };
     
-    my.getNearestEnemyTank = function (x, y, exceptions) {
-        /* Get the nearest enemy tank to point. */
-        
-        if (tanks.length === 1) {
-            // there's no enemy tank, so return -1
-            return -1;
-        }
-        else if (tanks.length === 2) {
-            // there's only 1 enemy tank, nothing else to compare to
-            if (tanks[1].config.active) {
-                return tanks[1];
-            }
-            else {
-                return -1;
-            }
-        }
+    my.getNearestTank = function (x, y, exceptions) {
+        /* Get the nearest enemy tank to point. [exceptions] is an array of tank IDs. */
         
         var dist = 0;
         var _dist = 0;
         var nearest_tank = -1;
         
-        for (var i = 1; i < tanks.length; i++) {
+        for (var i = 0; i < tanks.length; i++) {
             if (!tanks[i].config.active) { continue; } // skip dead tanks
             
             // check if item is found in exceptions
