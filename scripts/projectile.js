@@ -41,6 +41,7 @@ Projectile.prototype.update = function (modifier) {
     
     // Check for collisions. First check if it has reached the canvas outer boundary.
     if (this._hasHitBoundary(p.oX, p.oY) === true) {
+        if (p.srcType === 'projectile-barrier') return; // projectile barriers are unaffected by boundaries
         p.active = false;
         GLOBALS.flags.clean.projectiles++;
     }
