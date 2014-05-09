@@ -88,6 +88,7 @@ UTIL.asset.queue('image', ['grass-grid', 'images/editor/grid.png', EditorImages]
 // Spritesheet images
 SpriteSheetImages = new ImageLibrary();
 UTIL.asset.queue('image', ['explosion', 'images/spritesheets/explosion.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['blue_explosion', 'images/spritesheets/blue_explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['volumetric_explosion', 'images/spritesheets/volumetric_explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['aphotic_shield', 'images/spritesheets/aphotic_shield.png', SpriteSheetImages]);
