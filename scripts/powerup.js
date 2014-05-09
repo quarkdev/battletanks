@@ -183,8 +183,8 @@ var PUP = (function() {
                         projectile.jumps -= 1;
                     }
                     
-                    // Get nearest enemy tank.
-                    var nearest_tank = UTIL.getNearestEnemyTank(p.oX, p.oY, [p.objectHit.obj.config.id]);
+                    // Get nearest tank. Ignore both the tank that was hit and the source.
+                    var nearest_tank = UTIL.getNearestTank(p.oX, p.oY, [p.objectHit.obj.config.id, p.srcId]);
                     
                     if (nearest_tank === -1) { return; }
                     
@@ -401,8 +401,8 @@ var PUP = (function() {
                 var homingMissile = function (projectile) {
                     var p = projectile.config;
                     
-                    // Get nearest enemy tank.
-                    var nearest_tank = UTIL.getNearestEnemyTank(p.oX, p.oY);
+                    // Get nearest tank.
+                    var nearest_tank = UTIL.getNearestTank(p.oX, p.oY, [p.srcId]);
                     
                     if (nearest_tank === -1) { return; }
                     
