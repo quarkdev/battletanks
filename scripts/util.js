@@ -288,7 +288,7 @@ var UTIL = (function () {
         return packedDestructibles;
     };
     
-    my.getNearestTank = function (x, y, exceptions) {
+    my.getNearestTank = function (x, y, exceptions, factionExceptions) {
         /* Get the nearest enemy tank to point. [exceptions] is an array of tank IDs. */
         
         var dist = 0;
@@ -301,6 +301,13 @@ var UTIL = (function () {
             // check if item is found in exceptions
             if (typeof exceptions !== 'undefined') {
                 if (exceptions.indexOf(tanks[i].config.id) > -1) {
+                    continue;
+                }
+            }
+            
+            // check if item is found in factionExceptions
+            if (typeof factionExceptions !== 'undefined') {
+                if (factionExceptions.indexOf(tanks[i].config.faction) > -1) {
                     continue;
                 }
             }

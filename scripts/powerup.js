@@ -184,7 +184,7 @@ var PUP = (function() {
                     }
                     
                     // Get nearest tank. Ignore both the tank that was hit and the source.
-                    var nearest_tank = UTIL.getNearestTank(p.oX, p.oY, [p.objectHit.obj.config.id, p.srcId]);
+                    var nearest_tank = UTIL.getNearestTank(p.oX, p.oY, [p.objectHit.obj.config.id, p.srcId], [tank.config.faction]);
                     
                     if (nearest_tank === -1) { return; }
                     
@@ -402,7 +402,7 @@ var PUP = (function() {
                     var p = projectile.config;
                     
                     // Get nearest tank.
-                    var nearest_tank = UTIL.getNearestTank(p.oX, p.oY, [p.srcId]);
+                    var nearest_tank = UTIL.getNearestTank(p.oX, p.oY, [p.srcId], [tank.config.faction]);
                     
                     if (nearest_tank === -1) { return; }
                     
