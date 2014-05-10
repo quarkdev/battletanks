@@ -21,7 +21,8 @@ var PUP = (function() {
         'fireworks',
         'chain',
         'gold-coin',
-        'increased-critical-chance'
+        'increased-critical-chance',
+        'kinetic-shell'
     ];
     
     my.create = function (name, x, y) {
@@ -64,6 +65,8 @@ var PUP = (function() {
                 return new GoldCoin(x, y);
             case 'increased-critical-chance':
                 return new IncreasedCriticalChance(x, y);
+            case 'kinetic-shell':
+                return new KineticShell(x, y);
             default:
                 break;
         }
@@ -95,6 +98,77 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function KineticShell(x, y) {
+        /* Knocks tanks back on hit. */
+        this.config = {
+            name    : 'Kinetic Shell',
+            slug    : 'kinetic-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('kinetic-shell')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.ks !== 'undefined';
+            
+            if (!active) {
+                tank.ks = {};
+                
+                var knockback = function (projectile) {
+                    var p = projectile.config;
+                    
+                    // show trailing blue fire
+                    visualeffects.push(new VisualEffect({name: 'kinetic_trail', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 8, scaleH: 8,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'blue_explosion'}));
+                    
+                    // check if a tank has been hit
+                    if (p.objectHit.type !== 'tank') { return; }
+                    
+                    // knock tank
+                    var newPos = UTIL.geometry.getPointAtAngleFrom(p.objectHit.obj.config.oX, p.objectHit.obj.config.oY, p.angle, 5);
+                    
+                    // correct knockback point if tank goes out of world bounds
+                    if (newPos[0] < 0 + p.objectHit.obj.config.cRadius) {
+                        newPos[0] = 0 + p.objectHit.obj.config.cRadius;
+                    }
+                    else if (newPos[0] > WORLD_WIDTH - p.objectHit.obj.config.cRadius) {
+                        newPos[0] = WORLD_WIDTH - p.objectHit.obj.config.cRadius;
+                    }
+                    
+                    if (newPos[1] < 0 + p.objectHit.obj.config.cRadius) {
+                        newPos[1] = 0 + p.objectHit.obj.config.cRadius;
+                    }
+                    else if (newPos[1] > WORLD_HEIGHT - p.objectHit.obj.config.cRadius) {
+                        newPos[1] = WORLD_HEIGHT - p.objectHit.obj.config.cRadius;
+                    }
+                    
+                    // apply new tank position
+                    p.objectHit.obj.config.oX = newPos[0];
+                    p.objectHit.obj.config.oY = newPos[1];
+                    
+                    // reset tank velocities
+                    p.objectHit.obj.velocity.forward = 0;
+                    p.objectHit.obj.velocity.reverse = 0;
+                    
+                    // show kinetic impact fx
+                    visualeffects.push(new VisualEffect({name: 'kinetic_hit', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 32, scaleH: 32,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'blue_explosion'}));
+                }
+                knockback.id = 'knockback';
+                
+                tank.projectile_mods.push(knockback);
+                
+                tank.ks.timeout = new Timer(function () {
+                    delete tank.ks;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'knockback'; });
+                }, 12000);
+            }
+            else {
+                tank.ks.timeout.extend(6000);
+            }
         };
     }
 
