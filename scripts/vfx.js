@@ -23,6 +23,7 @@ function VisualEffect(specs) {
         loop              : specs.loop,
         resettable        : typeof specs.resettable === 'undefined' ? false : specs.resettable,
         paused            : typeof specs.paused === 'undefined' ? false : specs.paused,
+        endCallBack       : specs.endCallBack || function () {},
         spriteSheet       : SpriteSheetImages.get(specs.spriteSheet)
     };
     
@@ -53,6 +54,7 @@ VisualEffect.prototype.nextSprite = function () {
 
 VisualEffect.prototype.end = function () {
     /* End effect animation by setting active to false. */
+    this.config.endCallBack();
     this.config.active = false;
 };
 
