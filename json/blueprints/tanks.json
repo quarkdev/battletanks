@@ -149,7 +149,7 @@
             "fRate"        : 0.8,
             "hAngle"       : 90,
             "tAngle"       : 90,
-            "coins"        : 200
+            "coins"        : 5000
         }
     ]
 }
