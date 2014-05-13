@@ -22,7 +22,8 @@ var PUP = (function() {
         'chain',
         'gold-coin',
         'increased-critical-chance',
-        'kinetic-shell'
+        'kinetic-shell',
+        'time-dilation-sphere'
     ];
     
     my.create = function (name, x, y) {
@@ -67,6 +68,8 @@ var PUP = (function() {
                 return new IncreasedCriticalChance(x, y);
             case 'kinetic-shell':
                 return new KineticShell(x, y);
+            case 'time-dilation-sphere':
+                return new TimeDilationSphere(x, y);
             default:
                 break;
         }
@@ -98,6 +101,110 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function TimeDilationSphere(x, y) {
+        /* Slows down projectiles that enter radius. */
+        this.config = {
+            name    : 'Time Dilation Sphere',
+            slug    : 'time-dilation-sphere',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('time-dilation-sphere')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.tds !== 'undefined';
+            
+            if (!active) {
+                tank.tds = {};
+                
+                // vfx
+                visualeffects.push(new VisualEffect({name: 'time-dilation-on', oX: tank.config.oX, oY: tank.config.oY, width: 350, height: 350, scaleW: 350, scaleH: 350,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'time-dilation-on'}));
+                tank.tds.vfx = new VisualEffect({name: 'time-dilation', oX: tank.config.oX, oY: tank.config.oY, width: 350, height: 350, scaleW: 350, scaleH: 350,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'time-dilation'});
+                visualeffects.push(tank.tds.vfx);
+                tank.events.listen('death', function () {
+                    if (tank.hasOwnProperty('tds')) {
+                        tank.tds.vfx.end();
+                        // remove owned flags
+                        for (var i = 0; i < projectiles.length; i++) {
+                            if (projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                                // check if you own the flag, can only remove owned flags
+                                if (projectiles[i].flagASId === tank.config.id) {
+                                    // restore lost speed then remove flag
+                                    projectiles[i].config.speed += projectiles[i].flaggedAreaSlow;
+                                    
+                                    delete projectiles[i].flaggedAreaSlow;
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                var areaSlow = function () {
+                    // update vfx position
+                    tank.tds.vfx.updatePos(tank.config.oX, tank.config.oY);
+                
+                    // loop through all active projectiles
+                    for (var i = 0; i < projectiles.length; i++) {
+                        if (projectiles[i].config.srcId === tank.config.id) continue; // doesn't affect user projectiles
+                        if (!projectiles[i].config.active) continue; // skip inactive projectiles
+                        
+                        // check if projectile is within AOE (fixed radius of 175)
+                        var dist = UTIL.geometry.getDistanceBetweenPoints({x: tank.config.oX, y: tank.config.oY}, {x: projectiles[i].config.oX, y: projectiles[i].config.oY});
+                        
+                        if (dist > 175) {
+                            // not within AOE, check if it is flagged
+                            if (projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                                // check if you own the flag, can only remove owned flags
+                                if (projectiles[i].flagASId === tank.config.id) {
+                                    // restore lost speed then remove flag
+                                    projectiles[i].config.speed += projectiles[i].flaggedAreaSlow;
+                                    
+                                    delete projectiles[i].flaggedAreaSlow;
+                                }
+                            }
+                            
+                            continue;
+                        }
+                        
+                        // if projectile within AOE, apply slow debuff if not already applied (tested via a unique property)
+                        if (!projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                            // only apply debuff on unflagged projectiles
+                            var lostSpeed = projectiles[i].config.speed * 0.75;
+                            projectiles[i].flaggedAreaSlow = lostSpeed; // set flag
+                            projectiles[i].flagASId = tank.config.id; // set flag owner
+                            projectiles[i].config.speed -= lostSpeed; // reduce projectile speed by 75%
+                        }
+                    }
+                };
+                tank.events.listen('frame', areaSlow)
+                
+                tank.tds.timeout = new Timer(function() {
+                    // remove owned flags
+                    for (var i = 0; i < projectiles.length; i++) {
+                        if (projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                            // check if you own the flag, can only remove owned flags
+                            if (projectiles[i].flagASId === tank.config.id) {
+                                // restore lost speed then remove flag
+                                projectiles[i].config.speed += projectiles[i].flaggedAreaSlow;
+                                
+                                delete projectiles[i].flaggedAreaSlow;
+                            }
+                        }
+                    }
+                    tank.tds.vfx.end();
+                    tank.events.unlisten('frame', areaSlow);
+                    delete tank.tds;
+                    visualeffects.push(new VisualEffect({name: 'time-dilation-off', oX: tank.config.oX, oY: tank.config.oY, width: 350, height: 350, scaleW: 350, scaleH: 350,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'time-dilation-off'}));
+                }, 10000);
+            }
+            else {
+                tank.tds.timeout.extend(5000);
+            }
         };
     }
     

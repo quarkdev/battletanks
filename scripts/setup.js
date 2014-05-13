@@ -66,6 +66,7 @@ UTIL.asset.queue('image', ['chain', 'images/powerups/chain.png', PowerUpImages])
 UTIL.asset.queue('image', ['gold-coin', 'images/powerups/gold-coin.png', PowerUpImages]);
 UTIL.asset.queue('image', ['increased-critical-chance', 'images/powerups/increased-critical-chance.png', PowerUpImages]);
 UTIL.asset.queue('image', ['kinetic-shell', 'images/powerups/kinetic-shell.png', PowerUpImages]);
+UTIL.asset.queue('image', ['time-dilation-sphere', 'images/powerups/time-dilation-sphere.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -89,6 +90,9 @@ UTIL.asset.queue('image', ['grass-grid', 'images/editor/grid.png', EditorImages]
 // Spritesheet images
 SpriteSheetImages = new ImageLibrary();
 UTIL.asset.queue('image', ['explosion', 'images/spritesheets/explosion.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['time-dilation', 'images/spritesheets/time-dilation.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['time-dilation-on', 'images/spritesheets/time-dilation-on.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['time-dilation-off', 'images/spritesheets/time-dilation-off.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['blue_explosion', 'images/spritesheets/blue_explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['volumetric_explosion', 'images/spritesheets/volumetric_explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png', SpriteSheetImages]);
@@ -173,6 +177,7 @@ MAP.addPlaceable('powerup', 'chain');
 MAP.addPlaceable('powerup', 'gold-coin');
 MAP.addPlaceable('powerup', 'increased-critical-chance');
 MAP.addPlaceable('powerup', 'kinetic-shell');
+MAP.addPlaceable('powerup', 'time-dilation-sphere');
 
 GLOBALS.map.index = 0;
 

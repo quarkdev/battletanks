@@ -778,6 +778,8 @@ Tank.prototype.death = function () {
 Tank.prototype.frame = function (modifier) {
     /* per frame callback */
     var t = this.config;
+    if (!t.active) return;
+    
     // regenerate shield
     t.shield += t.shieldRegen * modifier;
     t.shield = t.shield > t.maxShield ? t.maxShield : t.shield; // prevent shield from going beyond the max
