@@ -73,6 +73,12 @@
             "video": "videos/gamepedia/powerup_demo/increased-damage.mp4"
         },
         {
+            "name": "Kinetic Shell",
+            "description": "Knockbacks on hit.",
+            "image": "images/powerups/kinetic-shell.png",
+            "video": ""
+        },
+        {
             "name": "Multi Shot",
             "description": "Adds extra projectiles to the normal attack.",
             "image": "images/powerups/multi-shot.png",
@@ -113,6 +119,12 @@
             "description": "Each hit is returned.",
             "image": "images/powerups/return.png",
             "video": "videos/gamepedia/powerup_demo/return.mp4"
+        },
+        {
+            "name": "Time Dilation Sphere",
+            "description": "Projectiles that enter the effective radius is slowed by 75 percent.",
+            "image": "images/powerups/time-dilation-sphere.png",
+            "video": ""
         }
     ],
     "tanks" : [
