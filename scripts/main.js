@@ -347,13 +347,13 @@ var renderCanvas = function () {
 
     CANVAS.clear(canvas, ctx);
     CANVAS.clear(minimap, minimapCtx);
-    CANVAS.drawMinimap(minimapCtx, camera.xView, camera.yView);
     ctx.drawImage(terrain, 0, 0, WORLD_WIDTH, WORLD_HEIGHT, -camera.xView, -camera.yView, WORLD_WIDTH, WORLD_HEIGHT);
     CANVAS.drawDestructibles(ctx, camera.xView, camera.yView);
     CANVAS.drawPowerUps(ctx, camera.xView, camera.yView);
     CANVAS.drawTanks(ctx, camera.xView, camera.yView);
     CANVAS.drawVisualEffects(ctx, camera.xView, camera.yView);
     CANVAS.drawProjectiles(ctx, camera.xView, camera.yView);
+    CANVAS.drawMinimapViewRect(minimapCtx, camera.xView, camera.yView);
     //LIGHTING.darken(ctx, 0, 0, 1024, 608, '#000', 0.7);
     //LIGHTING.lightenGradient(ctx, player.config.oX - camera.xView, player.config.oY - camera.yView, 420, 1);
     CANVAS.drawLights(ctx, camera.xView, camera.yView);

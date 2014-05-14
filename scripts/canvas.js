@@ -27,21 +27,36 @@ var CANVAS = (function () {
             tanks[i].draw(context, xView, yView);
             // draw tank position on minimap
             if (tanks[i].config.active) {
-                minimapCtx.beginPath();
-                minimapCtx.arc(tanks[i].config.oX/8, tanks[i].config.oY/8, 3, 0, 2 * Math.PI, false);
                 if (tanks[i].config.control === 'player') {
-                    minimapCtx.fillStyle = 'blue';
+                    var _x = tanks[i].config.oX * 0.125;
+                    var _y = tanks[i].config.oY * 0.125;
+                    var toRadians = Math.PI/180;
+                    minimapCtx.translate(_x, _y);
+                    minimapCtx.rotate(tanks[i].config.hAngle * toRadians);
+                    minimapCtx.drawImage(MinimapImages.get('player-map-object'), -8, -8);
+                    minimapCtx.rotate(-tanks[i].config.hAngle * toRadians);
+                    minimapCtx.translate(-_x, -_y);
                 }
                 else {
+                    minimapCtx.beginPath();
+                    minimapCtx.arc(tanks[i].config.oX/8, tanks[i].config.oY/8, 3, 0, 2 * Math.PI, false);
                     minimapCtx.fillStyle = 'orange';
+                    minimapCtx.fill();
                 }
-                minimapCtx.fill();
             }
         }
     };
     my.drawDestructibles = function (context, xView, yView) {
         for (var i = 0; i < destructibles.length; i++) {
             destructibles[i].draw(context, xView, yView);
+            // draw destructible position on minimap
+            if (destructibles[i].config.active) {
+                var _x = destructibles[i].config.oX * 0.125;
+                var _y = destructibles[i].config.oY * 0.125;
+                minimapCtx.translate(_x, _y);
+                minimapCtx.drawImage(destructibles[i].images.nImage, -2, -2, 4, 4);
+                minimapCtx.translate(-_x, -_y);
+            }
         }
     };
     my.drawVisualEffects = function (context, xView, yView) {
@@ -84,7 +99,7 @@ var CANVAS = (function () {
             context.translate(-(startingpoints[i].config.oX - xView), -(startingpoints[i].config.oY - yView));
         }
     };
-    my.drawMinimap = function (context, xView, yView) {
+    my.drawMinimapViewRect = function (context, xView, yView) {
         /* Draw the minimap. */
         context.strokeRect(xView / 8, yView / 8, 128, 76);
     };

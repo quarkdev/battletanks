@@ -87,6 +87,10 @@ EditorImages = new ImageLibrary();
 UTIL.asset.queue('image', ['starting-point', 'images/editor/starting-point.png', EditorImages]);
 UTIL.asset.queue('image', ['grass-grid', 'images/editor/grid.png', EditorImages]);
 
+// Minimap images
+MinimapImages = new ImageLibrary();
+UTIL.asset.queue('image', ['player-map-object', 'images/ui/player-map-object.png', MinimapImages]);
+
 // Spritesheet images
 SpriteSheetImages = new ImageLibrary();
 UTIL.asset.queue('image', ['explosion', 'images/spritesheets/explosion.png', SpriteSheetImages]);
