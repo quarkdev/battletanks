@@ -122,7 +122,7 @@
         },
         {
             "name": "Time Dilation Sphere",
-            "description": "Projectiles that enter the effective radius is slowed by 75 percent.",
+            "description": "Projectiles that enter the effective radius is slowed by 90 percent.",
             "image": "images/powerups/time-dilation-sphere.png",
             "video": ""
         }

@@ -174,10 +174,10 @@ var PUP = (function() {
                         // if projectile within AOE, apply slow debuff if not already applied (tested via a unique property)
                         if (!projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
                             // only apply debuff on unflagged projectiles
-                            var lostSpeed = projectiles[i].config.speed * 0.75;
+                            var lostSpeed = projectiles[i].config.speed * 0.90;
                             projectiles[i].flaggedAreaSlow = lostSpeed; // set flag
                             projectiles[i].flagASId = tank.config.id; // set flag owner
-                            projectiles[i].config.speed -= lostSpeed; // reduce projectile speed by 75%
+                            projectiles[i].config.speed -= lostSpeed; // reduce projectile speed by 90%
                         }
                     }
                 };
@@ -1001,7 +1001,7 @@ var PUP = (function() {
         
             if (!active) {
                 tank.as_active = true;
-                tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 0;
+                tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 8;
                 
                 tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
                 visualeffects.push(tank.as_vfx);
@@ -1009,7 +1009,7 @@ var PUP = (function() {
                 
                 var absorbHit = function () {
                     // keep count of hits taken
-                    tank.hitsTaken++;
+                    tank.hitsTaken += 4;
                 };
                 tank.events.listen('hit', absorbHit);
                 
