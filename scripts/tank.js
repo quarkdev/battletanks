@@ -63,9 +63,10 @@ TANK.upgrade = (function () {
 
             for (var key in upgrades) {
                 upgrades[key].level = 0;
-                box += '<div id="u-passive-' + upgrades[key].id + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\'));" onmouseover="$(this).children(\'.upgrade-hover-box\').show()" onmouseout="$(this).children(\'.upgrade-hover-box\').hide()">\
+                box += '<div id="u-passive-' + upgrades[key].id + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\', $(this).children(\'.buyout-multiplier\').val()));" onmouseover="$(this).children(\'.upgrade-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.upgrade-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
                             <img class="flip-vertical" src="' + upgrades[key].image + '" />\
                             <span class="upgrade-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + upgrades[key].cost + '</span>\
+                            <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
                             <div class="upgrade-hover-box" style="position: absolute; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
                                 <b>' + upgrades[key].name + '</b>\
                                 <p>' + upgrades[key].description + '</p>\
@@ -75,21 +76,23 @@ TANK.upgrade = (function () {
             }
             $('#upgrades_container').html(box);
         },
-        buy : function (key) {
+        buy : function (key, size) {
             /* Acquire the upgrade in exchange for a fixed cost. */
+            
+            size = parseInt(size); // clean size var
 
             // Check if player can afford
-            if (tanks[0].config.coins >= upgrades[key].cost) {
+            if (tanks[0].config.coins >= upgrades[key].cost * size) {
                 // The player can afford, decrease player gold
-                tanks[0].config.coins -= upgrades[key].cost;
+                tanks[0].config.coins -= upgrades[key].cost * size;
 
                 // Apply upgrades
                 for (var i = 0; i < upgrades[key].stats.length; i++) {
-                    tanks[0].config[upgrades[key].stats[i].stat] += upgrades[key].stats[i].value;
+                    tanks[0].config[upgrades[key].stats[i].stat] += upgrades[key].stats[i].value * size;
                 }
 
                 // Mark upgrade level
-                upgrades[key].level += 1;
+                upgrades[key].level += size;
 
                 // Update coin count in hud
                 $('#gold-count').html(tanks[0].config.coins);
