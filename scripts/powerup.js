@@ -1149,16 +1149,16 @@ var PUP = (function() {
                     renderExtern();
                     if (tank.config.health === tank.config.maxHealth) {
                         tank.regen.interval.clear();
-                        delete tank.regen;
                         tank.events.unlisten('hit', dispellRegen);
+                        delete tank.regen;
                     }
                 }, 10);
 
                 var dispellRegen = function () {
                     // dispell regen
                     tank.regen.interval.clear();
-                    delete tank.regen;
                     tank.events.unlisten('hit', dispellRegen);
+                    delete tank.regen;
                 };
                 tank.events.listen('hit', dispellRegen);
             }

@@ -188,7 +188,7 @@ TANK.consumable = (function() {
             /* Use a consumable. */
             
             // check if we have a consumable at index
-            if (inventory.length < index) return; // no consumable
+            if (inventory.length <= index) return; // no consumable
             
             PUP.create(inventory[index].item, -200, -200).use(tanks[0]); // create a powerup outside of the gameworld, then use it.
             inventory[index].stacks -= 1; // take 1 stack away
