@@ -14,11 +14,14 @@
     <div id="canvas-wrap" onselectstart="return false;">
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
         <!--<div id="light-box-radial" class="hud"></div>-->
+        <div style="width: 100%; height: 610px; background: url(images/ui/hud-gradient.png) center repeat-x; display: block; position: absolute; top: 0;" class="hud"></div>
         <canvas id="minimap-bg" width="228" height="228" oncontextmenu="return false;"></canvas>
         <canvas id="minimap" width="228" height="228" oncontextmenu="return false;"></canvas>
         <div id="kill-count" class="hud">0</div>
         <div id="gold-count" class="hud">1</div>
         <div id="ammo-count" class="hud">0</div>
+        <div id="inventory-hud" class="hud">
+        </div>
         <div id="text-overlay-center" class="hud"></div>
         <div id="text-overlay-top" class="hud"></div>
         
@@ -41,6 +44,7 @@
             include 'screens/prompt_map_name_export.html';
             include 'screens/prompt_map_import.html';
             include 'screens/upgrades.html';
+            include 'screens/consumables.html';
         ?>
     </div>
     
@@ -50,7 +54,7 @@
                 <div id="current-health" class="non-interactive">
                 </div>  
             </div>
-            <div id="hNum" class="non-interactive">
+            <div id="hNum" class="non-interactive" style="color: #fff; text-shadow: 0px 0px 8px rgba(0, 0, 0, 1);">
             </div>
         </div>
     </div>

@@ -30,6 +30,7 @@ function attachMenuEventListeners() {
         $('#gold-count').html('0');
         $('#ammo-count').html('0');
         TANK.upgrade.reset();
+        TANK.consumable.reset();
         $('.hud').show();
         
         // get player name
@@ -211,6 +212,33 @@ function gameKeyDownEvent(e) {
             // show upgrades screen only in-game and when there are no active bots
             pause();
             $('#upgrades-screen').show();
+        }
+    }
+    else if (e.keyCode === 67 && e.altKey) {
+        // letter c, show upgrades screen if in-game
+        if (ui_location === 'game' && $('#consumables-screen').css('display') === 'none' && GLOBALS.botCount === 0) {
+            // show consumables screen only in-game and when there are no active bots
+            pause();
+            $('#consumables-screen').show();
+        }
+    }
+    else if (e.keyCode === 97 || e.keyCode === 98 || e.keyCode === 99 || e.keyCode === 100 || e.keyCode === 101) {
+        switch (e.keyCode) {
+            case 97:
+                TANK.consumable.use(0);
+                break;
+            case 98:
+                TANK.consumable.use(1);
+                break;
+            case 99:
+                TANK.consumable.use(2);
+                break;
+            case 100:
+                TANK.consumable.use(3);
+                break;
+            case 101:
+                TANK.consumable.use(4);
+                break;
         }
     }
     else {

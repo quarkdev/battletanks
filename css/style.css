@@ -609,3 +609,14 @@ button {
 .pc-cat {
     display: none;
 }
+
+#inventory-hud {
+    position: absolute;
+    top: 574px;
+    left: 12px;
+}
+
+.flipped {
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+}

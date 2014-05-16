@@ -479,8 +479,9 @@ var main = function () {
                         }, 300);
                     });
                 }
-                else if (cd_timesRun === wave_delay) {
+                else if (cd_timesRun >= wave_delay) {
                     waveCountDown.clear();
+                    cd_timesRun = 0;
                     $('#text-overlay-top').html('Wave: ' + (GLOBALS.map.wave.current));
                 }
             }, 1000);

@@ -126,8 +126,9 @@ wave_cleared_sound = new SoundPool('sounds/wave_cleared.wav', 0.5, 3);
 wave_start_sound   = new SoundPool('sounds/wave_start.wav', 0.5, 3);
 gameover_sound     = new SoundPool('sounds/gameover.wav', 0.5, 3);
 gold_pick_sound    = new SoundPool('sounds/gold-pick.wav', 0.4, 20);
-button_hover_sound    = new SoundPool('sounds/button_hover.mp3', 0.5, 8);
-button_click_sound    = new SoundPool('sounds/button_click.mp3', 0.5, 8);
+button_hover_sound = new SoundPool('sounds/button_hover.mp3', 0.5, 8);
+button_click_sound = new SoundPool('sounds/button_click.mp3', 0.5, 8);
+pup_tds_sound = new SoundPool('sounds/chronosphere.wav', 0.5, 8);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -144,6 +145,7 @@ UTIL.asset.queue('soundpool', ['gameover', gameover_sound]);
 UTIL.asset.queue('soundpool', ['gold_pick', gold_pick_sound]);
 UTIL.asset.queue('soundpool', ['button_hover', button_hover_sound]);
 UTIL.asset.queue('soundpool', ['button_click', button_click_sound]);
+UTIL.asset.queue('soundpool', ['time_dilation_sphere_use', pup_tds_sound]);
 
 // Init stat fields
 var STAT = new Stat();

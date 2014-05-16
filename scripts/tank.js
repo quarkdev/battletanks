@@ -27,7 +27,6 @@ var TANK = (function () {
     ];
 
     return {
-        // core methods/properties
         getBuffables : function () {
             return buffables;
         }
@@ -78,7 +77,6 @@ TANK.upgrade = (function () {
         },
         buy : function (key, size) {
             /* Acquire the upgrade in exchange for a fixed cost. */
-            console.log(size);
             size = parseInt(size); // clean size var
 
             // Check if player can afford
@@ -105,6 +103,111 @@ TANK.upgrade = (function () {
             }
 
             return upgrades[key].level;
+        }
+    };
+}());
+
+/*
+* TANK Consumable module (powerup consumables)
+*/
+TANK.consumable = (function() {
+    var inventory = [];
+    var MAX_INVENTORY_SLOTS = 5;
+        
+    return {
+        reset : function () {
+            /* Reset upgrades and write data to div*/
+            inventory = [];
+            $('#consumables_container').html(''); // empty the container first
+            var box = '';
+
+            var pups = PUP.getSlugs();
+            for (var i = 0; i < pups.length; i++) {
+                box += '<div id="c-powerup-' + i + '" class="consumable-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onmouseover="$(this).children(\'.consumable-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.consumable-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
+                            <img class="flip-vertical" src="' + PowerUpImages.get(pups[i].slug).src + '" onclick="TANK.consumable.buy(\'' + pups[i].slug + '\', $(this).parent().children(\'.buyout-multiplier\').val());" />\
+                            <span class="consumable-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + pups[i].cost + '</span>\
+                            <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
+                            <div class="consumable-hover-box" style="position: absolute; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
+                                <b>' + UTIL.toTitleCase(pups[i].slug.split('-').join(' ')) + '</b>\
+                            </div>\
+                        </div>';
+            }
+            $('#consumables_container').html(box);
+            TANK.consumable.updateInventoryHUD();
+        },
+        buy : function (key, size) {
+            /* Acquire the consumable for a fixed cost. */
+            size = parseInt(size);
+            
+            // Check if player can afford
+            var pup = PUP.getSlug(key);
+            if (tanks[0].config.coins >= pup.cost * size) {
+                var stackSize = 0;
+                
+                // check if identical powerup is already in inventory
+                var indexInInventory = -1; // index of identical powerup in inventory
+                for (var i = 0; i < inventory.length; i++) {
+                    if (inventory[i].item === key) {
+                        indexInInventory = i;
+                        break;
+                    }
+                }
+                
+                // if identical powerup is NOT found, push new item if there are some free slots
+                if (indexInInventory === -1) {
+                    if (inventory.length === MAX_INVENTORY_SLOTS) return; 
+                    
+                    inventory.push({
+                        item: key,
+                        stacks: size
+                    });
+                    stackSize = inventory[inventory.length - 1].stacks;
+                }
+                else {
+                    // if found, add to its stack size
+                    inventory[indexInInventory].stacks += size;
+                    stackSize = inventory[indexInInventory].stacks;
+                }
+                
+                // if yes, decrease player gold
+                tanks[0].config.coins -= pup.cost * size;
+                
+                // Update coin count in hud
+                $('#gold-count').html(tanks[0].config.coins);
+
+                // Play sound
+                gold_pick_sound.get();
+                
+                TANK.consumable.updateInventoryHUD();
+                return stackSize;
+            }
+        },
+        use : function (index) {
+            /* Use a consumable. */
+            
+            // check if we have a consumable at index
+            if (inventory.length < index) return; // no consumable
+            
+            PUP.create(inventory[index].item, -200, -200).use(tanks[0]); // create a powerup outside of the gameworld, then use it.
+            inventory[index].stacks -= 1; // take 1 stack away
+            
+            // if stack size is zero, remove it from inventory
+            if (inventory[index].stacks === 0) {
+                inventory.splice(index, 1);
+            }
+            
+            // update inventory hud
+            TANK.consumable.updateInventoryHUD();
+        },
+        updateInventoryHUD : function () {
+            /* Update inventory HUD contents. */
+            var hud = '';
+            
+            for (var i = 0; i < inventory.length; i++) {
+                hud += '<div style="height: 32px; width: 32px; display: inline-block; position: relative;"><img class="flip-vertical" src="' + PowerUpImages.get(inventory[i].item).src + '" /><div style="width: 100%; height: 12px; position: absolute; top: -12px; color: #fff; background-color: #000; text-align: center; font-size: 10px;">' + inventory[i].stacks + '</div></div>';
+            }
+            
+            $('#inventory-hud').html(hud);
         }
     };
 }());

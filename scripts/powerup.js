@@ -3,28 +3,40 @@ var PUP = (function() {
     var my = {};
     
     var pSlugs = [
-        'random',
-        'haste',
-        'ammo',
-        'projectile-barrier',
-        'aphotic-shield',
-        'increased-armor',
-        'reactive-armor',
-        'regeneration',
-        'rapid-fire',
-        'faster-projectile',
-        'increased-damage',
-        'return',
-        'multi-shot',
-        'homing-missile',
-        'concussive-shell',
-        'fireworks',
-        'chain',
-        'gold-coin',
-        'increased-critical-chance',
-        'kinetic-shell',
-        'time-dilation-sphere'
+        {slug: 'random', cost: 50},
+        {slug: 'haste', cost: 50},
+        {slug: 'ammo', cost: 50},
+        {slug: 'projectile-barrier', cost: 50},
+        {slug: 'aphotic-shield', cost: 50},
+        {slug: 'increased-armor', cost: 50},
+        {slug: 'reactive-armor', cost: 50},
+        {slug: 'regeneration', cost: 50},
+        {slug: 'rapid-fire', cost: 50},
+        {slug: 'faster-projectile', cost: 50},
+        {slug: 'increased-damage', cost: 50},
+        {slug: 'return', cost: 50},
+        {slug: 'multi-shot', cost: 50},
+        {slug: 'homing-missile', cost: 50},
+        {slug: 'concussive-shell', cost: 50},
+        {slug: 'fireworks', cost: 50},
+        {slug: 'chain', cost: 50},
+        {slug: 'gold-coin', cost: 50},
+        {slug: 'increased-critical-chance', cost: 50},
+        {slug: 'kinetic-shell', cost: 50},
+        {slug: 'time-dilation-sphere', cost: 50}
     ];
+    
+    my.getSlug = function (slug) {
+        for (var i = 0; i < pSlugs.length; i++) {
+            if (pSlugs[i].slug === slug) {
+                return pSlugs[i];
+            }
+        }
+    };
+    
+    my.getSlugs = function () {
+        return pSlugs;
+    };
     
     my.create = function (name, x, y) {
         switch (name) {
@@ -78,7 +90,7 @@ var PUP = (function() {
     my.createRandom = function (x, y) {
         var index = Math.floor(Math.random() * pSlugs.length);
         
-        return PUP.create(pSlugs[index], x, y);
+        return PUP.create(pSlugs[index].slug, x, y);
     };
     
     // POWERUP OBJECTS
@@ -118,6 +130,9 @@ var PUP = (function() {
         
         this.use = function (tank) {
             var active = typeof tank.tds !== 'undefined';
+            
+            // play sfx
+            pup_tds_sound.get();
             
             if (!active) {
                 tank.tds = {};
