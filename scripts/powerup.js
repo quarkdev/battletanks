@@ -3,27 +3,27 @@ var PUP = (function() {
     var my = {};
     
     var pSlugs = [
-        {slug: 'random', cost: 50},
-        {slug: 'haste', cost: 50},
-        {slug: 'ammo', cost: 50},
-        {slug: 'projectile-barrier', cost: 50},
-        {slug: 'aphotic-shield', cost: 50},
-        {slug: 'increased-armor', cost: 50},
-        {slug: 'reactive-armor', cost: 50},
-        {slug: 'regeneration', cost: 50},
-        {slug: 'rapid-fire', cost: 50},
-        {slug: 'faster-projectile', cost: 50},
-        {slug: 'increased-damage', cost: 50},
-        {slug: 'return', cost: 50},
-        {slug: 'multi-shot', cost: 50},
-        {slug: 'homing-missile', cost: 50},
-        {slug: 'concussive-shell', cost: 50},
-        {slug: 'fireworks', cost: 50},
-        {slug: 'chain', cost: 50},
-        {slug: 'gold-coin', cost: 50},
-        {slug: 'increased-critical-chance', cost: 50},
-        {slug: 'kinetic-shell', cost: 50},
-        {slug: 'time-dilation-sphere', cost: 50}
+        {slug: 'random', cost: 10, desc: 'Activates a random powerup on use.'},
+        {slug: 'haste', cost: 20, desc: 'Increases the movement speed by 100, chassis rotation speed by 20, and turret traverse speed by 40.'},
+        {slug: 'ammo', cost: 50, desc: 'Increases ammunition.'},
+        {slug: 'projectile-barrier', cost: 100, desc: 'Incoming projectiles are repurposed into a deadly ring surrounding the host tank. +1 invulnerability.'},
+        {slug: 'aphotic-shield', cost: 100, desc: 'Incoming projectiles are absorbed and released after shield expires. +1 invulnerability.'},
+        {slug: 'increased-armor', cost: 5, desc: 'Increases armor by 50 per stack.'},
+        {slug: 'reactive-armor', cost: 30, desc: 'Each hit received increases armor by 20.'},
+        {slug: 'regeneration', cost: 20, desc: 'Regenerates 5% of health per second until maximum or host is hit.'},
+        {slug: 'rapid-fire', cost: 30, desc: 'Increases firing rate by 5 rounds a second per stack.'},
+        {slug: 'faster-projectile', cost: 5, desc: 'Increases projectile speed by 200 per stack.'},
+        {slug: 'increased-damage', cost: 5, desc: 'Increases damage by 50 per stack.'},
+        {slug: 'return', cost: 20, desc: 'Each projectile hit received is returned to it\'s origin.'},
+        {slug: 'multi-shot', cost: 50, desc: 'Fires 2 extra projectiles per stack. Maximum of 16 stacks.'},
+        {slug: 'homing-missile', cost: 30, desc: 'Projectiles home into nearby targets. Default maximum tracking distance is 200 units.'},
+        {slug: 'concussive-shell', cost: 40, desc: 'Applies a stacking slow on hit. Slow amount is 5 per hit.'},
+        {slug: 'fireworks', cost: 10, desc: 'Projectiles explode into multiple smaller projectiles after reaching 440-560 units terminus distance. Each lesser projectile deal 25% of the host projectile\'s damage.'},
+        {slug: 'chain', cost: 30, desc: 'Projectiles jump to nearby tanks. Maximum jump distance is 300 units. Maximum of 4 jumps.'},
+        {slug: 'gold-coin', cost: 50, desc: 'Gives 50 gold.'},
+        {slug: 'increased-critical-chance', cost: 40, desc: 'Increases critical hit chance by 5% per stack.'},
+        {slug: 'kinetic-shell', cost: 30, desc: 'Adds a knockback to projectile attacks. Knockback distance is 5 units, resets movement velocities to zero on hit.'},
+        {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank.'}
     ];
     
     my.getSlug = function (slug) {

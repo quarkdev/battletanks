@@ -128,8 +128,9 @@ TANK.consumable = (function() {
                             <img class="flip-vertical" src="' + PowerUpImages.get(pups[i].slug).src + '" onclick="TANK.consumable.buy(\'' + pups[i].slug + '\', $(this).parent().children(\'.buyout-multiplier\').val());" />\
                             <span class="consumable-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + pups[i].cost + '</span>\
                             <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
-                            <div class="consumable-hover-box" style="position: absolute; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
+                            <div class="consumable-hover-box" style="position: absolute; width: 220px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
                                 <b>' + UTIL.toTitleCase(pups[i].slug.split('-').join(' ')) + '</b>\
+                                <p>' + pups[i].desc + '</p>\
                             </div>\
                         </div>';
             }
