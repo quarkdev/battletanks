@@ -63,8 +63,8 @@ TANK.upgrade = (function () {
 
             for (var key in upgrades) {
                 upgrades[key].level = 0;
-                box += '<div id="u-passive-' + upgrades[key].id + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onclick="$(this).find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\', $(this).children(\'.buyout-multiplier\').val()));" onmouseover="$(this).children(\'.upgrade-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.upgrade-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
-                            <img class="flip-vertical" src="' + upgrades[key].image + '" />\
+                box += '<div id="u-passive-' + upgrades[key].id + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onmouseover="$(this).children(\'.upgrade-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.upgrade-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
+                            <img class="flip-vertical" src="' + upgrades[key].image + '" onclick="$(this).parent().find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\', $(this).parent().children(\'.buyout-multiplier\').val()));" />\
                             <span class="upgrade-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + upgrades[key].cost + '</span>\
                             <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
                             <div class="upgrade-hover-box" style="position: absolute; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
@@ -78,7 +78,7 @@ TANK.upgrade = (function () {
         },
         buy : function (key, size) {
             /* Acquire the upgrade in exchange for a fixed cost. */
-            
+            console.log(size);
             size = parseInt(size); // clean size var
 
             // Check if player can afford
@@ -639,7 +639,8 @@ Tank.prototype.hit = function (projectile) {
     var mod_damage = critical_hit ? dmg_base_roll*p.critMultiplier : dmg_base_roll; // damage after mods/crit
     var oldShield = t.shield;
     var end_damage = mod_damage - oldShield;
-    end_damage = t.invulnerable > 0 ? 0 : end_damage/t.armor;
+    var damage_reduction = ((0.06 * t.armor) / (1 + 0.06 * t.armor));
+    end_damage = t.invulnerable > 0 ? 0 : end_damage - (end_damage * damage_reduction);
     t.shield = t.invulnerable > 0 ? oldShield : t.shield - mod_damage;
     t.shield = t.shield < 0 ? 0 : t.shield;
     

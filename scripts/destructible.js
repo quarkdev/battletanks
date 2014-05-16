@@ -31,7 +31,8 @@ Destructible.prototype.hit = function (projectile) {
     var raw_damage = p.damage; // raw damage
     var dmg_base_roll = Math.floor((Math.random() * max) + min);
     var mod_damage = critical_hit ? dmg_base_roll*2.0 : dmg_base_roll; // damage after mods/crit
-    var end_damage = mod_damage/d.armor;
+    var damage_reduction = ((0.06 * d.armor) / (1 + 0.06 * d.armor));
+    var end_damage = mod_damage - (mod_damage * damage_reduction);
         
     d.health = d.health < end_damage ? 0 : d.health - end_damage;
     
