@@ -4,16 +4,16 @@ local play only, websockets-based multiplayer to come
 
 ### Controls
 
-[Up] = Accelerate
-[Down] = Decelerate
-[Left] = Turn left
-[Right] = Turn right
-[LeftClick] = Fire
+* [Up] = Accelerate
+* [Down] = Decelerate
+* [Left] = Turn left
+* [Right] = Turn right
+* [LeftClick] = Fire
 
-[Alt] + [U] = Show Upgrades Screen
-[Alt] + [C] = Show Consumables Screen
+* [Alt] + [U] = Show Upgrades Screen
+* [Alt] + [C] = Show Consumables Screen
 
-[Num(1-5)] = Use Consumables
+* [Num(1-5)] = Use Consumables
 
 
 ### LIVE DEMO
