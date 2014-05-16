@@ -123,6 +123,7 @@ TANK.consumable = (function() {
 
             var pups = PUP.getSlugs();
             for (var i = 0; i < pups.length; i++) {
+                if (pups[i].slug === 'gold-coin' || pups[i].slug === 'ammo') continue; // exclude gold coin and ammo powerups
                 box += '<div id="c-powerup-' + i + '" class="consumable-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onmouseover="$(this).children(\'.consumable-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.consumable-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
                             <img class="flip-vertical" src="' + PowerUpImages.get(pups[i].slug).src + '" onclick="TANK.consumable.buy(\'' + pups[i].slug + '\', $(this).parent().children(\'.buyout-multiplier\').val());" />\
                             <span class="consumable-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + pups[i].cost + '</span>\
