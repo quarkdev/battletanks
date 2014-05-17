@@ -47,7 +47,7 @@ Projectile.prototype.update = function (modifier) {
     }
     else {
         // Check if it hit a tank.
-        var result = this._hasHitTank(tanks, p.oX, p.oY);
+        var result = this._hasHitTank(tanks, p.oX, p.oY, lastX, lastY);
         if (result.hit === true) {
             p.active = false;
             GLOBALS.flags.clean.projectiles++;
@@ -124,17 +124,25 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lastX,
     return { hit: false, poi: null, sideH: null, destructible: null };
 };
 
-Projectile.prototype._hasHitTank = function (tanks, x, y) {
+Projectile.prototype._hasHitTank = function (tanks, x, y, lastX, lastY) {
     for (var i = 0; i < tanks.length; i++) {
-        if (tanks[i].config.active === false) continue; // Skip inactive tanks
+        var t = tanks[i].config;
+        if (t.active === false) continue; // Skip inactive tanks
     
         // let's check if they're even remotely colliding
-        if (!UTIL.geometry.pointLiesInsidePointSquare([x, y], [tanks[i].config.oX, tanks[i].config.oY], tanks[i].config.width + tanks[i].config.width/2)) {
+        if (!UTIL.geometry.pointLiesInsidePointSquare([x, y], [t.oX, t.oY], t.width + t.width/2)) {
             // nope they're too far to even collide, check the next one
             continue;
         }
     
-        if (UTIL.geometry.pointInsideRectangle({w: tanks[i].config.width, h: tanks[i].config.height, a: tanks[i].config.hAngle, x: tanks[i].config.oX, y: tanks[i].config.oY}, {x: x, y: y})) {
+        /*// check using simple point inside rect method
+        if (UTIL.geometry.pointInsideRectangle({w: t.width, h: t.height, a: t.hAngle, x: t.oX, y: t.oY}, {x: x, y: y})) {
+            return { hit: true, tank: tanks[i] };
+        }*/
+        
+        // line-square intersection check
+        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.cRadius, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY });
+        if (lineX.yes) {
             return { hit: true, tank: tanks[i] };
         }
     }
