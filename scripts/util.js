@@ -463,9 +463,10 @@ UTIL.geometry = (function() {
     *       sideIndex - an integer representing the side of impact
     *       poi       - an object representing the point of impact                
     */
-    my.lineAxPaSquareIntersect = function (square, line) {    
+    my.lineAxPaSquareIntersect = function (square, line, angle) {    
         // First retrieve the four line segments that compose the square.
-        var lines = _getLineSegmentsFromSquare(square.s, square.x, square.y),
+        angle = angle || 0;
+        var lines = _getLineSegmentsFromSquare(square.s, square.x, square.y, angle),
             lastPoint = new Point(line.Bx, line.By),
             currPoint = new Point(line.Ax, line.Ay),
             incidentLine = new Line(lastPoint, currPoint),
@@ -709,19 +710,26 @@ UTIL.geometry = (function() {
     * Parameters:
     *   side - length of the square's side
     *   x, y - coordinates of the square's center point
+    *   angle - square rotation angle
     *
     * Returns:
     *   an array of lines following the format: [Top, Right, Bottom, Left]
     */
-    var _getLineSegmentsFromSquare = function (side, x, y) {
-        var hs = side/2.0;
+    var _getLineSegmentsFromSquare = function (side, x, y, angle) {
+        angle = angle || 0;
+        var halfDiagonal = Math.sqrt(Math.pow(side, 2) * 2) / 2;
         
-        var pTL = new Point(x - hs, y + hs), // Top left.
-            pTR = new Point(x + hs, y + hs), // Top right.
-            pBR = new Point(x + hs, y - hs), // Bottom right.
-            pBL = new Point(x - hs, y - hs); // Bottom left.
+        var pTL = my.getPointAtAngleFrom(x, y, angle + 135, halfDiagonal); // Top left.
+        var pTR = my.getPointAtAngleFrom(x, y, angle + 45, halfDiagonal); // Top right.
+        var pBR = my.getPointAtAngleFrom(x, y, angle + 225, halfDiagonal); // Bottom right.
+        var pBL = my.getPointAtAngleFrom(x, y, angle + 315, halfDiagonal); // Bottom left.
             
-        return [new Line(pTL, pTR), new Line(pTR, pBR), new Line(pBL, pBR), new Line(pTL, pBL)];
+        return [
+            new Line({x: pTL[0], y: pTL[1]}, {x: pTR[0], y: pTR[1]}),
+            new Line({x: pTR[0], y: pTR[1]}, {x: pBR[0], y: pBR[1]}),
+            new Line({x: pBL[0], y: pBL[1]}, {x: pBR[0], y: pBR[1]}),
+            new Line({x: pTL[0], y: pTL[1]}, {x: pBL[0], y: pBL[1]})
+        ];
     };
     
     var _getSlopeOfLine = function(line) {

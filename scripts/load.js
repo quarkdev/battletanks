@@ -14,6 +14,9 @@ var LOAD = (function () {
         visualeffects.length = 0;
         lights.length = 0;
         
+        // make sure there are no active timers
+        UTIL.timer.killAll();
+        
         GLOBALS.botCount = 0; // reset botcount
         GLOBALS.flags.initSpawn = false;
         var _x, _y;

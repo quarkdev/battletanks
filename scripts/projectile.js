@@ -135,13 +135,13 @@ Projectile.prototype._hasHitTank = function (tanks, x, y, lastX, lastY) {
             continue;
         }
     
-        /*// check using simple point inside rect method
+        // check using simple point inside rect method
         if (UTIL.geometry.pointInsideRectangle({w: t.width, h: t.height, a: t.hAngle, x: t.oX, y: t.oY}, {x: x, y: y})) {
             return { hit: true, tank: tanks[i] };
-        }*/
+        }
         
         // line-square intersection check
-        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.cRadius, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY });
+        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.width, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY }, t.hAngle);
         if (lineX.yes) {
             return { hit: true, tank: tanks[i] };
         }
