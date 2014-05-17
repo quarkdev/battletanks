@@ -22,8 +22,8 @@ var PUP = (function() {
         {slug: 'chain', cost: 30, desc: 'Projectiles jump to nearby tanks. Maximum jump distance is 300 units. Maximum of 4 jumps.'},
         {slug: 'gold-coin', cost: 50, desc: 'Gives 50 gold.'},
         {slug: 'increased-critical-chance', cost: 40, desc: 'Increases critical hit chance by 5% per stack.'},
-        {slug: 'kinetic-shell', cost: 30, desc: 'Adds a knockback to projectile attacks. Knockback distance is 5 units, resets movement velocities to zero on hit.'},
-        {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank.'}
+        {slug: 'kinetic-shell', cost: 30, desc: 'Adds a knockback to projectile attacks. Knockback distance is (projectile speed / 100) units, resets movement velocities to zero on hit.'},
+        {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank by 90%.'}
     ];
     
     my.getSlug = function (slug) {
@@ -251,7 +251,7 @@ var PUP = (function() {
                     if (p.objectHit.type !== 'tank') { return; }
                     
                     // knock tank
-                    var newPos = UTIL.geometry.getPointAtAngleFrom(p.objectHit.obj.config.oX, p.objectHit.obj.config.oY, p.angle, 5);
+                    var newPos = UTIL.geometry.getPointAtAngleFrom(p.objectHit.obj.config.oX, p.objectHit.obj.config.oY, p.angle, p.speed/100);
                     
                     // correct knockback point if tank goes out of world bounds
                     if (newPos[0] < 0 + p.objectHit.obj.config.cRadius) {
