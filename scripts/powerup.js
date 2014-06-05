@@ -116,6 +116,10 @@ var PUP = (function() {
         };
     }
     
+    function Nuke(x, y) {
+        /* Fires a single projectile that explodes after travelling a set distance or on impact. Deals massive AOE damage. */
+    }
+    
     function TimeDilationSphere(x, y) {
         /* Slows down projectiles that enter radius. */
         this.config = {

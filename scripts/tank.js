@@ -713,16 +713,16 @@ Tank.prototype.draw = function (ctx, xView, yView) {
     ctx.fillRect((t.oX - shieldbarLen/2) - xView, (t.oY + t.cRadius + 12) - yView, shieldbarLen, 4);
 
     if (decPercent >= 0.75) {
-        ctx.fillStyle = '66CD00';
+        ctx.fillStyle = '#66CD00';
     }
     else if (decPercent >= 0.5) {
-        ctx.fillStyle = 'FFFF00';
+        ctx.fillStyle = '#FFFF00';
     }
     else if (decPercent >= 0.25) {
-        ctx.fillStyle = 'FE4902';
+        ctx.fillStyle = '#FE4902';
     }
     else {
-        ctx.fillStyle = 'FF0000';
+        ctx.fillStyle = '#FF0000';
     }
     // draw health bar
     ctx.fillRect((t.oX - lifebarLen/2) - xView, (t.oY + t.cRadius + 8) - yView, lifebarLen, 4);
