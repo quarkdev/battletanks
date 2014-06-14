@@ -91,10 +91,13 @@ function readMsg() {
                 /* Check if bot can see player, if yes, return last known player location {los: true, x: x, y: y} else {los: false, x: null, y: null} */
                 var lkl = checkLineOfSight(messageReceived.playerLoc, messageReceived.botLoc, messageReceived.lastKnown);
                 
-                reply.cmd = 'get_los_ok';
-                reply.lkl = lkl;
-                
-                postMessage(JSON.stringify(reply));
+                if (lkl.los) {
+                    // reply only if there is line of sight
+                    reply.cmd = 'get_los_ok';
+                    reply.lkl = lkl;
+                    
+                    postMessage(JSON.stringify(reply));
+                }
                 break;
             default:
                 break;
