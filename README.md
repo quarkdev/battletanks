@@ -9,8 +9,8 @@ local play only, websockets-based multiplayer to come
 * [Left] = Turn left
 * [Right] = Turn right
 * [LeftClick] = Fire
-* [Alt u] = Show Upgrades Screen
-* [Alt c] = Show Consumables Screen
+* [Alt] = Show Upgrades Screen
+* [Alt] = Show Consumables Screen
 * [Num(1-5)] = Use Consumables
 
 ### LIVE DEMO
