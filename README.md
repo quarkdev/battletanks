@@ -8,9 +8,9 @@ local play only, websockets-based multiplayer to come
 * <kbd>&darr;</kbd> = Decelerate
 * <kbd>&larr;</kbd> = Turn left
 * <kbd>&rarr;</kbd> = Turn right
-* Left Click = Fire
-* <kbd>alt</kbd> + <kbd>u</kbd> = Show Upgrades Screen
-* <kbd>alt</kbd> = <kbd>c</kbd> Consumables Screen
+* Left Mouse Click = Fire
+* <kbd>Alt</kbd> + <kbd>U</kbd> = Show Upgrades Screen
+* <kbd>Alt</kbd> = <kbd>C</kbd> Consumables Screen
 * <kbd>1</kbd> - <kbd>5</kbd> = Use Consumables
 
 ### LIVE DEMO
