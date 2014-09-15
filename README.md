@@ -10,7 +10,7 @@ local play only, websockets-based multiplayer to come
 * <kbd>&rarr;</kbd> = Turn right
 * Left Mouse Click = Fire
 * <kbd>Alt</kbd> + <kbd>U</kbd> = Show Upgrades Screen
-* <kbd>Alt</kbd> = <kbd>C</kbd> Consumables Screen
+* <kbd>Alt</kbd> + <kbd>C</kbd> Consumables Screen
 * <kbd>1</kbd> - <kbd>5</kbd> = Use Consumables
 
 ### LIVE DEMO
