@@ -78,6 +78,12 @@ TANK.upgrade = (function () {
         buy : function (key, size) {
             /* Acquire the upgrade in exchange for a fixed cost. */
             size = parseInt(size); // clean size var
+            
+            if (size < 1) {
+                // prevent neutral/negative multipliers
+                alert('Invalid Multiplier. Choose values > 0');
+                return;
+            }
 
             // Check if player can afford
             if (tanks[0].config.coins >= upgrades[key].cost * size) {
