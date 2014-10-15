@@ -81,7 +81,6 @@ TANK.upgrade = (function () {
             
             if (size < 1) {
                 // prevent neutral/negative multipliers
-                alert('Invalid Multiplier. Choose values > 0');
                 return;
             }
 
@@ -146,6 +145,11 @@ TANK.consumable = (function() {
         buy : function (key, size) {
             /* Acquire the consumable for a fixed cost. */
             size = parseInt(size);
+            
+            if (size < 1) {
+                // prevent neutral/negative multipliers
+                return;
+            }
             
             // Check if player can afford
             var pup = PUP.getSlug(key);
