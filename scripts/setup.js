@@ -232,6 +232,7 @@ $(document).ready(function () {
         // then finally go to main menu
         progressTextDone.innerHTML = '';
         terrain = TerrainImages.get('default'); // default terrain
+        //MAP.generateTerrain(); // generate random terrain
         $('#progress').hide();
         progressTextDone.style.display = 'none';
         menu();

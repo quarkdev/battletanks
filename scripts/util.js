@@ -241,17 +241,8 @@ var UTIL = (function () {
             millisecSince += 50;
             
             if (progressBar.value === 100) {
-                var gameStartCount = setInterval(function () {
-                    progressText.innerHTML = 'Game starting in ' + (gsc - 1) + '...';
-                    gsc--;
-                    if (gsc === 1) {
-                        setTimeout(function() {
-                            callback();
-                        }, 1000);
-                        clearInterval(gameStartCount);
-                    }
-                }, 1000);
                 clearInterval(preGameDelay);
+                callback();
             }
         }, 50);
     };

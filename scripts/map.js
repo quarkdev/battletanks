@@ -1,4 +1,15 @@
 /* Module: MAP */
+Array.matrix = function(numrows, numcols, initial){
+   var arr = [];
+   for (var i = 0; i < numrows; ++i){
+      var columns = [];
+      for (var j = 0; j < numcols; ++j){
+         columns[j] = initial;
+      }
+      arr[i] = columns;
+    }
+    return arr;
+}
 
 var MAP = (function () {
     var my = {};
@@ -555,20 +566,213 @@ var MAP = (function () {
         bufferCanvas.width = WORLD_WIDTH;
         bufferCanvas.height = WORLD_HEIGHT;
         var bufferCtx = bufferCanvas.getContext('2d');
+        var shadowTable = Array.matrix(maxRows, maxCols, 'G');
         
         CANVAS.setup(bufferCanvas, bufferCtx);
-        
+
         // fill the canvas with grass
         for (var row = 0; row < maxRows; row++) {
             for (var col = 0; col < maxCols; col++) {
                 x = col * 32;
                 y = row * 32;
                 bufferCtx.translate(x, y);
-                bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_13'), -16, -16);
+                bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_13'), 0, 0);
                 bufferCtx.translate(-x, -y);
             }
         }
-        
+
+        var r, c;
+        var generations = Math.floor((Math.random() * 200) + 100);
+        // get random point
+        for (var i = 0; i < generations; i++) {
+            r = Math.floor(Math.random() * (maxRows - 5) + 3);
+            c = Math.floor(Math.random() * (maxCols - 5) + 3);
+            // check if there are master tiles within 1 tile
+            var validPos = false;
+            var tile1 = false, tile2 = false;
+            //console.log('r: '+r+' c: '+c);
+            if (shadowTable[r+1][c] === 'M' || shadowTable[r+1][c+1] === 'M' || shadowTable[r][c+1] === 'M' || shadowTable[r-1][c+1] === 'M' || shadowTable[r-1][c] === 'M' || shadowTable[r-1][c-1] === 'M' || shadowTable[r][c-1] === 'M' || shadowTable[r+1][c-1] === 'M') {
+                tile1 = true;
+            }
+            
+            if (shadowTable[r+2][c] === 'M' && shadowTable[r+2][c+2] === 'M' && shadowTable[r][c+2] === 'M' && shadowTable[r-2][c+2] === 'M' && shadowTable[r-2][c] === 'M' && shadowTable[r-2][c-2] === 'M' && shadowTable[r][c-2] === 'M' && shadowTable[r+2][c-2] === 'M' && shadowTable[r+2][c+1] === 'M' && shadowTable[r+1][c+2] === 'M' && shadowTable[r-1][c+2] === 'M' && shadowTable[r-2][c+1] === 'M' && shadowTable[r-2][c-1] === 'M' && shadowTable[r-1][c-2] === 'M' && shadowTable[r+1][c-2] === 'M' && shadowTable[r+2][c-1] === 'M') {
+                tile2 = true;
+            }
+
+            validPos = tile1 || (tile1 && tile2) || (!tile1 && !tile2);
+
+            if ((shadowTable[r+1][c] !== 'M' && shadowTable[r+2][c] === 'M')  ||
+                (shadowTable[r+1][c+1] !== 'M' && shadowTable[r+2][c+2] === 'M') ||
+                (shadowTable[r][c+1] !== 'M' && shadowTable[r][c+2] === 'M') ||
+                (shadowTable[r-1][c+1] !== 'M' && shadowTable[r-2][c+2] === 'M') ||
+                (shadowTable[r-1][c] !== 'M' && shadowTable[r-2][c] === 'M') ||
+                (shadowTable[r-1][c-1] !== 'M' && shadowTable[r-2][c-2] === 'M') ||
+                (shadowTable[r][c-1] !== 'M' && shadowTable[r][c-2] === 'M') ||
+                (shadowTable[r+1][c-1] !== 'M' && shadowTable[r+2][c-2] === 'M')) {
+                validPos = false;
+            }
+
+            if (!validPos) {
+                continue;
+            }
+
+            // origin
+            y = r * 32;
+            x = c * 32;
+            bufferCtx.translate(x, y);
+            bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_07'), 0, 0);
+            bufferCtx.translate(-x, -y);
+            shadowTable[r][c] = 'M';
+
+            // north
+            y = (r+1) * 32;
+            x = c * 32;
+            switch (shadowTable[r+1][c]) {
+                case 'M':
+                    // do nothing if master tile
+                    break;
+                case 'W':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_19'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r+1][c] = 'C';
+                    break;
+                case 'E':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_18'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r+1][c] = 'C';
+                    break;
+                default:
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_10'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r+1][c] = 'N';
+                    break;
+            }
+
+            // south
+            y = (r-1) * 32;
+            x = c * 32;
+            switch (shadowTable[r-1][c]) {
+                case 'M':
+                    // do nothing if master tile
+                    break;
+                case 'W':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_17'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r-1][c] = 'C';
+                    break;
+                case 'E':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_20'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r-1][c] = 'C';
+                    break;
+                default:
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_03'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r-1][c] = 'S';
+                    break;
+            }
+
+            // west
+            y = r * 32;
+            x = (c-1) * 32;
+            switch (shadowTable[r][c-1]) {
+                case 'M':
+                    // do nothing if master tile
+                    break;
+                case 'N':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_17'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r][c-1] = 'C';
+                    break;
+                case 'S':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_18'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r][c-1] = 'C';
+                    break;
+                default:
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_06'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r][c-1] = 'W';
+                    break;
+            }
+
+            // east
+            y = r * 32;
+            x = (c+1) * 32;
+            switch (shadowTable[r][c+1]) {
+                case 'M':
+                    // do nothing if master tile
+                    break;
+                case 'N':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_19'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r][c+1] = 'C';
+                    break;
+                case 'S':
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_20'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r][c+1] = 'C';
+                    break;
+                default:
+                    bufferCtx.translate(x, y);
+                    bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_08'), 0, 0);
+                    bufferCtx.translate(-x, -y);
+                    shadowTable[r][c+1] = 'E';
+                    break;
+            }
+
+            // northwest
+            y = (r+1) * 32;
+            x = (c-1) * 32;
+            if (shadowTable[r+1][c-1] === 'G') {
+                bufferCtx.translate(x, y);
+                bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_09'), 0, 0);
+                bufferCtx.translate(-x, -y);
+                shadowTable[r+1][c-1] = 'C';
+            }
+
+            // northeast
+            y = (r+1) * 32;
+            x = (c+1) * 32;
+            if (shadowTable[r+1][c+1] === 'G') {
+                bufferCtx.translate(x, y);
+                bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_11'), 0, 0);
+                bufferCtx.translate(-x, -y);
+                shadowTable[r+1][c+1] = 'C';
+            }
+
+            // southwest
+            y = (r-1) * 32;
+            x = (c-1) * 32;
+            if (shadowTable[r-1][c-1] === 'G') {
+                bufferCtx.translate(x, y);
+                bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_02'), 0, 0);
+                bufferCtx.translate(-x, -y);
+                shadowTable[r-1][c-1] = 'C';
+            }
+
+            // southeast
+            y = (r-1) * 32;
+            x = (c+1) * 32;
+            if (shadowTable[r-1][c+1] === 'G') {
+                bufferCtx.translate(x, y);
+                bufferCtx.drawImage(TerrainImages.get('dirt_and_grass_04'), 0, 0);
+                bufferCtx.translate(-x, -y);
+                shadowTable[r-1][c+1] = 'C';
+            }
+        }
+
         var img = new Image();
         img.onload = function () {
             terrain = img;

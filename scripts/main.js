@@ -339,7 +339,10 @@ var editorUpdate = function() {
         MAP.removeObject();
     }
 
-    camera.update();
+    if (!(16 in keysDown)) {
+        // prevents the camera from moving while on mouse placement mode
+        camera.update();
+    }
 };
 
 // DRAW SCENE
@@ -567,10 +570,7 @@ var start = function (player_name) {
     
     var workersCreated = LOAD.gameSettings(player_name);
     workersCreated = workersCreated > 0 ? workersCreated : 1;
-    var pseudoInc = 5 / workersCreated;
-    
-    
-    terrain = TerrainImages.get('default');
+    var pseudoInc = 100 / workersCreated;
     
     UTIL.fancyProgress(pseudoInc, function() {
         $('#progress').fadeOut();
