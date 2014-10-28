@@ -89,7 +89,7 @@ UTIL.asset.queue('image', ['grass-grid', 'images/editor/grid.png', EditorImages]
 
 // Minimap images
 MinimapImages = new ImageLibrary();
-UTIL.asset.queue('image', ['player-map-object', 'images/ui/player-map-object.png', MinimapImages]);
+UTIL.asset.queue('image', ['player-map-object', 'images/ui/view.png', MinimapImages]);
 
 // Spritesheet images
 SpriteSheetImages = new ImageLibrary();

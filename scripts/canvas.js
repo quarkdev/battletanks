@@ -33,7 +33,7 @@ var CANVAS = (function () {
                     var toRadians = Math.PI/180;
                     minimapCtx.translate(_x, _y);
                     minimapCtx.rotate(tanks[i].config.hAngle * toRadians);
-                    minimapCtx.drawImage(MinimapImages.get('player-map-object'), -8, -8);
+                    minimapCtx.drawImage(MinimapImages.get('player-map-object'), -64, -64);
                     minimapCtx.rotate(-tanks[i].config.hAngle * toRadians);
                     minimapCtx.translate(-_x, -_y);
                 }
