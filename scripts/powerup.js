@@ -136,8 +136,8 @@ var PUP = (function() {
             // add the calldown effect
             var vfx = new VisualEffect({
                 name: 'nuke_calldown',
-                oX: x,
-                oY: y,
+                oX: tank.config.oX,
+                oY: tank.config.oY,
                 width: 64,
                 height: 64,
                 scaleW: 64,
@@ -205,6 +205,21 @@ var PUP = (function() {
                     // if tank has 0 health, destroy the tank
                     if (tanks[i].config.health === 0) {
                         tanks[i].death();
+                    }
+                }
+                
+                for (var i = 0; i < destructibles.length; i++) {
+                    // calculate the damage dealt
+                    var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: destructibles[i].config.oX, y: destructibles[i].config.oY});
+                    var dmg = 8000 - (d * 10);
+                    dmg = dmg < 0 ? 0 : dmg;
+                    
+                    destructibles[i].config.health -= dmg;
+                    destructibles[i].config.health = destructibles[i].config.health < 0 ? 0 : destructibles[i].config.health;
+                    
+                    // if tank has 0 health, destroy the tank
+                    if (destructibles[i].config.health === 0) {
+                        destructibles[i].death();
                     }
                 }
             }, 6000);
