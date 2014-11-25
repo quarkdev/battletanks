@@ -193,6 +193,10 @@ var PUP = (function() {
                 new Timer(function () { flash.config.active = false; }, 2200);
                 
                 for (var i = 0; i < tanks.length; i++) {
+                    if (tanks[i].config.invulnerable > 0) {
+                        continue;
+                    }
+                
                     // calculate the damage dealt
                     var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
                     var dmg = 8000 - (d * 10);
@@ -213,6 +217,10 @@ var PUP = (function() {
                 }
                 
                 for (var i = 0; i < destructibles.length; i++) {
+                    if (destructibles[i].config.mod === 'immortal') {
+                        continue;
+                    }
+                
                     // calculate the damage dealt
                     var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: destructibles[i].config.oX, y: destructibles[i].config.oY});
                     var dmg = 8000 - (d * 10);
