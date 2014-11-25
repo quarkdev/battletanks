@@ -197,7 +197,6 @@ var PUP = (function() {
                     var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
                     var dmg = 8000 - (d * 10);
                     dmg = dmg < 0 ? 0 : dmg;
-                    console.log(dmg);
                     
                     tanks[i].config.health -= dmg;
                     tanks[i].config.health = tanks[i].config.health < 0 ? 0 : tanks[i].config.health;
