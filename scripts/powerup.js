@@ -173,24 +173,52 @@ var PUP = (function() {
 
                 lights.push(flash);
                 new Timer(function () { flash.config.radius = 2000; flash.config.intensity -= 0.05; }, 500);
-                new Timer(function () { flash.config.radius = 1900; flash.config.intensity -= 0.05; }, 600);
-                new Timer(function () { flash.config.radius = 1800; flash.config.intensity -= 0.05; }, 700);
-                new Timer(function () { flash.config.radius = 1700; flash.config.intensity -= 0.05; }, 800);
-                new Timer(function () { flash.config.radius = 1600; flash.config.intensity -= 0.05; }, 900);
-                new Timer(function () { flash.config.radius = 1500; flash.config.intensity -= 0.05; }, 1000);
-                new Timer(function () { flash.config.radius = 1400; flash.config.intensity -= 0.05; }, 1100);
-                new Timer(function () { flash.config.radius = 1200; flash.config.intensity -= 0.05; }, 1200);
-                new Timer(function () { flash.config.radius = 1000; flash.config.intensity -= 0.05; }, 1300);
-                new Timer(function () { flash.config.radius = 800; flash.config.intensity -= 0.05; }, 1400);
-                new Timer(function () { flash.config.radius = 790; flash.config.intensity -= 0.05; }, 1500);
-                new Timer(function () { flash.config.radius = 780; flash.config.intensity -= 0.05; }, 1600);
-                new Timer(function () { flash.config.radius = 770; flash.config.intensity -= 0.05; }, 1700);
-                new Timer(function () { flash.config.radius = 760; flash.config.intensity -= 0.05; }, 1800);
-                new Timer(function () { flash.config.radius = 750; flash.config.intensity -= 0.05; }, 1900);
-                new Timer(function () { flash.config.radius = 740; flash.config.intensity -= 0.05; }, 2000);
-                new Timer(function () { flash.config.radius = 730; flash.config.intensity -= 0.05; }, 2100);
-                new Timer(function () { flash.config.radius = 720; flash.config.intensity -= 0.05; }, 2200);
-                new Timer(function () { flash.config.active = false; }, 2200);
+                new Timer(function () { flash.config.radius = 1900; flash.config.intensity -= 0.05; }, 550);
+                new Timer(function () { flash.config.radius = 1800; flash.config.intensity -= 0.05; }, 600);
+                new Timer(function () { flash.config.radius = 1700; flash.config.intensity -= 0.05; }, 650);
+                new Timer(function () { flash.config.radius = 1600; flash.config.intensity -= 0.05; }, 700);
+                new Timer(function () { flash.config.radius = 1500; flash.config.intensity -= 0.05; }, 750);
+                new Timer(function () { flash.config.radius = 1400; flash.config.intensity -= 0.05; }, 800);
+                new Timer(function () { flash.config.radius = 1200; flash.config.intensity -= 0.05; }, 850);
+                new Timer(function () { flash.config.radius = 1000; flash.config.intensity -= 0.05; }, 900);
+
+                new Timer(function () { flash.config.radius = 800; flash.config.intensity -= 0.0125; }, 1400);
+                new Timer(function () { flash.config.radius = 795; flash.config.intensity -= 0.0125; }, 1450);
+                new Timer(function () { flash.config.radius = 790; flash.config.intensity -= 0.0125; }, 1500);
+                new Timer(function () { flash.config.radius = 785; flash.config.intensity -= 0.0125; }, 1550);
+                new Timer(function () { flash.config.radius = 780; flash.config.intensity -= 0.0125; }, 1600);
+                new Timer(function () { flash.config.radius = 775; flash.config.intensity -= 0.0125; }, 1650);
+                new Timer(function () { flash.config.radius = 770; flash.config.intensity -= 0.0125; }, 1700);
+                new Timer(function () { flash.config.radius = 765; flash.config.intensity -= 0.0125; }, 1750);
+                new Timer(function () { flash.config.radius = 760; flash.config.intensity -= 0.0125; }, 1800);
+                new Timer(function () { flash.config.radius = 755; flash.config.intensity -= 0.0125; }, 1850);
+                new Timer(function () { flash.config.radius = 750; flash.config.intensity -= 0.0125; }, 1900);
+                new Timer(function () { flash.config.radius = 745; flash.config.intensity -= 0.0125; }, 1950);
+                new Timer(function () { flash.config.radius = 740; flash.config.intensity -= 0.0125; }, 2000);
+                new Timer(function () { flash.config.radius = 735; flash.config.intensity -= 0.0125; }, 2050);
+                new Timer(function () { flash.config.radius = 730; flash.config.intensity -= 0.0125; }, 2100);
+                new Timer(function () { flash.config.radius = 725; flash.config.intensity -= 0.0125; }, 2150);
+                new Timer(function () { flash.config.radius = 720; flash.config.intensity -= 0.0125; }, 2200);
+                
+                new Timer(function () { flash.config.radius = 715; flash.config.intensity -= 0.0125; }, 2250);
+                new Timer(function () { flash.config.radius = 710; flash.config.intensity -= 0.0125; }, 2300);
+                new Timer(function () { flash.config.radius = 705; flash.config.intensity -= 0.0125; }, 2350);
+                new Timer(function () { flash.config.radius = 700; flash.config.intensity -= 0.0125; }, 2400);
+                new Timer(function () { flash.config.radius = 695; flash.config.intensity -= 0.0125; }, 2450);
+                new Timer(function () { flash.config.radius = 690; flash.config.intensity -= 0.0125; }, 2500);
+                new Timer(function () { flash.config.radius = 685; flash.config.intensity -= 0.0125; }, 2550);
+                new Timer(function () { flash.config.radius = 680; flash.config.intensity -= 0.0125; }, 2600);
+                new Timer(function () { flash.config.radius = 675; flash.config.intensity -= 0.0125; }, 2650);
+                new Timer(function () { flash.config.radius = 670; flash.config.intensity -= 0.0125; }, 2700);
+                new Timer(function () { flash.config.radius = 665; flash.config.intensity -= 0.0125; }, 2750);
+                new Timer(function () { flash.config.radius = 660; flash.config.intensity -= 0.0125; }, 2800);
+                new Timer(function () { flash.config.radius = 655; flash.config.intensity -= 0.0125; }, 2850);
+                new Timer(function () { flash.config.radius = 650; flash.config.intensity -= 0.0125; }, 2900);
+                new Timer(function () { flash.config.radius = 645; flash.config.intensity -= 0.0125; }, 2950);
+                new Timer(function () { flash.config.radius = 640; flash.config.intensity -= 0.0125; }, 3000);
+                new Timer(function () { flash.config.radius = 635; flash.config.intensity -= 0.0125; }, 3050);
+
+                new Timer(function () { flash.config.active = false; }, 3050);
                 
                 for (var i = 0; i < tanks.length; i++) {
                     if (tanks[i].config.invulnerable > 0) {
