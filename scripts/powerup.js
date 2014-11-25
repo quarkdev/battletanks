@@ -23,7 +23,8 @@ var PUP = (function() {
         {slug: 'gold-coin', cost: 50, desc: 'Gives 50 gold.'},
         {slug: 'increased-critical-chance', cost: 40, desc: 'Increases critical hit chance by 5% per stack.'},
         {slug: 'kinetic-shell', cost: 30, desc: 'Adds a knockback to projectile attacks. Knockback distance is (projectile speed / 100) units, resets movement velocities to zero on hit.'},
-        {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank by 90%.'}
+        {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank by 90%.'},
+        {slug: 'nuke', cost: 1000, desc: 'Deals 8000 max pure damage to enemy tanks within effective radius.'}
     ];
     
     my.getSlug = function (slug) {
@@ -82,6 +83,8 @@ var PUP = (function() {
                 return new KineticShell(x, y);
             case 'time-dilation-sphere':
                 return new TimeDilationSphere(x, y);
+            case 'nuke':
+                return new Nuke(x, y);
             default:
                 break;
         }
@@ -118,6 +121,94 @@ var PUP = (function() {
     
     function Nuke(x, y) {
         /* Fires a single projectile that explodes after travelling a set distance or on impact. Deals massive AOE damage. */
+        this.config = {
+            name    : 'Nuke',
+            slug    : 'nuke',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('nuke')
+        };
+        
+        this.use = function (tank) {
+            // deal 8000 - (distance * 10) pure damage to enemy units
+            // add the calldown effect
+            var vfx = new VisualEffect({
+                name: 'nuke_calldown',
+                oX: x,
+                oY: y,
+                width: 64,
+                height: 64,
+                scaleW: 64,
+                scaleH: 64,
+                maxCols: 4,
+                maxRows: 4,
+                framesTillUpdate: 1,
+                loop: true,
+                spriteSheet: 'calldown'
+            });
+            
+            visualeffects.push(vfx);
+            
+            var loc = {
+                x: tank.config.oX,
+                y: tank.config.oY
+            };
+            
+            nuke_siren_sound.get();
+            
+            // deal damage to all tanks within 500 radius after 5 seconds
+            new Timer(function () {
+                vfx.end();
+                nuke_explosion_sound.get();
+                // show explosion flash
+                var flash = new Light({
+                    name        : 'nuke-flash',
+                    oX          : loc.x,
+                    oY          : loc.y,
+                    radius      : 2000,
+                    intensity   : 1
+                });
+
+                lights.push(flash);
+                new Timer(function () { flash.config.radius = 2000; flash.config.intensity -= 0.05; }, 500);
+                new Timer(function () { flash.config.radius = 1900; flash.config.intensity -= 0.05; }, 600);
+                new Timer(function () { flash.config.radius = 1800; flash.config.intensity -= 0.05; }, 700);
+                new Timer(function () { flash.config.radius = 1700; flash.config.intensity -= 0.05; }, 800);
+                new Timer(function () { flash.config.radius = 1600; flash.config.intensity -= 0.05; }, 900);
+                new Timer(function () { flash.config.radius = 1500; flash.config.intensity -= 0.05; }, 1000);
+                new Timer(function () { flash.config.radius = 1400; flash.config.intensity -= 0.05; }, 1100);
+                new Timer(function () { flash.config.radius = 1200; flash.config.intensity -= 0.05; }, 1200);
+                new Timer(function () { flash.config.radius = 1000; flash.config.intensity -= 0.05; }, 1300);
+                new Timer(function () { flash.config.radius = 800; flash.config.intensity -= 0.05; }, 1400);
+                new Timer(function () { flash.config.radius = 790; flash.config.intensity -= 0.05; }, 1500);
+                new Timer(function () { flash.config.radius = 780; flash.config.intensity -= 0.05; }, 1600);
+                new Timer(function () { flash.config.radius = 770; flash.config.intensity -= 0.05; }, 1700);
+                new Timer(function () { flash.config.radius = 760; flash.config.intensity -= 0.05; }, 1800);
+                new Timer(function () { flash.config.radius = 750; flash.config.intensity -= 0.05; }, 1900);
+                new Timer(function () { flash.config.radius = 740; flash.config.intensity -= 0.05; }, 2000);
+                new Timer(function () { flash.config.radius = 730; flash.config.intensity -= 0.05; }, 2100);
+                new Timer(function () { flash.config.radius = 720; flash.config.intensity -= 0.05; }, 2200);
+                new Timer(function () { flash.config.active = false; }, 2200);
+                
+                for (var i = 0; i < tanks.length; i++) {
+                    // calculate the damage dealt
+                    var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
+                    var dmg = 8000 - (d * 10);
+                    dmg = dmg < 0 ? 0 : dmg;
+                    console.log(dmg);
+                    
+                    tanks[i].config.health -= dmg;
+                    tanks[i].config.health = tanks[i].config.health < 0 ? 0 : tanks[i].config.health;
+                    
+                    // if tank has 0 health, destroy the tank
+                    if (tanks[i].config.health === 0) {
+                        tanks[i].death();
+                    }
+                }
+            }, 6000);
+        };
     }
     
     function TimeDilationSphere(x, y) {

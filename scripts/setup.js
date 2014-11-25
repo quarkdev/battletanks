@@ -67,6 +67,7 @@ UTIL.asset.queue('image', ['gold-coin', 'images/powerups/gold-coin.png', PowerUp
 UTIL.asset.queue('image', ['increased-critical-chance', 'images/powerups/increased-critical-chance.png', PowerUpImages]);
 UTIL.asset.queue('image', ['kinetic-shell', 'images/powerups/kinetic-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['time-dilation-sphere', 'images/powerups/time-dilation-sphere.png', PowerUpImages]);
+UTIL.asset.queue('image', ['nuke', 'images/powerups/nuke.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -107,6 +108,7 @@ UTIL.asset.queue('image', ['jagdpanther_recoil', 'images/tanks/jagdpanther/recoi
 UTIL.asset.queue('image', ['m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['widower_recoil', 'images/tanks/widower/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['calldown', 'images/spritesheets/calldown.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
@@ -129,6 +131,8 @@ gold_pick_sound    = new SoundPool('sounds/gold-pick.wav', 0.1, 20);
 button_hover_sound = new SoundPool('sounds/button_hover.mp3', 0.5, 8);
 button_click_sound = new SoundPool('sounds/button_click.mp3', 0.5, 8);
 pup_tds_sound = new SoundPool('sounds/chronosphere.wav', 0.5, 8);
+nuke_siren_sound = new SoundPool('sounds/nuke_siren.wav', 0.5, 5);
+nuke_explosion_sound = new SoundPool('sounds/nuke_explosion.wav', 1.0, 5);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -146,6 +150,8 @@ UTIL.asset.queue('soundpool', ['gold_pick', gold_pick_sound]);
 UTIL.asset.queue('soundpool', ['button_hover', button_hover_sound]);
 UTIL.asset.queue('soundpool', ['button_click', button_click_sound]);
 UTIL.asset.queue('soundpool', ['time_dilation_sphere_use', pup_tds_sound]);
+UTIL.asset.queue('soundpool', ['nuke_siren', nuke_siren_sound]);
+UTIL.asset.queue('soundpool', ['nuke_explosion', nuke_explosion_sound]);
 
 // Init stat fields
 var STAT = new Stat();
@@ -184,6 +190,7 @@ MAP.addPlaceable('powerup', 'gold-coin');
 MAP.addPlaceable('powerup', 'increased-critical-chance');
 MAP.addPlaceable('powerup', 'kinetic-shell');
 MAP.addPlaceable('powerup', 'time-dilation-sphere');
+MAP.addPlaceable('powerup', 'nuke');
 
 GLOBALS.map.index = 0;
 
