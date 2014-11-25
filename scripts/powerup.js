@@ -170,8 +170,18 @@ var PUP = (function() {
                     radius      : 2000,
                     intensity   : 1
                 });
+                
+                var core = new Light({
+                    name        : 'nuke-core',
+                    oX          : loc.x,
+                    oY          : loc.y,
+                    radius      : 400,
+                    intensity   : 1
+                });
 
                 lights.push(flash);
+                lights.push(core);
+                
                 new Timer(function () { flash.config.radius = 2000; flash.config.intensity -= 0.05; }, 500);
                 new Timer(function () { flash.config.radius = 1900; flash.config.intensity -= 0.05; }, 550);
                 new Timer(function () { flash.config.radius = 1800; flash.config.intensity -= 0.05; }, 600);
@@ -207,18 +217,18 @@ var PUP = (function() {
                 new Timer(function () { flash.config.radius = 695; flash.config.intensity -= 0.0125; }, 2450);
                 new Timer(function () { flash.config.radius = 690; flash.config.intensity -= 0.0125; }, 2500);
                 new Timer(function () { flash.config.radius = 685; flash.config.intensity -= 0.0125; }, 2550);
-                new Timer(function () { flash.config.radius = 680; flash.config.intensity -= 0.0125; }, 2600);
-                new Timer(function () { flash.config.radius = 675; flash.config.intensity -= 0.0125; }, 2650);
-                new Timer(function () { flash.config.radius = 670; flash.config.intensity -= 0.0125; }, 2700);
-                new Timer(function () { flash.config.radius = 665; flash.config.intensity -= 0.0125; }, 2750);
-                new Timer(function () { flash.config.radius = 660; flash.config.intensity -= 0.0125; }, 2800);
-                new Timer(function () { flash.config.radius = 655; flash.config.intensity -= 0.0125; }, 2850);
-                new Timer(function () { flash.config.radius = 650; flash.config.intensity -= 0.0125; }, 2900);
-                new Timer(function () { flash.config.radius = 645; flash.config.intensity -= 0.0125; }, 2950);
-                new Timer(function () { flash.config.radius = 640; flash.config.intensity -= 0.0125; }, 3000);
-                new Timer(function () { flash.config.radius = 635; flash.config.intensity -= 0.0125; }, 3050);
+                new Timer(function () { flash.config.radius = 680; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2600);
+                new Timer(function () { flash.config.radius = 675; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2650);
+                new Timer(function () { flash.config.radius = 670; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2700);
+                new Timer(function () { flash.config.radius = 665; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2750);
+                new Timer(function () { flash.config.radius = 660; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2800);
+                new Timer(function () { flash.config.radius = 655; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2850);
+                new Timer(function () { flash.config.radius = 650; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2900);
+                new Timer(function () { flash.config.radius = 645; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 2950);
+                new Timer(function () { flash.config.radius = 640; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 3000);
+                new Timer(function () { flash.config.radius = 635; flash.config.intensity -= 0.0125; core.config.intensity -= 0.1; }, 3050);
 
-                new Timer(function () { flash.config.active = false; }, 3050);
+                new Timer(function () { flash.config.active = false; core.config.active = false; }, 3050);
                 
                 for (var i = 0; i < tanks.length; i++) {
                     if (tanks[i].config.invulnerable > 0) {
