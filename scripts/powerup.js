@@ -201,6 +201,11 @@ var PUP = (function() {
                     tanks[i].config.health -= dmg;
                     tanks[i].config.health = tanks[i].config.health < 0 ? 0 : tanks[i].config.health;
                     
+                    // animate player health if hit
+                    if (tanks[i].config.control === 'player') {
+                        renderExtern();
+                    }
+                    
                     // if tank has 0 health, destroy the tank
                     if (tanks[i].config.health === 0) {
                         tanks[i].death();
