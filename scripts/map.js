@@ -543,6 +543,21 @@ var MAP = (function () {
             // add to bot pool
             bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null]);
             
+            // 50% chance for a spawned tank to use random powerups on spawn
+            var rollPup = (Math.random() * 10) > 4;
+            var rollNum = Math.random() * 5; // how many powerups to roll for the spawned tank
+            
+            if (rollPup) {
+                for (var n = 0; n < rollNum; n++) {
+                    var pup = PUP.createRandom(enemy.config.oX, enemy.config.oY);
+                    
+                    // of course we don't want to nuke everyone on spawn
+                    if (pup.config.slug !== 'nuke') {
+                        pup.use(enemy);
+                    }
+                }
+            }
+            
             // load its pathfinder
             LOAD.worker.pathFinder(GLOBALS.packedDestructibles, enemyId, enemy.config.id, enemy.config.width);
         }, 3000);

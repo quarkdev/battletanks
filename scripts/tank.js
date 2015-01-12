@@ -262,13 +262,13 @@ function Tank(specs, id, control, x, y, faction) {
     this.config = {
         active       : true,
         collision    : false,                                                              // newly spawned units are ethereal until there's nothing else to collide with
-        colliding    : {state: false, type: 'none', object: null},                                               // collision flag, when colliding with objects, colliding is true
+        colliding    : {state: false, type: 'none', object: null},                         // collision flag, when colliding with objects, colliding is true
         control      : control,
         faction      : faction || 'hostile',
         id           : id,                                                                 // random-gen id
         name         : specs.name,                                                         // tank name
         type         : specs.type,                                                         // tanks type (light/medium/heavy/destroyer/howitzer)
-        coins        : specs.coins || 0,                                                                  // tank currency (can be used to purchase upgrades)
+        coins        : specs.coins || 0,                                                   // tank currency (can be used to purchase upgrades)
         health       : specs.health,                                                       // tank health
         maxHealth    : specs.health,
         shield       : specs.shield || 0,
