@@ -545,7 +545,7 @@ var MAP = (function () {
             
             // 50% chance for a spawned tank to use random powerups on spawn
             var rollPup = (Math.random() * 10) > 4;
-            var rollNum = Math.random() * 5; // how many powerups to roll for the spawned tank
+            var rollNum = Math.ceil(0.5 * GLOBALS.map.wave.current); // how many powerups to roll for the spawned tank
             
             if (rollPup) {
                 for (var n = 0; n < rollNum; n++) {
