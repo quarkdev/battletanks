@@ -92,6 +92,12 @@ TANK.upgrade = (function () {
                 // Apply upgrades
                 for (var i = 0; i < upgrades[key].stats.length; i++) {
                     tanks[0].config[upgrades[key].stats[i].stat] += upgrades[key].stats[i].value * size;
+                    
+                    // if health is upgraded, also set current health
+                    if (key === 'maxHealth') {
+                        tanks[0].config['health'] = tanks[0].config['maxHealth'];
+                        renderExtern();
+                    }
                 }
 
                 // Mark upgrade level
