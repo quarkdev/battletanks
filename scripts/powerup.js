@@ -679,30 +679,17 @@ var PUP = (function() {
                 
                 var concussiveShell = function (projectile) {
                     var p = projectile.config;
-                    var pn = projectile;
-                    var orbActive = typeof pn.orbActive !== 'undefined';
                     
-                    if (!orbActive) {
-                        pn.orbActive = true;
-                        pn.orb = new Light({
-                            name        : 'concussive-orb',
-                            oX          : p.oX,
-                            oY          : p.oY,
-                            radius      : 5,
-                            intensity   : 0.7
-                        });
-                        lights.push(pn.orb);
-                    }
-                    else {
-                        pn.orb.config.oX = p.oX;
-                        pn.orb.config.oY = p.oY;
-                    }
+                    var orb = new Light({
+                        name        : 'concussive-orb',
+                        oX          : p.oX,
+                        oY          : p.oY,
+                        radius      : 4,
+                        intensity   : 0.5
+                    });
                     
-                    if (p.objectHit.type !== 'none' || typeof pn === 'undefined') {
-                        pn.orb.config.active = false;
-                        delete pn.orbActive;
-                        delete pn.orb;
-                    }
+                    lights.push(orb);
+                    new Timer(function () { orb.config.active = false }, 100);
                     
                     if (p.objectHit.type === 'tank') {
                         var t = p.objectHit.obj;
