@@ -223,6 +223,12 @@ $(document).ready(function () {
         for (var i = 0; i < GLOBALS.tankSelection.blueprints.length; i++) {
             STAT.add('td_' + GLOBALS.tankSelection.blueprints[i].name);
         }
+        
+        // Load best scores to global
+        var bst = localStorage.getItem('best_scores');
+        if (bst !== null) {
+            GLOBALS.player.bestScores = JSON.parse(bst);
+        }
 
         // Then import all maps from blueprint
         MAP.importFromBlueprint();

@@ -43,6 +43,8 @@ Projectile.prototype.update = function (modifier) {
     if (this._hasHitBoundary(p.oX, p.oY) === true) {
         if (p.srcType === 'projectile-barrier') return; // projectile barriers are unaffected by boundaries
         p.active = false;
+        
+        p.objectHit = {type: 'boundary', obj: null};
         GLOBALS.flags.clean.projectiles++;
     }
     else {
@@ -50,20 +52,19 @@ Projectile.prototype.update = function (modifier) {
         var result = this._hasHitTank(tanks, p.oX, p.oY, lastX, lastY);
         if (result.hit === true) {
             p.active = false;
-            GLOBALS.flags.clean.projectiles++;
             var t = result.tank;
             
             // Call tank hit method. Pass the projectile that hit it.
             t.hit(this);
             
             p.objectHit = {type: 'tank', obj: t};
+            GLOBALS.flags.clean.projectiles++;
         }
         else {
             // Check if it hit a destructible.
             var resultD = this._hasHitDestructible(destructibles, p.oX, p.oY, lastX, lastY);
             if (resultD.hit === true) {
                 p.active = false;
-                GLOBALS.flags.clean.projectiles++;
                 var d = resultD.destructible;
                 
                 p.PoI = resultD.poi;
@@ -73,6 +74,7 @@ Projectile.prototype.update = function (modifier) {
                 d.hit(this);
                 
                 p.objectHit = {type: 'destructible', obj: d};
+                GLOBALS.flags.clean.projectiles++;
             }
         }
     }

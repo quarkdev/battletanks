@@ -693,6 +693,9 @@ var showGameOver = function (state) {
                     newBest = '<span style="padding: 6px; font-size: 24px; color: #fff; background-color: red;">NEW!</span>';
                 }
                 $('#gos-kills').append('<br><br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + (STAT.get('total_tanks_destroyed') + totalCoins) + '</span><br><span style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">BEST: ' + best + ' ' + newBest + '</span>');
+            
+                // save bestScores to localstorage
+                localStorage.setItem('best_scores', JSON.stringify(GLOBALS.player.bestScores));
             }
             
         }, 50);
