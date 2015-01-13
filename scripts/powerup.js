@@ -684,12 +684,12 @@ var PUP = (function() {
                         name        : 'concussive-orb',
                         oX          : p.oX,
                         oY          : p.oY,
-                        radius      : 4,
-                        intensity   : 0.5
+                        radius      : 5,
+                        intensity   : 1
                     });
                     
                     lights.push(orb);
-                    new Timer(function () { orb.config.active = false }, 100);
+                    new Timer(function () { orb.config.active = false }, 10);
                     
                     if (p.objectHit.type === 'tank') {
                         var t = p.objectHit.obj;
