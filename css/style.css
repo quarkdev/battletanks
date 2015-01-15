@@ -459,6 +459,25 @@ button {
     user-select: none;
 }
 
+.shop-btn {
+    border-left: 4px solid rgba(255, 255, 255, 0.2);
+    padding-left: 8px;
+    cursor: pointer;
+}
+
+.shop-btn:hover {
+    border-left: 4px solid white;
+}
+
+#shop-ui {
+    text-align: left;
+    pointer-events: auto;
+    position: absolute;
+    top: 240px;
+    color: #fff;
+    margin-left: 10px;
+}
+
 #map-properties-screen {
     text-align: left;
     font-size: 12px;

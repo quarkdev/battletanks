@@ -440,6 +440,8 @@ var main = function () {
                 GLOBALS.botCount = 0; // reset botcount
 
                 var bonusGold = Math.ceil(tanks[0].config.coins * 0.1);
+                
+                $('#shop-ui').show();
 
                 wave_cleared_sound.get();
                 $('#text-overlay-center').css('font-size', '42px');
@@ -486,6 +488,7 @@ var main = function () {
                     waveCountDown.clear();
                     cd_timesRun = 0;
                     $('#text-overlay-top').html('Wave: ' + (GLOBALS.map.wave.current));
+                    $('#shop-ui').hide();
                 }
             }, 1000);
             

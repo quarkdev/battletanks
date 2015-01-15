@@ -125,6 +125,12 @@
             "description": "Projectiles that enter the effective radius is slowed by 90 percent.",
             "image": "images/powerups/time-dilation-sphere.png",
             "video": ""
+        },
+        {
+            "name": "Nuke",
+            "description": "Launches a nuclear strike that deals massive damage. Ignores shields.",
+            "image": "images/powerups/nuke.png",
+            "video": ""
         }
     ],
     "tanks" : [

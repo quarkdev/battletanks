@@ -167,7 +167,7 @@ var PUP = (function() {
                     name        : 'nuke-flash',
                     oX          : loc.x,
                     oY          : loc.y,
-                    radius      : 2000,
+                    radius      : 5000,
                     intensity   : 1
                 });
                 
@@ -175,7 +175,7 @@ var PUP = (function() {
                     name        : 'nuke-core',
                     oX          : loc.x,
                     oY          : loc.y,
-                    radius      : 400,
+                    radius      : 2000,
                     intensity   : 1
                 });
 
@@ -237,7 +237,7 @@ var PUP = (function() {
                 
                     // calculate the damage dealt
                     var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
-                    var dmg = 8000 - (d * 10);
+                    var dmg = (8000 + (GLOBALS.map.wave.current * 200)) - (d * 10);
                     dmg = dmg < 0 ? 0 : dmg;
                     
                     tanks[i].config.health -= dmg;
@@ -261,7 +261,7 @@ var PUP = (function() {
                 
                     // calculate the damage dealt
                     var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: destructibles[i].config.oX, y: destructibles[i].config.oY});
-                    var dmg = 8000 - (d * 10);
+                    var dmg = (8000 + (GLOBALS.map.wave.current * 200)) - (d * 10);
                     dmg = dmg < 0 ? 0 : dmg;
                     
                     destructibles[i].config.health -= dmg;
