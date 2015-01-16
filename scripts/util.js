@@ -579,6 +579,38 @@ UTIL.geometry = (function() {
     };
     
     /*
+    * Public Method: getSlopeOfTangentLineToCircle
+    *
+    * Finds the slope of the line tangent to a circle
+    *
+    * Parameters:
+    *   O - the circle's center point
+    *   P - the point of tangency
+    *
+    * Returns:
+    *   the slope of the tangent line
+    */
+    my.getSlopeOfTangentLineToCircle = function (O, P) {
+        return (P.x - O.x) / (P.y - O.y);
+    };
+    
+    /*
+    * Public Method: getBounceAngle
+    * 
+    * Finds the bounce angle of an incident vector (in degrees)
+    *
+    * Parameters:
+    *   s - surface angle
+    *   i - incoming angle
+    *
+    * Returns:
+    *   the outgoing angle
+    */
+    my.getBounceAngle = function (s, i) {
+        return (2 * (s + 90)) - 180 - i;
+    };
+    
+    /*
     * Private Method: _getDistanceBetweenPoints
     *
     * Finds the distance between two points

@@ -51,19 +51,20 @@ Destructible.prototype.hit = function (projectile) {
             if (p.srcType === 'projectile-barrier') {
                 return; // hits from projectile barrier doesn't bounce
             }
-
-            var cBaseAngle = 360;
             
-            if (p.sideHit === 0 || p.sideHit == 2) {
-                cBaseAngle = 360;
-            }
-            else if (p.sideHit == 1 || p.sideHit == 3) {
-                cBaseAngle = 540;
-            }
-            
-
             // 2. calculate new angle
-            var newAngle = cBaseAngle - p.angle;
+            var newAngle = 0;
+            
+            switch (p.sideHit) {
+                case 0:
+                case 2:
+                    newAngle = UTIL.geometry.getBounceAngle(180, p.angle);
+                    break;
+                case 1:
+                case 3:
+                    newAngle = UTIL.geometry.getBounceAngle(90, p.angle);
+                    break;
+            }
 
             // 3. Fire new projectile at new angle. Calculate new base oX and oY at 3 units offset.
             var _oY = p.PoI.y + (1 * Math.sin(newAngle*Math.PI/180));
