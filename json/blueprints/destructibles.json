@@ -53,6 +53,15 @@
     "health"   : 25,
     "armor"    : 10,
     "mod"      : "normal"
+},
+{
+    "name"     : "sea",
+    "nImage"   : "sea",
+    "dImage"   : "sea",
+    "size"     : 32,
+    "health"   : 25,
+    "armor"    : 10,
+    "mod"      : "low-lying"
 }
 ]
 }

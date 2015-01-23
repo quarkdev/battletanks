@@ -24,7 +24,8 @@ var PUP = (function() {
         {slug: 'increased-critical-chance', cost: 40, desc: 'Increases critical hit chance by 5% per stack.'},
         {slug: 'kinetic-shell', cost: 30, desc: 'Adds a knockback to projectile attacks. Knockback distance is (projectile speed / 100) units, resets movement velocities to zero on hit.'},
         {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank by 90%.'},
-        {slug: 'nuke', cost: 1000, desc: 'Deals 8000 max pure damage to enemy tanks within effective radius.'}
+        {slug: 'nuke', cost: 1000, desc: 'Deals 8000 + (wave * 200) max pure damage to enemy tanks within effective radius. Damage diminishes with distance.'},
+        {slug: 'deflect', cost: 100, desc: 'Uses 50% less shield energy to deflect incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'}
     ];
     
     my.getSlug = function (slug) {
@@ -85,6 +86,8 @@ var PUP = (function() {
                 return new TimeDilationSphere(x, y);
             case 'nuke':
                 return new Nuke(x, y);
+            case 'deflect':
+                return new Deflect(x, y);
             default:
                 break;
         }
@@ -116,6 +119,142 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function Deflect(x, y) {
+        /* Deflects projectiles. */
+        this.config = {
+            name    : 'Deflect',
+            slug    : 'deflect',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('deflect')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.deflect !== 'undefined';
+            
+            // play sfx
+            //pup_deflect_sound.get();
+            
+            if (!active) {
+                tank.deflect = {};
+                tank.deflect.vfx = []; // active deflect hit animations
+                tank.deflect.shield = 1000; // bonus shield
+                tank.deflect.shieldRegen = 200; // bonus shield regen
+                tank.config.maxShield += 1000;
+                tank.config.shieldRegen += 200;
+                
+                // vfx
+                //visualeffects.push(new VisualEffect({name: 'deflect-on', oX: tank.config.oX, oY: tank.config.oY, width: 350, height: 350, scaleW: 350, scaleH: 350,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'deflect-on'}));
+                
+                var areaDeflect = function () {
+                    tank.deflect.vfx = tank.deflect.vfx.filter(function(item) {
+                        return item.config.active;
+                    });
+                
+                    // update vfx position
+                    for (var i = 0; i < tank.deflect.vfx.length; i++) {
+                        tank.deflect.vfx[i].updatePos(tank.config.oX, tank.config.oY);
+                    }
+                
+                    // loop through all active projectiles
+                    for (var i = 0; i < projectiles.length; i++) {
+                        if (projectiles[i].config.srcId === tank.config.id) continue; // doesn't affect user projectiles
+                        if (!projectiles[i].config.active) continue; // skip inactive projectiles
+                        
+                        // check if projectile is within AOE (fixed radius of 175)
+                        var dist = UTIL.geometry.getDistanceBetweenPoints({x: tank.config.oX, y: tank.config.oY}, {x: projectiles[i].config.oX, y: projectiles[i].config.oY});
+                        
+                        if (dist > tank.config.cRadius + 40) {
+                            continue;
+                        }
+                        
+                        // if projectile within AOE, apply deflect flag if not already applied (tested via a unique property)
+                        if (!projectiles[i].hasOwnProperty('flaggedDeflect')) {
+                            projectiles[i].flaggedDeflect = tank.config.id; // set flag owner
+                            // check if tank has enough shield energy to deflect the projectile
+                            var _pdmg = projectiles[i].config.damage / 2; // deflect barrier consumes less shield energy than default shield
+                            
+                            if (tank.config.shield < _pdmg) {
+                                // if remaining shield energy is not enough, projectile is not deflected
+                                continue;
+                            }
+                            
+                            // else, we deplete the shield energy to use deflect
+                            tank.config.shield -= _pdmg;
+                            
+                            // do an explosion on point of intersection
+                            var poi = UTIL.geometry.getLineCircleIntersectionPoints(
+                                projectiles[i].config.origin,
+                                {x: projectiles[i].config.oX, y: projectiles[i].config.oY},
+                                {x: tank.config.oX, y: tank.config.oY},
+                                tank.config.cRadius + 40
+                            );
+                            
+                            var ri = 0; // real intersect index
+                            
+                            if (poi.length === 0) {
+                                continue;
+                            }
+                            else if (poi.length === 1) {
+                                // one intersection
+                                ri = 0;
+                            }
+                            else if (poi.length === 2) {
+                                // two intersections, find the closest one to origin
+                                var dA = UTIL.geometry.getDistanceBetweenPoints(projectiles[i].config.origin, poi[0]);
+                                var dB = UTIL.geometry.getDistanceBetweenPoints(projectiles[i].config.origin, poi[1]);
+                                
+                                if (dA < dB) {
+                                    // first poi is the real point of impact
+                                    ri = 0;
+                                }
+                                else {
+                                    ri = 1;
+                                }
+                            }
+                        
+                            // hit vfx
+                            var poia = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: poi[ri].x, y: poi[ri].y});
+                            var shield_vfx = new VisualEffect({name: 'shield_glimpse', oX: tank.config.oX, oY: tank.config.oY, width: 128, height: 128, angle: poia, scaleW: (tank.config.cRadius+40)*2, scaleH: (tank.config.cRadius+40)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'shield_glimpse'});
+                            tank.deflect.vfx.push(shield_vfx);
+                            visualeffects.push(shield_vfx);
+                        
+                            // calculate projectile bounce angle
+                            var tangent_slope = UTIL.geometry.getSlopeOfTangentLineToCircle({x: tank.config.oX, y: tank.config.oY}, poi[ri]);
+                            var surface_angle = 180 - (Math.atan2(tangent_slope.y, tangent_slope.x) * (180 / Math.PI));
+                            var incoming_angle = projectiles[i].config.angle;
+                            
+                            var bounce_angle = UTIL.geometry.getBounceAngle(surface_angle, incoming_angle);
+                            
+                            // redirect projectile
+                            projectiles[i].config.angle = bounce_angle;
+                            projectiles[i].config.oX = poi[ri].x;
+                            projectiles[i].config.oY = poi[ri].y;
+                        }
+                    }
+                };
+                tank.events.listen('frame', areaDeflect)
+                
+                tank.deflect.timeout = new Timer(function() {
+                    tank.events.unlisten('frame', areaDeflect);
+                    tank.config.maxShield -= tank.deflect.shield;
+                    tank.config.shield = tank.config.shield > tank.config.maxShield ? tank.config.maxShield : tank.config.shield;
+                    tank.config.shieldRegen -= tank.deflect.shieldRegen;
+                    delete tank.deflect;
+                }, 10000);
+            }
+            else {
+                tank.config.maxShield += 500;
+                tank.config.shieldRegen += 100;
+                tank.deflect.shield += 500;
+                tank.deflect.shieldRegen += 100;
+                tank.deflect.timeout.extend(5000);
+            }
         };
     }
     

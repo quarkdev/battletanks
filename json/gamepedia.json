@@ -131,6 +131,12 @@
             "description": "Launches a nuclear strike that deals massive damage. Ignores shields.",
             "image": "images/powerups/nuke.png",
             "video": ""
+        },
+        {
+            "name": "Deflect",
+            "description": "Deflects incoming projectiles using shield energy.",
+            "image": "images/powerups/deflect.png",
+            "video": ""
         }
     ],
     "tanks" : [

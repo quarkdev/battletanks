@@ -68,6 +68,7 @@ UTIL.asset.queue('image', ['increased-critical-chance', 'images/powerups/increas
 UTIL.asset.queue('image', ['kinetic-shell', 'images/powerups/kinetic-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['time-dilation-sphere', 'images/powerups/time-dilation-sphere.png', PowerUpImages]);
 UTIL.asset.queue('image', ['nuke', 'images/powerups/nuke.png', PowerUpImages]);
+UTIL.asset.queue('image', ['deflect', 'images/powerups/deflect.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -77,6 +78,7 @@ UTIL.asset.queue('image', ['heavy_rubber', 'images/destructibles/heavy-rubber.pn
 UTIL.asset.queue('image', ['concrete', 'images/destructibles/concrete.png', DestructibleImages]);
 UTIL.asset.queue('image', ['riveted_iron', 'images/destructibles/riveted-iron.png', DestructibleImages]);
 UTIL.asset.queue('image', ['tree', 'images/destructibles/tree.png', DestructibleImages]);
+UTIL.asset.queue('image', ['sea', 'images/destructibles/sea.png', DestructibleImages]);
 
 // Attachment images
 AttachmentImages = new ImageLibrary();
@@ -109,6 +111,8 @@ UTIL.asset.queue('image', ['m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.
 UTIL.asset.queue('image', ['m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['widower_recoil', 'images/tanks/widower/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['calldown', 'images/spritesheets/calldown.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['shield_glimpse', 'images/spritesheets/shield_glimpse.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['bar', 'images/spritesheets/bar.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
@@ -168,6 +172,7 @@ MAP.addPlaceable('destructible', 'riveted_iron');
 MAP.addPlaceable('destructible', 'wall_rubber');
 MAP.addPlaceable('destructible', 'heavy_rubber');
 MAP.addPlaceable('destructible', 'tree');
+MAP.addPlaceable('destructible', 'sea');
 MAP.addPlaceable('starting-point', 'starting-point');
 MAP.addPlaceable('powerup', 'random');
 MAP.addPlaceable('powerup', 'haste');
@@ -191,6 +196,7 @@ MAP.addPlaceable('powerup', 'increased-critical-chance');
 MAP.addPlaceable('powerup', 'kinetic-shell');
 MAP.addPlaceable('powerup', 'time-dilation-sphere');
 MAP.addPlaceable('powerup', 'nuke');
+MAP.addPlaceable('powerup', 'deflect');
 
 GLOBALS.map.index = 0;
 

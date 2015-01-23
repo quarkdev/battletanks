@@ -103,7 +103,7 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lastX,
     for (var i = 0; i < destructibles.length; i++) {
         var d = destructibles[i].config;
         
-        if (d.active === false) continue; // Skip inactive destructibles
+        if (d.active === false || d.mod === 'low-lying') continue; // Skip inactive destructibles
         
         // let's check if they're even remotely colliding
         if (!UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size + d.size/2)) {

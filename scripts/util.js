@@ -271,7 +271,8 @@ var UTIL = (function () {
                     destructibles[i].config.name,
                     destructibles[i].config.oX,
                     destructibles[i].config.oY,
-                    destructibles[i].config.size
+                    destructibles[i].config.size,
+                    destructibles[i].config.mod
                 ]);
             }
         }
@@ -588,10 +589,10 @@ UTIL.geometry = (function() {
     *   P - the point of tangency
     *
     * Returns:
-    *   the slope of the tangent line
+    *   the slope of the tangent line in the form {x: x, y: y}
     */
     my.getSlopeOfTangentLineToCircle = function (O, P) {
-        return (P.x - O.x) / (P.y - O.y);
+        return {y: -(P.x - O.x), x: -(P.y - O.y)};
     };
     
     /*
@@ -608,6 +609,66 @@ UTIL.geometry = (function() {
     */
     my.getBounceAngle = function (s, i) {
         return (2 * (s + 90)) - 180 - i;
+    };
+    
+    /*
+    * Public Method: getLineCircleIntersectionPoints
+    *
+    * Finds the intersections points of a line and circle
+    *
+    * Parameters:
+    *   A - first point of the line
+    *   B - second point of the line
+    *   C - the center of the circle
+    *   r - the radius of the circle
+    *
+    * Returns:
+    *   the point(s) of collision in an array, or empty array if no collision exists
+    */
+    my.getLineCircleIntersectionPoints = function (A, B, C, r) {
+        var locA = {
+            x: A.x - C.x,
+            y: A.y - C.y
+        }
+        
+        var locB = {
+            x: B.x - C.x,
+            y: B.y - C.y
+        }
+        
+        var BmA = {
+            x: B.x - A.x,
+            y: B.y - A.y
+        }
+        
+        var a = (BmA.x * BmA.x) + (BmA.y * BmA.y);
+        var b = 2 * ((BmA.x * locA.x) + (BmA.y * locA.y));
+        var c = (locA.x * locA.x) + (locA.y * locA.y) - (r * r);
+        var delta = b * b - (4 * a * c);
+        
+        if (delta < 0) {
+            // no intersection
+            return [];
+        }
+        else if (delta === 0) {
+            // one intersection
+            var u = -b / (2 * a);
+            return [{x: A.x + (BmA.x * u), y: A.y + (BmA.y * u)}];
+        }
+        else if (delta > 0) {
+            // two intersections
+            var sqrtD = Math.sqrt(delta);
+            
+            var u1 = (((-1)*b) + sqrtD) / (2 * a);
+            var u2 = (((-1)*b) - sqrtD) / (2 * a);
+            
+            return [
+                {x: A.x + (u1 * BmA.x), y: A.y + (u1 * BmA.y)},
+                {x: A.x + (u2 * BmA.x), y: A.y + (u2 * BmA.y)}
+            ];
+        }
+        
+        return [];
     };
     
     /*

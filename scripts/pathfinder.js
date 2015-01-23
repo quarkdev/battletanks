@@ -109,7 +109,8 @@ function checkLineOfSight(A, B, C) {
     /* Check if there are no obstacles between point A and point B. {X: x, Y: y} */
     for (var i = 0; i < obstacles.length; i++) {
         var ob = obstacles[i];
-        if (LineIntersectsRect(A, B, {x: ob[1], y: ob[2], w: 32, h: 32})) {
+ 
+        if (LineIntersectsRect(A, B, {x: ob[1], y: ob[2], w: 32, h: 32}) && ob[4] !== 'low-lying') {
             return {los: false, x: C.x, y: C.y};
         }
     }
