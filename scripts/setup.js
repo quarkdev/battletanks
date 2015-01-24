@@ -113,6 +113,7 @@ UTIL.asset.queue('image', ['widower_recoil', 'images/tanks/widower/recoil.png', 
 UTIL.asset.queue('image', ['calldown', 'images/spritesheets/calldown.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['shield_glimpse', 'images/spritesheets/shield_glimpse.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['bar', 'images/spritesheets/bar.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['deflect_on', 'images/spritesheets/deflect_on.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();

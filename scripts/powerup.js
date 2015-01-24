@@ -149,7 +149,7 @@ var PUP = (function() {
                 tank.config.shieldRegen += 200;
                 
                 // vfx
-                //visualeffects.push(new VisualEffect({name: 'deflect-on', oX: tank.config.oX, oY: tank.config.oY, width: 350, height: 350, scaleW: 350, scaleH: 350,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'deflect-on'}));
+                //visualeffects.push(new VisualEffect({name: 'deflect-on', oX: tank.config.oX, oY: tank.config.oY, width: 125, height: 125, scaleW: (tank.config.cRadius+40)*2, scaleH: (tank.config.cRadius+40)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'deflect_on'}));
                 
                 var areaDeflect = function () {
                     tank.deflect.vfx = tank.deflect.vfx.filter(function(item) {
@@ -220,7 +220,7 @@ var PUP = (function() {
                         
                             // hit vfx
                             var poia = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: poi[ri].x, y: poi[ri].y});
-                            var shield_vfx = new VisualEffect({name: 'shield_glimpse', oX: tank.config.oX, oY: tank.config.oY, width: 128, height: 128, angle: poia, scaleW: (tank.config.cRadius+40)*2, scaleH: (tank.config.cRadius+40)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'shield_glimpse'});
+                            var shield_vfx = new VisualEffect({name: 'shield_glimpse', oX: tank.config.oX, oY: tank.config.oY, width: 125, height: 125, angle: poia, scaleW: (tank.config.cRadius+40)*2, scaleH: (tank.config.cRadius+40)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'shield_glimpse'});
                             tank.deflect.vfx.push(shield_vfx);
                             visualeffects.push(shield_vfx);
                         
