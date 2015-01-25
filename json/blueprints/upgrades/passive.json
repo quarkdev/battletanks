@@ -96,13 +96,13 @@
 					"cost"        : 5,
 					"level"    	  : 0
 				},
-				"ammo" : {
+				"maxAmmo" : {
 					"name"        : "Ammunition",
 					"id"          : "iammo",
-					"stats"       : [{"stat": "ammo", "value": 15}],
-					"description" : "Adds 15 ammo",
+					"stats"       : [{"stat": "maxAmmo", "value": 10}],
+					"description" : "Adds 10 ammo",
 					"image"		  : "images/upgrades/ammunition.png",
-					"cost"        : 1,
+					"cost"        : 5,
 					"level"    	  : 0
 				},
 				"fRate" : {

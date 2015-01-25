@@ -458,10 +458,6 @@ var main = function () {
                     }, 300);
                 });
             }
-
-            // heal player just before wave starts
-            tanks[0].config.health = tanks[0].config.maxHealth;
-            renderExtern();
             
             // inform player that wave is spawning after spawn wait time
             var wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
@@ -473,6 +469,14 @@ var main = function () {
                 
                 if (cd_timesRun === wave_delay - 1) {
                     wave_start_sound.get();
+                    
+                    // replenish health and ammo on start of wave
+                    tanks[0].config.health = tanks[0].config.maxHealth;
+                    tanks[0].config.ammo = tanks[0].config.maxAmmo;
+                    $('#ammo-count').html(player.config.ammo);
+                    renderExtern();
+                    $('#shop-ui').hide();
+                    
                     $('#text-overlay-center').css('font-size', '42px');
                     $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
                     $('#text-overlay-center').animate({
@@ -487,8 +491,8 @@ var main = function () {
                 else if (cd_timesRun >= wave_delay) {
                     waveCountDown.clear();
                     cd_timesRun = 0;
+                    
                     $('#text-overlay-top').html('Wave: ' + (GLOBALS.map.wave.current));
-                    $('#shop-ui').hide();
                 }
             }, 1000);
             

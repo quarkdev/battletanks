@@ -93,10 +93,13 @@ TANK.upgrade = (function () {
                 for (var i = 0; i < upgrades[key].stats.length; i++) {
                     tanks[0].config[upgrades[key].stats[i].stat] += upgrades[key].stats[i].value * size;
                     
-                    // if health is upgraded, also set current health
                     if (key === 'maxHealth') {
                         tanks[0].config['health'] = tanks[0].config['maxHealth'];
                         renderExtern();
+                    }
+                    else if (key === 'maxAmmo') {
+                        tanks[0].config['ammo'] = tanks[0].config['maxAmmo'];
+                        $('#ammo-count').html(tanks[0].config.maxAmmo);
                     }
                 }
 
@@ -105,9 +108,6 @@ TANK.upgrade = (function () {
 
                 // Update coin count in hud
                 $('#gold-count').html(tanks[0].config.coins);
-
-                // Update ammo count
-                $('#ammo-count').html(tanks[0].config.ammo);
 
                 // Play sound
                 gold_pick_sound.get();
@@ -300,6 +300,7 @@ function Tank(specs, id, control, x, y, faction) {
         critMultiplier : specs.critMultiplier || 2,
         dropRate     : specs.dropRate || 10,                                               // chance of dropping a powerup on death (default: 10%)
         ammo         : specs.ammo,                                                         // amount of ammo
+        maxAmmo      : specs.ammo,
         fRate        : specs.fRate,                                                        // Firing rate (rounds per second)
         oX           : x,                                                                  // tank x coordinate
         oY           : y,                                                                  // tank y coordinate
