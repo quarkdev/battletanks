@@ -586,8 +586,54 @@ Tank.prototype.move = function (modifier, direction, lockPoint) {
                 // if both tanks have collision, reset coords back to where there isn't any
                 t.oX = tmpX;
                 t.oY = tmpY;
+                
+                // determine collision damage
+                var col_dmg = this.velocity.forward + this.velocity.reverse;
+                var size_diff = Math.abs(t.cRadius - tanks[j].config.cRadius);
+                
+                if (t.cRadius > tanks[j].config.cRadius) {
+                    if (t.invulnerable === 0) {
+                        t.health -= col_dmg - (col_dmg * ((0.06 * t.armor) / (1 + 0.06 * t.armor)));
+                    }
+                    if (tanks[j].config.invulnerable === 0) {
+                        tanks[j].config.health -= (col_dmg * (2 * size_diff)) - (col_dmg * (2 * size_diff) * ((0.06 * tanks[j].config.armor) / (1 + 0.06 * tanks[j].config.armor)));
+                    }
+                }
+                else if (t.cRadius < tanks[j].config.cRadius) {
+                    if (t.invulnerable === 0) {
+                        t.health -= (col_dmg * (2 * size_diff)) - (col_dmg * (2 * size_diff) * ((0.06 * t.armor) / (1 + 0.06 * t.armor)));
+                    }
+                    if (tanks[j].config.invulnerable === 0) {
+                        tanks[j].config.health -= col_dmg - (col_dmg * ((0.06 * tanks[j].config.armor) / (1 + 0.06 * tanks[j].config.armor)));
+                    }
+                }
+                else {
+                    if (t.invulnerable === 0) {
+                        t.health -= col_dmg - (col_dmg * ((0.06 * t.armor) / (1 + 0.06 * t.armor)));
+                    }
+                    if (tanks[j].config.invulnerable === 0) {
+                        tanks[j].config.health -= (col_dmg) - (col_dmg * ((0.06 * tanks[j].config.armor) / (1 + 0.06 * tanks[j].config.armor)));
+                    }
+                }
+                
+                t.health = t.health > 0 ? t.health : 0;
+                tanks[j].config.health = tanks[j].config.health > 0 ? tanks[j].config.health : 0;
+                
+                if (t.control === 'player' || tanks[j].config.control === 'player') {
+                    renderExtern();
+                }
+                
+                if (t.health <= 0) {
+                    this.death();
+                }
+                
+                if (tanks[j].config.health <= 0) {
+                    tanks[j].death();
+                }
+                
                 this.velocity.forward = 0.0;
                 this.velocity.reverse = 0.0;
+
                 // reset pathfinding
                 bot = UTIL.getBotReference(t.id);
                 if (typeof bot !== 'undefined') {
