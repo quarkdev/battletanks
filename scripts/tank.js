@@ -869,20 +869,6 @@ Tank.prototype.hit = function (projectile) {
         //UTIL.writeToLog('<span id="log-' + logNum + '"><strong>' + p.srcId + '</strong><span style="color: #FE4902">(' + p.srcType + ')</span> destroyed <strong>' + t.id + '</strong><span style="color: #FE4902">(' + t.name + ')</span></span>');
         
         this.death(); // Call tank death method. This changes the tank state to inactive.
-        
-        // Play sound effect [random]
-        var roll = Math.floor(Math.random() * 3) + 1;
-        switch (roll) {
-            case 1:
-                t_destroyedSound.get();
-                break;
-            case 2:
-                t_destroyedSound2.get();
-                break;
-            case 3:
-                t_destroyedSound3.get();
-                break;
-        }
     }
     else {
         // Just play the 'hit' sound effect.
@@ -942,6 +928,20 @@ Tank.prototype.death = function () {
     if (lucky) {
         // ok just got lucky, get a random powerup
         powerups.push(PUP.createRandom(t.oX, t.oY));
+    }
+    
+    // Play sound effect [random]
+    var roll = Math.floor(Math.random() * 3) + 1;
+    switch (roll) {
+        case 1:
+            t_destroyedSound.get();
+            break;
+        case 2:
+            t_destroyedSound2.get();
+            break;
+        case 3:
+            t_destroyedSound3.get();
+            break;
     }
 
     this.events.emit('death');
