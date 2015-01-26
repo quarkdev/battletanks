@@ -137,6 +137,12 @@
             "description": "Deflects incoming projectiles using shield energy. With enough velocity, projectiles can punch through the shield.",
             "image": "images/powerups/deflect.png",
             "video": ""
+        },
+        {
+            "name": "Point Defense Laser",
+            "description": "Destroys incoming projectiles using shield energy.",
+            "image": "images/powerups/point-defense-laser.png",
+            "video": ""
         }
     ],
     "tanks" : [
