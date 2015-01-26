@@ -25,7 +25,8 @@ var PUP = (function() {
         {slug: 'kinetic-shell', cost: 30, desc: 'Adds a knockback to projectile attacks. Knockback distance is (projectile speed / 100) units, resets movement velocities to zero on hit.'},
         {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank by 90%.'},
         {slug: 'nuke', cost: 1000, desc: 'Deals 8000 + (wave * 200) max pure damage to enemy tanks within effective radius. Damage diminishes with distance.'},
-        {slug: 'deflect', cost: 100, desc: 'Uses 50% less shield energy to deflect incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'}
+        {slug: 'deflect', cost: 100, desc: 'Uses 50% less shield energy to deflect incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
+        {slug: 'point-defense-laser', cost: 100, desc: 'Uses lasers to destroy incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'}
     ];
     
     my.getSlug = function (slug) {
@@ -88,6 +89,8 @@ var PUP = (function() {
                 return new Nuke(x, y);
             case 'deflect':
                 return new Deflect(x, y);
+            case 'point-defense-laser':
+                return new PointDefenseLaser(x, y);
             default:
                 break;
         }
@@ -119,6 +122,137 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function PointDefenseLaser(x, y) {
+        /* pdls projectiles. */
+        this.config = {
+            name    : 'Point Defense Laser',
+            slug    : 'point-defense-laser',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('point-defense-laser')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.pdl !== 'undefined';
+            
+            // play sfx
+            //pup_pdl_sound.get();
+            
+            if (!active) {
+                tank.pdl = {};
+                tank.pdl.vfx = []; // active pdl hit animations
+                tank.pdl.shield = 1000; // bonus shield
+                tank.pdl.shieldRegen = 200; // bonus shield regen
+                tank.config.maxShield += 1000;
+                tank.config.shieldRegen += 200;
+                
+                // vfx
+                //visualeffects.push(new VisualEffect({name: 'pdl-on', oX: tank.config.oX, oY: tank.config.oY, width: 125, height: 125, scaleW: (tank.config.cRadius+40)*2, scaleH: (tank.config.cRadius+40)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'pdl_on'}));
+                
+                var areapdl = function () {
+                    tank.pdl.vfx = tank.pdl.vfx.filter(function(item) {
+                        return item.config.active;
+                    });
+                
+                    // update vfx position
+                    for (var i = 0; i < tank.pdl.vfx.length; i++) {
+                        tank.pdl.vfx[i].updatePos(tank.config.oX, tank.config.oY);
+                    }
+                
+                    // loop through all active projectiles
+                    for (var i = 0; i < projectiles.length; i++) {
+                        if (projectiles[i].config.srcId === tank.config.id) continue; // doesn't affect user projectiles
+                        if (!projectiles[i].config.active) continue; // skip inactive projectiles
+                        
+                        // check if projectile is within AOE (fixed radius of 175)
+                        var dist = UTIL.geometry.getDistanceBetweenPoints({x: tank.config.oX, y: tank.config.oY}, {x: projectiles[i].config.oX, y: projectiles[i].config.oY});
+                        var rndD = Math.floor(Math.random() * (60 - 20)) + 20;
+                        
+                        if (dist > tank.config.cRadius + rndD) {
+                            continue;
+                        }
+                        
+                        // if projectile within AOE, apply pdl flag if not already applied (tested via a unique property)
+                        if (!projectiles[i].hasOwnProperty('flaggedpdl')) {
+                            projectiles[i].flaggedpdl = tank.config.id; // set flag owner
+                            // check if tank has enough shield energy to pdl the projectile
+                            var _pdmg = projectiles[i].config.damage / 4; // pdl barrier consumes less shield energy than default shield
+                            
+                            if (tank.config.shield < _pdmg) {
+                                // if remaining shield energy is not enough, projectile is not destroyed
+                                continue;
+                            }
+                            
+                            // else, we deplete the shield energy to use pdl
+                            tank.config.shield -= _pdmg;
+                            
+                            // do an explosion on point of intersection
+                            var poi = UTIL.geometry.getLineCircleIntersectionPoints(
+                                projectiles[i].config.origin,
+                                {x: projectiles[i].config.oX, y: projectiles[i].config.oY},
+                                {x: tank.config.oX, y: tank.config.oY},
+                                tank.config.cRadius + rndD
+                            );
+                            
+                            var ri = 0; // real intersect index
+                            
+                            if (poi.length === 0) {
+                                continue;
+                            }
+                            else if (poi.length === 1) {
+                                // one intersection
+                                ri = 0;
+                            }
+                            else if (poi.length === 2) {
+                                // two intersections, find the closest one to origin
+                                var dA = UTIL.geometry.getDistanceBetweenPoints(projectiles[i].config.origin, poi[0]);
+                                var dB = UTIL.geometry.getDistanceBetweenPoints(projectiles[i].config.origin, poi[1]);
+                                
+                                if (dA < dB) {
+                                    // first poi is the real point of impact
+                                    ri = 0;
+                                }
+                                else {
+                                    ri = 1;
+                                }
+                            }
+                            
+                            // explosion vfx
+                            visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: poi[ri].x, oY: poi[ri].y, width: 32, height: 32, scaleW: rndD-10, scaleH: rndD-10,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+                            
+                            // hit vfx
+                            var poia = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: poi[ri].x, y: poi[ri].y});
+                            var shield_vfx = new VisualEffect({name: 'laser-strike', oX: tank.config.oX, oY: tank.config.oY, width: 125, height: 125, angle: poia, scaleW: (tank.config.cRadius+rndD)*2, scaleH: (tank.config.cRadius+rndD)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'point-defense-laser'});
+                            tank.pdl.vfx.push(shield_vfx);
+                            visualeffects.push(shield_vfx);
+                            
+                            // deactivate projectile
+                            projectiles[i].config.active = false;
+                        }
+                    }
+                };
+                tank.events.listen('frame', areapdl)
+                
+                tank.pdl.timeout = new Timer(function() {
+                    tank.events.unlisten('frame', areapdl);
+                    tank.config.maxShield -= tank.pdl.shield;
+                    tank.config.shield = tank.config.shield > tank.config.maxShield ? tank.config.maxShield : tank.config.shield;
+                    tank.config.shieldRegen -= tank.pdl.shieldRegen;
+                    delete tank.pdl;
+                }, 10000);
+            }
+            else {
+                tank.config.maxShield += 500;
+                tank.config.shieldRegen += 100;
+                tank.pdl.shield += 500;
+                tank.pdl.shieldRegen += 100;
+                tank.pdl.timeout.extend(5000);
+            }
         };
     }
     
@@ -187,7 +321,7 @@ var PUP = (function() {
                             // else, we deplete the shield energy to use deflect
                             tank.config.shield -= _pdmg;
                             
-                            // do an explosion on point of intersection
+                            // calculate point of intersection
                             var poi = UTIL.geometry.getLineCircleIntersectionPoints(
                                 projectiles[i].config.origin,
                                 {x: projectiles[i].config.oX, y: projectiles[i].config.oY},
