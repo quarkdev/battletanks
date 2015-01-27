@@ -66,11 +66,12 @@ Destructible.prototype.hit = function (projectile) {
                     break;
             }
 
-            // 3. Fire new projectile at new angle. Calculate new base oX and oY at 3 units offset.
-            var _oY = p.PoI.y + (1 * Math.sin(newAngle*Math.PI/180));
-            var _oX = p.PoI.x + (1 * Math.cos(newAngle*Math.PI/180));
-
-            projectiles.push(new Projectile({ speed: p.speed, damage: p.damage, critChance: 5, angle:  newAngle, oX: _oX, oY: _oY, srcId: p.srcId, srcType: 'ricochet'}));
+            // 3. Deflect projectile. Calculate new base oX and oY at 3 units offset.
+            p.active = true;
+            p.oY = p.PoI.y + (1 * Math.sin(newAngle*Math.PI/180));
+            p.oX = p.PoI.x + (1 * Math.cos(newAngle*Math.PI/180));
+            p.srcType = 'ricochet';
+            p.angle = newAngle;
 
             break;
         case 'explosive': // create multiple projectiles that fire in all directions, explosion damage is based on projectile damage
