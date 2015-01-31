@@ -63,10 +63,10 @@ TANK.upgrade = (function () {
             for (var key in upgrades) {
                 upgrades[key].level = 0;
                 box += '<div id="u-passive-' + upgrades[key].id + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onmouseover="$(this).children(\'.upgrade-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.upgrade-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
-                            <img class="flip-vertical" src="' + upgrades[key].image + '" onclick="$(this).parent().find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\', $(this).parent().children(\'.buyout-multiplier\').val()));" />\
+                            <img style="position: relative; z-index: 1" class="flip-vertical" src="' + upgrades[key].image + '" onclick="$(this).parent().find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\', $(this).parent().children(\'.buyout-multiplier\').val()));" />\
                             <span class="upgrade-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + upgrades[key].cost + '</span>\
                             <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
-                            <div class="upgrade-hover-box" style="position: absolute; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
+                            <div class="upgrade-hover-box" style="position: absolute; z-index: 10; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
                                 <b>' + upgrades[key].name + '</b>\
                                 <p>' + upgrades[key].description + '</p>\
                                 Level: <strong>' + upgrades[key].level + '</strong>\
@@ -136,10 +136,10 @@ TANK.consumable = (function() {
             for (var i = 0; i < pups.length; i++) {
                 if (pups[i].slug === 'gold-coin' || pups[i].slug === 'ammo') continue; // exclude gold coin and ammo powerups
                 box += '<div id="c-powerup-' + i + '" class="consumable-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onmouseover="$(this).children(\'.consumable-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.consumable-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
-                            <img class="flip-vertical" src="' + PowerUpImages.get(pups[i].slug).src + '" onclick="TANK.consumable.buy(\'' + pups[i].slug + '\', $(this).parent().children(\'.buyout-multiplier\').val());" />\
+                            <img style="position: relative; z-index: 1;" class="flip-vertical" src="' + PowerUpImages.get(pups[i].slug).src + '" onclick="TANK.consumable.buy(\'' + pups[i].slug + '\', $(this).parent().children(\'.buyout-multiplier\').val());" />\
                             <span class="consumable-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + pups[i].cost + '</span>\
                             <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
-                            <div class="consumable-hover-box" style="position: absolute; width: 220px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
+                            <div class="consumable-hover-box" style="position: absolute; z-index: 10; width: 220px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
                                 <b>' + UTIL.toTitleCase(pups[i].slug.split('-').join(' ')) + '</b>\
                                 <p>' + pups[i].desc + '</p>\
                             </div>\
