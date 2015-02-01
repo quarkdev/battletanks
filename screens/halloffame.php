@@ -20,7 +20,7 @@
                 </tr>
             <?php
                 $i = 0;
-                foreach ($result as $row) :
+                foreach ($result->result() as $row) :
             ?>
                     <tr>
                         <td><?php echo $i; ?></td>

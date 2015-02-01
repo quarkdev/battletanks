@@ -7,7 +7,7 @@
         $query = "INSERT INTO high_score (map, player, wave, score) VALUES ('{$_POST['map']}', '{$_POST['player']}', {$_POST['wave']}, {$_POST['score']})";
         pg_query($conn, $query);
         
-        echo $conn;
+        echo 'ok';
         exit();
     }
     
