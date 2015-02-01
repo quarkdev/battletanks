@@ -706,13 +706,22 @@ var showGameOver = function (state) {
                 var playername = prompt("Please enter your name", "Robert Downey Jr.");
                 
                 // save score to database
-                var data = JSON.stringify({
+                var data = {
+                    ajax   : true,
                     map    : maps[GLOBALS.map.index].name,
                     player : playername,
                     wave   : GLOBALS.map.wave.current,
                     score  : STAT.get('total_tanks_destroyed') + totalCoins
-                });
-                UTIL.post('/models/submit_score.php', data);
+                };
+                //UTIL.post('/models/submit_score.php', data);
+                $.ajax({  
+                    type: "POST",  
+                    url: "/models/submit_score.php",  
+                    data: data,  
+                    success: function(dataString) {  
+                        //console.log(dataString);
+                    }
+                }); 
             }
             
         }, 50);
