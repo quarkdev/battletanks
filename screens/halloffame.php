@@ -13,8 +13,8 @@
             <table id="hof-table">
                 <tr>
                     <th></th>
-                    <th>MAP</th>
                     <th>PLAYER</th>
+                    <th>MAP</th>
                     <th>WAVE</th>
                     <th>SCORE</th>
                 </tr>
@@ -24,8 +24,8 @@
             ?>
                     <tr>
                         <td><?php echo $i; ?></td>
-                        <td><?php echo $row->map; ?></td>
                         <td><?php echo $row->player; ?></td>
+                        <td><?php echo $row->map; ?></td>
                         <td><?php echo $row->wave; ?></td>
                         <td><?php echo $row->score; ?></td>
                     </tr>
