@@ -639,3 +639,19 @@ button {
     -webkit-transform: scaleX(-1);
     -moz-transform: scaleX(-1);
 }
+
+#hof-table {
+    width: 70%;
+    margin: 0 auto;
+    color: #fff;
+    font-size: 16px;
+    border-collapse: collapse;
+}
+
+#hof-table th {
+    border-bottom: 1px dotted #ccc;
+}
+
+#hof-table td {
+    text-align: left;
+}

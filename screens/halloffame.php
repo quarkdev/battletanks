@@ -10,7 +10,7 @@
             $query = "SELECT * FROM high_score ORDER BY score DESC LIMIT 10";
             $result = pg_query($conn, $query);
         ?>
-            <table style="width: 70%; margin: 0 auto; color: #fff; font-size: 16px;">
+            <table id="hof-table">
                 <tr>
                     <th></th>
                     <th>MAP</th>
@@ -19,7 +19,7 @@
                     <th>SCORE</th>
                 </tr>
             <?php
-                $i = 0;
+                $i = 1;
                 while ($row = pg_fetch_object($result)) :
             ?>
                     <tr>
