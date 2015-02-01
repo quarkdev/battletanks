@@ -222,14 +222,33 @@ var PUP = (function() {
                                 }
                             }
                             
-                            // explosion vfx
-                            visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: poi[ri].x, oY: poi[ri].y, width: 32, height: 32, scaleW: rndD-10, scaleH: rndD-10,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
-                            
-                            // hit vfx
-                            var poia = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: poi[ri].x, y: poi[ri].y});
-                            var shield_vfx = new VisualEffect({name: 'laser-strike', oX: tank.config.oX, oY: tank.config.oY, width: 125, height: 125, angle: poia, scaleW: (tank.config.cRadius+rndD)*2, scaleH: (tank.config.cRadius+rndD)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'point-defense-laser'});
-                            tank.pdl.vfx.push(shield_vfx);
-                            visualeffects.push(shield_vfx);
+                            (function (x, y, tx, ty) {
+                                // explosion vfx
+                                var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
+                                visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: x, oY: y, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+                                
+                                // hit vfx
+                                var poia = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tx, y: ty}, {x: x, y: y});
+                                var shield_vfx = new VisualEffect({name: 'laser-strike', oX: tx, oY: ty, width: 125, height: 125, angle: poia, scaleW: (tank.config.cRadius+rndD)*2, scaleH: (tank.config.cRadius+rndD)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'point-defense-laser'});
+                                
+                                // show hit flash
+                                var flash = new Light({
+                                    name        : 'hit-flash',
+                                    oX          : x,
+                                    oY          : y,
+                                    radius      : hit_explosion_scale,
+                                    intensity   : 0.3
+                                });
+
+                                lights.push(flash);
+                                
+                                new Timer(function () {
+                                    flash.config.active = false;
+                                }, 40);
+                                
+                                tank.pdl.vfx.push(shield_vfx);
+                                visualeffects.push(shield_vfx);
+                            })(poi[ri].x, poi[ri].y, tank.config.oX, tank.config.oY);
                             
                             // deactivate projectile
                             projectiles[i].config.active = false;
