@@ -160,13 +160,45 @@ Destructible.prototype.hit = function (projectile) {
             }
             
             visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 32, scaleH: 32,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+            // show hit flash
+            var flash = new Light({
+                name        : 'hit-flash',
+                oX          : p.oX,
+                oY          : p.oY,
+                radius      : 32,
+                intensity   : 0.5
+            });
+
+            lights.push(flash);
+            
+            new Timer(function () {
+                flash.config.active = false;
+            }, 40);
             break;
         case 'low-lying':
             // low-lying destructibles can't be hit by projectiles
             break;
         default:
+            // play visual effect
+            var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
+            visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+
+            // show hit flash
+            var flash = new Light({
+                name        : 'hit-flash',
+                oX          : p.oX,
+                oY          : p.oY,
+                radius      : hit_explosion_scale,
+                intensity   : 0.3
+            });
+
+            lights.push(flash);
+            
+            new Timer(function () {
+                flash.config.active = false;
+            }, 40);
             break;
-    }
+        }
 };
 
 Destructible.prototype.death = function () {
