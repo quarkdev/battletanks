@@ -719,7 +719,7 @@ var showGameOver = function (state) {
                     url: "/models/submit_score.php",  
                     data: data,  
                     success: function(dataString) {  
-                        //console.log(dataString);
+                        console.log(dataString);
                     }
                 }); 
             }
