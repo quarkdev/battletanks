@@ -20,7 +20,7 @@
                 </tr>
             <?php
                 $i = 0;
-                foreach ($result->result() as $row) :
+                while ($row = pg_fetch_object($result)) :
             ?>
                     <tr>
                         <td><?php echo $i; ?></td>
@@ -31,7 +31,7 @@
                     </tr>
             <?php
                 $i++;
-                endforeach;
+                endwhile;
             ?>
             </table>
         <?php endif; ?>
