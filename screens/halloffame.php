@@ -7,10 +7,10 @@
         
 
         if ($conn) :
-            $query = "SELECT * FROM high_score";
+            $query = "SELECT * FROM high_score ORDER BY score DESC LIMIT 10";
             $result = pg_query($conn, $query);
         ?>
-            <table>
+            <table style="width: 70%; margin: 0 auto; color: #fff; font-size: 16px;">
                 <tr>
                     <th></th>
                     <th>MAP</th>
