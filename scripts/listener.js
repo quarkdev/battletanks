@@ -56,6 +56,12 @@ function attachMenuEventListeners() {
         UTIL.gui.selectMap('prev');
     });
     
+    $('#hall-of-fame').click(function () {
+        // hide menu
+        $('.overlay').fadeOut();
+        $('#hof').show();
+    });
+    
     $('#map-builder').click(function () {
         // hide menu
         $('.overlay').fadeOut();
