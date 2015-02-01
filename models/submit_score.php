@@ -6,6 +6,11 @@
         $conn = pg_connect($conn_string);
         $query = "INSERT INTO high_score (map, player, wave, score) VALUES ('{$_POST['map']}', '{$_POST['player']}', {$_POST['wave']}, {$_POST['score']})";
         pg_query($conn, $query);
+        
+        echo 'ok';
+        exit();
     }
+    
+    echo 'error sending scores';
     
     

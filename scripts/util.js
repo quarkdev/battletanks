@@ -132,6 +132,9 @@ var UTIL = (function () {
     };
     
     my.post = function (url, data, callbackSuccess, callbackFailed) {
+        callbackSuccess = function () {} || callbackSuccess;
+        callbackFailed = function () {} || callbackFailed;
+    
         /* POST request as JSON */
         var req = new XMLHttpRequest();
         

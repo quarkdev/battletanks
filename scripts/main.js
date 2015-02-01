@@ -712,7 +712,7 @@ var showGameOver = function (state) {
                     wave   : GLOBALS.map.wave.current,
                     score  : STAT.get('total_tanks_destroyed') + totalCoins
                 });
-                UTIL.post('models/submit_score.php', data);
+                UTIL.post('/models/submit_score.php', data);
             }
             
         }, 50);
