@@ -650,6 +650,8 @@ button {
 
 #hof-table th {
     border-bottom: 1px dotted #ccc;
+    margin-bottom: 6px;
+    text-align: left;
 }
 
 #hof-table td {
