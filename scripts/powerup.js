@@ -250,6 +250,9 @@ var PUP = (function() {
                                 visualeffects.push(shield_vfx);
                             })(poi[ri].x, poi[ri].y, tank.config.oX, tank.config.oY);
                             
+                            laser_impact_sound.get();
+                            explodeSound.get();
+                            
                             // deactivate projectile
                             projectiles[i].config.active = false;
                         }

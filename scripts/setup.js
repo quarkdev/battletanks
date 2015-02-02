@@ -140,6 +140,7 @@ button_click_sound = new SoundPool('sounds/button_click.mp3', 0.5, 8);
 pup_tds_sound = new SoundPool('sounds/chronosphere.wav', 0.5, 8);
 nuke_siren_sound = new SoundPool('sounds/nuke_siren.wav', 0.5, 5);
 nuke_explosion_sound = new SoundPool('sounds/nuke_explosion.wav', 1.0, 5);
+laser_impact_sound = new SoundPool('sounds/laser_impact.wav', 0.1, 50);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -159,6 +160,7 @@ UTIL.asset.queue('soundpool', ['button_click', button_click_sound]);
 UTIL.asset.queue('soundpool', ['time_dilation_sphere_use', pup_tds_sound]);
 UTIL.asset.queue('soundpool', ['nuke_siren', nuke_siren_sound]);
 UTIL.asset.queue('soundpool', ['nuke_explosion', nuke_explosion_sound]);
+UTIL.asset.queue('soundpool', ['laser_impact', laser_impact_sound]);
 
 // Init stat fields
 var STAT = new Stat();
