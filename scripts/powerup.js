@@ -535,20 +535,8 @@ var PUP = (function() {
                     tanks[i].config.health -= dmg;
                     tanks[i].config.health = tanks[i].config.health < 0 ? 0 : tanks[i].config.health;
                     
-                    // set shields to zero and shield-regen is reduced by 500 * wave (damage due to EMP)
+                    // set shields to zero (damage due to EMP)
                     tanks[i].config.shield = 0;
-                    
-                    (function (i) {
-                        var sreg_dmg = 500 * GLOBALS.map.wave.current;
-                        sreg_dmg = tanks[i].config.shieldRegen > sreg_dmg ? sreg_dmg : Math.abs(tanks[i].config.shieldRegen - sreg_dmg);
-                        tanks[i].config.shieldRegen -= sreg_dmg;
-
-                        // restore shield regeneration after 5 * wave seconds
-                        new Timer(function() {
-                            if (!tanks[i].config.active) return;
-                            tanks[i].config.shieldRegen += sreg_dmg;
-                        }, 5000 * GLOBALS.map.wave.current);
-                    })(i);
                     
                     // animate player health if hit
                     if (tanks[i].config.control === 'player') {
