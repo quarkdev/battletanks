@@ -142,7 +142,7 @@ var UTIL = (function () {
                 var spinner = document.getElementById('hof-spinner');
                 var table = document.getElementById('hof-table').getElementsByTagName('tbody')[0];
                 
-                spinner.show();
+                spinner.style.display = 'none';
                 table.innerHTML = '';
                 for (var i = 0; i < pr.length; i++) {
                     var row = document.createElement('table');
@@ -151,7 +151,7 @@ var UTIL = (function () {
                     table.appendChild(row);
                     count++;
                 }
-                spinner.hide();
+                spinner.style.display = 'inline';
             }
         }); 
     };
