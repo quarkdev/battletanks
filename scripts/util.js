@@ -131,6 +131,31 @@ var UTIL = (function () {
         return true;
     };
     
+    my.getHighScores = function () {
+        $.ajax({  
+            type: "POST",  
+            url: "/models/get_high_scores.php",  
+            data: data,  
+            success: function(response) {  
+                var pr = JSON.parse(response);
+                var count = 1;
+                var spinner = document.getElementById('hof-spinner');
+                var table = document.getElementById('hof-table').getElementsByTagName('tbody')[0];
+                
+                spinner.show();
+                table.innerHTML = '';
+                for (var i = 0; i < pr.length; i++) {
+                    var row = document.createElement('table');
+                    row.class = 'hof-row';
+                    row.innerHTML = '<tr><td>'+count+'</td><td>'+pr.player+'</td><td>'+pr.map+'</td><td>'+pr.wave+'</td><td>'+pr.score+'</td></tr>';
+                    table.appendChild(row);
+                    count++;
+                }
+                spinner.hide();
+            }
+        }); 
+    };
+    
     my.post = function (url, data, callbackSuccess, callbackFailed) {
         callbackSuccess = function () {} || callbackSuccess;
         callbackFailed = function () {} || callbackFailed;

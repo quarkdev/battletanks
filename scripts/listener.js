@@ -58,6 +58,7 @@ function attachMenuEventListeners() {
     
     $('#hall-of-fame').click(function () {
         // hide menu
+        UTIL.getHighScores();
         $('.overlay').fadeOut();
         $('#hof').show();
     });
