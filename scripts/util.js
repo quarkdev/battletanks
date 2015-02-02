@@ -145,9 +145,9 @@ var UTIL = (function () {
                 spinner.style.display = 'none';
                 table.innerHTML = '';
                 for (var i = 0; i < pr.length; i++) {
-                    var row = document.createElement('table');
+                    var row = document.createElement('tr');
                     row.class = 'hof-row';
-                    row.innerHTML = '<tr><td>'+count+'</td><td>'+pr[i].player+'</td><td>'+pr[i].map+'</td><td>'+pr[i].wave+'</td><td>'+pr[i].score+'</td></tr>';
+                    row.innerHTML = '<td>'+count+'</td><td>'+pr[i].player+'</td><td>'+pr[i].map+'</td><td>'+pr[i].wave+'</td><td>'+pr[i].score+'</td>';
                     table.appendChild(row);
                     count++;
                 }
