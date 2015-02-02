@@ -35,7 +35,7 @@
             // include ui screens
             include 'screens/progress.html';
             include 'screens/main_menu.html';
-            include 'screens/halloffame.php';
+            include 'screens/halloffame.html';
             include 'screens/settings.html';
             include 'screens/gamepedia.html';
             include 'screens/pause.html';
