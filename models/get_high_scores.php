@@ -14,10 +14,10 @@
             array_push(
                 $data,
                 array(
-                    "player" => $row->player,
-                    "map"    => $row->map,
-                    "wave"   => $row->wave,
-                    "score"  => $row->score
+                    "player" => (string) $row->player,
+                    "map"    => (string) $row->map,
+                    "wave"   => (int) $row->wave,
+                    "score"  => (int) $row->score
                 )
             );
         }
