@@ -147,11 +147,10 @@ var UTIL = (function () {
                 for (var i = 0; i < pr.length; i++) {
                     var row = document.createElement('table');
                     row.class = 'hof-row';
-                    row.innerHTML = '<tr><td>'+count+'</td><td>'+pr.player+'</td><td>'+pr.map+'</td><td>'+pr.wave+'</td><td>'+pr.score+'</td></tr>';
+                    row.innerHTML = '<tr><td>'+count+'</td><td>'+pr[i].player+'</td><td>'+pr[i].map+'</td><td>'+pr[i].wave+'</td><td>'+pr[i].score+'</td></tr>';
                     table.appendChild(row);
                     count++;
                 }
-                console.log(response);
                 spinner.style.display = 'inline';
             }
         }); 
