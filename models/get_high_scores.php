@@ -10,14 +10,14 @@
         $query = "SELECT * FROM high_score ORDER BY score DESC LIMIT 10";
         $result = pg_query($conn, $query);
         
-        while ($row = pg_fetch_assoc($result)) {
+        while ($row = pg_fetch_object($result)) {
             array_push(
                 $data,
                 array(
-                    "player" => $row['player'],
-                    "map"    => $row['map'],
-                    "wave"   => $row['wave'],
-                    "score"  => $row['score']
+                    "player" => $row->player,
+                    "map"    => $row->map,
+                    "wave"   => $row->wave,
+                    "score"  => $row->score
                 )
             );
         }

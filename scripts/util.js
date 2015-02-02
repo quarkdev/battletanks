@@ -151,6 +151,7 @@ var UTIL = (function () {
                     table.appendChild(row);
                     count++;
                 }
+                console.log(response);
                 spinner.style.display = 'inline';
             }
         }); 
