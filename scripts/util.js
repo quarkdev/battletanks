@@ -135,7 +135,7 @@ var UTIL = (function () {
         $.ajax({  
             type: "POST",  
             url: "/models/get_high_scores.php",  
-            data: data,  
+            data: {ajax: true},  
             success: function(response) {  
                 var pr = JSON.parse(response);
                 var count = 1;
