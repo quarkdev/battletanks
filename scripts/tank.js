@@ -688,6 +688,10 @@ Tank.prototype.fire = function () {
     var t = this.config;
 
     if (t.active === false) return;
+    
+    if (performance.now() - this.rlt >= 1000 / t.fRate) {
+        this.reload();
+    }
 
     // are we still reloading?
     if (this.reloading || t.ammo === 0) { return; } 
@@ -709,8 +713,7 @@ Tank.prototype.fire = function () {
     
     // we just fired a round, let's reload
     this.reloading = true;
-    var that = this; // save context
-    setTimeout(function () { that.reload(); }, 1000 / t.fRate);
+    this.rlt = performance.now();
     
     visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: t.fireScale, scaleH: t.fireScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
     
