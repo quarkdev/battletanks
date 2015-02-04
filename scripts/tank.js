@@ -722,14 +722,11 @@ Tank.prototype.fire = function () {
         oX          : _oX,
         oY          : _oY,
         radius      : t.fireScale * 2,
-        intensity   : 0.3
+        intensity   : 0.3,
+        duration    : 40
     });
 
     lights.push(flash);
-
-    new Timer(function () {
-        flash.config.active = false;
-    }, 40);
 
     t.turretAnim.unPause();
     // play sound effect
@@ -826,14 +823,11 @@ Tank.prototype.hit = function (projectile) {
         oX          : p.oX,
         oY          : p.oY,
         radius      : hit_explosion_scale,
-        intensity   : 0.3
+        intensity   : 0.3,
+        duration    : 40
     });
 
     lights.push(flash);
-
-    new Timer(function () {
-        flash.config.active = false;
-    }, 40);
 
     // record hit if source is the player and target is NOT the player
     if (p.srcId === player.config.id && t.id !== player.config.id) {
@@ -907,14 +901,11 @@ Tank.prototype.death = function () {
         oX          : t.oX,
         oY          : t.oY,
         radius      : t.explodeScale,
-        intensity   : 0.5
+        intensity   : 0.5,
+        duration    : 200
     });
 
     lights.push(flash);
-
-    new Timer(function () {
-        flash.config.active = false;
-    }, 200);
 
     if (t.control === 'computer') {
         GLOBALS.map.wave.enemyCount -= 1;

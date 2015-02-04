@@ -237,14 +237,11 @@ var PUP = (function() {
                                     oX          : x,
                                     oY          : y,
                                     radius      : hit_explosion_scale,
-                                    intensity   : 0.3
+                                    intensity   : 0.3,
+                                    duration    : 40
                                 });
 
                                 lights.push(flash);
-                                
-                                new Timer(function () {
-                                    flash.config.active = false;
-                                }, 40);
                                 
                                 tank.pdl.vfx.push(shield_vfx);
                                 visualeffects.push(shield_vfx);
@@ -922,14 +919,11 @@ var PUP = (function() {
                             oX          : p.oX,
                             oY          : p.oY,
                             radius      : scale,
-                            intensity   : 0.3
+                            intensity   : 0.3,
+                            duration    : 40
                         });
 
                         lights.push(flash);
-
-                        new Timer(function () {
-                            flash.config.active = false;
-                        }, 40);
 
                         if (explode_distance > 500) {
                             fireSound.get();

@@ -63,12 +63,19 @@ function Light(specs) {
         oX                : specs.oX,
         oY                : specs.oY,
         radius            : specs.radius,
-        intensity         : specs.intensity
+        intensity         : specs.intensity,
+        duration          : specs.duration || 0,
+        spawnTime         : performance.now()
 	};
 }
 
 Light.prototype.draw = function (ctx, xView, yView) {
     var l = this.config;
-    if (!this.config.active) { return; }
+    if (!this.config.active) {
+        return;
+    }
+    else if (performance.now() - l.spawnTime >= l.duration && l.duration !== 0) {
+        this.config.active = false;
+    }
     LIGHTING.lightenGradient(ctx, l.oX - xView, l.oY - yView, l.radius, l.intensity);
 };

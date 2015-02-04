@@ -166,14 +166,12 @@ Destructible.prototype.hit = function (projectile) {
                 oX          : p.oX,
                 oY          : p.oY,
                 radius      : 32,
-                intensity   : 0.5
+                intensity   : 0.5,
+                duration    : 40
             });
 
             lights.push(flash);
             
-            new Timer(function () {
-                flash.config.active = false;
-            }, 40);
             break;
         case 'low-lying':
             // low-lying destructibles can't be hit by projectiles
@@ -189,14 +187,12 @@ Destructible.prototype.hit = function (projectile) {
                 oX          : p.oX,
                 oY          : p.oY,
                 radius      : hit_explosion_scale,
-                intensity   : 0.3
+                intensity   : 0.3,
+                duration    : 40
             });
 
             lights.push(flash);
-            
-            new Timer(function () {
-                flash.config.active = false;
-            }, 40);
+
             break;
         }
 };
