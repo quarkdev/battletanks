@@ -116,6 +116,7 @@ UTIL.asset.queue('image', ['shield_glimpse', 'images/spritesheets/shield_glimpse
 UTIL.asset.queue('image', ['bar', 'images/spritesheets/bar.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['deflect_on', 'images/spritesheets/deflect_on.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['point-defense-laser', 'images/spritesheets/point-defense-laser.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['concussive_glow', 'images/spritesheets/concussive_glow.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();

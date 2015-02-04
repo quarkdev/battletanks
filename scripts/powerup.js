@@ -980,16 +980,7 @@ var PUP = (function() {
                 var concussiveShell = function (projectile) {
                     var p = projectile.config;
                     
-                    var orb = new Light({
-                        name        : 'concussive-orb',
-                        oX          : p.oX,
-                        oY          : p.oY,
-                        radius      : 5,
-                        intensity   : 1
-                    });
-                    
-                    lights.push(orb);
-                    new Timer(function () { orb.config.active = false }, 10);
+                    visualeffects.push(new VisualEffect({name: 'orb_trail', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 8, scaleH: 8,  maxCols: 2, maxRows: 2, framesTillUpdate: 0, loop: false, spriteSheet: 'concussive_glow'}));
                     
                     if (p.objectHit.type === 'tank') {
                         var t = p.objectHit.obj;
