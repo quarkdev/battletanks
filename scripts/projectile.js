@@ -21,6 +21,7 @@ function Projectile(specs) {
         srcId      : specs.srcId,
         srcType    : specs.srcType,
         origin     : {x: specs.oX, y: specs.oY},
+        lastPos    : {x: specs.oX, y: specs.oY},
         objectHit  : {type: 'none', obj: null},
         PoI        : {x: 0, y: 0}, // Point of impact of the last collision
         sideHit    : 0 // Side hit (if square)
@@ -32,8 +33,7 @@ Projectile.prototype.update = function (modifier) {
     var angleInRadians = p.angle * Math.PI / 180;
     
     // Save last position.
-    var lastX = p.oX,
-        lastY = p.oY;
+    p.lastPos = {x: p.oX, y: p.oY};
     
     // Update projectile position.
     p.oX = p.oX + (p.speed * modifier * Math.cos(angleInRadians));
@@ -49,7 +49,7 @@ Projectile.prototype.update = function (modifier) {
     }
     else {
         // Check if it hit a tank.
-        var result = this._hasHitTank(tanks, p.oX, p.oY, lastX, lastY);
+        var result = this._hasHitTank(tanks, p.oX, p.oY, p.lastPos.x, p.lastPos.y);
         if (result.hit === true) {
             p.active = false;
             var t = result.tank;
@@ -62,7 +62,7 @@ Projectile.prototype.update = function (modifier) {
         }
         else {
             // Check if it hit a destructible.
-            var resultD = this._hasHitDestructible(destructibles, p.oX, p.oY, lastX, lastY);
+            var resultD = this._hasHitDestructible(destructibles, p.oX, p.oY, p.lastPos.x, p.lastPos.y);
             if (resultD.hit === true) {
                 p.active = false;
                 var d = resultD.destructible;
@@ -98,7 +98,7 @@ Projectile.prototype._hasHitBoundary = function (x, y) {
     return (x < 0 || x > WORLD_WIDTH || y < 0 || y > WORLD_HEIGHT);
 };
 
-Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lastX, lastY) {
+Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lx, ly) {
     var p = this.config;
     for (var i = 0; i < destructibles.length; i++) {
         var d = destructibles[i].config;
@@ -118,7 +118,7 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lastX,
             }
         }
         
-        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY });
+        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lx, By: ly });
         if (lineX.yes) {
             return { hit: true, poi: lineX.PoI, sideH: lineX.sideIndex, destructible: destructibles[i] };
         }
@@ -126,7 +126,7 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lastX,
     return { hit: false, poi: null, sideH: null, destructible: null };
 };
 
-Projectile.prototype._hasHitTank = function (tanks, x, y, lastX, lastY) {
+Projectile.prototype._hasHitTank = function (tanks, x, y, lx, ly) {
     for (var i = 0; i < tanks.length; i++) {
         var t = tanks[i].config;
         if (t.active === false) continue; // Skip inactive tanks
@@ -143,7 +143,7 @@ Projectile.prototype._hasHitTank = function (tanks, x, y, lastX, lastY) {
         }
         
         // line-square intersection check
-        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.width, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lastX, By: lastY }, t.hAngle);
+        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.width, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lx, By: ly }, t.hAngle);
         if (lineX.yes) {
             return { hit: true, tank: tanks[i] };
         }

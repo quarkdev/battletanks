@@ -26,7 +26,8 @@ var PUP = (function() {
         {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank by 90%.'},
         {slug: 'nuke', cost: 1000, desc: 'Deals 8000 + (wave * 200) max pure damage to enemy tanks within effective radius. Damage diminishes with distance.'},
         {slug: 'deflect', cost: 100, desc: 'Uses 50% less shield energy to deflect incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
-        {slug: 'point-defense-laser', cost: 100, desc: 'Uses lasers to destroy incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'}
+        {slug: 'point-defense-laser', cost: 100, desc: 'Uses lasers to destroy incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
+        {slug: 'impulse-shell', cost: 150, desc: 'Deals extra damage based on distance travelled by projectile.'}
     ];
     
     my.getSlug = function (slug) {
@@ -91,6 +92,8 @@ var PUP = (function() {
                 return new Deflect(x, y);
             case 'point-defense-laser':
                 return new PointDefenseLaser(x, y);
+            case 'impulse-shell':
+                return new ImpulseShell(x, y);
             default:
                 break;
         }
@@ -122,6 +125,55 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function ImpulseShell(x, y) {
+        /* Deals extra damage based on distance. */
+        this.config = {
+            name    : 'Impulse Shell',
+            slug    : 'impulse-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('impulse-shell')
+        };
+        
+        this.use = function (tank) {
+            var active = typeof tank.is_active !== 'undefined';
+            
+            if (!active) {
+                tank.is_active = true;
+                
+                var impulseShell = function (projectile) {
+                    var p = projectile.config;
+                    
+                    // increase damage per distance travelled
+                    var _dt = UTIL.geometry.getDistanceBetweenPoints(p.lastPos, {x: p.oX, y: p.oY}); // distance travelled per frame
+                    p.dt = typeof p.dt !== 'undefined' ? p.dt + _dt : 0; // total distance travelled
+                    p.damage += _dt;
+                    
+                    // increase vfx size based on distance
+                    var _growth = p.dt / 100;
+                    _growth = _growth > 6 ? 6 : _growth; // clamp at 6
+                    
+                    // show trail vfx
+                    visualeffects.push(new VisualEffect({name: 'impulse_trail', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 6 + _growth, scaleH: 6 + _growth,  maxCols: 2, maxRows: 2, framesTillUpdate: 0, loop: false, spriteSheet: 'impulse_glow'}));
+                };
+                impulseShell.id = 'impsh';
+                
+                tank.projectile_mods.push(impulseShell);
+                
+                tank.is_timeout = new Timer(function () {
+                    delete tank.is_active;
+                    delete tank.is_timeout;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'impsh'; });
+                }, 12000);
+            }
+            else {
+                tank.is_timeout.extend(6000);
+            }
         };
     }
     

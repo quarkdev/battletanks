@@ -143,6 +143,12 @@
             "description": "Destroys incoming projectiles using shield energy.",
             "image": "images/powerups/point-defense-laser.png",
             "video": ""
+        },
+        {
+            "name": "Impulse Shell",
+            "description": "Deals extra damage based on distance travelled by projectile.",
+            "image": "images/powerups/impulse-shell.png",
+            "video": ""
         }
     ],
     "tanks" : [
