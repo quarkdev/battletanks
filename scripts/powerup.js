@@ -141,18 +141,21 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            var active = typeof tank.is_active !== 'undefined';
+            var active = typeof tank.is !== 'undefined';
             
             if (!active) {
-                tank.is_active = true;
+                tank.is = {};
+                tank.is.dmult = 0.4; // distance multiplier
                 
                 var impulseShell = function (projectile) {
                     var p = projectile.config;
                     
                     // increase damage per distance travelled
                     var _dt = UTIL.geometry.getDistanceBetweenPoints(p.lastPos, {x: p.oX, y: p.oY}); // distance travelled per frame
+                    var _dmult = typeof tank.is !== 'undefined' ? tank.is.dmult : 0.4;
+                    
                     p.dt = typeof p.dt !== 'undefined' ? p.dt + _dt : 0; // total distance travelled
-                    p.damage += _dt;
+                    p.damage += _dt * _dmult;
                     
                     // increase vfx size based on distance
                     var _growth = p.dt / 100;
@@ -165,14 +168,14 @@ var PUP = (function() {
                 
                 tank.projectile_mods.push(impulseShell);
                 
-                tank.is_timeout = new Timer(function () {
-                    delete tank.is_active;
-                    delete tank.is_timeout;
+                tank.is.timeout = new Timer(function () {
+                    delete tank.is;
                     tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'impsh'; });
                 }, 12000);
             }
             else {
-                tank.is_timeout.extend(6000);
+                tank.is.dmult += 0.2;
+                tank.is.timeout.extend(8000);
             }
         };
     }
