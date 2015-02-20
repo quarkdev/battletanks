@@ -128,25 +128,25 @@ var backgroundMusic = new Audio();
 UTIL.asset.queue('audio', ['sounds/bgm/6.mp3', true, 0.15, backgroundMusic]);
 
 // Sound effects
-fireSound         = new SoundPool('sounds/turret_fire.wav', 0.12, 20);
-explodeSound      = new SoundPool('sounds/explosion.wav', 0.1, 20);
-d_explodeSound    = new SoundPool('sounds/destructible_hit.wav', 0.1, 20);
-d_destroyedSound  = new SoundPool('sounds/destructible_destroyed.wav', 0.2, 10);
-t_destroyedSound  = new SoundPool('sounds/tank_destroyed.wav', 0.2, 10);
-t_destroyedSound2 = new SoundPool('sounds/tank_destroyed2.wav', 0.2, 10);
-t_destroyedSound3 = new SoundPool('sounds/tank_destroyed3.wav', 0.2, 10);
-pick_powerupSound = new SoundPool('sounds/pick-powerup.wav', 0.2, 20);
-tick_sound        = new SoundPool('sounds/tick.mp3', 1.0, 60);
-wave_cleared_sound = new SoundPool('sounds/wave_cleared.wav', 0.3, 3);
-wave_start_sound   = new SoundPool('sounds/wave_start.wav', 0.3, 3);
-gameover_sound     = new SoundPool('sounds/gameover.wav', 0.5, 3);
-gold_pick_sound    = new SoundPool('sounds/gold-pick.wav', 0.1, 20);
-button_hover_sound = new SoundPool('sounds/button_hover.mp3', 0.5, 8);
-button_click_sound = new SoundPool('sounds/button_click.mp3', 0.5, 8);
-pup_tds_sound = new SoundPool('sounds/chronosphere.wav', 0.5, 8);
-nuke_siren_sound = new SoundPool('sounds/nuke_siren.wav', 0.5, 5);
+fireSound            = new SoundPool('sounds/turret_fire.wav', 0.12, 20);
+explodeSound         = new SoundPool('sounds/explosion.wav', 0.1, 20);
+d_explodeSound       = new SoundPool('sounds/destructible_hit.wav', 0.1, 20);
+d_destroyedSound     = new SoundPool('sounds/destructible_destroyed.wav', 0.2, 10);
+t_destroyedSound     = new SoundPool('sounds/tank_destroyed.wav', 0.2, 10);
+t_destroyedSound2    = new SoundPool('sounds/tank_destroyed2.wav', 0.2, 10);
+t_destroyedSound3    = new SoundPool('sounds/tank_destroyed3.wav', 0.2, 10);
+pick_powerupSound    = new SoundPool('sounds/pick-powerup.wav', 0.2, 20);
+tick_sound           = new SoundPool('sounds/tick.mp3', 1.0, 60);
+wave_cleared_sound   = new SoundPool('sounds/wave_cleared.wav', 0.3, 3);
+wave_start_sound     = new SoundPool('sounds/wave_start.wav', 0.3, 3);
+gameover_sound       = new SoundPool('sounds/gameover.wav', 0.5, 3);
+gold_pick_sound      = new SoundPool('sounds/gold-pick.wav', 0.1, 20);
+button_hover_sound   = new SoundPool('sounds/button_hover.mp3', 0.5, 8);
+button_click_sound   = new SoundPool('sounds/button_click.mp3', 0.5, 8);
+pup_tds_sound        = new SoundPool('sounds/chronosphere.wav', 0.5, 8);
+nuke_siren_sound     = new SoundPool('sounds/nuke_siren.wav', 0.5, 5);
 nuke_explosion_sound = new SoundPool('sounds/nuke_explosion.wav', 1.0, 5);
-laser_impact_sound = new SoundPool('sounds/laser_impact.wav', 0.1, 50);
+laser_impact_sound   = new SoundPool('sounds/laser_impact.wav', 0.1, 50);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -230,7 +230,7 @@ $(document).ready(function () {
     UTIL.asset.loadAll(function (item) {
         // everytime a queued item is loaded, update the progressbar
         totalLoaded = UTIL.asset.getTotalLoaded();
-        progressTextDone.innerHTML = item + ' loaded';
+        progressTextDone.innerHTML = item + ' loaded<br>(' + totalLoaded + '/' + totalAssets + ')';
         progressBar.value = (totalLoaded / totalAssets) * 100;
     }, function (error) {
         // if we encountered an error while loading, log it

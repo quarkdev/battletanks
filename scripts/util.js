@@ -1048,6 +1048,13 @@ UTIL.asset = (function() {
         queued++;
     };
     
+    my.bulkQueueImgs = function (assets, obj) {
+        /* ([[id, url]...], obj) */
+        for (var i = 0; i < assets.length; i++) {
+            my.queue('image', [assets[i][0], assets[i][1], obj]); 
+        }
+    };
+    
     my.getTotalQueued = function () {
         return queued;
     };
