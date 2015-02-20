@@ -703,25 +703,27 @@ var showGameOver = function (state) {
             
                 // save bestScores to localstorage
                 localStorage.setItem('best_scores', JSON.stringify(GLOBALS.player.bestScores));
-                var playername = prompt("Please enter your name", "Robert Downey Jr.");
+                var playername = trim(prompt("Please enter your name", "Robert Downey Jr."));
                 
-                // save score to database
-                var data = {
-                    ajax   : true,
-                    map    : maps[GLOBALS.map.index].name,
-                    player : playername,
-                    wave   : GLOBALS.map.wave.current,
-                    score  : STAT.get('total_tanks_destroyed') + totalCoins
-                };
-                //UTIL.post('/models/submit_score.php', data);
-                $.ajax({  
-                    type: "POST",  
-                    url: "/models/submit_score.php",  
-                    data: data,  
-                    success: function(dataString) {  
-                        //console.log(dataString);
-                    }
-                }); 
+                if (playername) {
+                    // save score to database only if playername is not empty/null
+                    var data = {
+                        ajax   : true,
+                        map    : maps[GLOBALS.map.index].name,
+                        player : playername,
+                        wave   : GLOBALS.map.wave.current,
+                        score  : STAT.get('total_tanks_destroyed') + totalCoins
+                    };
+                    //UTIL.post('/models/submit_score.php', data);
+                    $.ajax({  
+                        type: "POST",  
+                        url: "/models/submit_score.php",  
+                        data: data,  
+                        success: function(dataString) {  
+                            //console.log(dataString);
+                        }
+                    });
+                }
             }
             
         }, 50);

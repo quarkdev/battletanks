@@ -654,6 +654,10 @@ button {
     text-align: left;
 }
 
+#hof-table tr:hover {
+    background: #000;
+}
+
 #hof-table td {
     text-align: left;
 }

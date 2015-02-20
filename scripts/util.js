@@ -147,8 +147,10 @@ var UTIL = (function () {
                 for (var i = 0; i < pr.length; i++) {
                     var row = document.createElement('tr');
                     row.class = 'hof-row';
+                    row.style.display = 'none';
                     row.innerHTML = '<td>'+count+'</td><td>'+pr[i].player+'</td><td>'+pr[i].map+'</td><td>'+pr[i].wave+'</td><td>'+pr[i].score+'</td>';
                     table.appendChild(row);
+                    $(row).hide().delay(400).fadeIn();
                     count++;
                 }
                 spinner.style.display = 'none';
