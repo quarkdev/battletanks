@@ -1057,7 +1057,7 @@ var PUP = (function() {
                                 delete t.debuff_cs_active;
                                 delete t.debuff_cs_stacks;
                                 delete t.debuff_cs_timeout;
-                            }, 6000);
+                            }, 8000);
                         }
                         else {
                             t.debuff_cs_stacks++;
@@ -1066,7 +1066,7 @@ var PUP = (function() {
                             t.config.fSpeed = t.config.fSpeed < debuff_amount+debuff_min ? debuff_min : t.config.fSpeed - debuff_amount;
                             t.config.rSpeed = t.config.rSpeed < debuff_amount+debuff_min ? debuff_min : t.config.rSpeed - debuff_amount;
                             
-                            t.debuff_cs_timeout.extend(1500);
+                            t.debuff_cs_timeout.reset();
                         }
                     }
                 };
