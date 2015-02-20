@@ -119,6 +119,9 @@ UTIL.asset.queue('image', ['deflect_on', 'images/spritesheets/deflect_on.png', S
 UTIL.asset.queue('image', ['point-defense-laser', 'images/spritesheets/point-defense-laser.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['concussive_glow', 'images/spritesheets/concussive_glow.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['impulse_glow', 'images/spritesheets/impulse_glow.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['muzzle-flash-1', 'images/spritesheets/muzzle-flash.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['muzzle-flash-2', 'images/spritesheets/muzzle-flash-2.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['muzzle-flash-3', 'images/spritesheets/muzzle-flash-3.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
