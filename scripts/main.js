@@ -8,7 +8,7 @@ var menu = function() {
     $('#editor-ui').hide();
 
     // show menu overlay
-    $('#main-menu').show();
+    $('#main-menu').fadeIn();
 };
 
 var pause = function () {

@@ -105,7 +105,7 @@ function attachMenuEventListeners() {
     
     $('#gamepedia').click(function () {
         $('.overlay').hide();
-        $('#gamepedia-screen').show();
+        $('#gamepedia-screen').fadeIn();
     });
     
     $('#settings').click(function () {
@@ -114,7 +114,7 @@ function attachMenuEventListeners() {
         // load default settings
         $('#set-screen-shake').val(GLOBALS.settings.screenShake);
         
-        $('#settings-screen').show();
+        $('#settings-screen').fadeIn();
     });
 }
 
