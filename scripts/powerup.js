@@ -27,7 +27,8 @@ var PUP = (function() {
         {slug: 'nuke', cost: 1000, desc: 'Deals 8000 + (wave * 200) max pure damage to enemy tanks within effective radius. Damage diminishes with distance.'},
         {slug: 'deflect', cost: 100, desc: 'Uses 50% less shield energy to deflect incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
         {slug: 'point-defense-laser', cost: 100, desc: 'Uses lasers to destroy incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
-        {slug: 'impulse-shell', cost: 150, desc: 'Deals extra damage based on distance travelled by projectile.'}
+        {slug: 'impulse-shell', cost: 150, desc: 'Deals extra damage based on distance travelled by projectile.'},
+        {slug: 'mine', cost: 100, desc: 'Plants an anti-tank mine on the ground that becomes armed after 3 seconds. Deals moderate damage.'}
     ];
     
     my.getSlug = function (slug) {
@@ -94,6 +95,8 @@ var PUP = (function() {
                 return new PointDefenseLaser(x, y);
             case 'impulse-shell':
                 return new ImpulseShell(x, y);
+            case 'mine':
+                return new Mine(x, y);
             default:
                 break;
         }
@@ -125,6 +128,116 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function Mine(x, y) {
+        /* It's a trap! */
+        this.config = {
+            name    : 'Mine',
+            slug    : 'mine',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('mine')
+        };
+        
+        this.use = function (tank) {
+            // drops a landmine in an area that becomes active after 3 seconds
+            
+            var loc = {
+                x: tank.config.oX,
+                y: tank.config.oY
+            };
+            
+            // nearby tank/destructible detection
+            var search_area = function (dy) {
+
+                if (dy.config.active && dy.armed) {
+                    var procced = false;
+
+                    for (var i = 0; i < tanks.length; i++) {
+                        var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
+                        if (d > 60) { continue; } // trigger distance
+                        
+                        // found a victim!
+                        procced = true;
+                        
+                        visualeffects.push(new VisualEffect({name: 'explosion', oX: dy.config.oX, oY: dy.config.oY, width: 32, height: 32, scaleW: 64, scaleH: 64,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
+
+                        // show explosion flash
+                        var flash = new Light({
+                            name        : 'x-flash',
+                            oX          : dy.config.oX,
+                            oY          : dy.config.oY,
+                            radius      : 120,
+                            intensity   : 0.5,
+                            duration    : 200
+                        });
+
+                        lights.push(flash);
+                        
+                        // Play sound effect [random]
+                        var roll = Math.floor(Math.random() * 3) + 1;
+                        switch (roll) {
+                            case 1:
+                                t_destroyedSound.get();
+                                break;
+                            case 2:
+                                t_destroyedSound2.get();
+                                break;
+                            case 3:
+                                t_destroyedSound3.get();
+                                break;
+                        }
+                        
+                        // destroy all tanks within 120 units
+                        for (var n = 0; n < tanks.length; n++) {
+                            var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[n].config.oX, y: tanks[n].config.oY});
+                            if (d > 120) { continue; } // trigger distance
+                        
+                            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (500 - d) * (GLOBALS.map.wave.current + 1);
+
+                            tanks[n].config.health -= dmg;
+                            tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
+                            
+                            // animate player health if hit
+                            if (tanks[n].config.control === 'player') {
+                                renderExtern();
+                            }
+                            
+                            // if tank has 0 health, destroy the tank
+                            if (tanks[n].config.health === 0) {
+                                tanks[n].death();
+                            }
+                        }
+                        
+                        break;
+                    }
+
+                    if (procced) {
+                        // disarm mine
+                        dy.vfx.end();
+                        dy.config.active = false;
+                        dy.armed = false;
+                    }
+                }
+            };
+            
+            // create a projectile dummy for our landmine
+            var dummy = new Dummy({mods: [search_area], speed: 0, angle: 0, oX: loc.x, oY: loc.y});
+            dummies.push(dummy);
+            
+            // show a landmine vfx at projectile location (paused)
+            dummy.vfx = new VisualEffect({name: 'mine', oX: loc.x, oY: loc.y, width: 40, height: 40, scaleW: 20, scaleH: 20,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: true, resettable: true, paused: true, spriteSheet: 'mine'});
+            visualeffects.push(dummy.vfx);
+
+            // activate landmine after 3 seconds
+            new Timer(function () {
+                dummy.vfx.unPause();
+                dummy.armed = true;
+            }, 3000);
         };
     }
     

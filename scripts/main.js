@@ -204,6 +204,14 @@ var update = function(modifier) {
         }
     }
     
+    // Update all dummies
+    // Update all projectiles.
+    for (i = 0; i < dummies.length; i++) {
+        if (dummies[i].config.active) {
+            dummies[i].update(modifier);
+        }
+    }
+    
     // Update all projectiles.
     for (i = 0; i < projectiles.length; i++) {
         if (projectiles[i].config.active) {
@@ -216,6 +224,14 @@ var update = function(modifier) {
         if (visualeffects[i].config.active) {
             visualeffects[i].update();
         }
+    }
+    
+    // Remove all inactive dummies. This keeps the dummies array from accumulating inactive objects.
+    if (GLOBALS.flags.clean.dummies > GLOBALS.flags.clean.threshold) {
+        dummies = dummies.filter(function (item) {
+            return item.config.active;
+        });
+        GLOBALS.flags.clean.dummies = 0;
     }
     
     // Remove all inactive projectiles. This keeps the projectiles array from accumulating inactive objects.
@@ -604,6 +620,7 @@ var startMapEditor = function () {
     destructibles.length = 0;
     startingpoints.length = 0;
     visualeffects.length = 0;
+    dummies.length = 0;
 
     MAP.loadPlaceablesToUI();
     
@@ -703,7 +720,8 @@ var showGameOver = function (state) {
             
                 // save bestScores to localstorage
                 localStorage.setItem('best_scores', JSON.stringify(GLOBALS.player.bestScores));
-                var playername = trim(prompt("Please enter your name", "Robert Downey Jr."));
+                var playername = prompt("Please enter your name", "Robert Downey Jr.");
+                playername = playername !== null ? playername.trim() : playername;
                 
                 if (playername) {
                     // save score to database only if playername is not empty/null

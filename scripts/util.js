@@ -1445,3 +1445,23 @@ function Interval(callback, delay, ticks) {
 
     this.resume();
 }
+
+// Dummy Object
+function Dummy(specs) {
+    this.mods = typeof specs.mods === 'undefined' ? [] : specs.mods;
+    
+    this.config = {
+        active     : true,
+        speed      : specs.speed,
+        angle      : specs.angle,
+        oX         : specs.oX,
+        oY         : specs.oY
+    };
+}
+
+Dummy.prototype.update = function (modifier) {
+    // Apply all mods
+    for (var i = 0; i < this.mods.length; i++) {
+        this.mods[i](this);
+    }
+};

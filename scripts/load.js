@@ -13,6 +13,7 @@ var LOAD = (function () {
         startingpoints.length = 0;
         visualeffects.length = 0;
         lights.length = 0;
+        dummies.length = 0;
         
         // make sure there are no active timers
         UTIL.timer.killAll();

@@ -8,7 +8,8 @@ var GLOBALS = (function () {
                 destructibles : 0,  // the current inactive object count (in this case, the current inactive destructibles) 
                 visualeffects : 0,
                 projectiles   : 0,
-                tanks         : 0
+                tanks         : 0,
+                dummies       : 0
             },
             initSpawn : false,
             gamepediaLoaded : false
@@ -60,6 +61,7 @@ var LOG_ENABLED = false;
 var MAX_BOTS = 50;
 
 var terrain = null;
+var dummies = [];
 var triggers = [];
 var powerups = [];
 var tanks = [];

@@ -71,6 +71,7 @@ UTIL.asset.queue('image', ['nuke', 'images/powerups/nuke.png', PowerUpImages]);
 UTIL.asset.queue('image', ['deflect', 'images/powerups/deflect.png', PowerUpImages]);
 UTIL.asset.queue('image', ['point-defense-laser', 'images/powerups/point-defense-laser.png', PowerUpImages]);
 UTIL.asset.queue('image', ['impulse-shell', 'images/powerups/impulse-shell.png', PowerUpImages]);
+UTIL.asset.queue('image', ['mine', 'images/powerups/mine.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -122,6 +123,7 @@ UTIL.asset.queue('image', ['impulse_glow', 'images/spritesheets/impulse_glow.png
 UTIL.asset.queue('image', ['muzzle-flash-1', 'images/spritesheets/muzzle-flash.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['muzzle-flash-2', 'images/spritesheets/muzzle-flash-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['muzzle-flash-3', 'images/spritesheets/muzzle-flash-3.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['mine', 'images/spritesheets/mine.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
@@ -210,6 +212,7 @@ MAP.addPlaceable('powerup', 'nuke');
 MAP.addPlaceable('powerup', 'deflect');
 MAP.addPlaceable('powerup', 'point-defense-laser');
 MAP.addPlaceable('powerup', 'impulse-shell');
+MAP.addPlaceable('powerup', 'mine');
 
 GLOBALS.map.index = 0;
 
