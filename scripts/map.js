@@ -553,7 +553,7 @@ var MAP = (function () {
                     var pup = PUP.createRandom(enemy.config.oX, enemy.config.oY);
                     
                     // of course we don't want to nuke/trap everyone on spawn
-                    if (pup.config.slug !== 'nuke' || pup.config.slug !== 'mine') {
+                    if (pup.config.slug !== 'nuke' && pup.config.slug !== 'mine') {
                         pup.use(enemy);
                     }
                 }
