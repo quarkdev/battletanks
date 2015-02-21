@@ -164,14 +164,14 @@ var PUP = (function() {
                         // found a victim!
                         procced = true;
                         
-                        visualeffects.push(new VisualEffect({name: 'explosion', oX: dy.config.oX, oY: dy.config.oY, width: 32, height: 32, scaleW: 64, scaleH: 64,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
+                        visualeffects.push(new VisualEffect({name: 'explosion', oX: dy.config.oX, oY: dy.config.oY, width: 32, height: 32, scaleW: 96, scaleH: 96,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
 
                         // show explosion flash
                         var flash = new Light({
                             name        : 'x-flash',
                             oX          : dy.config.oX,
                             oY          : dy.config.oY,
-                            radius      : 120,
+                            radius      : 160,
                             intensity   : 0.5,
                             duration    : 200
                         });
@@ -192,13 +192,30 @@ var PUP = (function() {
                                 break;
                         }
                         
-                        // destroy all tanks within 120 units
+                        // damage all tanks within 160 units
                         for (var n = 0; n < tanks.length; n++) {
                             var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[n].config.oX, y: tanks[n].config.oY});
-                            if (d > 120) { continue; } // trigger distance
+                            if (d > 160) { continue; } // trigger distance
                         
-                            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (500 - d) * (GLOBALS.map.wave.current + 1);
+                            // calculate damage
+                            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (1000 - d) * (GLOBALS.map.wave.current + 1);
+                            var crit = 10 > Math.random() * 100;
+                            dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+                            
+                            // deal damage to tank shield
+                            tanks[n].config.shield -= dmg;
+                            if (tanks[n].config.shield < 0) {
+                                dmg = (-1)*tanks[n].config.shield;
+                                tanks[n].config.shield = 0;
+                            }
+                            else {
+                                dmg = 0;
+                            }
 
+                            // apply damage reduction from armor
+                            dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
+
+                            // deal damage to tank health
                             tanks[n].config.health -= dmg;
                             tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
                             
