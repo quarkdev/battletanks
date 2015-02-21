@@ -1677,7 +1677,6 @@ var PUP = (function() {
                 
                 tank.as_timeout = new Timer(function () {
                     // fire the number of absorbed projectiles in all directions
-                    var aFactor = 360/tank.hitsTaken;
                     var cAngle = 0;
                     var x = 0;
                     var y = 0;
@@ -1686,20 +1685,23 @@ var PUP = (function() {
                         visualeffects.push(new VisualEffect({name: 'explosion', oX: projectile.config.oX, oY: projectile.config.oY, width: 32, height: 32, scaleW: 12, scaleH: 12,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
                     }
                     
-                    for (var i = 0; i < tank.hitsTaken; i++) {
+                    var _dmg = tank.config.pDamage + (tank.config.pDamage * tank.hitsTaken / 36);
+                    var _ps = Math.max(tank.config.pSpeed, Math.max(tank.config.fSpeed, tank.config.rSpeed));
+                    
+                    for (var i = 0; i < 36; i++) {
                         // determine starting coordinates of projectile based on vector info
-                        x = tank.config.oX + Math.cos(cAngle * Math.PI/180) * (tank.config.cRadius+10);
-                        y = tank.config.oY + Math.sin(cAngle * Math.PI/180) * (tank.config.cRadius+10);
+                        x = tank.config.oX + (Math.cos(cAngle * Math.PI/180) * (tank.config.cRadius+20));
+                        y = tank.config.oY + (Math.sin(cAngle * Math.PI/180) * (tank.config.cRadius+20));
                         
                         // create new projectile
-                        var proj = new Projectile({ speed: tank.config.pSpeed * 1.25, damage: tank.config.pDamage, critChance: tank.config.critChance, angle:  cAngle, oX: x, oY: y, srcId: tank.config.id, srcType: 'blast'});
+                        var proj = new Projectile({ speed: _ps, damage: _dmg, critChance: tank.config.critChance, angle:  cAngle, oX: x, oY: y, srcId: tank.config.id, srcType: 'blast'});
                         proj.mods.push(fireTrailFX);
                         
                         // add projectile to array
                         projectiles.push(proj);
                         
                         // set cAngle
-                        cAngle += aFactor;
+                        cAngle += 10;
                     }
                     
                     tank.config.invulnerable--;
