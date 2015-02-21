@@ -1657,25 +1657,9 @@ var PUP = (function() {
         
             if (!active) {
                 tank.as_active = true;
-                tank.hitsTaken = tank.hitsTaken > 0 ? tank.hitsTaken : 8;
-                
-                tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
-                visualeffects.push(tank.as_vfx);
-                tank.config.invulnerable++;
-                
-                var absorbHit = function () {
-                    // keep count of hits taken
-                    tank.hitsTaken += 4;
-                };
-                tank.events.listen('hit', absorbHit);
-                
-                var asAnim = function () {
-                    // update animation position
-                    tank.as_vfx.updatePos(tank.config.oX, tank.config.oY);
-                };
-                tank.events.listen('frame', asAnim);
-                
-                tank.as_timeout = new Timer(function () {
+                tank.hitsTaken = 0;
+                tank.maxHits = 36; // base max hits taken
+                tank.as_break = function () {
                     // fire the number of absorbed projectiles in all directions
                     var cAngle = 0;
                     var x = 0;
@@ -1710,15 +1694,46 @@ var PUP = (function() {
                     tank.events.unlisten('hit', absorbHit);
                     tank.events.unlisten('frame', asAnim);
                     d_explodeSound.get(); // play explode sound
+                    tank.as_timeout.clear();
                     
+                    delete tank.maxHits;
                     delete tank.hitsTaken; // remove temp variable
                     delete tank.as_active;
                     delete tank.as_vfx;
+                    delete tank.as_break;
                     delete tank.as_timeout;
-                }, 8000);
+                };
+                
+                tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
+                visualeffects.push(tank.as_vfx);
+                tank.config.invulnerable++;
+                
+                var absorbHit = function () {
+                    // keep count of hits taken
+                    tank.hitsTaken += 1;
+                    
+                    if (tank.hitsTaken >= tank.maxHits) {
+                        // break barrier
+                        tank.as_break();
+                    }
+                };
+                tank.events.listen('hit', absorbHit);
+                
+                var asAnim = function () {
+                    // update animation position
+                    tank.as_vfx.updatePos(tank.config.oX, tank.config.oY);
+                };
+                tank.events.listen('frame', asAnim);
+                
+                tank.as_timeout = new Timer(function () {
+                    if (tank.as_break) {
+                        tank.as_break();
+                    }
+                }, 4500);
             }
             else {
-                tank.as_timeout.extend(6000);
+                tank.maxHits += 12;
+                tank.as_timeout.extend(1500);
             } 
         };
     }
