@@ -153,6 +153,91 @@ var PUP = (function() {
             
             // nearby tank/destructible detection
             var search_area = function (dy) {
+            
+                var my = {};
+                
+                my.explode = function () {
+                    visualeffects.push(new VisualEffect({name: 'explosion', oX: dy.config.oX, oY: dy.config.oY, width: 32, height: 32, scaleW: 96, scaleH: 96,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
+
+                    // show explosion flash
+                    var flash = new Light({
+                        name        : 'x-flash',
+                        oX          : dy.config.oX,
+                        oY          : dy.config.oY,
+                        radius      : 160,
+                        intensity   : 0.5,
+                        duration    : 200
+                    });
+
+                    lights.push(flash);
+                    
+                    // Play sound effect [random]
+                    var roll = Math.floor(Math.random() * 3) + 1;
+                    switch (roll) {
+                        case 1:
+                            t_destroyedSound.get();
+                            break;
+                        case 2:
+                            t_destroyedSound2.get();
+                            break;
+                        case 3:
+                            t_destroyedSound3.get();
+                            break;
+                    }
+                    
+                    // damage all tanks within 160 units
+                    for (var n = 0; n < tanks.length; n++) {
+                        var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[n].config.oX, y: tanks[n].config.oY});
+                        if (d > 160) { continue; } // trigger distance
+                    
+                        // calculate damage
+                        var dmg = tanks[n].config.invulnerable > 0 ? 0 : (1000 - d) * (GLOBALS.map.wave.current + 1);
+                        var crit = 10 > Math.random() * 100;
+                        dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+                        
+                        // deal damage to tank shield
+                        tanks[n].config.shield -= dmg;
+                        if (tanks[n].config.shield < 0) {
+                            dmg = (-1)*tanks[n].config.shield;
+                            tanks[n].config.shield = 0;
+                        }
+                        else {
+                            dmg = 0;
+                        }
+
+                        // apply damage reduction from armor
+                        dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
+
+                        // deal damage to tank health
+                        tanks[n].config.health -= dmg;
+                        tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
+                        
+                        // animate player health if hit
+                        if (tanks[n].config.control === 'player') {
+                            renderExtern();
+                        }
+                        
+                        // if tank has 0 health, destroy the tank
+                        if (tanks[n].config.health === 0) {
+                            tanks[n].death();
+                        }
+                    }
+                    
+                    // start a chain explosion with nearby mines
+                    for (var r = 0; r < dummies.length; r++) {
+                        if (dummies[r].config.active) {
+                            if (dummies[r].config.name === 'mine') {
+                                if (dummies[r].armed) {
+                                    // check distance
+                                    var d = UTIL.geometry.getDistanceBetweenPoints({x: dummies[r].config.oX, y: dummies[r].config.oY}, {x: dummy.config.oX, y: dummy.config.oY});
+                                    if (d < 90) {
+                                        dummies[r].chainExplode = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
 
                 if (dy.config.active && dy.armed) {
                     var procced = false;
@@ -163,87 +248,25 @@ var PUP = (function() {
                         
                         // found a victim!
                         procced = true;
-                        
-                        visualeffects.push(new VisualEffect({name: 'explosion', oX: dy.config.oX, oY: dy.config.oY, width: 32, height: 32, scaleW: 96, scaleH: 96,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
-
-                        // show explosion flash
-                        var flash = new Light({
-                            name        : 'x-flash',
-                            oX          : dy.config.oX,
-                            oY          : dy.config.oY,
-                            radius      : 160,
-                            intensity   : 0.5,
-                            duration    : 200
-                        });
-
-                        lights.push(flash);
-                        
-                        // Play sound effect [random]
-                        var roll = Math.floor(Math.random() * 3) + 1;
-                        switch (roll) {
-                            case 1:
-                                t_destroyedSound.get();
-                                break;
-                            case 2:
-                                t_destroyedSound2.get();
-                                break;
-                            case 3:
-                                t_destroyedSound3.get();
-                                break;
-                        }
-                        
-                        // damage all tanks within 160 units
-                        for (var n = 0; n < tanks.length; n++) {
-                            var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[n].config.oX, y: tanks[n].config.oY});
-                            if (d > 160) { continue; } // trigger distance
-                        
-                            // calculate damage
-                            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (1000 - d) * (GLOBALS.map.wave.current + 1);
-                            var crit = 10 > Math.random() * 100;
-                            dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
-                            
-                            // deal damage to tank shield
-                            tanks[n].config.shield -= dmg;
-                            if (tanks[n].config.shield < 0) {
-                                dmg = (-1)*tanks[n].config.shield;
-                                tanks[n].config.shield = 0;
-                            }
-                            else {
-                                dmg = 0;
-                            }
-
-                            // apply damage reduction from armor
-                            dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
-
-                            // deal damage to tank health
-                            tanks[n].config.health -= dmg;
-                            tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
-                            
-                            // animate player health if hit
-                            if (tanks[n].config.control === 'player') {
-                                renderExtern();
-                            }
-                            
-                            // if tank has 0 health, destroy the tank
-                            if (tanks[n].config.health === 0) {
-                                tanks[n].death();
-                            }
-                        }
-                        
                         break;
                     }
 
-                    if (procced) {
+                    if (procced || dy.chainExplode) {
+                        // boom!
+                        my.explode();
+                        
                         // disarm mine
                         dy.vfx.end();
                         dy.config.active = false;
                         dy.armed = false;
                     }
                 }
+                
+                return my;
             };
             
             // create a projectile dummy for our landmine
-            var dummy = new Dummy({mods: [search_area], speed: 0, angle: 0, oX: loc.x, oY: loc.y});
+            var dummy = new Dummy({name: 'mine', mods: [search_area], speed: 0, angle: 0, oX: loc.x, oY: loc.y});
             dummies.push(dummy);
             
             // show a landmine vfx at projectile location (paused)

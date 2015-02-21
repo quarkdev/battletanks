@@ -1452,6 +1452,7 @@ function Dummy(specs) {
     
     this.config = {
         active     : true,
+        name       : specs.name,
         speed      : specs.speed,
         angle      : specs.angle,
         oX         : specs.oX,
