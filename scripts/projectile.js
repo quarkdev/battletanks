@@ -43,7 +43,7 @@ Projectile.prototype.update = function (modifier) {
     // Check for collisions. First check if it has reached the canvas outer boundary.
     if (this._hasHitBoundary(p.oX, p.oY) === true) {
         if (p.srcType === 'projectile-barrier') return; // projectile barriers are unaffected by boundaries
-        p.active = false;
+        this.death();
         
         p.objectHit = {type: 'boundary', obj: null};
         GLOBALS.flags.clean.projectiles++;
@@ -52,7 +52,7 @@ Projectile.prototype.update = function (modifier) {
         // Check if it hit a tank.
         var result = this._hasHitTank(tanks, p.oX, p.oY, p.lastPos.x, p.lastPos.y);
         if (result.hit === true) {
-            p.active = false;
+            this.death();
             var t = result.tank;
             
             // Call tank hit method. Pass the projectile that hit it.
@@ -65,7 +65,7 @@ Projectile.prototype.update = function (modifier) {
             // Check if it hit a destructible.
             var resultD = this._hasHitDestructible(destructibles, p.oX, p.oY, p.lastPos.x, p.lastPos.y);
             if (resultD.hit === true) {
-                p.active = false;
+                this.death();
                 var d = resultD.destructible;
                 
                 p.PoI = resultD.poi;
@@ -115,14 +115,12 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lx, ly
             // if the current destructible we're checking is not rubbery, then we can skip the expensive intersection cd algorithm
             // this time check if point is inside using the actual destructible size
             if (UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size/2)) {
-                this.events.emit('hit');
                 return { hit: true, poi: { x: x, y: y }, sideH: 0, destructible: destructibles[i] };
             }
         }
         
         var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lx, By: ly });
         if (lineX.yes) {
-            this.events.emit('hit');
             return { hit: true, poi: lineX.PoI, sideH: lineX.sideIndex, destructible: destructibles[i] };
         }
     }
@@ -142,16 +140,20 @@ Projectile.prototype._hasHitTank = function (tanks, x, y, lx, ly) {
     
         // check using simple point inside rect method
         if (UTIL.geometry.pointInsideRectangle({w: t.width, h: t.height, a: t.hAngle, x: t.oX, y: t.oY}, {x: x, y: y})) {
-            this.events.emit('hit');
             return { hit: true, tank: tanks[i] };
         }
         
         // line-square intersection check
         var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.width, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lx, By: ly }, t.hAngle);
         if (lineX.yes) {
-            this.events.emit('hit');
             return { hit: true, tank: tanks[i] };
         }
     }
     return { hit: false, tank: null };
+};
+
+Projectile.prototype.death = function () {
+    if (!this.config.active) { return; } // prevent multiple deaths
+    this.config.active = false;
+    this.events.emit('death');
 };

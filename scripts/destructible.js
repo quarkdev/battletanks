@@ -200,6 +200,7 @@ Destructible.prototype.hit = function (projectile) {
 Destructible.prototype.death = function () {
     // Set to inactive.
     var d = this.config;
+    if (!d.active) {return;} // prevent multiple deaths
     d.active = false;
     GLOBALS.flags.clean.destructibles++;
     GLOBALS.rdd++;

@@ -885,6 +885,7 @@ Tank.prototype.hit = function (projectile) {
 Tank.prototype.death = function () {
     /* Move object offscreen. Set to inactive. */
     var t = this.config;
+    if (!t.active) { return; } // prevent multiple deaths
 
     t.active = false;
     GLOBALS.flags.clean.tanks++;
