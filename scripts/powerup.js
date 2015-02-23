@@ -1440,7 +1440,6 @@ var PUP = (function() {
                 tank.pBarrier = [];
                 tank.pb_radius = tank.config.width;
                 tank.pb_active = true;
-                tank.config.invulnerable++;
             
                 var incBarrier = function (args) {
                     // Increases the barrier projectile count
@@ -1465,19 +1464,23 @@ var PUP = (function() {
                 };
                 tank.events.listen('frame', updateBarrierSpin);
                 
-                tank.pb_timeout = new Timer(function () {    
-                    // deactivate all projectiles in pBarrier
+                var de_pb = function () {
+                    // deactivate all projectiles in projectile barrier
                     for (var i = 0; i < tank.pBarrier.length; i++) {
-                        tank.pBarrier[i][0].config.active = false;
+                        tank.pBarrier[i][0].death();
                     }
                     
-                    tank.config.invulnerable--;
                     delete tank.pBarrier; // remove temp variable
                     delete tank.pb_radius;
                     delete tank.pb_timeout;
                     delete tank.pb_active;
                     tank.events.unlisten('hit', incBarrier);
                     tank.events.unlisten('frame', updateBarrierSpin);
+                };
+                tank.events.listen('death', de_pb);
+                
+                tank.pb_timeout = new Timer(function () {    
+                    de_pb();
                 }, 20000);
             }
             else {
