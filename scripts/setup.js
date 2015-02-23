@@ -132,6 +132,13 @@ UTIL.asset.queue('image', ['shalo-2', 'images/spritesheets/smokey-halo-2.png', S
 UTIL.asset.queue('image', ['wf-2', 'images/spritesheets/whirlpool-flare-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['sq-exp', 'images/spritesheets/stylized-quick-explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['flame-blast', 'images/spritesheets/flame-blast.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['d-exp-0', 'images/spritesheets/debris-explosion-2.png', SpriteSheetImages]);
+//UTIL.asset.queue('image', ['d-exp-1', 'images/spritesheets/debris-explosion-3a.png', SpriteSheetImages]);
+//UTIL.asset.queue('image', ['d-exp-2', 'images/spritesheets/debris-explosion-3b.png', SpriteSheetImages]);
+//UTIL.asset.queue('image', ['d-exp-3', 'images/spritesheets/debris-explosion-4.png', SpriteSheetImages]);
+//UTIL.asset.queue('image', ['d-exp-4', 'images/spritesheets/debris-explosion-5.png', SpriteSheetImages]);
+//UTIL.asset.queue('image', ['d-exp-5', 'images/spritesheets/debris-explosion-6.png', SpriteSheetImages]);
+//UTIL.asset.queue('image', ['d-exp-6', 'images/spritesheets/debris-explosion-7.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['imp-metal-3', 'images/spritesheets/impact-metal-3.png', SpriteSheetImages]);
 
 // BGM

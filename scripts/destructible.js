@@ -44,6 +44,7 @@ Destructible.prototype.hit = function (projectile) {
         d_explodeSound.get();
     }
 
+    // call hit-related mods
     switch (d.mod) {
         case 'rubber': // bounce the projectile
             // 1. first determine what side was hit        
@@ -73,105 +74,6 @@ Destructible.prototype.hit = function (projectile) {
             p.srcType = 'ricochet';
             p.angle = newAngle;
 
-            break;
-        case 'explosive': // create multiple projectiles that fire in all directions, explosion damage is based on projectile damage
-            if (d.health <= 0) { // explode on death only
-                
-                // 0
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  0,
-                    oX     : d.oX + d.cRadius,
-                    oY     : d.oY,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-                // 45
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  45,
-                    oX     : d.oX + d.cRadius,
-                    oY     : d.oY + d.cRadius,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-                // 90
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  90, 
-                    oX     : d.oX,
-                    oY     : d.oY + d.cRadius,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-                // 135
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  135,
-                    oX     : d.oX + d.cRadius,
-                    oY     : d.oY - d.cRadius,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-                // 180
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  180,
-                    oX     : d.oX - d.cRadius,
-                    oY     : d.oY,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-                // 225
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  225,
-                    oX     : d.oX - d.cRadius,
-                    oY     : d.oY - d.cRadius,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-                // 270
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  270,
-                    oX     : d.oX,
-                    oY     : d.oY - d.cRadius,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-                // 315
-                projectiles.push(new Projectile({
-                    speed  : p.speed,
-                    damage : p.damage,
-                    angle  :  315,
-                    oX     : d.oX - d.cRadius,
-                    oY     : d.oY - d.cRadius,
-                    srcId  : p.srcId,
-                    srcType: 'explosion'}));
-                
-            }
-            
-            visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: 32, scaleH: 32,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
-            // show hit flash
-            var flash = new Light({
-                name        : 'hit-flash',
-                oX          : p.oX,
-                oY          : p.oY,
-                radius      : 32,
-                intensity   : 0.5,
-                duration    : 40
-            });
-
-            lights.push(flash);
-            
             break;
         case 'low-lying':
             // low-lying destructibles can't be hit by projectiles
@@ -205,6 +107,84 @@ Destructible.prototype.death = function () {
     GLOBALS.flags.clean.destructibles++;
     GLOBALS.rdd++;
     d_destroyedSound.get();
+    
+    // call death-related mods
+    switch (d.mod) {
+        case 'explosive': // explode on death
+            visualeffects.push(new VisualEffect({name: 'des_exp', oX: d.oX, oY: d.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: 256, scaleH: 256,  maxCols: 8, maxRows: 6, framesTillUpdate: 0, loop: false, spriteSheet: 'd-exp-0'}));
+            // deal damage to all tanks within range
+            for (var n = 0; n < tanks.length; n++) {                 
+                var dist = UTIL.geometry.getDistanceBetweenPoints({x: d.oX, y: d.oY}, {x: tanks[n].config.oX, y: tanks[n].config.oY});
+                
+                if (dist > 160) { continue; } // trigger distance
+            
+                // calculate damage
+                var dmg = tanks[n].config.invulnerable > 0 ? 0 : d.armor * 32;
+                var crit = 10 > Math.random() * 100;
+                dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+                
+                // deal damage to tank shield
+                tanks[n].config.shield -= dmg;
+                if (tanks[n].config.shield < 0) {
+                    dmg = (-1)*tanks[n].config.shield;
+                    tanks[n].config.shield = 0;
+                }
+                else {
+                    dmg = 0;
+                }
+
+                // apply damage reduction from armor
+                dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
+
+                // deal damage to tank health
+                tanks[n].config.health -= dmg;
+                tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
+                
+                // animate player health if hit
+                if (tanks[n].config.control === 'player') {
+                    renderExtern();
+                }
+                
+                // if tank has 0 health, destroy the tank
+                if (tanks[n].config.health === 0) {
+                    tanks[n].death();
+                }
+            }
+            
+            // deal damage to all destructibles within range
+            for (var n = 0; n < destructibles.length; n++) {
+                var dist = UTIL.geometry.getDistanceBetweenPoints({x: d.oX, y: d.oY}, {x: destructibles[n].config.oX, y: destructibles[n].config.oY});
+                if (dist > 160) { continue; } // trigger distance
+                
+                // calculate damage
+                var dmg = destructibles[n].config.mod === 'immortal' ? 0 : d.armor * 32;
+                var crit = 10 > Math.random() * 100;
+                dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+                
+                // apply damage reduction from armor
+                dmg -= dmg * ((0.06 * destructibles[n].config.armor) / (1 + 0.06 * destructibles[n].config.armor));
+                
+                // deal damage to destructible health
+                destructibles[n].config.health -= dmg;
+                destructibles[n].config.health = destructibles[n].config.health < 0 ? 0 : destructibles[n].config.health;
+                
+                // if destructible has 0 health, destroy the tank
+                if (destructibles[n].config.health === 0) {
+                    destructibles[n].death();
+                }
+            }
+            
+            // blow armed dummies within ranged (set chain chainExplode to true)
+            for (var r = 0; r < dummies.length; r++) {
+                if (dummies[r].armed) {
+                    // check distance
+                    var dist = UTIL.geometry.getDistanceBetweenPoints({x: dummies[r].config.oX, y: dummies[r].config.oY}, {x: d.oX, y: d.oY});
+                    if (dist < 90) {
+                        dummies[r].chainExplode = true;
+                    }
+                }
+            }
+    }
 
     /* has a chance to spawn a random powerup on death */
     var lucky = (GLOBALS.map.current.dropRate + d.dropRate) > Math.random()*100;
