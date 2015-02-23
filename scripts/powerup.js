@@ -223,6 +223,29 @@ var PUP = (function() {
                         }
                     }
                     
+                    // damage all destructibles within 160 units
+                    for (var n = 0; n < destructibles.length; n++) {
+                        var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: destructibles[n].config.oX, y: destructibles[n].config.oY});
+                        if (d > 160) { continue; } // trigger distance
+                        
+                        // calculate damage
+                        var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (1000 - d) * (GLOBALS.map.wave.current + 1);
+                        var crit = 10 > Math.random() * 100;
+                        dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+                        
+                        // apply damage reduction from armor
+                        dmg -= dmg * ((0.06 * destructibles[n].config.armor) / (1 + 0.06 * destructibles[n].config.armor));
+                        
+                        // deal damage to destructible health
+                        destructibles[n].config.health -= dmg;
+                        destructibles[n].config.health = destructibles[n].config.health < 0 ? 0 : destructibles[n].config.health;
+                        
+                        // if destructible has 0 health, destroy the tank
+                        if (destructibles[n].config.health === 0) {
+                            destructibles[n].death();
+                        }
+                    }
+                    
                     // start a chain explosion with nearby mines
                     for (var r = 0; r < dummies.length; r++) {
                         if (dummies[r].config.active) {

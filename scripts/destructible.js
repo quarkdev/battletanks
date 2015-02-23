@@ -7,16 +7,16 @@ function Destructible(specs, x, y) {
     };
 
     this.config = {
-        active : true,
-        name   : specs.name,
-        oX     : x,
-        oY     : y,
-        size   : specs.size,   // object size
-        cRadius : specs.size/2, // ((Math.sqrt(Math.pow(specs.size/2, 2)*2) - specs.size/2) / 2) + specs.size/2, // bounding circle radius
-        health : specs.health,  // hitpoints
-        armor  : specs.armor,   // armor
+        active   : true,
+        name     : specs.name,
+        oX       : x,
+        oY       : y,
+        size     : specs.size,   // object size
+        cRadius  : specs.size/2, // ((Math.sqrt(Math.pow(specs.size/2, 2)*2) - specs.size/2) / 2) + specs.size/2, // bounding circle radius
+        health   : specs.health,  // hitpoints
+        armor    : specs.armor,   // armor
         dropRate : typeof specs.dropRate === 'undefined' ? 10 : specs.dropRate,
-        mod    : specs.mod      // special modifier, can be: (immortal, rubber, explosive, etc)
+        mod      : specs.mod      // special modifier, can be: (immortal, rubber, explosive, etc)
     };
 }
 
@@ -45,7 +45,7 @@ Destructible.prototype.hit = function (projectile) {
     }
 
     switch (d.mod) {
-        case 'rubber': // bounce the projectile (actually fire a new pojectile)
+        case 'rubber': // bounce the projectile
             // 1. first determine what side was hit        
 
             if (p.srcType === 'projectile-barrier') {
