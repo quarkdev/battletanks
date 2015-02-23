@@ -815,16 +815,16 @@ Tank.prototype.hit = function (projectile) {
     t.shield = t.shield < 0 ? 0 : t.shield;
     
     // play visual effect
-    var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
+    var hit_explosion_scale = Math.floor((Math.random() * 15) + 10) + 32;
     hit_explosion_scale = critical_hit ? hit_explosion_scale * 2 : hit_explosion_scale;
-    visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+    visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'sq-exp'}));
 
     // show hit flash
     var flash = new Light({
         name        : 'hit-flash',
         oX          : p.oX,
         oY          : p.oY,
-        radius      : hit_explosion_scale,
+        radius      : hit_explosion_scale - 16,
         intensity   : 0.3,
         duration    : 40
     });
