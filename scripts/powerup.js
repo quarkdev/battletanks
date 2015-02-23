@@ -1465,6 +1465,7 @@ var PUP = (function() {
                 tank.events.listen('frame', updateBarrierSpin);
                 
                 var de_pb = function () {
+                    if (!tank.pBarrier) { return; }
                     // deactivate all projectiles in projectile barrier
                     for (var i = 0; i < tank.pBarrier.length; i++) {
                         tank.pBarrier[i][0].death();
