@@ -130,6 +130,7 @@ UTIL.asset.queue('image', ['cloud-blast-4', 'images/spritesheets/cloud-blast-4.p
 UTIL.asset.queue('image', ['cloud-exp-2', 'images/spritesheets/cloud-explosion-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['shalo-2', 'images/spritesheets/smokey-halo-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['wf-2', 'images/spritesheets/whirlpool-flare-2.png', SpriteSheetImages]);
+//UTIL.asset.queue('image', ['imp-metal-3', 'images/spritesheets/impact-metal-3.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();

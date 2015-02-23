@@ -348,9 +348,6 @@ var PUP = (function() {
         this.use = function (tank) {
             var active = typeof tank.pdl !== 'undefined';
             
-            // play sfx
-            //pup_pdl_sound.get();
-            
             if (!active) {
                 tank.pdl = {};
                 tank.pdl.vfx = []; // active pdl hit animations
@@ -358,9 +355,6 @@ var PUP = (function() {
                 tank.pdl.shieldRegen = 200; // bonus shield regen
                 tank.config.maxShield += 1000;
                 tank.config.shieldRegen += 200;
-                
-                // vfx
-                //visualeffects.push(new VisualEffect({name: 'pdl-on', oX: tank.config.oX, oY: tank.config.oY, width: 125, height: 125, scaleW: (tank.config.cRadius+40)*2, scaleH: (tank.config.cRadius+40)*2,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'pdl_on'}));
                 
                 var areapdl = function () {
                     tank.pdl.vfx = tank.pdl.vfx.filter(function(item) {
