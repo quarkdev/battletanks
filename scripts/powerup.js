@@ -157,7 +157,7 @@ var PUP = (function() {
                 var my = {};
                 
                 my.explode = function () {
-                    visualeffects.push(new VisualEffect({name: 'explosion', oX: dy.config.oX, oY: dy.config.oY, width: 32, height: 32, scaleW: 96, scaleH: 96,  maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: false, spriteSheet: 'explosion'}));
+                    visualeffects.push(new VisualEffect({name: 'mine_exp', oX: dy.config.oX, oY: dy.config.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: 256, scaleH: 256,  maxCols: 8, maxRows: 6, framesTillUpdate: 0, loop: false, spriteSheet: 'cloud-exp-2'}));
 
                     // show explosion flash
                     var flash = new Light({
@@ -1117,9 +1117,9 @@ var PUP = (function() {
                             projectiles.push(new Projectile({mods: [], speed: speed, damage: p.damage * 0.25, critChance: p.critChance, angle:  (i * offset) + rotate_offset, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
                         }
                         
-                        var scale = Math.floor(Math.random() * 18) + 12;
+                        var scale = Math.floor(Math.random() * 18) + 64;
                         
-                        visualeffects.push(new VisualEffect({name: 'explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: scale, scaleH: scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+                        visualeffects.push(new VisualEffect({name: 'fireworks-exp', oX: p.oX, oY: p.oY, width: 256, height: 256, scaleW: scale, scaleH: scale,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'cloud-blast-4'}));
                         
                         // show explosion flash
                         var flash = new Light({
@@ -1727,7 +1727,7 @@ var PUP = (function() {
                     delete tank.as_timeout;
                 };
                 
-                tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 32, height: 32, scaleW: 52, scaleH: 52, maxCols: 4, maxRows: 4, framesTillUpdate: 2, loop: true, spriteSheet: 'aphotic_shield'});
+                tank.as_vfx = new VisualEffect({name: 'aphotic_shield', oX: tank.config.oX, oY: tank.config.oY, width: 256, height: 256, scaleW: tank.config.tSize * 2, scaleH: tank.config.tSize * 2, maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'shalo-2'});
                 visualeffects.push(tank.as_vfx);
                 tank.config.invulnerable++;
                 

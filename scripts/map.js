@@ -505,15 +505,15 @@ var MAP = (function () {
             name: 'spawn_vortex',
             oX: x,
             oY: y,
-            width: 64,
-            height: 64,
-            scaleW: 64,
-            scaleH: 64,
-            maxCols: 4,
+            width: 128,
+            height: 128,
+            scaleW: 128,
+            scaleH: 128,
+            maxCols: 8,
             maxRows: 4,
-            framesTillUpdate: 1,
+            framesTillUpdate: 0,
             loop: true,
-            spriteSheet: 'spawn_vortex'
+            spriteSheet: 'wf-2'
         });
         visualeffects.push(vfx);
         

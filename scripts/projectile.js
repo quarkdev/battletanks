@@ -8,6 +8,7 @@
 */
 function Projectile(specs) {
     this.mods = typeof specs.mods === 'undefined' ? [] : specs.mods;
+    this.events = new EventEmitter();
 
     this.config = {
         active     : true,
@@ -114,12 +115,14 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lx, ly
             // if the current destructible we're checking is not rubbery, then we can skip the expensive intersection cd algorithm
             // this time check if point is inside using the actual destructible size
             if (UTIL.geometry.pointLiesInsidePointSquare([x, y], [d.oX, d.oY], d.size/2)) {
+                this.events.emit('hit');
                 return { hit: true, poi: { x: x, y: y }, sideH: 0, destructible: destructibles[i] };
             }
         }
         
         var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lx, By: ly });
         if (lineX.yes) {
+            this.events.emit('hit');
             return { hit: true, poi: lineX.PoI, sideH: lineX.sideIndex, destructible: destructibles[i] };
         }
     }
@@ -139,12 +142,14 @@ Projectile.prototype._hasHitTank = function (tanks, x, y, lx, ly) {
     
         // check using simple point inside rect method
         if (UTIL.geometry.pointInsideRectangle({w: t.width, h: t.height, a: t.hAngle, x: t.oX, y: t.oY}, {x: x, y: y})) {
+            this.events.emit('hit');
             return { hit: true, tank: tanks[i] };
         }
         
         // line-square intersection check
         var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.width, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lx, By: ly }, t.hAngle);
         if (lineX.yes) {
+            this.events.emit('hit');
             return { hit: true, tank: tanks[i] };
         }
     }
