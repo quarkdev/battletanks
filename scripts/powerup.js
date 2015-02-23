@@ -1442,6 +1442,7 @@ var PUP = (function() {
                 tank.pb_active = true;
             
                 var incBarrier = function (args) {
+                    if (!tank.pBarrier) { return; }
                     // Increases the barrier projectile count
                     var angle = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: args.projectile.config.oX, y: args.projectile.config.oY});
                     var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: angle, oX: tank.config.oX + tank.pb_radius, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
@@ -1451,8 +1452,8 @@ var PUP = (function() {
                 tank.events.listen('hit', incBarrier);
                 
                 var updateBarrierSpin = function (args) {
+                    if (!tank.pBarrier) { return; }
                     // Updates the position of each projectile tethered to the tank
-
                     for (var i = 0; i < tank.pBarrier.length; i++) {
                         var newAngle = tank.pBarrier[i][1] + (360 * args.modifier);
                         newAngle = newAngle % 360;
@@ -1471,12 +1472,12 @@ var PUP = (function() {
                         tank.pBarrier[i][0].death();
                     }
                     
+                    tank.events.unlisten('hit', incBarrier);
+                    tank.events.unlisten('frame', updateBarrierSpin);
                     delete tank.pBarrier; // remove temp variable
                     delete tank.pb_radius;
                     delete tank.pb_timeout;
                     delete tank.pb_active;
-                    tank.events.unlisten('hit', incBarrier);
-                    tank.events.unlisten('frame', updateBarrierSpin);
                 };
                 tank.events.listen('death', de_pb);
                 
