@@ -891,7 +891,7 @@ Tank.prototype.death = function () {
     GLOBALS.flags.clean.tanks++;
     t.turretAnim.end();
 
-    visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 256, height: 256, scaleW: t.explodeScale * 4, scaleH: t.explodeScale * 4,  maxCols: 16, maxRows: 5, framesTillUpdate: 0, loop: false, spriteSheet: 'ms-exp-6'}));
+    visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: t.explodeScale * 4, scaleH: t.explodeScale * 4,  maxCols: 16, maxRows: 5, framesTillUpdate: 0, loop: false, spriteSheet: 'ms-exp-6'}));
     
     // screenshake effect everytime a tank explodes
     if (GLOBALS.settings.screenShake == 4) {

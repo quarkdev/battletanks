@@ -123,6 +123,7 @@ UTIL.asset.queue('image', ['muzzle-flash-1', 'images/spritesheets/muzzle-flash.p
 UTIL.asset.queue('image', ['muzzle-flash-2', 'images/spritesheets/muzzle-flash-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['muzzle-flash-3', 'images/spritesheets/muzzle-flash-3.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['mine', 'images/spritesheets/mine.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['ms-exp-2', 'images/spritesheets/multi-stage-explosion-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['ms-exp-6', 'images/spritesheets/multi-stage-explosion-6.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['cloud-exp-3', 'images/spritesheets/cloud-explosion-3.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['cloud-blast-4', 'images/spritesheets/cloud-blast-4.png', SpriteSheetImages]);
