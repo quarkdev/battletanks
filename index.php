@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="cache.appcache">
+<html>
 <head>
 <title>BattleTanks</title>
 <link href='http://fonts.googleapis.com/css?family=Cabin+Condensed' rel='stylesheet' type='text/css'>
