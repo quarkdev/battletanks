@@ -13,8 +13,8 @@
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 </head>
 <body>
-<div id="canvas-ui-wrap" onselectstart="return false;">
-    <div id="canvas-wrap" onselectstart="return false;">
+<div id="canvas-ui-wrap">
+    <div id="canvas-wrap">
         <canvas id="game-screen" width="1024" height="608" oncontextmenu="return false;"></canvas>
         <!--<div id="light-box-radial" class="hud"></div>-->
         <div style="width: 100%; height: 610px; background: url(images/ui/hud-gradient.png) center repeat-x; display: block; position: absolute; top: 0;" class="hud"></div>
