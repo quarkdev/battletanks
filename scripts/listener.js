@@ -19,6 +19,16 @@ function attachMenuEventListeners() {
         $('#prompt-pre-game-settings').show();
     });
     
+    $('#multiplayer').click(function () {
+        // hide menu
+        $('.overlay').hide();
+        
+        // connect to websocket server
+        MULT.connect();
+        
+        $('#multiplayer-screen').show();
+    });
+    
     $('.start-battle-ok').click(function () {
         // hide menu
         $('.overlay').hide();
@@ -33,11 +43,8 @@ function attachMenuEventListeners() {
         TANK.consumable.reset();
         $('.hud').show();
         
-        // get player name
-        var player_name = GLOBALS.player.name;
-        
         // start game
-        start(player_name);
+        start();
     });
     
     $('#tank-next').click(function () {

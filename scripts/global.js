@@ -9,7 +9,9 @@ var GLOBALS = (function () {
                 visualeffects : 0,
                 projectiles   : 0,
                 tanks         : 0,
-                dummies       : 0
+                dummies       : 0,
+                timers        : 0,
+                intervals     : 0
             },
             initSpawn : false,
             gamepediaLoaded : false

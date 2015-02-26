@@ -3,7 +3,7 @@
 var LOAD = (function () {
     var my = {};
     
-    my.gameSettings = function (player_name) {
+    my.gameSettings = function () {
         /* Load game settings before game starts. */
         powerups.length = 0;
         tanks.length = 0;
@@ -22,8 +22,6 @@ var LOAD = (function () {
         GLOBALS.flags.initSpawn = false;
         var _x, _y;
         
-        player_name = player_name === '' ? 'player' : player_name;
-        
         // get the max players for current map : can be taken from the startingpoint length
         var max_players = GLOBALS.map.current.startingPoints.length;
         
@@ -32,7 +30,7 @@ var LOAD = (function () {
         var player_tank = GLOBALS.tankSelection.blueprints[GLOBALS.tankSelection.selectedIndex].name;
         
         // push the player first
-        playerlist.push([player_name, player_tank, 'player']);
+        playerlist.push([GLOBALS.player.name, player_tank, 'player']);
         
         var setup_error = MAP.setup(GLOBALS.map.current, playerlist);
 

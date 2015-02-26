@@ -1329,9 +1329,9 @@ function Stat() {
         return fields;
     };
 };
-
+/*
 function Timer(callback, expire) {
-    /* Extended wrapper for the setTimeout function. */
+    // Extended wrapper for the setTimeout function.
     this.cb = function () {
         callback();
         dead = true;
@@ -1382,10 +1382,69 @@ function Timer(callback, expire) {
     timers.push(thisTimer);
 
     this.resume();
+}*/
+
+function Timer(callback, expire) {
+    // settimeout replacement
+    var m = {};
+    
+    m.config = {
+        active : true,      // active
+        status : 'running', // running|paused|dead
+        ms     : 0,         // current count in milliseconds
+        xp     : expire,    // expiration
+        cb     : callback   // called on expire
+    };
+    
+    m.pause = function () {
+        m.config.status = 'paused';
+    };
+    
+    m.resume = function () {
+        m.config.status = 'running';
+    };
+    
+    m.reset = function () {
+        m.config.ms = 0;
+    };
+    
+    m.extend = function (extension) {
+        m.config.xp += extension;
+    };
+    
+    m.clear = function () {
+        m.config.active = false;
+        m.config.status = 'dead';
+        GLOBALS.flags.clean.timers++;
+    };
+    
+    m.isExpired = function () {
+        return !m.config.active && m.config.status === 'dead'; 
+    };
+    
+    m.timeout = function () {
+        m.config.cb();
+        m.clear();
+    };
+    
+    m.getRemaining = function () {
+        return m.config.xp - m.config.ms;
+    };
+    
+    m.update = function (delta) {
+        m.config.ms += delta * 1000;
+        if (m.config.ms >= m.config.xp) {
+            m.timeout();
+        }
+    };
+    
+    timers.push(m);
+    
+    return m;
 }
 
-function Interval(callback, delay, ticks) {
-    /* Extended wrapper for the setInterval function. */
+/*function Interval(callback, delay, ticks) {
+    // Extended wrapper for the setInterval function.
 
     this._ticks = ticks || false; // stores the initial value of ticks
     this.ticks  = ticks || false;
@@ -1444,6 +1503,73 @@ function Interval(callback, delay, ticks) {
     intervals.push(thisInterval);
 
     this.resume();
+}*/
+
+function Interval(callback, delay, ticks) {
+    // setinterval replacement
+    
+    var m = {};
+    
+    m.config = {
+        active : true,
+        status : 'running', // running|paused|dead
+        ms     : 0,
+        mx     : delay,
+        tk     : {c: 0, m: ticks},
+        cb     : callback // called for each tick
+    };
+    
+    m.pause = function () {
+        m.config.status = 'paused';
+    };
+    
+    m.resume = function () {
+        m.config.status = 'running';
+    };
+    
+    m.reset = function () {
+        m.config.ms = 0;
+        m.config.tk.c = 0;
+    };
+    
+    m.extend = function (extension) {
+        m.config.tk.m += extension;
+    };
+    
+    m.clear = function () {
+        m.config.active = false;
+        m.config.status = 'dead';
+        GLOBALS.flags.clean.intervals++;
+    };
+    
+    m.isExpired = function () {
+        return !m.config.active && m.config.status === 'dead';
+    };
+    
+    m.tick = function () {
+        m.config.tk.c++;
+        m.config.cb();
+    };
+    
+    m.getRemaining = function () {
+        return m.config.tk.m - m.config.tk.c;
+    };
+    
+    m.update = function (delta) {
+        m.config.ms += delta * 1000;
+        if (m.config.ms >= m.config.mx) {
+            m.tick();
+            m.config.ms = m.config.ms - m.config.mx; // add overflow to next delay
+            
+            if (m.config.tk.c === m.config.tk.m) {
+                m.clear();
+            }
+        }
+    };
+    
+    intervals.push(m);
+    
+    return m;
 }
 
 // Dummy Object

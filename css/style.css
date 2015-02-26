@@ -673,3 +673,26 @@ button {
 #hof-table td {
     text-align: left;
 }
+
+#chatlog {
+    text-align: left;
+    margin: 0 auto;
+    width: 600px;
+    height: 320px;
+    padding: 12px;
+    font-size: 16px;
+    background: #fff;
+    overflow-y: scroll;
+}
+
+#chatbox {
+    width: 516px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+#chatbtn {
+    width: 80px;
+    padding: 11px 12px;
+    font-size: 18px;
+}

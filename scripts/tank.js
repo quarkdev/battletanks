@@ -678,8 +678,6 @@ Tank.prototype.move = function (modifier, direction, lockPoint) {
     
     this.x = t.oX;
     this.y = t.oY;
-    
-    t.turretAnim.updatePos(t.oX, t.oY);
 
     this.events.emit('move');
 };
@@ -952,6 +950,8 @@ Tank.prototype.frame = function (modifier) {
     // regenerate shield
     t.shield += t.shieldRegen * modifier;
     t.shield = t.shield > t.maxShield ? t.maxShield : t.shield; // prevent shield from going beyond the max
+    
+    t.turretAnim.updatePos(t.oX, t.oY);
 
     this.events.emit('frame', {modifier: modifier});
 };

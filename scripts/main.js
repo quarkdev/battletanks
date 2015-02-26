@@ -42,33 +42,33 @@ var reset = function() {
 
 
 // UPDATE SCENE
-var update = function(modifier) {
+var update = function(delta) {
     
     /* turn tank body to direction */
     if (37 in keysDown) { // left arrow pressed
-        player.turnBody(modifier, 'ccw');
+        player.turnBody(delta, 'ccw');
     }
     
     if (39 in keysDown) { // right arrow pressed
-        player.turnBody(modifier, 'cw');
+        player.turnBody(delta, 'cw');
     }
     
     if (!(37 in keysDown) && !(39 in keysDown)) { // no left/right arrows pressed
-        player.turnBody(modifier, 'hold');
+        player.turnBody(delta, 'hold');
     }
     
     if (38 in keysDown) { // up arrow pressed
-        player.move(modifier, 'forward');
+        player.move(delta, 'forward');
     }
     else if (!(40 in keysDown)) {
-        player.move(modifier, 'forward-stop');
+        player.move(delta, 'forward-stop');
     }
     
     if (40 in keysDown) { // down arrow pressed
-        player.move(modifier, 'reverse');
+        player.move(delta, 'reverse');
     }
     else if (!(38 in keysDown)) {
-        player.move(modifier, 'reverse-stop');
+        player.move(delta, 'reverse-stop');
     }
     
     if (mouseDownLeft) {
@@ -76,10 +76,10 @@ var update = function(modifier) {
         $('#ammo-count').html(player.config.ammo);
     }
     
-    player.frame(modifier); // run all frame callbacks
+    player.frame(delta); // run all frame callbacks
     
     /* turn turret (based on current facing angle) */
-    player.turnTurret(modifier, mousePos.mX + camera.xView, mousePos.mY + camera.yView);
+    player.turnTurret(delta, mousePos.mX + camera.xView, mousePos.mY + camera.yView);
     
     // save current rdd value
     var cRdd = GLOBALS.rdd;
@@ -107,7 +107,7 @@ var update = function(modifier) {
             }
             
             // Update turret to last known location of player
-            bots[i][0].turnTurret(modifier, bots[i][4].x, bots[i][4].y);
+            bots[i][0].turnTurret(delta, bots[i][4].x, bots[i][4].y);
             
             // Check if bot can see player
             if (bots[i][4].los) {
@@ -127,11 +127,11 @@ var update = function(modifier) {
                 
                 switch (cmd) {
                     case 'turn':
-                        //bots[i][0].move(modifier, 'forward-stop');
+                        //bots[i][0].move(delta, 'forward-stop');
                         if (bots[i][0].config.hAngle !== move[2]) {
                             bots[i][0].velocity.forward = 0.0;
                         }
-                        bots[i][0].turnBody(modifier, move[1], move[2]);
+                        bots[i][0].turnBody(delta, move[1], move[2]);
                         // check if turn angle reached
                         if (bots[i][0].config.hAngle === move[2]) {
                             // if yes, pop the move
@@ -139,8 +139,8 @@ var update = function(modifier) {
                         }
                         break;
                     case 'move':
-                        bots[i][0].turnBody(modifier, 'hold');
-                        bots[i][0].move(modifier, 'forward', { x: move[1], y: move[2] });
+                        bots[i][0].turnBody(delta, 'hold');
+                        bots[i][0].move(delta, 'forward', { x: move[1], y: move[2] });
                         // check if move point reach
                         if (bots[i][0].config.oX === move[1] && bots[i][0].config.oY === move[2]) {
                             // if yes, pop the move
@@ -200,22 +200,35 @@ var update = function(modifier) {
                 bots[i][5].worker.postMessage(JSON.stringify(msg));
             }
             
-            bots[i][0].frame(modifier); // run all frame callbacks
+            bots[i][0].frame(delta); // run all frame callbacks
+        }
+    }
+    
+    // Update all timers
+    for (i = 0; i < timers.length; i++) {
+        if (timers[i].config.active) {
+            timers[i].update(delta);
+        }
+    }
+
+    // Update all intervals
+    for (i = 0; i < intervals.length; i++) {
+        if (intervals[i].config.active) {
+            intervals[i].update(delta);
         }
     }
     
     // Update all dummies
-    // Update all projectiles.
     for (i = 0; i < dummies.length; i++) {
         if (dummies[i].config.active) {
-            dummies[i].update(modifier);
+            dummies[i].update(delta);
         }
     }
     
     // Update all projectiles.
     for (i = 0; i < projectiles.length; i++) {
         if (projectiles[i].config.active) {
-            projectiles[i].update(modifier);
+            projectiles[i].update(delta);
         }
     }
     
@@ -224,6 +237,22 @@ var update = function(modifier) {
         if (visualeffects[i].config.active) {
             visualeffects[i].update();
         }
+    }
+    
+    // Remove all inactive timers. This keeps the timers array from accumulating inactive objects.
+    if (GLOBALS.flags.clean.timers > GLOBALS.flags.clean.threshold) {
+        timers = timers.filter(function (item) {
+            return item.config.active;
+        });
+        GLOBALS.flags.clean.timers = 0;
+    }
+    
+    // Remove all inactive intervals. This keeps the intervals array from accumulating inactive objects.
+    if (GLOBALS.flags.clean.intervals > GLOBALS.flags.clean.threshold) {
+        intervals = intervals.filter(function (item) {
+            return item.config.active;
+        });
+        GLOBALS.flags.clean.intervals = 0;
     }
     
     // Remove all inactive dummies. This keeps the dummies array from accumulating inactive objects.
@@ -586,12 +615,12 @@ var editor = function () {
 };
 
 // START
-var start = function (player_name) {
+var start = function () {
     ui_location = 'game';
     
     $('#external-hud').show();
     
-    var workersCreated = LOAD.gameSettings(player_name);
+    var workersCreated = LOAD.gameSettings();
     workersCreated = workersCreated > 0 ? workersCreated : 1;
     var pseudoInc = 100 / workersCreated;
     
