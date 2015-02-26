@@ -108,6 +108,12 @@ button {
 }
 
 .menu-btn {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     width: 200px;
     margin: 12px auto;
     padding: 12px 18px;
@@ -461,6 +467,8 @@ button {
 
 .hud {
     pointer-events: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
     user-select: none;
     display: none;
     text-shadow: 1px 2px 3px #000;
@@ -468,6 +476,17 @@ button {
 
 .non-interactive {
     pointer-events: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 

@@ -10,23 +10,23 @@ var MULT = (function () {
             });
             
             m.socket.on('gameCreated', function (id) {
-                log('Game created successfully! UUID: ' + id);
+                log('<span class="ch-green">Game created successfully! UUID: ' + id + '</span>');
             });
             
             m.socket.on('currentlyInGame', function (msg) {
-                log(msg);
+                log('<span class="ch-red">' + msg + '</span>');
             });
             
             m.socket.on('leftGame', function (msg) {
-                log(msg);
+                log('<span class="ch-grey">' + msg + '</span>');
             });
             
             m.socket.on('joinGameFailed', function (msg) {
-                log(msg);
+                log('<span class="ch-red">' + msg + '</span>');
             });
             
             m.socket.on('joinedGame', function () {
-                log('Successfully joined game.');
+                log('<span class="ch-green">Successfully joined game.</span>');
             });
             
             m.socket.on('gameStart', function (data) {
@@ -55,7 +55,9 @@ var MULT = (function () {
             switch (parts[0]) {
                 case 'nick':
                     if (parts[1] !== '' && parts.length === 2) {
-                        m.socket.emit('changeNick', parts[1]);
+                        if (parts[1].length < 36) {
+                            m.socket.emit('changeNick', parts[1]);
+                        }
                     }
                     break;
                 case 'create':
@@ -76,6 +78,11 @@ var MULT = (function () {
                 case 'leave':
                     if (parts.length === 1) {
                         m.socket.emit('leaveGame');
+                    }
+                    break;
+                case 'clear':
+                    if (parts.length === 1) {
+                        document.getElementById('chatlog').innerHTML = '';
                     }
                     break;
                 default:
