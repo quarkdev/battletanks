@@ -351,7 +351,12 @@ var UTIL = (function () {
     };
     
     my.submitScore = function () {
-        playername = $('#playername').val().trim() || 'Guest';
+        // check input field for name
+        var playername = $('#playername').val().trim();
+        playername = playername === '' ? 'Guest' : playername;
+        
+        // save name to localStorage
+        sessionStorage.set('playername', playername);
         
         $('#submit-score').html('<span style="color: green; font-size: 16px;">Submitting your score...</span>');
         

@@ -683,7 +683,13 @@ var showGameOver = function (state) {
     
     UTIL.pauseMusic(backgroundMusic);
 
-    $('submit-score').hide();
+    $('#submit-score').hide();
+    
+    // get playername from sessionStorage
+    var _pn = sessionStorage.get('playername');
+    _pn = _pn === null || _pn === '' ? 'Guest' : _pn;
+    
+    $('#playername').val(_pn);
     
     // show game over screen
     $('#game-over-screen').show();
@@ -753,7 +759,7 @@ var showGameOver = function (state) {
                 localStorage.setItem('best_scores', JSON.stringify(GLOBALS.player.bestScores));
                 GLOBALS.statistics.lastScore = STAT.get('total_tanks_destroyed') + totalCoins;
                 
-                $('submit-score').show();
+                $('#submit-score').show();
             }
             
         }, 50);
