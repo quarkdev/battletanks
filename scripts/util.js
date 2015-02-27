@@ -349,6 +349,30 @@ var UTIL = (function () {
         
         return nearest_tank;
     };
+    
+    my.submitScore = function () {
+        playername = $('#playername').val().trim() || 'Guest';
+        
+        if (playername) {
+            // save score to database only if playername is not empty/null
+            var data = {
+                ajax   : true,
+                map    : maps[GLOBALS.map.index].name,
+                player : playername,
+                wave   : GLOBALS.map.wave.current,
+                score  : GLOBALS.statistics.lastScore
+            };
+            //UTIL.post('/models/submit_score.php', data);
+            $.ajax({  
+                type: "POST",  
+                url: "/models/submit_score.php",  
+                data: data,  
+                success: function(dataString) {  
+                    $('#score-submit').html('<span style="color: green; font-size: 16px;">Score submitted successfully!</span>');
+                }
+            });
+        }
+    };
         
     return my;
 }());

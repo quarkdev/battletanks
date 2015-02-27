@@ -523,7 +523,7 @@ var main = function () {
                     $('#shop-ui').hide();
                     
                     $('#text-overlay-center').css('font-size', '42px');
-                    $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">&quot;' + waves[GLOBALS.map.wave.current][0] + '&quot;</span>');
+                    $('#text-overlay-center').html('<span>Incoming! Wave #' + (GLOBALS.map.wave.current + 1) + '</span><br><span style="font-style: italic; font-weight: normal;">' + waves[GLOBALS.map.wave.current][0] + '</span>');
                     $('#text-overlay-center').animate({
                         opacity: 1,
                         fontSize: '26px'
@@ -683,6 +683,8 @@ var showGameOver = function (state) {
     
     UTIL.pauseMusic(backgroundMusic);
 
+    $('submit-score').hide();
+    
     // show game over screen
     $('#game-over-screen').show();
     
@@ -749,28 +751,9 @@ var showGameOver = function (state) {
             
                 // save bestScores to localstorage
                 localStorage.setItem('best_scores', JSON.stringify(GLOBALS.player.bestScores));
-                var playername = prompt("Please enter your name", "Robert Downey Jr.");
-                playername = playername !== null ? playername.trim() : playername;
+                GLOBALS.statistics.lastScore = STAT.get('total_tanks_destroyed') + totalCoins;
                 
-                if (playername) {
-                    // save score to database only if playername is not empty/null
-                    var data = {
-                        ajax   : true,
-                        map    : maps[GLOBALS.map.index].name,
-                        player : playername,
-                        wave   : GLOBALS.map.wave.current,
-                        score  : STAT.get('total_tanks_destroyed') + totalCoins
-                    };
-                    //UTIL.post('/models/submit_score.php', data);
-                    $.ajax({  
-                        type: "POST",  
-                        url: "/models/submit_score.php",  
-                        data: data,  
-                        success: function(dataString) {  
-                            //console.log(dataString);
-                        }
-                    });
-                }
+                $('submit-score').show();
             }
             
         }, 50);

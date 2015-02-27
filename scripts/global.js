@@ -45,7 +45,8 @@ var GLOBALS = (function () {
         statistics : {
             tank_type_kills : [],
             tankAppend : 0,
-            tankKillTicks : 0
+            tankKillTicks : 0,
+            lastScore: 0
         },
         botCount : 0, // the number of bots currently active
         rdd : 0, // number of recently destroyed destructibles (that the pathfinders are not aware of)
