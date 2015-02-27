@@ -462,14 +462,15 @@ UTIL.geometry = (function() {
     };
     
     /*
-    * Public Method: lineAxPaSquareIntersect
+    * Public Method: lineAxPaRectIntersect
     *
-    * Checks if line intersects a square
+    * Checks if line intersects a rectangle
     * 
     * Parameters:
-    *   square - an object which contains the properties: s, x, and y;
+    *   rect - an object which contains the properties: s, x, and y;
     *               where:
-    *                   s - is the length of one side
+    *                   hl - the horizontal length
+    *                   vl - the vertical length
     *                   x - is the x coordinate of the line's center
     *                   y - is the y cooridnate of the line's center
     *   line   - an object which contains the properties: Ax, Ay, Bx, and By
@@ -485,10 +486,10 @@ UTIL.geometry = (function() {
     *       sideIndex - an integer representing the side of impact
     *       poi       - an object representing the point of impact                
     */
-    my.lineAxPaSquareIntersect = function (square, line, angle) {    
+    my.lineAxPaRectIntersect = function (rect, line, angle) {    
         // First retrieve the four line segments that compose the square.
         angle = angle || 0;
-        var lines = _getLineSegmentsFromSquare(square.s, square.x, square.y, angle),
+        var lines = _getLineSegmentsFromRect(rect.hl, rect.vl, rect.x, rect.y, angle),
             lastPoint = new Point(line.Bx, line.By),
             currPoint = new Point(line.Ax, line.Ay),
             incidentLine = new Line(lastPoint, currPoint),
@@ -846,6 +847,37 @@ UTIL.geometry = (function() {
         ];
     };
     
+    /*
+    * Private Method: _getLineSegmentsFromRect
+    *
+    * Retrieves the outer line segments defining a rectangle
+    *
+    * Parameters:
+    *   hl - the horizontal length
+    *   vl - the vertical length
+    *   x, y - coordinates of the rectangle's center point
+    *   angle - square rotation angle
+    *
+    * Returns:
+    *   an array of lines following the format: [Top, Right, Bottom, Left]
+    */
+    var _getLineSegmentsFromRect = function (hl, vl, x, y, angle) {
+        angle = angle || 0;
+        var halfDiagonal = Math.sqrt(Math.pow(hl, 2) + Math.pow(vl, 2)) / 2;
+        
+        var pTL = my.getPointAtAngleFrom(x, y, angle + 135, halfDiagonal); // Top left.
+        var pTR = my.getPointAtAngleFrom(x, y, angle + 45, halfDiagonal); // Top right.
+        var pBR = my.getPointAtAngleFrom(x, y, angle + 225, halfDiagonal); // Bottom right.
+        var pBL = my.getPointAtAngleFrom(x, y, angle + 315, halfDiagonal); // Bottom left.
+            
+        return [
+            new Line({x: pTL[0], y: pTL[1]}, {x: pTR[0], y: pTR[1]}),
+            new Line({x: pTR[0], y: pTR[1]}, {x: pBR[0], y: pBR[1]}),
+            new Line({x: pBL[0], y: pBL[1]}, {x: pBR[0], y: pBR[1]}),
+            new Line({x: pTL[0], y: pTL[1]}, {x: pBL[0], y: pBL[1]})
+        ];
+    };
+    
     var _getSlopeOfLine = function(line) {
         /* Returns the slope of the line. Takes a line parameter. */
         
@@ -894,20 +926,22 @@ UTIL.gui = (function () {
         
         var ts = GLOBALS.tankSelection;
         
-        if (dir === 'next') {
-            ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
-            if (ts.blueprints[ts.selectedIndex].locked === 1) {
-                // move again
+        do {
+            if (dir === 'next') {
                 ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
+                if (ts.blueprints[ts.selectedIndex].locked === 1) {
+                    // move again
+                    ts.selectedIndex = ts.selectedIndex !== ts.blueprints.length-1 ? ts.selectedIndex + 1 : 0;
+                }
             }
-        }
-        else if (dir === 'prev') {
-            ts.selectedIndex = ts.selectedIndex !== 0 ? ts.selectedIndex - 1 : ts.blueprints.length-1;
-            if (ts.blueprints[ts.selectedIndex].locked === 1) {
-                // move again
+            else if (dir === 'prev') {
                 ts.selectedIndex = ts.selectedIndex !== 0 ? ts.selectedIndex - 1 : ts.blueprints.length-1;
+                if (ts.blueprints[ts.selectedIndex].locked === 1) {
+                    // move again
+                    ts.selectedIndex = ts.selectedIndex !== 0 ? ts.selectedIndex - 1 : ts.blueprints.length-1;
+                }
             }
-        }
+        } while (ts.blueprints[ts.selectedIndex].locked === 1);
         
         var firepower = ts.blueprints[ts.selectedIndex].pDamage,
             firing_rate = ts.blueprints[ts.selectedIndex].fRate,

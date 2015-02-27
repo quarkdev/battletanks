@@ -277,7 +277,7 @@ function Tank(specs, id, control, x, y, faction) {
         width        : specs.width,
         height       : specs.height,
         cx           : -specs.width/2,
-        cy           : -specs.height/2,
+        cy           : -specs.width/2,
         tWidth       : specs.tWidth,
         tHeight      : specs.tHeight,
         cxt          : -specs.tWidth/2,

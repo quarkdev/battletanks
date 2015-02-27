@@ -119,7 +119,7 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lx, ly
             }
         }
         
-        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: 32, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lx, By: ly });
+        var lineX = UTIL.geometry.lineAxPaRectIntersect({ hl: d.size, vl: d.size, x: d.oX, y: d.oY }, { Ax: x, Ay: y, Bx: lx, By: ly });
         if (lineX.yes) {
             return { hit: true, poi: lineX.PoI, sideH: lineX.sideIndex, destructible: destructibles[i] };
         }
@@ -143,8 +143,8 @@ Projectile.prototype._hasHitTank = function (tanks, x, y, lx, ly) {
             return { hit: true, tank: tanks[i] };
         }
         
-        // line-square intersection check
-        var lineX = UTIL.geometry.lineAxPaSquareIntersect({ s: t.width, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lx, By: ly }, t.hAngle);
+        // line-rect intersection check
+        var lineX = UTIL.geometry.lineAxPaRectIntersect({ hl: t.width, vl: t.height, x: t.oX, y: t.oY }, { Ax: x, Ay: y, Bx: lx, By: ly }, t.hAngle);
         if (lineX.yes) {
             return { hit: true, tank: tanks[i] };
         }
