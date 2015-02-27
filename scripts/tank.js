@@ -213,7 +213,7 @@ TANK.consumable = (function() {
             if (inventory[index].stacks === 0) {
                 inventory.splice(index, 1);
             }
-            
+        
             // update inventory hud
             TANK.consumable.updateInventoryHUD();
         },
@@ -222,7 +222,7 @@ TANK.consumable = (function() {
             var hud = '';
             
             for (var i = 0; i < inventory.length; i++) {
-                hud += '<div style="height: 32px; width: 32px; display: inline-block; position: relative;"><img class="flip-vertical" src="' + PowerUpImages.get(inventory[i].item).src + '" /><div style="width: 100%; height: 12px; position: absolute; top: -12px; color: #fff; background-color: #000; text-align: center; font-size: 10px;">' + inventory[i].stacks + '</div></div>';
+                hud += '<div class="consumable-item" onclick="TANK.consumable.use('+i+')"><img id="ci-img-'+i+'" class="flip-vertical ci-img" src="' + PowerUpImages.get(inventory[i].item).src + '" /><div style="width: 100%; height: 12px; position: absolute; top: -12px; color: #fff; background-color: #000; text-align: center; font-size: 10px;">' + inventory[i].stacks + '</div></div>';
             }
             
             $('#inventory-hud').html(hud);

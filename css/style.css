@@ -723,3 +723,19 @@ button {
 .uoh:hover {
     color: #0058b3;
 }
+
+.consumable-item {
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    position: relative;
+}
+
+.ci-img {
+    cursor: pointer;
+    opacity: 0.75;
+}
+
+.ci-img:hover {
+    opacity: 1;
+}

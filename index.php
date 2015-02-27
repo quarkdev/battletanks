@@ -23,7 +23,7 @@
         <div id="kill-count" class="hud">0</div>
         <div id="gold-count" class="hud">1</div>
         <div id="ammo-count" class="hud">0</div>
-        <div id="inventory-hud" class="hud"></div>
+        <div id="inventory-hud" class="hud" style="pointer-events: auto;"></div>
         <div id="shop-ui" class="hud">
             <span style="font-weight: bold;">SHOP</span>
             <hr>
