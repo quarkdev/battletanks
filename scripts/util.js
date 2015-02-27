@@ -356,7 +356,7 @@ var UTIL = (function () {
         playername = playername === '' ? 'Guest' : playername;
         
         // save name to localStorage
-        sessionStorage.set('playername', playername);
+        sessionStorage.setItem('playername', playername);
         
         $('#submit-score').html('<span style="color: green; font-size: 16px;">Submitting your score...</span>');
         

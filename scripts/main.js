@@ -686,7 +686,7 @@ var showGameOver = function (state) {
     $('#submit-score').hide();
     
     // get playername from sessionStorage
-    var _pn = sessionStorage.get('playername');
+    var _pn = sessionStorage.getItem('playername');
     _pn = _pn === null || _pn === '' ? 'Guest' : _pn;
     
     $('#playername').val(_pn);
