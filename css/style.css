@@ -715,3 +715,11 @@ button {
     padding: 11px 12px;
     font-size: 18px;
 }
+
+.uoh {
+    cursor: pointer;
+}
+
+.uoh:hover {
+    color: #0058b3;
+}

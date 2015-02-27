@@ -683,6 +683,7 @@ var showGameOver = function (state) {
     
     UTIL.pauseMusic(backgroundMusic);
 
+    $('#ss-notif').hide();
     $('#submit-score').hide();
     
     // get playername from sessionStorage

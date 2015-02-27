@@ -358,7 +358,10 @@ var UTIL = (function () {
         // save name to localStorage
         sessionStorage.setItem('playername', playername);
         
-        $('#submit-score').html('<span style="color: green; font-size: 16px;">Submitting your score...</span>');
+        $('#submit-score').hide();
+        $('#ss-notif').css('color', 'yellow');
+        $('#ss-notif').show();
+        $('#ss-notif').html('Submitting your score...');
         
         if (playername) {
             // save score to database only if playername is not empty/null
@@ -374,8 +377,19 @@ var UTIL = (function () {
                 type: "POST",  
                 url: "/models/submit_score.php",  
                 data: data,  
-                success: function(dataString) {  
-                    $('#submit-score').html('<span style="color: green; font-size: 16px;">Score submitted successfully!</span>');
+                success: function(status) {
+                    if (status === 'ok') {
+                        $('#ss-notif').css('color', 'green');
+                        $('#ss-notif').html('Score submitted successfully!');
+                    }
+                    else {
+                        $('#ss-notif').css('color', 'red');
+                        $('#ss-notif').html('Score submission failed! <span class="uoh" onclick="UTIL.submitScore()">Retry Submission</span>');
+                    }
+                },
+                error: function () {
+                    $('#ss-notif').css('color', 'red');
+                    $('#ss-notif').html('Score submission failed! <span class="uoh" onclick="UTIL.submitScore()">Retry Submission</span>');
                 }
             });
         }
