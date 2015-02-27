@@ -353,6 +353,8 @@ var UTIL = (function () {
     my.submitScore = function () {
         playername = $('#playername').val().trim() || 'Guest';
         
+        $('#score-submit').html('<span style="color: green; font-size: 16px;">Submitting your score...</span>');
+        
         if (playername) {
             // save score to database only if playername is not empty/null
             var data = {
