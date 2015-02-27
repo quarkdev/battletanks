@@ -149,6 +149,12 @@
             "description": "Deals extra damage based on distance travelled by projectile.",
             "image": "images/powerups/impulse-shell.png",
             "video": ""
+        },
+        {
+            "name": "Mine",
+            "description": "Deals damage to a small area when triggered.",
+            "image": "images/powerups/mine.png",
+            "video": ""
         }
     ],
     "tanks" : [
@@ -180,6 +186,12 @@
             "name": "Widower",
             "description": "A fast-moving tank and a hard-hitter. Collision size is huge.",
             "image": "images/tanks/widower/icon.png",
+            "video": ""
+        },
+        {
+            "name": "Fafnir",
+            "description": "A tank destroyer that is able to deal quadruple damage 50% of the time.",
+            "image": "images/tanks/fafnir/icon.png",
             "video": ""
         }
     ],
