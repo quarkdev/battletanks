@@ -1,7 +1,7 @@
 /*-------- Globals & Setup --------*/
 
 var GLOBALS = (function () {
-    return {
+    var m = {
         flags : {
             clean : {
                 threshold     : 32, // the max number of inactive objects (e.g. destructibles) before filter-based cleaning is done
@@ -17,7 +17,12 @@ var GLOBALS = (function () {
             gamepediaLoaded : false
         },
         settings : {
-            screenShake : 0 // 0 = false, 1 = on critical hit only, 2 = on normal hit only, 3 = on both
+            set : function () {
+                m.settings.screenShake = parseInt($('#set-screen-shake').val()),
+                m.settings.ashp = parseInt($('#set-ashp').val())
+            },
+            screenShake : 0, // 0 = false, 1 = on critical hit only, 2 = on normal hit only, 3 = on both
+            ashp : 1 // always show hitpoints and shield
         },
         ui : {
             active : {
@@ -52,6 +57,8 @@ var GLOBALS = (function () {
         rdd : 0, // number of recently destroyed destructibles (that the pathfinders are not aware of)
         packedDestructibles : []
     };
+    
+    return m;
 }());
 
 Array.prototype.clear = function () {

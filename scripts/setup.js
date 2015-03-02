@@ -41,6 +41,10 @@ UTIL.asset.queue('image', ['widower_turret', 'images/tanks/widower/turret.png', 
 UTIL.asset.queue('image', ['widower_chassis', 'images/tanks/widower/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['fafnir_turret', 'images/tanks/fafnir/turret.png', TankImages]);
 UTIL.asset.queue('image', ['fafnir_chassis', 'images/tanks/fafnir/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['type_75_turret', 'images/tanks/type-75/turret.png', TankImages]);
+UTIL.asset.queue('image', ['type_75_chassis', 'images/tanks/type-75/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['m1a1_abrams_turret', 'images/tanks/m1a1-abrams/turret.png', TankImages]);
+UTIL.asset.queue('image', ['m1a1_abrams_chassis', 'images/tanks/m1a1-abrams/chassis.png', TankImages]);
 
 // Projectile images
 ProjectileImages = new ImageLibrary();
@@ -101,6 +105,13 @@ UTIL.asset.queue('image', ['player-map-object', 'images/ui/view.png', MinimapIma
 
 // Spritesheet images
 SpriteSheetImages = new ImageLibrary();
+UTIL.asset.queue('image', ['jagdpanther_recoil', 'images/tanks/jagdpanther/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['widower_recoil', 'images/tanks/widower/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['fafnir_recoil', 'images/tanks/fafnir/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['type_75_recoil', 'images/tanks/type-75/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['m1a1_abrams_recoil', 'images/tanks/m1a1-abrams/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['explosion', 'images/spritesheets/explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['time-dilation', 'images/spritesheets/time-dilation.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['time-dilation-on', 'images/spritesheets/time-dilation-on.png', SpriteSheetImages]);
@@ -110,11 +121,6 @@ UTIL.asset.queue('image', ['volumetric_explosion', 'images/spritesheets/volumetr
 UTIL.asset.queue('image', ['volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['spawn_vortex', 'images/spritesheets/spawn_vortex.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['heavy_recoil', 'images/tanks/heavy/recoil.png', SpriteSheetImages]);
-UTIL.asset.queue('image', ['jagdpanther_recoil', 'images/tanks/jagdpanther/recoil.png', SpriteSheetImages]);
-UTIL.asset.queue('image', ['m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.png', SpriteSheetImages]);
-UTIL.asset.queue('image', ['m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png', SpriteSheetImages]);
-UTIL.asset.queue('image', ['widower_recoil', 'images/tanks/widower/recoil.png', SpriteSheetImages]);
-UTIL.asset.queue('image', ['fafnir_recoil', 'images/tanks/fafnir/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['calldown', 'images/spritesheets/calldown.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['shield_glimpse', 'images/spritesheets/shield_glimpse.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['bar', 'images/spritesheets/bar.png', SpriteSheetImages]);

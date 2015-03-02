@@ -428,14 +428,14 @@ var renderExtern = function () {
     
     if (diff > 0) {
         // if health is reduced, animate
-        $('#current-health-anim').stop();
-        $('#current-health-anim').animate({width: cHealth}, 500);
+        $('#current-health-anim').css('transition', 'width 0.5s');
     }
     else if (diff < 0) {
         // if health is restored, don't animate
-        $('#current-health-anim').stop();
-        $('#current-health-anim').width(cHealth);
+        $('#current-health-anim').css('transition', 'none');
     }
+    
+    $('#current-health-anim').width(cHealth);
 };    
 
 // MAIN
@@ -730,7 +730,7 @@ var showGameOver = function (state) {
             if (GLOBALS.statistics.tankAppend < GLOBALS.statistics.tank_type_kills.length) {
                 GLOBALS.statistics.tankKillTicks = 0;
                 var tank_name = GLOBALS.statistics.tank_type_kills[GLOBALS.statistics.tankAppend].tank;
-                $('#gos-kills').append('<br><br><span id="gosk-' + tank_name + '" style="background: url(images/tanks/' + tank_name + '/icon.png) left center no-repeat; padding-left: 52px; padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;"></span>');
+                $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat"><div style="background: url(images/tanks/' + tank_name + '/icon.png) left center no-repeat; width: 52px; height: 52px; float: left;"></div><div id="gosk-' + tank_name + '" style="width: 52px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;"></div><div style="clear: both;"></div></div>');
                 looped_stat_tick(tank_name);
                 GLOBALS.statistics.tankAppend += 1;
             }

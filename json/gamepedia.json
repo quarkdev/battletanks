@@ -193,6 +193,18 @@
             "description": "A tank destroyer that is able to deal quadruple damage 50% of the time.",
             "image": "images/tanks/fafnir/icon.png",
             "video": ""
+        },
+        {
+            "name": "Type-75",
+            "description": "A heavy tank destroyer that sports a fast-regenerating shield.",
+            "image": "images/tanks/type-75/icon.png",
+            "video": ""
+        },
+        {
+            "name": "M1A1-Abrams",
+            "description": "A main battletank that is both heavily-armed and armored while still being mobile.",
+            "image": "images/tanks/m1a1-abrams/icon.png",
+            "video": ""
         }
     ],
     "upgrades" : [
