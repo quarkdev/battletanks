@@ -41,10 +41,12 @@ UTIL.asset.queue('image', ['widower_turret', 'images/tanks/widower/turret.png', 
 UTIL.asset.queue('image', ['widower_chassis', 'images/tanks/widower/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['fafnir_turret', 'images/tanks/fafnir/turret.png', TankImages]);
 UTIL.asset.queue('image', ['fafnir_chassis', 'images/tanks/fafnir/chassis.png', TankImages]);
-UTIL.asset.queue('image', ['type_75_turret', 'images/tanks/type-75/turret.png', TankImages]);
-UTIL.asset.queue('image', ['type_75_chassis', 'images/tanks/type-75/chassis.png', TankImages]);
-UTIL.asset.queue('image', ['m1a1_abrams_turret', 'images/tanks/m1a1-abrams/turret.png', TankImages]);
-UTIL.asset.queue('image', ['m1a1_abrams_chassis', 'images/tanks/m1a1-abrams/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['type_75_turret', 'images/tanks/type_75/turret.png', TankImages]);
+UTIL.asset.queue('image', ['type_75_chassis', 'images/tanks/type_75/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['m1a1_abrams_turret', 'images/tanks/m1a1_abrams/turret.png', TankImages]);
+UTIL.asset.queue('image', ['m1a1_abrams_chassis', 'images/tanks/m1a1_abrams/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['tiger_ii_turret', 'images/tanks/tiger_ii/turret.png', TankImages]);
+UTIL.asset.queue('image', ['tiger_ii_chassis', 'images/tanks/tiger_ii/chassis.png', TankImages]);
 
 // Projectile images
 ProjectileImages = new ImageLibrary();
@@ -111,8 +113,9 @@ UTIL.asset.queue('image', ['m4_sherman_recoil', 'images/tanks/m4_sherman/recoil.
 UTIL.asset.queue('image', ['m4_sherman_blue_recoil', 'images/tanks/m4_sherman_blue/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['widower_recoil', 'images/tanks/widower/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['fafnir_recoil', 'images/tanks/fafnir/recoil.png', SpriteSheetImages]);
-UTIL.asset.queue('image', ['type_75_recoil', 'images/tanks/type-75/recoil.png', SpriteSheetImages]);
-UTIL.asset.queue('image', ['m1a1_abrams_recoil', 'images/tanks/m1a1-abrams/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['type_75_recoil', 'images/tanks/type_75/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['m1a1_abrams_recoil', 'images/tanks/m1a1_abrams/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['tiger_ii_recoil', 'images/tanks/tiger_ii/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['explosion', 'images/spritesheets/explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['time-dilation', 'images/spritesheets/time-dilation.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['time-dilation-on', 'images/spritesheets/time-dilation-on.png', SpriteSheetImages]);

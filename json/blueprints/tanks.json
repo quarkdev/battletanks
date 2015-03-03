@@ -246,6 +246,38 @@
             "hAngle"       : 90,
             "tAngle"       : 90,
             "coins"        : 1500
+        },
+        {
+            "name"         : "tiger_ii",
+            "type"         : "main",
+            "locked"       : 1,
+            "bImage"       : "tiger_ii_chassis",
+            "tImage"       : "tiger_ii_turret",
+            "health"       : 4000,
+            "shield"       : 0,
+            "shieldRegen"  : 0,
+            "armor"        : 600,
+            "tSize"        : 293,
+            "sSpeed"       : 90,
+            "width"        : 164,
+            "height"       : 83,
+            "tWidth"       : 293,
+            "tHeight"      : 293,
+            "fireScale"    : 2.7,
+            "explodeScale" : 98,
+            "tSpeed"       : 92,
+            "fSpeed"       : 200,
+            "rSpeed"       : 182,
+            "accel"        : 110,
+            "pSpeed"       : 780,
+            "pDamage"      : 550,
+            "critChance"   : 20,
+            "critMultiplier": 4,
+            "ammo"         : 420,
+            "fRate"        : 0.7,
+            "hAngle"       : 90,
+            "tAngle"       : 90,
+            "coins"        : 1100
         }
     ]
 }
