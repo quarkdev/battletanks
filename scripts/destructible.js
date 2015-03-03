@@ -7,16 +7,17 @@ function Destructible(specs, x, y) {
     };
 
     this.config = {
-        active   : true,
-        name     : specs.name,
-        oX       : x,
-        oY       : y,
-        size     : specs.size,   // object size
-        cRadius  : specs.size/2, // ((Math.sqrt(Math.pow(specs.size/2, 2)*2) - specs.size/2) / 2) + specs.size/2, // bounding circle radius
-        health   : specs.health,  // hitpoints
-        armor    : specs.armor,   // armor
-        dropRate : typeof specs.dropRate === 'undefined' ? 10 : specs.dropRate,
-        mod      : specs.mod      // special modifier, can be: (immortal, rubber, explosive, etc)
+        active      : true,
+        name        : specs.name,
+        oX          : x,
+        oY          : y,
+        size        : specs.size,   // object size
+        cRadius     : specs.size/2, // ((Math.sqrt(Math.pow(specs.size/2, 2)*2) - specs.size/2) / 2) + specs.size/2, // bounding circle radius
+        health      : specs.health,  // hitpoints
+        armor       : specs.armor,   // armor
+        dropRate    : typeof specs.dropRate === 'undefined' ? 10 : specs.dropRate,
+        material    : specs.material || 'default',
+        mod         : specs.mod      // special modifier, can be: (immortal, rubber, explosive, etc)
     };
 }
 
@@ -80,20 +81,48 @@ Destructible.prototype.hit = function (projectile) {
             break;
         default:
             // play visual effect
-            var hit_explosion_scale = Math.floor((Math.random() * 15) + 10);
-            visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 32, height: 32, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+            var impact_scale = Math.floor((Math.random() * 15) + 10);
+            
+            switch (d.material) {
+                case 'stone':
+                    impact_scale += 128;
+                    var _effi = Math.floor(Math.random() * 7) + 1;
+                    visualeffects.push(new VisualEffect({name: 'impact', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: impact_scale, scaleH: impact_scale,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'impact-stone-' + _effi}));
+                    break;
+                case 'metal':
+                    impact_scale += 128;
+                    var mete_map = [
+                        [2, 2],
+                        [8, 3],
+                        [8, 3],
+                        [4, 2],
+                        [4, 2],
+                        [4, 2],
+                        [4, 2],
+                        [4, 2],
+                        [4, 2],
+                        [4, 2],
+                        [4, 3]
+                    ];
+                    var _mmi = Math.floor(Math.random() * 11) + 1;
+                    visualeffects.push(new VisualEffect({name: 'impact', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: impact_scale, scaleH: impact_scale,  maxCols: mete_map[_mmi][0], maxRows: mete_map[_mmi][1], framesTillUpdate: 0, loop: false, spriteSheet: 'impact-metal-' + _mmi}));
+                    break;
+                default:
+                    visualeffects.push(new VisualEffect({name: 'impact', oX: p.oX, oY: p.oY, width: 32, height: 32, angle: Math.random() * 360, scaleW: impact_scale, scaleH: impact_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
 
-            // show hit flash
-            var flash = new Light({
-                name        : 'hit-flash',
-                oX          : p.oX,
-                oY          : p.oY,
-                radius      : hit_explosion_scale,
-                intensity   : 0.3,
-                duration    : 40
-            });
+                    // show hit flash
+                    var flash = new Light({
+                        name        : 'hit-flash',
+                        oX          : p.oX,
+                        oY          : p.oY,
+                        radius      : impact_scale,
+                        intensity   : 0.3,
+                        duration    : 40
+                    });
 
-            lights.push(flash);
+                    lights.push(flash);
+                break;
+            }
 
             break;
         }
@@ -113,77 +142,7 @@ Destructible.prototype.death = function () {
         case 'explosive': // explode on death
             visualeffects.push(new VisualEffect({name: 'des_exp', oX: d.oX, oY: d.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: 256, scaleH: 256,  maxCols: 8, maxRows: 6, framesTillUpdate: 0, loop: false, spriteSheet: 'd-exp-0'}));
             // deal damage to all tanks within range
-            for (var n = 0; n < tanks.length; n++) {                 
-                var dist = UTIL.geometry.getDistanceBetweenPoints({x: d.oX, y: d.oY}, {x: tanks[n].config.oX, y: tanks[n].config.oY});
-                
-                if (dist > 160) { continue; } // trigger distance
-            
-                // calculate damage
-                var dmg = tanks[n].config.invulnerable > 0 ? 0 : d.armor * 32;
-                var crit = 10 > Math.random() * 100;
-                dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
-                
-                // deal damage to tank shield
-                tanks[n].config.shield -= dmg;
-                if (tanks[n].config.shield < 0) {
-                    dmg = (-1)*tanks[n].config.shield;
-                    tanks[n].config.shield = 0;
-                }
-                else {
-                    dmg = 0;
-                }
-
-                // apply damage reduction from armor
-                dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
-
-                // deal damage to tank health
-                tanks[n].config.health -= dmg;
-                tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
-                
-                // animate player health if hit
-                if (tanks[n].config.control === 'player') {
-                    renderExtern();
-                }
-                
-                // if tank has 0 health, destroy the tank
-                if (tanks[n].config.health === 0) {
-                    tanks[n].death();
-                }
-            }
-            
-            // deal damage to all destructibles within range
-            for (var n = 0; n < destructibles.length; n++) {
-                var dist = UTIL.geometry.getDistanceBetweenPoints({x: d.oX, y: d.oY}, {x: destructibles[n].config.oX, y: destructibles[n].config.oY});
-                if (dist > 160) { continue; } // trigger distance
-                
-                // calculate damage
-                var dmg = destructibles[n].config.mod === 'immortal' ? 0 : d.armor * 32;
-                var crit = 10 > Math.random() * 100;
-                dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
-                
-                // apply damage reduction from armor
-                dmg -= dmg * ((0.06 * destructibles[n].config.armor) / (1 + 0.06 * destructibles[n].config.armor));
-                
-                // deal damage to destructible health
-                destructibles[n].config.health -= dmg;
-                destructibles[n].config.health = destructibles[n].config.health < 0 ? 0 : destructibles[n].config.health;
-                
-                // if destructible has 0 health, destroy the tank
-                if (destructibles[n].config.health === 0) {
-                    destructibles[n].death();
-                }
-            }
-            
-            // blow armed dummies within ranged (set chain chainExplode to true)
-            for (var r = 0; r < dummies.length; r++) {
-                if (dummies[r].armed) {
-                    // check distance
-                    var dist = UTIL.geometry.getDistanceBetweenPoints({x: dummies[r].config.oX, y: dummies[r].config.oY}, {x: d.oX, y: d.oY});
-                    if (dist < 90) {
-                        dummies[r].chainExplode = true;
-                    }
-                }
-            }
+            UTIL.dealAreaDamage(loc, 200, 500, 120);
     }
 
     /* has a chance to spawn a random powerup on death */

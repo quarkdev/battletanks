@@ -5,7 +5,7 @@
     "nImage"   : "brick_explosive",
     "dImage"   : "brick_explosive",
     "size"     : 32,
-    "health"   : 50,
+    "health"   : 100,
     "armor"    : 12,
     "mod"      : "explosive"
 },
@@ -23,26 +23,28 @@
     "nImage"   : "heavy_rubber",
     "dImage"   : "heavy_rubber",
     "size"     : 32,
-    "health"   : 500,
-    "armor"    : 12,
+    "health"   : 1000,
+    "armor"    : 150,
     "mod"      : "rubber"
 },
 {
     "name"     : "concrete",
+    "material" : "stone",
     "nImage"   : "concrete",
     "dImage"   : "concrete",
     "size"     : 32,
-    "health"   : 800,
-    "armor"    : 20,
+    "health"   : 5000,
+    "armor"    : 200,
     "mod"      : "normal"
 },
 {
     "name"     : "riveted_iron",
+    "material" : "metal",
     "nImage"   : "riveted_iron",
     "dImage"   : "riveted_iron",
     "size"     : 32,
-    "health"   : 1000,
-    "armor"    : 100,
+    "health"   : 10000,
+    "armor"    : 500,
     "mod"      : "normal"
 },
 {

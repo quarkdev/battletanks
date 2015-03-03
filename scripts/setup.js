@@ -158,9 +158,26 @@ UTIL.asset.queue('image', ['d-exp-0', 'images/spritesheets/debris-explosion-2.pn
 //UTIL.asset.queue('image', ['d-exp-4', 'images/spritesheets/debris-explosion-5.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-5', 'images/spritesheets/debris-explosion-6.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-6', 'images/spritesheets/debris-explosion-7.png', SpriteSheetImages]);
-//UTIL.asset.queue('image', ['imp-metal-3', 'images/spritesheets/impact-metal-3.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-1', 'images/spritesheets/impact-metal-1.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-2', 'images/spritesheets/impact-metal-2.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-3', 'images/spritesheets/impact-metal-3.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-4', 'images/spritesheets/impact-metal-4.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-5', 'images/spritesheets/impact-metal-5.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-6', 'images/spritesheets/impact-metal-6.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-7', 'images/spritesheets/impact-metal-7.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-8', 'images/spritesheets/impact-metal-8.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-9', 'images/spritesheets/impact-metal-9.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-10', 'images/spritesheets/impact-metal-10.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-metal-11', 'images/spritesheets/impact-metal-11.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['b2b-sil', 'images/spritesheets/b2-bomber-silhouette.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['c130-sil', 'images/spritesheets/c130-silhouette.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-stone-1', 'images/spritesheets/impact-stone-1.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-stone-2', 'images/spritesheets/impact-stone-2.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-stone-3', 'images/spritesheets/impact-stone-3.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-stone-4', 'images/spritesheets/impact-stone-4.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-stone-5', 'images/spritesheets/impact-stone-5.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-stone-6', 'images/spritesheets/impact-stone-6.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['impact-stone-7', 'images/spritesheets/impact-stone-7.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
