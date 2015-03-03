@@ -402,9 +402,11 @@ var UTIL = (function () {
         for (var n = 0; n < tanks.length; n++) {
             var d = UTIL.geometry.getDistanceBetweenPoints(epicenter, {x: tanks[n].config.oX, y: tanks[n].config.oY});
             if (d > radius) { continue; }
+            
+            var dRatio = (radius - d) / radius; // damage ratio (less distance)
         
             // calculate damage
-            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (damage - d) * (GLOBALS.map.wave.current + 1);
+            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (damage * dRatio) * (GLOBALS.map.wave.current + 1);
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
             
@@ -442,7 +444,7 @@ var UTIL = (function () {
             if (d > radius) { continue; }
             
             // calculate damage
-            var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (damage - d) * (GLOBALS.map.wave.current + 1);
+            var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (damage * dRatio) * (GLOBALS.map.wave.current + 1);
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
             
