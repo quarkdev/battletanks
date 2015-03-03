@@ -137,19 +137,19 @@
             "tHeight"      : 256,
             "fireScale"    : 5,
             "explodeScale" : 120,
-            "tSpeed"       : 80,
+            "tSpeed"       : 60,
             "fSpeed"       : 200,
             "rSpeed"       : 180,
             "accel"        : 80,
             "pSpeed"       : 750,
-            "pDamage"      : 1000,
+            "pDamage"      : 2000,
             "critChance"   : 25,
             "critMultiplier": 5,
             "ammo"         : 300,
-            "fRate"        : 0.8,
+            "fRate"        : 0.6,
             "hAngle"       : 90,
             "tAngle"       : 90,
-            "coins"        : 1600
+            "coins"        : 2000
         },
         {
             "name"         : "fafnir",
