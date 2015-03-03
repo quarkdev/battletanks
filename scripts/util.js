@@ -443,6 +443,8 @@ var UTIL = (function () {
             var d = UTIL.geometry.getDistanceBetweenPoints(epicenter, {x: destructibles[n].config.oX, y: destructibles[n].config.oY});
             if (d > radius) { continue; }
             
+            var dRatio = (radius - d) / radius; // damage ratio (less distance)
+            
             // calculate damage
             var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (damage * dRatio) * (GLOBALS.map.wave.current + 1);
             var crit = 10 > Math.random() * 100;
