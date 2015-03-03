@@ -394,6 +394,86 @@ var UTIL = (function () {
             });
         }
     };
+    
+    my.dealAreaDamage = function (epicenter, damage, radius, chainRadius) {
+        chainRadius = chainRadius || 90; // minimum distance for chain explosion
+    
+        // damage all tanks within radius units
+        for (var n = 0; n < tanks.length; n++) {
+            var d = UTIL.geometry.getDistanceBetweenPoints(epicenter, {x: tanks[n].config.oX, y: tanks[n].config.oY});
+            if (d > radius) { continue; }
+        
+            // calculate damage
+            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (damage - d) * (GLOBALS.map.wave.current + 1);
+            var crit = 10 > Math.random() * 100;
+            dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+            
+            // deal damage to tank shield
+            tanks[n].config.shield -= dmg;
+            if (tanks[n].config.shield < 0) {
+                dmg = (-1)*tanks[n].config.shield;
+                tanks[n].config.shield = 0;
+            }
+            else {
+                dmg = 0;
+            }
+
+            // apply damage reduction from armor
+            dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
+
+            // deal damage to tank health
+            tanks[n].config.health -= dmg;
+            tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
+            
+            // animate player health if hit
+            if (tanks[n].config.control === 'player') {
+                renderExtern();
+            }
+            
+            // if tank has 0 health, destroy the tank
+            if (tanks[n].config.health === 0) {
+                tanks[n].death();
+            }
+        }
+        
+        // damage all destructibles within 160 units
+        for (var n = 0; n < destructibles.length; n++) {
+            var d = UTIL.geometry.getDistanceBetweenPoints(epicenter, {x: destructibles[n].config.oX, y: destructibles[n].config.oY});
+            if (d > radius) { continue; }
+            
+            // calculate damage
+            var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (damage - d) * (GLOBALS.map.wave.current + 1);
+            var crit = 10 > Math.random() * 100;
+            dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+            
+            // apply damage reduction from armor
+            dmg -= dmg * ((0.06 * destructibles[n].config.armor) / (1 + 0.06 * destructibles[n].config.armor));
+            
+            // deal damage to destructible health
+            destructibles[n].config.health -= dmg;
+            destructibles[n].config.health = destructibles[n].config.health < 0 ? 0 : destructibles[n].config.health;
+            
+            // if destructible has 0 health, destroy the tank
+            if (destructibles[n].config.health === 0) {
+                destructibles[n].death();
+            }
+        }
+        
+        // start a chain explosion with nearby mines
+        for (var r = 0; r < dummies.length; r++) {
+            if (dummies[r].config.active) {
+                if (dummies[r].config.explosive) {
+                    if (dummies[r].armed) {
+                        // check distance
+                        var d = UTIL.geometry.getDistanceBetweenPoints({x: dummies[r].config.oX, y: dummies[r].config.oY}, epicenter);
+                        if (d < chainRadius) {
+                            dummies[r].chainExplode = true;
+                        }
+                    }
+                }
+            }
+        }
+    };
         
     return my;
 }());
@@ -1658,14 +1738,15 @@ function Dummy(specs) {
     this.config = {
         active     : true,
         name       : specs.name,
-        speed      : specs.speed,
-        angle      : specs.angle,
         oX         : specs.oX,
-        oY         : specs.oY
+        oY         : specs.oY,
+        explosive  : typeof specs.explosive === 'undefined' ? false : specs.explosive
     };
 }
 
-Dummy.prototype.update = function (modifier) {
+Dummy.prototype.update = function (delta) {
+    this.delta = delta;
+    
     // Apply all mods
     for (var i = 0; i < this.mods.length; i++) {
         this.mods[i](this);

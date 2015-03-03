@@ -78,6 +78,7 @@ UTIL.asset.queue('image', ['deflect', 'images/powerups/deflect.png', PowerUpImag
 UTIL.asset.queue('image', ['point-defense-laser', 'images/powerups/point-defense-laser.png', PowerUpImages]);
 UTIL.asset.queue('image', ['impulse-shell', 'images/powerups/impulse-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['mine', 'images/powerups/mine.png', PowerUpImages]);
+UTIL.asset.queue('image', ['carpet-bomb', 'images/powerups/carpet-bomb.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -149,6 +150,8 @@ UTIL.asset.queue('image', ['d-exp-0', 'images/spritesheets/debris-explosion-2.pn
 //UTIL.asset.queue('image', ['d-exp-5', 'images/spritesheets/debris-explosion-6.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-6', 'images/spritesheets/debris-explosion-7.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['imp-metal-3', 'images/spritesheets/impact-metal-3.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['b2b-sil', 'images/spritesheets/b2-bomber-silhouette.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['c130-sil', 'images/spritesheets/c130-silhouette.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
@@ -174,6 +177,7 @@ pup_tds_sound        = new SoundPool('sounds/chronosphere.wav', 0.5, 8);
 nuke_siren_sound     = new SoundPool('sounds/nuke_siren.wav', 0.5, 5);
 nuke_explosion_sound = new SoundPool('sounds/nuke_explosion.wav', 1.0, 5);
 laser_impact_sound   = new SoundPool('sounds/laser_impact.wav', 0.1, 50);
+c130_sound           = new SoundPool('sounds/c130.mp3', 0.5, 8);
     
 UTIL.asset.queue('soundpool', ['fire', fireSound]);
 UTIL.asset.queue('soundpool', ['explode', explodeSound]);
@@ -194,6 +198,7 @@ UTIL.asset.queue('soundpool', ['time_dilation_sphere_use', pup_tds_sound]);
 UTIL.asset.queue('soundpool', ['nuke_siren', nuke_siren_sound]);
 UTIL.asset.queue('soundpool', ['nuke_explosion', nuke_explosion_sound]);
 UTIL.asset.queue('soundpool', ['laser_impact', laser_impact_sound]);
+UTIL.asset.queue('soundpool', ['c130', c130_sound]);
 
 // Init stat fields
 var STAT = new Stat();

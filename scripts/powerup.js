@@ -28,7 +28,8 @@ var PUP = (function() {
         {slug: 'deflect', cost: 100, desc: 'Uses 50% less shield energy to deflect incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
         {slug: 'point-defense-laser', cost: 100, desc: 'Uses lasers to destroy incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
         {slug: 'impulse-shell', cost: 150, desc: 'Deals extra damage based on distance travelled by projectile.'},
-        {slug: 'mine', cost: 20, desc: 'Plants an anti-tank mine on the ground that becomes armed after 3 seconds. Deals moderate damage.'}
+        {slug: 'mine', cost: 20, desc: 'Plants an anti-tank mine on the ground that becomes armed after 3 seconds. Deals moderate damage.'},
+        {slug: 'carpet-bomb', cost: 100, desc: 'Calls a B2 Carpet Bomber to lay waste on an area.'}
     ];
     
     my.getSlug = function (slug) {
@@ -97,6 +98,8 @@ var PUP = (function() {
                 return new ImpulseShell(x, y);
             case 'mine':
                 return new Mine(x, y);
+            case 'carpet-bomb':
+                return new CarpetBomb(x, y);
             default:
                 break;
         }
@@ -128,6 +131,108 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function CarpetBomb(x, y) {
+        /* call a carpet-bombing run on an area. */
+        this.config = {
+            name    : 'Carpet Bomb',
+            slug    : 'carpet-bomb',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('carpet-bomb')
+        };
+        
+        this.use = function (tank) {
+            // aux fn fly
+            var fly = function (dy) {
+                var d = 360 * dy.delta;
+                var P = UTIL.geometry.getPointAtAngleFrom(dy.config.oX, dy.config.oY, dy.config.angle, d);
+                
+                // move dummy
+                dy.config.oX = dy.vfx.config.oX = P[0];
+                dy.config.oY = dy.vfx.config.oY = P[1];
+            };
+        
+            // aux fn drop bomb
+            var dropBomb = function (dy) {
+                // check if distance to target < 400 units and drop is not on cooldown
+                if (UTIL.geometry.getDistanceBetweenPoints(dy.target, {x: dy.config.oX, y: dy.config.oY}) < 400 && !dy.dbcd) {
+                    dy.dbcd = true; // drop bomb cooldown
+                    dy.bombingStarted = true;
+                
+                    new Timer(function () {
+                        dy.dbcd = false;
+                    }, 50);
+                
+                    // cause an explosion anywhere within 80 radius
+                    var r = 128 + (Math.random() * 64)
+                    var a = Math.random() * 360;
+                    var d = Math.random() * 80;
+                    var offset = UTIL.geometry.getPointAtAngleFrom(dy.config.oX, dy.config.oY, dy.config.angle + 180, 100);
+                    var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
+                    
+                    // deal damage to tanks/destructibles/proc chainExplode dummies
+                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 300, 120, 90);
+                    
+                    // show explosion flash
+                    var flash = new Light({
+                        name        : 'x-flash',
+                        oX          : P[0],
+                        oY          : P[1],
+                        radius      : r - 100,
+                        intensity   : 0.4,
+                        duration    : 200
+                    });
+
+                    lights.push(flash);
+                    
+                    // push explosion vfx
+                    visualeffects.push(new VisualEffect({name: 'explosion', oX: P[0], oY: P[1], width: 256, height: 256, angle: a, scaleW: r, scaleH: r,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'sq-exp'}));
+                
+                    // Play sound effect [random]
+                    var roll = Math.floor(Math.random() * 3) + 1;
+                    switch (roll) {
+                        case 1:
+                            t_destroyedSound.get();
+                            break;
+                        case 2:
+                            t_destroyedSound2.get();
+                            break;
+                        case 3:
+                            t_destroyedSound3.get();
+                            break;
+                    }
+                }
+                else if (UTIL.geometry.getDistanceBetweenPoints(dy.target, {x: dy.config.oX, y: dy.config.oY}) > 1200 && dy.bombingStarted) {
+                    // destroy dummy
+                    dy.vfx.end();
+                    dy.config.active = false;
+                }
+            };
+        
+            // create dummy object just outside the tank's vision
+            var _P = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, tank.config.tAngle + 180, 1200); // b2 bomber point of origin
+            var _T = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, tank.config.tAngle, 800); // b2 bomber target 800 units ahead
+             
+            var dummy = new Dummy({name: 'c130-carpet-bomber', mods: [fly, dropBomb], oX: _P[0], oY: _P[1]});
+            
+            dummy.target = {
+                x: _T[0],
+                y: _T[1]
+            };
+            
+            dummy.dbcd = false;
+            dummy.bombingStarted = false;
+            dummy.config.angle = tank.config.tAngle;
+            dummy.vfx = new VisualEffect({name: 'c130-sil', oX: dummy.config.oX, oY: dummy.config.oY, width: 365, height: 533, angle: tank.config.tAngle, scaleW: 365, scaleH: 533,  maxCols: 1, maxRows: 1, framesTillUpdate: 0, loop: false, paused: true, spriteSheet: 'c130-sil'});
+            visualeffects.push(dummy.vfx);
+            c130_sound.get();
+            
+            dummies.push(dummy);
         };
     }
     
@@ -185,81 +290,7 @@ var PUP = (function() {
                             break;
                     }
                     
-                    // damage all tanks within 160 units
-                    for (var n = 0; n < tanks.length; n++) {
-                        var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[n].config.oX, y: tanks[n].config.oY});
-                        if (d > 160) { continue; } // trigger distance
-                    
-                        // calculate damage
-                        var dmg = tanks[n].config.invulnerable > 0 ? 0 : (1000 - d) * (GLOBALS.map.wave.current + 1);
-                        var crit = 10 > Math.random() * 100;
-                        dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
-                        
-                        // deal damage to tank shield
-                        tanks[n].config.shield -= dmg;
-                        if (tanks[n].config.shield < 0) {
-                            dmg = (-1)*tanks[n].config.shield;
-                            tanks[n].config.shield = 0;
-                        }
-                        else {
-                            dmg = 0;
-                        }
-
-                        // apply damage reduction from armor
-                        dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
-
-                        // deal damage to tank health
-                        tanks[n].config.health -= dmg;
-                        tanks[n].config.health = tanks[n].config.health < 0 ? 0 : tanks[n].config.health;
-                        
-                        // animate player health if hit
-                        if (tanks[n].config.control === 'player') {
-                            renderExtern();
-                        }
-                        
-                        // if tank has 0 health, destroy the tank
-                        if (tanks[n].config.health === 0) {
-                            tanks[n].death();
-                        }
-                    }
-                    
-                    // damage all destructibles within 160 units
-                    for (var n = 0; n < destructibles.length; n++) {
-                        var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: destructibles[n].config.oX, y: destructibles[n].config.oY});
-                        if (d > 160) { continue; } // trigger distance
-                        
-                        // calculate damage
-                        var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (1000 - d) * (GLOBALS.map.wave.current + 1);
-                        var crit = 10 > Math.random() * 100;
-                        dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
-                        
-                        // apply damage reduction from armor
-                        dmg -= dmg * ((0.06 * destructibles[n].config.armor) / (1 + 0.06 * destructibles[n].config.armor));
-                        
-                        // deal damage to destructible health
-                        destructibles[n].config.health -= dmg;
-                        destructibles[n].config.health = destructibles[n].config.health < 0 ? 0 : destructibles[n].config.health;
-                        
-                        // if destructible has 0 health, destroy the tank
-                        if (destructibles[n].config.health === 0) {
-                            destructibles[n].death();
-                        }
-                    }
-                    
-                    // start a chain explosion with nearby mines
-                    for (var r = 0; r < dummies.length; r++) {
-                        if (dummies[r].config.active) {
-                            if (dummies[r].config.name === 'mine') {
-                                if (dummies[r].armed) {
-                                    // check distance
-                                    var d = UTIL.geometry.getDistanceBetweenPoints({x: dummies[r].config.oX, y: dummies[r].config.oY}, {x: dummy.config.oX, y: dummy.config.oY});
-                                    if (d < 90) {
-                                        dummies[r].chainExplode = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    UTIL.dealAreaDamage(loc, 1000, 160, 90);
                 };
 
                 if (dy.config.active && dy.armed) {
@@ -289,7 +320,7 @@ var PUP = (function() {
             };
             
             // create a projectile dummy for our landmine
-            var dummy = new Dummy({name: 'mine', mods: [search_area], speed: 0, angle: 0, oX: loc.x, oY: loc.y});
+            var dummy = new Dummy({name: 'mine', mods: [search_area], oX: loc.x, oY: loc.y, explosive: true});
             dummies.push(dummy);
             
             // show a landmine vfx at projectile location (paused)
@@ -747,51 +778,7 @@ var PUP = (function() {
 
                 new Timer(function () { flash.config.active = false; core.config.active = false; }, 3050);
                 
-                for (var i = 0; i < tanks.length; i++) {
-                    if (tanks[i].config.invulnerable > 0) {
-                        continue;
-                    }
-                
-                    // calculate the damage dealt
-                    var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
-                    var dmg = (8000 + (GLOBALS.map.wave.current * 200)) - (d * 10);
-                    dmg = dmg < 0 ? 0 : dmg;
-                    
-                    tanks[i].config.health -= dmg;
-                    tanks[i].config.health = tanks[i].config.health < 0 ? 0 : tanks[i].config.health;
-                    
-                    // set shields to zero (damage due to EMP)
-                    tanks[i].config.shield = 0;
-                    
-                    // animate player health if hit
-                    if (tanks[i].config.control === 'player') {
-                        renderExtern();
-                    }
-                    
-                    // if tank has 0 health, destroy the tank
-                    if (tanks[i].config.health === 0) {
-                        tanks[i].death();
-                    }
-                }
-                
-                for (var i = 0; i < destructibles.length; i++) {
-                    if (destructibles[i].config.mod === 'immortal') {
-                        continue;
-                    }
-                
-                    // calculate the damage dealt
-                    var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: destructibles[i].config.oX, y: destructibles[i].config.oY});
-                    var dmg = (8000 + (GLOBALS.map.wave.current * 200)) - (d * 10);
-                    dmg = dmg < 0 ? 0 : dmg;
-                    
-                    destructibles[i].config.health -= dmg;
-                    destructibles[i].config.health = destructibles[i].config.health < 0 ? 0 : destructibles[i].config.health;
-                    
-                    // if tank has 0 health, destroy the tank
-                    if (destructibles[i].config.health === 0) {
-                        destructibles[i].death();
-                    }
-                }
+                UTIL.dealAreaDamage(loc, 8000, 1000, 800);
             }, 6000);
         };
     }
