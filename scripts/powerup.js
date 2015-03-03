@@ -778,7 +778,7 @@ var PUP = (function() {
 
                 new Timer(function () { flash.config.active = false; core.config.active = false; }, 3050);
                 
-                UTIL.dealAreaDamage(loc, 8000, 1000, 800);
+                UTIL.dealAreaDamage(loc, 3000, 10000, 800);
             }, 6000);
         };
     }
