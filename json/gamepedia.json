@@ -155,6 +155,12 @@
             "description": "Deals damage to a small area when triggered.",
             "image": "images/powerups/mine.png",
             "video": ""
+        },
+        {
+            "name": "Carpet Bomb",
+            "description": "Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.",
+            "image": "images/powerups/carpet-bomb.png",
+            "video": ""
         }
     ],
     "tanks" : [
