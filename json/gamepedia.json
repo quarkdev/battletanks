@@ -201,15 +201,33 @@
             "video": ""
         },
         {
-            "name": "Type-75",
+            "name": "Type 75",
             "description": "A heavy tank destroyer that sports a fast-regenerating shield.",
-            "image": "images/tanks/type-75/icon.png",
+            "image": "images/tanks/type_75/icon.png",
             "video": ""
         },
         {
-            "name": "M1A1-Abrams",
+            "name": "M1A1 Abrams",
             "description": "A main battletank that is both heavily-armed and armored while still being mobile.",
-            "image": "images/tanks/m1a1-abrams/icon.png",
+            "image": "images/tanks/m1a1_abrams/icon.png",
+            "video": ""
+        },
+        {
+            "name": "Tiger II",
+            "description": "A main battletank that can aborb a huge amount of damage and deal the same.",
+            "image": "images/tanks/tiger_ii/icon.png",
+            "video": ""
+        },
+        {
+            "name": "T72-120",
+            "description": "A main battletank that has good armor and great shield. Deals a great amount of damage but has a lower critical hit multiplier.",
+            "image": "images/tanks/t72_120/icon.png",
+            "video": ""
+        },
+        {
+            "name": "Merkava Mk.IV",
+            "description": "A main battletank that has a ton of health, shield regeneration and deals a massive amount of damage per shell.",
+            "image": "images/tanks/merkava_mkiv/icon.png",
             "video": ""
         }
     ],
