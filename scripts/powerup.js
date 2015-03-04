@@ -362,7 +362,7 @@ var PUP = (function() {
                     var _dmult = typeof tank.is !== 'undefined' ? tank.is.dmult : 0.4;
                     
                     p.dt = typeof p.dt !== 'undefined' ? p.dt + _dt : 0; // total distance travelled
-                    p.damage += _dt * _dmult;
+                    p.damage += _dt * _dmult * (GLOBALS.wave.current + 1);
                     
                     // increase vfx size based on distance
                     var _growth = p.dt / 100;
