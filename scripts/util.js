@@ -438,7 +438,7 @@ var UTIL = (function () {
             }
         }
         
-        // damage all destructibles within 160 units
+        // damage all destructibles within radius units
         for (var n = 0; n < destructibles.length; n++) {
             var d = UTIL.geometry.getDistanceBetweenPoints(epicenter, {x: destructibles[n].config.oX, y: destructibles[n].config.oY});
             if (d > radius) { continue; }
