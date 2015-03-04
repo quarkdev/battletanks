@@ -516,6 +516,7 @@ var PUP = (function() {
                 tank.pdl.timeout = new Timer(function() {
                     tank.events.unlisten('frame', areapdl);
                     tank.config.maxShield -= tank.pdl.shield;
+                    tank.config.maxShield = Math.max(tank.config.maxShield, 0);
                     tank.config.shield = tank.config.shield > tank.config.maxShield ? tank.config.maxShield : tank.config.shield;
                     tank.config.shieldRegen -= tank.pdl.shieldRegen;
                     delete tank.pdl;
@@ -652,6 +653,7 @@ var PUP = (function() {
                 tank.deflect.timeout = new Timer(function() {
                     tank.events.unlisten('frame', areaDeflect);
                     tank.config.maxShield -= tank.deflect.shield;
+                    tank.config.maxShield = Math.max(tank.config.maxShield, 0);
                     tank.config.shield = tank.config.shield > tank.config.maxShield ? tank.config.maxShield : tank.config.shield;
                     tank.config.shieldRegen -= tank.deflect.shieldRegen;
                     delete tank.deflect;
