@@ -65,7 +65,9 @@ Projectile.prototype.update = function (modifier) {
             // Check if it hit a destructible.
             var resultD = this._hasHitDestructible(destructibles, p.oX, p.oY, p.lastPos.x, p.lastPos.y);
             if (resultD.hit === true) {
-                this.death();
+                if (resultD.destructible.config.mod !== 'rubber') {
+                    this.death();
+                }
                 var d = resultD.destructible;
                 
                 p.PoI = resultD.poi;
@@ -124,7 +126,7 @@ Projectile.prototype._hasHitDestructible = function (destructibles, x, y, lx, ly
             return { hit: true, poi: lineX.PoI, sideH: lineX.sideIndex, destructible: destructibles[i] };
         }
     }
-    return { hit: false, poi: null, sideH: null, destructible: null };
+    return { hit: false, poi: null, sideH: null, destructible: destructibles[i] };
 };
 
 Projectile.prototype._hasHitTank = function (tanks, x, y, lx, ly) {
