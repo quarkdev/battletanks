@@ -1193,7 +1193,6 @@ var PUP = (function() {
                         var speed = projectile.hasOwnProperty('flagASId') ? p.speed + projectile.flaggedAreaSlow : p.speed; // restore speed caused by area slow (so that generated shrapnel gets flagged correctly)
                         
                         for (var i = 0; i < tank.fw_stacks; i++) {
-                        
                             projectiles.push(new Projectile({mods: [], speed: speed, damage: p.damage * 0.25, critChance: p.critChance, angle:  (i * offset) + rotate_offset, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
                         }
                         
