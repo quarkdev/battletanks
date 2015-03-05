@@ -85,6 +85,7 @@ UTIL.asset.queue('image', ['point-defense-laser', 'images/powerups/point-defense
 UTIL.asset.queue('image', ['impulse-shell', 'images/powerups/impulse-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['mine', 'images/powerups/mine.png', PowerUpImages]);
 UTIL.asset.queue('image', ['carpet-bomb', 'images/powerups/carpet-bomb.png', PowerUpImages]);
+UTIL.asset.queue('image', ['armor-piercing-shell', 'images/powerups/armor-piercing-shell.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -152,6 +153,10 @@ UTIL.asset.queue('image', ['wf-2', 'images/spritesheets/whirlpool-flare-2.png', 
 UTIL.asset.queue('image', ['sq-exp', 'images/spritesheets/stylized-quick-explosion.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['flame-blast', 'images/spritesheets/flame-blast.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['d-exp-0', 'images/spritesheets/debris-explosion-2.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['aps-trail', 'images/spritesheets/aps-trail.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['streaks', 'images/spritesheets/streaks.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['smokey-flare', 'images/spritesheets/smokey-flare.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['flicker-flare', 'images/spritesheets/flicker-flare.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-1', 'images/spritesheets/debris-explosion-3a.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-2', 'images/spritesheets/debris-explosion-3b.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-3', 'images/spritesheets/debris-explosion-4.png', SpriteSheetImages]);

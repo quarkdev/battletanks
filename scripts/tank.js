@@ -305,7 +305,8 @@ function Tank(specs, id, control, x, y, faction) {
         oX           : x,                                                                  // tank x coordinate
         oY           : y,                                                                  // tank y coordinate
         hAngle       : specs.hAngle,                                                       // tank head angle (the direction it is currently facing)
-        tAngle       : specs.tAngle                                                        // tank turret angle (the direction the turret is facing)
+        tAngle       : specs.tAngle,                                                        // tank turret angle (the direction the turret is facing)
+        debuffs      : {}
     };
     
     this.x = this.config.oX;

@@ -29,7 +29,8 @@ var PUP = (function() {
         {slug: 'point-defense-laser', cost: 100, desc: 'Uses lasers to destroy incoming projectiles. Temporarily gives 1000 shield and 200 shield regen. Bonus is halved when stacked.'},
         {slug: 'impulse-shell', cost: 150, desc: 'Deals extra damage based on distance travelled by projectile.'},
         {slug: 'mine', cost: 20, desc: 'Plants an anti-tank mine on the ground that becomes armed after 3 seconds. Deals moderate damage.'},
-        {slug: 'carpet-bomb', cost: 100, desc: 'Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.'}
+        {slug: 'carpet-bomb', cost: 100, desc: 'Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.'},
+        {slug: 'armor-piercing-shell', cost: 100, desc: 'Each projectile hit reduces enemy armor by 5.'}
     ];
     
     my.getSlug = function (slug) {
@@ -100,6 +101,8 @@ var PUP = (function() {
                 return new Mine(x, y);
             case 'carpet-bomb':
                 return new CarpetBomb(x, y);
+            case 'armor-piercing-shell':
+                return new ArmorPiercingShell(x, y);
             default:
                 break;
         }
@@ -131,6 +134,77 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function ArmorPiercingShell(x, y) {
+        /* reduce enemy armor for every hit. */
+        this.config = {
+            name    : 'Armor Piercing Shell',
+            slug    : 'armor-peircing-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('armor-piercing-shell')
+        };
+        
+        this.use = function (tank) {
+            if (!tank.aps) {
+                tank.aps = {};
+                
+                var apShell = function (projectile) {
+                    var p = projectile.config;
+                    
+                    if (!p.apslisten) {
+                        p.apslisten = true;
+                        p.apsvfx = new VisualEffect({name: 'aps-flare', oX: p.oX, oY: p.oY, width: 128, height: 128, scaleW: 64, scaleH: 64,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'flicker-flare'});
+                        visualeffects.push(p.apsvfx);
+                        projectile.events.listen('death', function () { p.apsvfx.end(); });
+                    }
+                    else {
+                        p.apsvfx.config.oX = p.oX;
+                        p.apsvfx.config.oY = p.oY;
+                    }
+                    
+                    if (p.objectHit.type === 'tank') {
+                        var t = p.objectHit.obj.config;
+                        var da = 5; // debuff amount
+                        
+                        if (!t.debuffs.aps) {
+                            // apply base debuff
+                            t.debuffs.aps = {};
+                            t.debuffs.aps.stacks = 1;
+                            
+                            t.armor -= da;
+                            
+                            t.debuffs.aps.timeout = new Timer(function () {
+                                // restore debuffed stats
+                                t.armor += t.debuffs.aps.stacks * da;
+                                
+                                delete t.debuffs.aps;
+                            }, 8000);
+                        }
+                        else {
+                            t.debuffs.aps.stacks++;
+                            t.armor -= da;
+                            
+                            t.debuffs.aps.timeout.reset();
+                        }
+                    }
+                };
+                apShell.id = 'apShell';
+                
+                tank.projectile_mods.push(apShell);
+                
+                tank.aps.timeout = new Timer(function () {
+                    delete tank.aps;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'apShell'; });
+                }, 12000);
+            }
+            else {
+                tank.aps.timeout.extend(6000);
+            }
         };
     }
     
@@ -176,7 +250,7 @@ var PUP = (function() {
                     var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
                     
                     // deal damage to tanks/destructibles/proc chainExplode dummies
-                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 300, 120, 90);
+                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 500, 180, 90);
                     
                     // show explosion flash
                     var flash = new Light({
@@ -290,7 +364,7 @@ var PUP = (function() {
                             break;
                     }
                     
-                    UTIL.dealAreaDamage(loc, 1000, 160, 90);
+                    UTIL.dealAreaDamage(loc, 2500, 220, 90);
                 };
 
                 if (dy.config.active && dy.armed) {
@@ -507,7 +581,7 @@ var PUP = (function() {
                             explodeSound.get();
                             
                             // deactivate projectile
-                            projectiles[i].config.active = false;
+                            projectiles[i].death();
                         }
                     }
                 };
