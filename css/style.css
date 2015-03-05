@@ -739,3 +739,15 @@ button {
 .ci-img:hover {
     opacity: 1;
 }
+
+#settings-table {
+    margin: 0 auto;
+}
+
+.settings-table-col1 {
+    text-align: right;
+}
+
+.settings-table-col2 {
+    text-align: left;
+}

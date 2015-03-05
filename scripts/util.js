@@ -478,6 +478,35 @@ var UTIL = (function () {
             }
         }
     };
+    
+    my.setSfxVol = function (percentage) {
+        // set the volume of sound effects to a percentage of their default volumes
+        fireSound.setVolume(percentage);
+        explodeSound.setVolume(percentage);
+        d_explodeSound.setVolume(percentage);
+        d_destroyedSound.setVolume(percentage);
+        t_destroyedSound.setVolume(percentage);
+        t_destroyedSound2.setVolume(percentage);
+        t_destroyedSound3.setVolume(percentage);
+        pick_powerupSound.setVolume(percentage);
+        tick_sound.setVolume(percentage);
+        wave_cleared_sound.setVolume(percentage);
+        wave_start_sound.setVolume(percentage);
+        gameover_sound.setVolume(percentage);
+        gold_pick_sound.setVolume(percentage);
+        button_hover_sound.setVolume(percentage);
+        button_click_sound.setVolume(percentage);
+        pup_tds_sound.setVolume(percentage);
+        nuke_siren_sound.setVolume(percentage);
+        nuke_explosion_sound.setVolume(percentage);
+        laser_impact_sound.setVolume(percentage);
+        c130_sound.setVolume(percentage);
+    };
+    
+    my.setMscVol = function (percentage) {
+        // TODO: create music object similar soundpool
+        backgroundMusic.volume = 0.15 * (percentage / 100); // 0.15 is a hardcoded base volume
+    };
         
     return my;
 }());
@@ -1444,6 +1473,13 @@ function SoundPool(loc, vol, max) {
             pool[soundIndex].play();
         }
         soundIndex = (soundIndex + 1) % size;
+    };
+    
+    this.setVolume = function (percentage) {
+        var _d = percentage / 100;
+        for (var i = 0; i < size; i++) {
+            pool[i].volume = soundVol * _d;
+        }
     };
 }
 

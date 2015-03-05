@@ -18,11 +18,28 @@ var GLOBALS = (function () {
         },
         settings : {
             set : function () {
-                m.settings.screenShake = parseInt($('#set-screen-shake').val()),
-                m.settings.ashp = parseInt($('#set-ashp').val())
+                // set screenshake
+                m.settings.screenShake = parseInt($('#set-screen-shake').val());
+                
+                // set always show hp/shield
+                m.settings.ashp = parseInt($('#set-ashp').val());
+                
+                // set music volume
+                var _mscv = parseInt($('#set-music-volume').val());
+                _mscv = Math.max(0, Math.min(_mscv, 200)); // clamp between 0 and 200
+                m.settings.mscVol = _mscv;
+                UTIL.setMscVol(m.settings.mscVol);
+                
+                // set sfx volume
+                var _sfxv = parseInt($('#set-sfx-volume').val());
+                _sfxv = Math.max(0, Math.min(_sfxv, 200)); // clamp between 0 and 200
+                m.settings.sfxVol = _sfxv;
+                UTIL.setSfxVol(m.settings.sfxVol);
             },
             screenShake : 0, // 0 = false, 1 = on critical hit only, 2 = on normal hit only, 3 = on both
-            ashp : 1 // always show hitpoints and shield
+            ashp : 1, // always show hitpoints and shield
+            mscVol : 100,
+            sfxVol : 100
         },
         ui : {
             active : {
