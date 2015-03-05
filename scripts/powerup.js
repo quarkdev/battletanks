@@ -1219,7 +1219,7 @@ var PUP = (function() {
                             explodeSound.get();
                         }
                         
-                        p.active = false; // set projectile to inactive
+                        projectile.death(); // destroy main projectile
                     }
                 };
                 split.id = 'split';
