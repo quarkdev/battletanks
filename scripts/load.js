@@ -42,8 +42,8 @@ var LOAD = (function () {
             player = tanks[0];
             camera.follow(player, canvas.width/2, canvas.height/2);
 
-            // set player gold to 1000
-            tanks[0].config.coins = 1000;
+            // set player gold to 5000
+            tanks[0].config.coins = 5000;
             
             GLOBALS.packedDestructibles = UTIL.packDestructibles();
             
