@@ -156,14 +156,16 @@ var PUP = (function() {
                 var apShell = function (projectile) {
                     var p = projectile.config;
                     
-                    if (!p.apsvfx) {
-                        p.apsvfx = new VisualEffect({name: 'aps-flare', oX: p.oX, oY: p.oY, width: 128, height: 128, scaleW: 64, scaleH: 64,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'flicker-flare'});
-                        visualeffects.push(p.apsvfx);
-                        projectile.events.listen('death', function () { p.apsvfx.end(); });
-                    }
-                    else {
-                        p.apsvfx.config.oX = p.oX;
-                        p.apsvfx.config.oY = p.oY;
+                    if (p.active) {
+                        if (!p.apsvfx) {
+                            p.apsvfx = new VisualEffect({name: 'aps-flare', oX: p.oX, oY: p.oY, width: 128, height: 128, scaleW: 64, scaleH: 64,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'flicker-flare'});
+                            visualeffects.push(p.apsvfx);
+                            projectile.events.listen('death', function () { p.apsvfx.end(); });
+                        }
+                        else {
+                            p.apsvfx.config.oX = p.oX;
+                            p.apsvfx.config.oY = p.oY;
+                        }
                     }
                     
                     if (p.objectHit.type === 'tank') {
@@ -1141,7 +1143,7 @@ var PUP = (function() {
                     var newp_coords = UTIL.geometry.getPointAtAngleFrom(p.objectHit.obj.config.oX, p.objectHit.obj.config.oY, tanA, (nearest_tank.config.width/2) + 2);
                 
                     // fire new projectile towards new target
-                    var cProj = new Projectile({mods: [], speed: p.speed, damage: p.damage * 0.80, critChance: p.critChance, angle: tanA, oX: newp_coords[0], oY: newp_coords[1], srcId: p.srcId, srcType: 'chain'});
+                    var cProj = new Projectile({mods: projectile.mods, speed: p.speed, damage: p.damage * 0.80, critChance: p.critChance, angle: tanA, oX: newp_coords[0], oY: newp_coords[1], srcId: p.srcId, srcType: 'chain'});
                     cProj.jumps = projectile.jumps; // save the jumps remaining for the new projectile
                     
                     projectiles.push(cProj);

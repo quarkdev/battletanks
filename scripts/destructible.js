@@ -69,7 +69,6 @@ Destructible.prototype.hit = function (projectile) {
             }
 
             // 3. Deflect projectile. Calculate new base oX and oY at 3 units offset.
-            p.active = true;
             p.oY = p.PoI.y + (1 * Math.sin(newAngle*Math.PI/180));
             p.oX = p.PoI.x + (1 * Math.cos(newAngle*Math.PI/180));
             p.srcType = 'ricochet';
