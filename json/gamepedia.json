@@ -158,8 +158,14 @@
         },
         {
             "name": "Carpet Bomb",
-            "description": "Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.",
+            "description": "Calls a C-130 Carpet Bomber to lay waste on an area. Direction relies on turret facing angle.",
             "image": "images/powerups/carpet-bomb.png",
+            "video": ""
+        },
+        {
+            "name": "Armor Piercing Shell",
+            "description": "Each projectile hit reduces armor by 5.",
+            "image": "images/powerups/armor-piercing-shell.png",
             "video": ""
         }
     ],
