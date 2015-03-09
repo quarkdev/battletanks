@@ -86,6 +86,7 @@ UTIL.asset.queue('image', ['impulse-shell', 'images/powerups/impulse-shell.png',
 UTIL.asset.queue('image', ['mine', 'images/powerups/mine.png', PowerUpImages]);
 UTIL.asset.queue('image', ['carpet-bomb', 'images/powerups/carpet-bomb.png', PowerUpImages]);
 UTIL.asset.queue('image', ['armor-piercing-shell', 'images/powerups/armor-piercing-shell.png', PowerUpImages]);
+UTIL.asset.queue('image', ['high-explosive-shell', 'images/powerups/high-explosive-shell.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -145,6 +146,7 @@ UTIL.asset.queue('image', ['muzzle-flash-3', 'images/spritesheets/muzzle-flash-3
 UTIL.asset.queue('image', ['mine', 'images/spritesheets/mine.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['ms-exp-2', 'images/spritesheets/multi-stage-explosion-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['ms-exp-6', 'images/spritesheets/multi-stage-explosion-6.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['ms-exp-7', 'images/spritesheets/multi-stage-explosion-7.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['cloud-exp-3', 'images/spritesheets/cloud-explosion-3.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['cloud-blast-4', 'images/spritesheets/cloud-blast-4.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['cloud-exp-2', 'images/spritesheets/cloud-explosion-2.png', SpriteSheetImages]);
@@ -274,6 +276,9 @@ MAP.addPlaceable('powerup', 'deflect');
 MAP.addPlaceable('powerup', 'point-defense-laser');
 MAP.addPlaceable('powerup', 'impulse-shell');
 MAP.addPlaceable('powerup', 'mine');
+MAP.addPlaceable('powerup', 'carpet-bomb');
+MAP.addPlaceable('powerup', 'armor-piercing-shell');
+MAP.addPlaceable('powerup', 'high-explosive-shell');
 
 GLOBALS.map.index = 0;
 

@@ -30,7 +30,8 @@ var PUP = (function() {
         {slug: 'impulse-shell', cost: 150, desc: 'Deals extra damage based on distance travelled by projectile.'},
         {slug: 'mine', cost: 20, desc: 'Plants an anti-tank mine on the ground that becomes armed after 3 seconds. Deals moderate damage.'},
         {slug: 'carpet-bomb', cost: 100, desc: 'Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.'},
-        {slug: 'armor-piercing-shell', cost: 100, desc: 'Each projectile hit reduces enemy armor by 5.'}
+        {slug: 'armor-piercing-shell', cost: 100, desc: 'Each projectile hit reduces enemy armor by 5.'},
+        {slug: 'high-explosive-shell', cost: 100, desc: 'Each projectile hit deals an extra Area-of-Effect damage.'}
     ];
     
     my.getSlug = function (slug) {
@@ -103,6 +104,8 @@ var PUP = (function() {
                 return new CarpetBomb(x, y);
             case 'armor-piercing-shell':
                 return new ArmorPiercingShell(x, y);
+            case 'high-explosive-shell':
+                return new HighExplosiveShell(x, y);
             default:
                 break;
         }
@@ -134,6 +137,60 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function HighExplosiveShell(x, y) {
+        /* shells will do extra area damage on hit. */
+        this.config = {
+            name    : 'High Explosive Shell',
+            slug    : 'high-explosive-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('high-explosive-shell')
+        };
+        
+        this.use = function (tank) {
+            if (!tank.hes) {
+                tank.hes = {};
+                var makeExplosive = function (projectile) {
+                    if (!projectile.hesActive) {
+                        projectile.hesActive = true;
+                        projectile.events.listen('death', function () {
+                            var _f = Math.random();
+                            var _d = _f * 56;
+                            var r = 200 + _d;
+                            visualeffects.push(new VisualEffect({name: 'explosion', oX: projectile.config.oX, oY: projectile.config.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: r, scaleH: r, maxCols: 8, maxRows: 6, framesTillUpdate: 0, loop: false, spriteSheet: 'ms-exp-7'}));
+                            // Play sound effect [random]
+                            var roll = Math.floor(Math.random() * 3) + 1;
+                            switch (roll) {
+                                case 1:
+                                    t_destroyedSound.get();
+                                    break;
+                                case 2:
+                                    t_destroyedSound2.get();
+                                    break;
+                                case 3:
+                                    t_destroyedSound3.get();
+                                    break;
+                            }
+                            
+                            UTIL.dealAreaDamage({x: projectile.config.oX, y: projectile.config.oY}, projectile.config.damage * (0.50 + (_f * 0.25)), r, r * 0.6);
+                        });
+                    }
+                };
+                makeExplosive.id = 'makeExplosive';
+                tank.projectile_mods.push(makeExplosive);
+                tank.hes.timeout = new Timer(function () {
+                    delete tank.hes;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'makeExplosive'; });
+                }, 7000);
+            }
+            else {
+                tank.hes.timeout.extend('4000');
+            }
         };
     }
     
