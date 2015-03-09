@@ -1912,8 +1912,9 @@ var PUP = (function() {
 
                 tank.regen.interval = new Interval(function () {
                     tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen.rate ? tank.config.maxHealth : tank.config.health + tank.regen.rate;
+                    tank.config.health = Math.min(tank.config.health, tank.config.maxHealth);
                     renderExtern();
-                    if (tank.config.health === tank.config.maxHealth) {
+                    if (tank.config.health >= tank.config.maxHealth) {
                         tank.regen.interval.clear();
                         tank.events.unlisten('hit', dispellRegen);
                         delete tank.regen;
