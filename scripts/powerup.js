@@ -159,6 +159,8 @@ var PUP = (function() {
                     if (!projectile.hesActive) {
                         projectile.hesActive = true;
                         projectile.events.listen('death', function () {
+                            if (projectile.config.objectHit.type === 'boundary' || projectile.config.objectHit.type === 'none') { return; }
+                            
                             var _f = Math.random();
                             var _d = _f * 56;
                             var r = 200 + _d;
