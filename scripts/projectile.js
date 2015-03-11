@@ -50,32 +50,35 @@ Projectile.prototype.update = function (modifier) {
     // Check for collisions. First check if it has reached the canvas outer boundary.
     if (this._hasHitBoundary(p.oX, p.oY) === true) {
         if (p.srcType === 'projectile-barrier') return; // projectile barriers are unaffected by boundaries
+        p.objectHit = {type: 'boundary', obj: null};
+        
         this.death();
         
-        p.objectHit = {type: 'boundary', obj: null};
         GLOBALS.flags.clean.projectiles++;
     }
     else {
         // Check if it hit a tank.
         var result = this._hasHitTank(tanks, p.oX, p.oY, p.lastPos.x, p.lastPos.y);
         if (result.hit === true) {
-            this.death();
             var t = result.tank;
+            p.objectHit = {type: 'tank', obj: t};
+            
+            this.death();
             
             // Call tank hit method. Pass the projectile that hit it.
             t.hit(this);
-            
-            p.objectHit = {type: 'tank', obj: t};
             GLOBALS.flags.clean.projectiles++;
         }
         else {
             // Check if it hit a destructible.
             var resultD = this._hasHitDestructible(destructibles, p.oX, p.oY, p.lastPos.x, p.lastPos.y);
             if (resultD.hit === true) {
+                var d = resultD.destructible;
+                p.objectHit = {type: 'destructible', obj: d};
+                
                 if (resultD.destructible.config.mod !== 'rubber') {
                     this.death();
                 }
-                var d = resultD.destructible;
                 
                 p.PoI = resultD.poi;
                 p.sideHit = resultD.sideH;
@@ -83,7 +86,6 @@ Projectile.prototype.update = function (modifier) {
                 // Call destructible hit method.
                 d.hit(this);
                 
-                p.objectHit = {type: 'destructible', obj: d};
                 GLOBALS.flags.clean.projectiles++;
             }
         }
