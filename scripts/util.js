@@ -421,7 +421,7 @@ var UTIL = (function () {
             }
 
             // apply damage reduction from armor
-            dmg -= dmg * ((0.06 * tanks[n].config.armor) / (1 + 0.06 * tanks[n].config.armor));
+            dmg = dmg * UTIL.getDamageMultiplier(tanks[n].config.armor);
 
             // deal damage to tank health
             tanks[n].config.health -= dmg;
@@ -451,7 +451,7 @@ var UTIL = (function () {
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
             
             // apply damage reduction from armor
-            dmg -= dmg * ((0.06 * destructibles[n].config.armor) / (1 + 0.06 * destructibles[n].config.armor));
+            dmg = dmg * UTIL.getDamageMultiplier(destructibles[n].config.armor);
             
             // deal damage to destructible health
             destructibles[n].config.health -= dmg;
@@ -477,6 +477,10 @@ var UTIL = (function () {
                 }
             }
         }
+    };
+    
+    my.getDamageMultiplier = function (armor) {
+        return 1 - 0.06 * armor / (1 + 0.06 * Math.abs(armor));
     };
     
     my.setSfxVol = function (percentage) {

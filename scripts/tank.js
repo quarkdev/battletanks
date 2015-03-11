@@ -810,8 +810,7 @@ Tank.prototype.hit = function (projectile) {
     var mod_damage = critical_hit ? dmg_base_roll*p.critMultiplier : dmg_base_roll; // damage after mods/crit
     var oldShield = t.shield;
     var end_damage = mod_damage - oldShield;
-    var damage_reduction = ((0.06 * t.armor) / (1 + 0.06 * t.armor));
-    end_damage = t.invulnerable > 0 ? 0 : end_damage - (end_damage * damage_reduction);
+    end_damage = t.invulnerable > 0 ? 0 : end_damage * UTIL.getDamageMultiplier(t.armor);
     t.shield = t.invulnerable > 0 ? oldShield : t.shield - mod_damage;
     t.shield = t.shield < 0 ? 0 : t.shield;
     
