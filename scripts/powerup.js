@@ -1248,11 +1248,12 @@ var PUP = (function() {
                     var explode_distance = Math.floor(Math.random() * 560) + 440;
                     if (distance_travelled > explode_distance) {
                         // if projectile has travelled 500 units, split into multiple lesser projectiles with 25% dmg each (5-degree angle offset)
-                        var offset = 360 / tank.fw_stacks;
+                        var stacks = tank.fw_stacks || 12;
+                        var offset = 360 / stacks;
                         var rotate_offset = Math.random() * 360;
                         var speed = projectile.hasOwnProperty('flagASId') ? p.speed + projectile.flaggedAreaSlow : p.speed; // restore speed caused by area slow (so that generated shrapnel gets flagged correctly)
                         
-                        for (var i = 0; i < tank.fw_stacks; i++) {
+                        for (var i = 0; i < stacks; i++) {
                             projectiles.push(new Projectile({mods: [], speed: speed, damage: p.damage * 0.25, critChance: p.critChance, angle:  (i * offset) + rotate_offset, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
                         }
                         
