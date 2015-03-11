@@ -159,7 +159,7 @@ var PUP = (function() {
                     if (!projectile.hesActive) {
                         projectile.hesActive = true;
                         projectile.events.listen('death', function () {
-                            if (projectile.config.objectHit.type === 'boundary' || projectile.config.objectHit.type === 'none') { return; }
+                            if (projectile.config.objectHit.type === 'boundary') { return; }
                             
                             var _f = Math.random();
                             var _d = _f * 56;
@@ -188,10 +188,10 @@ var PUP = (function() {
                 tank.hes.timeout = new Timer(function () {
                     delete tank.hes;
                     tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'makeExplosive'; });
-                }, 7000);
+                }, 12000);
             }
             else {
-                tank.hes.timeout.extend('4000');
+                tank.hes.timeout.extend('8000');
             }
         };
     }
