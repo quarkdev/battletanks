@@ -31,6 +31,13 @@ function Projectile(specs) {
 
 Projectile.prototype.update = function (modifier) {
     var p = this.config;
+    
+    if (isNaN(p.oX) || isNaN(p.oY)) {
+        // remove projectiles spawned in invalid locations
+        this.death();
+        return;
+    }
+    
     var angleInRadians = p.angle * Math.PI / 180;
     
     // Save last position.
