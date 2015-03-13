@@ -730,14 +730,14 @@ var showGameOver = function (state) {
             if (GLOBALS.statistics.tankAppend < GLOBALS.statistics.tank_type_kills.length) {
                 GLOBALS.statistics.tankKillTicks = 0;
                 var tank_name = GLOBALS.statistics.tank_type_kills[GLOBALS.statistics.tankAppend].tank;
-                $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat"><div style="background: url(images/tanks/' + tank_name + '/icon.png) left center no-repeat; background-size: contain; width: 52px; height: 52px; float: left;"></div><div id="gosk-' + tank_name + '" style="width: 52px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;"></div><div style="clear: both;"></div></div>');
+                $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat"><div style="background: url(images/tanks/' + tank_name + '/icon.png) 50px center no-repeat; background-size: contain; width: 102px; height: 52px; float: left;"></div><div id="gosk-' + tank_name + '" style="width: 100px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;"></div><div style="clear: both;"></div></div>');
                 looped_stat_tick(tank_name);
                 GLOBALS.statistics.tankAppend += 1;
             }
             else {
                 tick_sound.get();
                 var totalCoins = tanks[0].config.coins;
-                $('#gos-kills').append('<br><br><span id="gosk-coins" style="background: url(images/ui/dollar.png) left center no-repeat; padding-left: 52px; padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">' + totalCoins + '</span>');
+                $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat"><div style="background: url(images/ui/dollar.png) 50px center no-repeat; width: 102px; height: 52px; float: left;"></div><div id="gosk-coins" style="width: 100px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;">'+totalCoins+'</div><div style="clear: both;"></div></div>');
                 
                 var best = STAT.get('total_tanks_destroyed') + totalCoins;
                 var newBest = '';
@@ -754,7 +754,7 @@ var showGameOver = function (state) {
                     GLOBALS.player.bestScores[GLOBALS.map.current.name] = best;
                     newBest = '<span style="padding: 6px; font-size: 24px; color: #fff; background-color: red;">NEW!</span>';
                 }
-                $('#gos-kills').append('<br><br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + (STAT.get('total_tanks_destroyed') + totalCoins) + '</span><br><span style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">BEST: ' + best + ' ' + newBest + '</span>');
+                $('#score-best-high').html('<br><span id="gosk-total" style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">TOTAL: ' + (STAT.get('total_tanks_destroyed') + totalCoins) + '</span><br><span style="padding-top: 6px; padding-bottom: 6px; color: #fff; font-size: 32px;">BEST: ' + best + ' ' + newBest + '</span>');
             
                 // save bestScores to localstorage
                 localStorage.setItem('best_scores', JSON.stringify(GLOBALS.player.bestScores));

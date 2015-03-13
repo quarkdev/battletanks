@@ -167,6 +167,12 @@
             "description": "Each projectile hit reduces armor by 5.",
             "image": "images/powerups/armor-piercing-shell.png",
             "video": ""
+        },
+        {
+            "name": "High Explosive Shell",
+            "description": "Projectiles explode on hit dealing additional damage to everything near the area of impact.",
+            "image": "images/powerups/high-explosive-shell.png",
+            "video": ""
         }
     ],
     "tanks" : [
