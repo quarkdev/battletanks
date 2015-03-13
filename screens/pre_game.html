@@ -1,7 +1,10 @@
 <div id="prompt-pre-game-settings" class="overlay">
         <div id="tank-select">
             <div id="tank-info-wrapper">
-                <div id="tank-name"></div>
+                <div id="tank-name-type">
+                    <span id="tank-name"></span> |
+                    <span id="tank-type"></span>
+                </div>
                 <div id="tank-next">NEXT</div>
                 <div id="tank-prev">PREV</div>
             </div>
@@ -12,10 +15,64 @@
                     </div>
                 </div>
                 <div id="tank-stats">
-                    <div class="ts-bar">FIREPOWER<div id="ts-firepower"></div></div>
-                    <div class="ts-bar">RATE OF FIRE<div id="ts-firingrate"></div></div>
-                    <div class="ts-bar">ARMOR<div id="ts-armor"></div></div>
-                    <div class="ts-bar">MOBILITY<div id="ts-mobility"></div></div>
+                    <table id="tstat-table">
+                        <tr>
+                            <td class="ts-fcol">Health</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Shield</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Shield Regeneration</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Armor</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Chassis Turn Speed</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Turret Turn Speed</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Forward Speed</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Reverse Speed</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Acceleration</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Projectile Damage</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Projectile Speed</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Firing Rate</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Critical Hit Chance</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="ts-fcol">Critical Hit Multiplier</td>
+                            <td><div class="ts-bar"></div></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

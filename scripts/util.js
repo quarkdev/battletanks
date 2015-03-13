@@ -1104,30 +1104,43 @@ UTIL.gui = (function () {
                 }
             }
         } while (ts.blueprints[ts.selectedIndex].locked === 1);
-        
-        var firepower = ts.blueprints[ts.selectedIndex].pDamage,
-            firing_rate = ts.blueprints[ts.selectedIndex].fRate,
-            armor = ts.blueprints[ts.selectedIndex].armor,
-            mobility = ts.blueprints[ts.selectedIndex].fSpeed,
-            name = UTIL.toTitleCase((ts.blueprints[ts.selectedIndex].name).split('_').join(' ')),
-            chassis_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].bImage).src,
-            turret_img_url = TankImages.get(ts.blueprints[ts.selectedIndex].tImage).src;
        
-        var bar_cap = 420; // the ui bar max width
+        var si = ts.selectedIndex;
+        var bps = ts.blueprints;
+        var bp = bps[si];
+        var name = UTIL.toTitleCase((bp.name).split('_').join(' '));
+        var type = UTIL.toTitleCase((bp.type).split('_').join(' '));
+        var chassis_img_url = TankImages.get(bp.bImage).src;
+        var turret_img_url = TankImages.get(bp.tImage).src;
+            
+        var tank_stats = [
+            [bp.health, 5000],
+            [bp.shield, 10000],
+            [bp.shieldRegen, 5000],
+            [bp.armor, 1000],
+            [bp.sSpeed, 180],
+            [bp.tSpeed, 280],
+            [bp.fSpeed, 400],
+            [bp.rSpeed, 400],
+            [bp.accel, 400],
+            [bp.pDamage, 1000],
+            [bp.pSpeed, 1000],
+            [bp.fRate, 36],
+            [bp.critChance, 100],
+            [bp.critMultiplier, 20]
+        ];
+       
+        var bar_cap = 512; // the ui bar max width
         
-        $('#ts-firepower').animate({
-            width: (firepower / 2000) * bar_cap
-        });
-        $('#ts-armor').animate({
-            width: (armor / 500) * bar_cap
-        });
-        $('#ts-mobility').animate({
-            width: (mobility / 400) * bar_cap
-        });
-        $('#ts-firingrate').animate({
-            width: (firing_rate / 12) * bar_cap
-        });
+        // update tank stats shown
+        var tdata = document.getElementsByClassName('ts-bar');
+        for (var i = 0; i < tank_stats.length; i++) {
+            tdata[i].style.width = Math.min((tank_stats[i][0] / tank_stats[i][1]), 1) * bar_cap + 'px'; // (value / optimum) * max_bar_width
+        }
+        
         $('#tank-name').html(name);
+        $('#tank-type').html(type);
+        
         $('#tank-chassis-img').css('backgroundImage', 'url(' + chassis_img_url + ')');
         $('#tank-turret-img').css('backgroundImage', 'url(' + turret_img_url + ')');
     };

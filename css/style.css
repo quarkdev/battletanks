@@ -273,11 +273,11 @@ button {
 
 #tank-select {
     position: absolute;
-    width: 578px;
+    width: 900px;
     padding: 8px 8px;
     left: 50%;
     top: 60px;
-    margin-left: -292px;
+    margin-left: -450px;
     border: 1px dotted rgba(255, 255, 255, 0.5);
 }
 
@@ -291,8 +291,8 @@ button {
     font-weight: bold;
 }
 
-#tank-name {
-    width: 420px;
+#tank-name-type {
+    width: 768px;
     height: 24px;
     padding-top: 6px;
     border: 1px dotted rgba(255, 255, 255, 0.5);
@@ -324,8 +324,8 @@ button {
 }
 
 #tank-img {
-    width: 150px;
-    height: 150px;
+    width: 234px;
+    height: 234px;
     float: left;
     background-color: #000;
 }
@@ -355,20 +355,30 @@ button {
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 #tank-stats {
-    width: 400px;
+    width: 637px;
     height: 150px;
     float: left;
     margin-left: 12px;
 }
 
-.ts-bar {
+#tstat-table td {
     font-family: 'Droid Sans', sans-serif;
-    margin-top: 5px;
-    width: 100%;
-    height: 32px;
+    color: #fff;
     font-size: 11px;
     text-align: left;
-    color: #fff;
+}
+
+.ts-bar {
+    height: 8px;
+    background: green;
+}
+
+.ts-bar {
+    transition: width 0.3s;
+}
+
+.ts-fcol {
+    width: 120px;
 }
 
 #ts-firepower,
@@ -520,11 +530,11 @@ button {
 #map-select-wrapper {
     position: absolute;
     padding: 8px 8px;
-    top: 290px;
+    top: 360px;
     left: 50%;
-    margin-left: -400px;
-	width: 800px;
-	height: 204px;
+    margin-left: -340px;
+	width: 680px;
+	height: 120px;
     font-size: 13px;
     color: grey;
 }
@@ -532,8 +542,8 @@ button {
 #ms-img {
     text-align: center;
     float: left;
-    width: 204px;
-    height: 204px;
+    width: 144px;
+    height: 144px;
     border: 1px dotted rgba(255, 255, 255, 0.5);
     background: url(../images/placeholders/map.png) no-repeat;
 }
@@ -544,8 +554,9 @@ button {
     color: #0058b3;
     float: left;
     width: 364px;
-    height: 180px;
+    height: 120px;
     border: 1px dotted rgba(255, 255, 255, 0.5);
+    overflow-y: scroll;
 }
 
 #ms-info hr {
@@ -555,8 +566,8 @@ button {
 #ms-prev,
 #ms-next {
     float: left;
-    width: 100px;
-    height: 204px;
+    width: 72px;
+    height: 146px;
     cursor: pointer;
     opacity: 0.5;
     transition: opacity 0.2s;
