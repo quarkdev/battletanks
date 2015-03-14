@@ -88,7 +88,7 @@ Destructible.prototype.hit = function (projectile) {
                     visualeffects.push(new VisualEffect({name: 'impact', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: impact_scale, scaleH: impact_scale,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'impact-stone-' + _effi}));
                     break;
                 case 'metal':
-                    impact_scale += 128;
+                    impact_scale += 64;
                     var mete_map = [
                         [2, 2],
                         [8, 3],
