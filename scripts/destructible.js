@@ -103,7 +103,7 @@ Destructible.prototype.hit = function (projectile) {
                         [4, 3]
                     ];
                     var _mmi = Math.floor(Math.random() * 10);
-                    visualeffects.push(new VisualEffect({name: 'impact', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: impact_scale, scaleH: impact_scale,  maxCols: mete_map[_mmi][0], maxRows: mete_map[_mmi][1], framesTillUpdate: 0, loop: false, spriteSheet: 'impact-metal-' + _mmi}));
+                    visualeffects.push(new VisualEffect({name: 'impact', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: impact_scale, scaleH: impact_scale,  maxCols: mete_map[_mmi][0], maxRows: mete_map[_mmi][1], framesTillUpdate: 0, loop: false, spriteSheet: 'impact-metal-' + (_mmi + 1)}));
                     break;
                 default:
                     visualeffects.push(new VisualEffect({name: 'impact', oX: p.oX, oY: p.oY, width: 32, height: 32, angle: Math.random() * 360, scaleW: impact_scale, scaleH: impact_scale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
