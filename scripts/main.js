@@ -665,6 +665,7 @@ var startMapEditor = function () {
 var showGameOver = function (state) {
     // stop the main interval
     cancelAnimationFrame(mainAnimation);
+    var gk_div = document.getElementById('gos-kills');
     
     UTIL.timer.killAll();
     UTIL.stopMusic(backgroundMusic);
@@ -733,7 +734,6 @@ var showGameOver = function (state) {
                 $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat; margin: 8px 0"><div style="background: url(images/tanks/' + tank_name + '/icon.png) 50px center no-repeat; background-size: contain; width: 200px; height: 52px; float: left;"></div><div id="gosk-' + tank_name + '" style="width: 100px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;"></div><div style="clear: both;"></div></div>');
                 looped_stat_tick(tank_name);
                 GLOBALS.statistics.tankAppend += 1;
-                var gk_div = document.getElementById('gos-kills');
                 gk_div.scrollTop = gk_div.scrollHeight;
             }
             else {
