@@ -959,6 +959,10 @@ var PUP = (function() {
                                 }
                             }
                         }
+                        tank.events.unlisten('frame', areaSlow);
+                        tank.tds.timeout.clear();
+                        delete tank.tds;
+                        visualeffects.push(new VisualEffect({name: 'time-dilation-off', oX: tank.config.oX, oY: tank.config.oY, width: 350, height: 350, scaleW: 350, scaleH: 350,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'time-dilation-off'}));
                     }
                 });
                 
