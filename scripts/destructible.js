@@ -138,9 +138,9 @@ Destructible.prototype.death = function () {
     // call death-related mods
     switch (d.mod) {
         case 'explosive': // explode on death
-            visualeffects.push(new VisualEffect({name: 'des_exp', oX: d.oX, oY: d.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: 256, scaleH: 256,  maxCols: 8, maxRows: 6, framesTillUpdate: 0, loop: false, spriteSheet: 'd-exp-0'}));
+            visualeffects.push(new VisualEffect({name: 'des_exp', oX: d.oX, oY: d.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: 192, scaleH: 192,  maxCols: 8, maxRows: 6, framesTillUpdate: 0, loop: false, spriteSheet: 'd-exp-0'}));
             // deal damage to all tanks within range
-            UTIL.dealAreaDamage({x: d.oX, y: d.oY}, 200, 500, 90);
+            UTIL.dealAreaDamage({x: d.oX, y: d.oY}, 200, 120, 90);
     }
 
     /* has a chance to spawn a random powerup on death */
