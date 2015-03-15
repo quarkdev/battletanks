@@ -408,7 +408,7 @@ var UTIL = (function () {
         
             // calculate damage
             var dmg = tanks[n].config.invulnerable > 0 ? 0 : (damage * dRatio);
-            dmg = scale ? dmg * (GLOBALS.map.wave.current + 1);
+            dmg = scale ? dmg * (GLOBALS.map.wave.current + 1) : dmg;
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
             
@@ -449,7 +449,7 @@ var UTIL = (function () {
             
             // calculate damage
             var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (damage * dRatio);
-            dmg = scale ? dmg * (GLOBALS.map.wave.current + 1);
+            dmg = scale ? dmg * (GLOBALS.map.wave.current + 1) : dmg;
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
             
