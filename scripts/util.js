@@ -1133,8 +1133,11 @@ UTIL.gui = (function () {
         var bar_cap = 512; // the ui bar max width
         
         // update tank stats shown
+        var _c = 10;
         var tdata = document.getElementsByClassName('ts-bar');
         for (var i = 0; i < tank_stats.length; i++) {
+            _c += 10;
+            tdata[i].style.backgroundColor = 'rgb(255,255,'+_c+')';
             tdata[i].style.width = Math.min((tank_stats[i][0] / tank_stats[i][1]), 1) * bar_cap + 'px'; // (value / optimum) * max_bar_width
         }
         
