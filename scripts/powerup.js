@@ -179,7 +179,7 @@ var PUP = (function() {
                                     break;
                             }
                             
-                            UTIL.dealAreaDamage({x: projectile.config.oX, y: projectile.config.oY}, projectile.config.damage * (0.50 + (_f * 0.25)), r, r * 0.6);
+                            UTIL.dealAreaDamage({x: projectile.config.oX, y: projectile.config.oY}, projectile.config.damage * (0.50 + (_f * 0.25)), r, r * 0.6, false);
                         });
                     }
                 };

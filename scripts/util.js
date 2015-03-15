@@ -395,8 +395,9 @@ var UTIL = (function () {
         }
     };
     
-    my.dealAreaDamage = function (epicenter, damage, radius, chainRadius) {
+    my.dealAreaDamage = function (epicenter, damage, radius, chainRadius, scale) {
         chainRadius = chainRadius || 90; // minimum distance for chain explosion
+        scale = typeof scale === 'undefined' ? true : scale;
     
         // damage all tanks within radius units
         for (var n = 0; n < tanks.length; n++) {
@@ -406,7 +407,8 @@ var UTIL = (function () {
             var dRatio = (radius - d) / radius; // damage ratio (less distance)
         
             // calculate damage
-            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (damage * dRatio) * (GLOBALS.map.wave.current + 1);
+            var dmg = tanks[n].config.invulnerable > 0 ? 0 : (damage * dRatio);
+            dmg = scale ? dmg * (GLOBALS.map.wave.current + 1);
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
             
@@ -446,7 +448,8 @@ var UTIL = (function () {
             var dRatio = (radius - d) / radius; // damage ratio (less distance)
             
             // calculate damage
-            var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (damage * dRatio) * (GLOBALS.map.wave.current + 1);
+            var dmg = destructibles[n].config.mod === 'immortal' ? 0 : (damage * dRatio);
+            dmg = scale ? dmg * (GLOBALS.map.wave.current + 1);
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
             

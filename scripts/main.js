@@ -730,14 +730,17 @@ var showGameOver = function (state) {
             if (GLOBALS.statistics.tankAppend < GLOBALS.statistics.tank_type_kills.length) {
                 GLOBALS.statistics.tankKillTicks = 0;
                 var tank_name = GLOBALS.statistics.tank_type_kills[GLOBALS.statistics.tankAppend].tank;
-                $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat"><div style="background: url(images/tanks/' + tank_name + '/icon.png) 50px center no-repeat; background-size: contain; width: 102px; height: 52px; float: left;"></div><div id="gosk-' + tank_name + '" style="width: 100px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;"></div><div style="clear: both;"></div></div>');
+                $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat; margin: 8px 0"><div style="background: url(images/tanks/' + tank_name + '/icon.png) 50px center no-repeat; background-size: contain; width: 200px; height: 52px; float: left;"></div><div id="gosk-' + tank_name + '" style="width: 100px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;"></div><div style="clear: both;"></div></div>');
                 looped_stat_tick(tank_name);
                 GLOBALS.statistics.tankAppend += 1;
+                var gk_div = document.getElementById('gos-kills');
+                gk_div.scrollTop = gk_div.scrollHeight;
             }
             else {
                 tick_sound.get();
                 var totalCoins = tanks[0].config.coins;
                 $('#gos-kills').append('<div style="background: url(images/ui/dotdot.png) center center no-repeat"><div style="background: url(images/ui/dollar.png) 50px center no-repeat; width: 102px; height: 52px; float: left;"></div><div id="gosk-coins" style="width: 100px; height: 37px; text-align: left; float: right; color: #fff; font-size: 22px; padding-top: 15px;">'+totalCoins+'</div><div style="clear: both;"></div></div>');
+                gk_div.scrollTop = gk_div.scrollHeight;
                 
                 var best = STAT.get('total_tanks_destroyed') + totalCoins;
                 var newBest = '';
