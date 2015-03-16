@@ -785,3 +785,12 @@ button {
 .w-combined {
     color: green;
 }
+
+.w-row {
+    height: auto !important;
+    margin: 8px 0;
+}
+
+.w-row:hover {
+    background-color: #000;
+}
