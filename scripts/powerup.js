@@ -153,10 +153,10 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            if (!tank.hasOwnProperty('hes')) {
+            if (typeof tank.hes === 'undefined') {
                 tank.hes = {};
                 var makeExplosive = function (projectile) {
-                    if (!projectile.hasOwnProperty('hesActive')) {
+                    if (typeof projectile.hesActive === 'undefined') {
                         projectile.hesActive = true;
                         projectile.events.listen('death', function () {
                             if (projectile.config.objectHit.type === 'boundary') { return; }
@@ -209,14 +209,14 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            if (!tank.hasOwnProperty('aps')) {
+            if (typeof tank.aps === 'undefined') {
                 tank.aps = {};
                 
                 var apShell = function (projectile) {
                     var p = projectile.config;
                     
                     if (p.active) {
-                        if (!p.hasOwnProperty('apsvfx')) {
+                        if (typeof p.apsvfx === 'undefined') {
                             p.apsvfx = new VisualEffect({name: 'aps-flare', oX: p.oX, oY: p.oY, width: 128, height: 128, scaleW: 64, scaleH: 64,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'flicker-flare'});
                             visualeffects.push(p.apsvfx);
                             projectile.events.listen('death', function () { p.apsvfx.end(); });
@@ -231,7 +231,7 @@ var PUP = (function() {
                         var t = p.objectHit.obj.config;
                         var da = 5; // debuff amount
                         
-                        if (!t.debuffs.hasOwnProperty('aps')) {
+                        if (typeof t.debuffs.aps === 'undefined') {
                             // apply base debuff
                             t.debuffs.aps = {};
                             t.debuffs.aps.stacks = 1;
@@ -568,7 +568,7 @@ var PUP = (function() {
                         }
                         
                         // if projectile within AOE, apply pdl flag if not already applied (tested via a unique property)
-                        if (!projectiles[i].hasOwnProperty('flaggedpdl')) {
+                        if (typeof projectiles[i].flaggedpdl === 'undefined') {
                             projectiles[i].flaggedpdl = tank.config.id; // set flag owner
                             // check if tank has enough shield energy to pdl the projectile
                             var _pdmg = projectiles[i].config.damage / 4; // pdl barrier consumes less shield energy than default shield
@@ -718,7 +718,7 @@ var PUP = (function() {
                         }
                         
                         // if projectile within AOE, apply deflect flag if not already applied (tested via a unique property)
-                        if (!projectiles[i].hasOwnProperty('flaggedDeflect')) {
+                        if (typeof projectiles[i].flaggedDeflect === 'undefined') {
                             projectiles[i].flaggedDeflect = tank.config.id; // set flag owner
                             // check if tank has enough shield energy to deflect the projectile
                             var _pdmg = projectiles[i].config.damage / 2; // deflect barrier consumes less shield energy than default shield
@@ -945,11 +945,11 @@ var PUP = (function() {
                 tank.tds.vfx = new VisualEffect({name: 'time-dilation', oX: tank.config.oX, oY: tank.config.oY, width: 350, height: 350, scaleW: 350, scaleH: 350,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'time-dilation'});
                 visualeffects.push(tank.tds.vfx);
                 tank.events.listen('death', function () {
-                    if (tank.hasOwnProperty('tds')) {
+                    if (typeof tank.tds !== 'undefined') {
                         tank.tds.vfx.end();
                         // remove owned flags
                         for (var i = 0; i < projectiles.length; i++) {
-                            if (projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                            if (typeof projectiles[i].flaggedAreaSlow !== 'undefined') {
                                 // check if you own the flag, can only remove owned flags
                                 if (projectiles[i].flagASId === tank.config.id) {
                                     // restore lost speed then remove flag
@@ -980,7 +980,7 @@ var PUP = (function() {
                         
                         if (dist > 175) {
                             // not within AOE, check if it is flagged
-                            if (projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                            if (typeof projectiles[i].flaggedAreaSlow !== 'undefined') {
                                 // check if you own the flag, can only remove owned flags
                                 if (projectiles[i].flagASId === tank.config.id) {
                                     // restore lost speed then remove flag
@@ -994,7 +994,7 @@ var PUP = (function() {
                         }
                         
                         // if projectile within AOE, apply slow debuff if not already applied (tested via a unique property)
-                        if (!projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                        if (typeof projectiles[i].flaggedAreaSlow === 'undefined') {
                             // only apply debuff on unflagged projectiles
                             var lostSpeed = projectiles[i].config.speed * 0.90;
                             projectiles[i].flaggedAreaSlow = lostSpeed; // set flag
@@ -1008,7 +1008,7 @@ var PUP = (function() {
                 tank.tds.timeout = new Timer(function() {
                     // remove owned flags
                     for (var i = 0; i < projectiles.length; i++) {
-                        if (projectiles[i].hasOwnProperty('flaggedAreaSlow')) {
+                        if (typeof projectiles[i].flaggedAreaSlow !== 'undefined') {
                             // check if you own the flag, can only remove owned flags
                             if (projectiles[i].flagASId === tank.config.id) {
                                 // restore lost speed then remove flag
@@ -1255,7 +1255,7 @@ var PUP = (function() {
                         var stacks = tank.fw_stacks || 12;
                         var offset = 360 / stacks;
                         var rotate_offset = Math.random() * 360;
-                        var speed = projectile.hasOwnProperty('flagASId') ? p.speed + projectile.flaggedAreaSlow : p.speed; // restore speed caused by area slow (so that generated shrapnel gets flagged correctly)
+                        var speed = typeof projectile.flagASId !== 'undefined' ? p.speed + projectile.flaggedAreaSlow : p.speed; // restore speed caused by area slow (so that generated shrapnel gets flagged correctly)
                         
                         for (var i = 0; i < stacks; i++) {
                             projectiles.push(new Projectile({mods: [], speed: speed, damage: p.damage * 0.25, critChance: p.critChance, angle:  (i * offset) + rotate_offset, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'firework'}));
@@ -1574,7 +1574,7 @@ var PUP = (function() {
                 tank.pb_active = true;
             
                 var incBarrier = function (args) {
-                    if (!tank.hasOwnProperty('pBarrier')) { return; }
+                    if (typeof tank.pBarrier === 'undefined') { return; }
                     // Increases the barrier projectile count
                     var angle = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: args.projectile.config.oX, y: args.projectile.config.oY});
                     var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: angle, oX: tank.config.oX + tank.pb_radius, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
@@ -1584,7 +1584,7 @@ var PUP = (function() {
                 tank.events.listen('hit', incBarrier);
                 
                 var updateBarrierSpin = function (args) {
-                    if (!tank.hasOwnProperty('pBarrier')) { return; }
+                    if (typeof tank.pBarrier === 'undefined') { return; }
                     // Updates the position of each projectile tethered to the tank
                     for (var i = 0; i < tank.pBarrier.length; i++) {
                         var newAngle = tank.pBarrier[i][1] + (360 * args.modifier);
@@ -1598,7 +1598,7 @@ var PUP = (function() {
                 tank.events.listen('frame', updateBarrierSpin);
                 
                 var de_pb = function () {
-                    if (!tank.hasOwnProperty('pBarrier')) { return; }
+                    if (typeof tank.pBarrier === 'undefined') { return; }
                     // deactivate all projectiles in projectile barrier
                     for (var i = 0; i < tank.pBarrier.length; i++) {
                         tank.pBarrier[i][0].death();
