@@ -153,10 +153,10 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            if (!tank.hes) {
+            if (!tank.hasOwnProperty('hes')) {
                 tank.hes = {};
                 var makeExplosive = function (projectile) {
-                    if (!projectile.hesActive) {
+                    if (!projectile.hasOwnProperty('hesActive')) {
                         projectile.hesActive = true;
                         projectile.events.listen('death', function () {
                             if (projectile.config.objectHit.type === 'boundary') { return; }
@@ -186,8 +186,8 @@ var PUP = (function() {
                 makeExplosive.id = 'makeExplosive';
                 tank.projectile_mods.push(makeExplosive);
                 tank.hes.timeout = new Timer(function () {
-                    delete tank.hes;
                     tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'makeExplosive'; });
+                    delete tank.hes;
                 }, 12000);
             }
             else {
@@ -209,14 +209,14 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            if (!tank.aps) {
+            if (!tank.hasOwnProperty('aps')) {
                 tank.aps = {};
                 
                 var apShell = function (projectile) {
                     var p = projectile.config;
                     
                     if (p.active) {
-                        if (!p.apsvfx) {
+                        if (!p.hasOwnProperty('apsvfx')) {
                             p.apsvfx = new VisualEffect({name: 'aps-flare', oX: p.oX, oY: p.oY, width: 128, height: 128, scaleW: 64, scaleH: 64,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'flicker-flare'});
                             visualeffects.push(p.apsvfx);
                             projectile.events.listen('death', function () { p.apsvfx.end(); });
@@ -231,7 +231,7 @@ var PUP = (function() {
                         var t = p.objectHit.obj.config;
                         var da = 5; // debuff amount
                         
-                        if (!t.debuffs.aps) {
+                        if (!t.debuffs.hasOwnProperty('aps')) {
                             // apply base debuff
                             t.debuffs.aps = {};
                             t.debuffs.aps.stacks = 1;
@@ -1330,26 +1330,29 @@ var PUP = (function() {
                     
                     if (p.objectHit.type === 'tank') {
                         var t = p.objectHit.obj;
-                        var debuff_amount = 5;
-                        var debuff_min = 12;
+                        var tc = t.config;
+                        var da = 5; // debuff amount
                         var debuff_active = typeof t.debuff_cs_active !== 'undefined';
                         
                         if (!debuff_active) {
                             // apply base debuff
                             t.debuff_cs_active = true;
-                            t.debuff_cs_stacks = 1;
+                            t.debuff_cs_stacks = 0;
                             
-                            t.config.sSpeed = t.config.sSpeed < debuff_amount+debuff_min ? debuff_min : t.config.sSpeed - debuff_amount;
-                            t.config.tSpeed = t.config.tSpeed < debuff_amount+debuff_min ? debuff_min : t.config.tSpeed - debuff_amount;
-                            t.config.fSpeed = t.config.fSpeed < debuff_amount+debuff_min ? debuff_min : t.config.fSpeed - debuff_amount;
-                            t.config.rSpeed = t.config.rSpeed < debuff_amount+debuff_min ? debuff_min : t.config.rSpeed - debuff_amount;
+                            if (tc.sSpeed > da && tc.tSpeed > da && tc.fSpeed > da && tc.rSpeed > da) {
+                                tc.sSpeed -= da;
+                                tc.tSpeed -= da;
+                                tc.fSpeed -= da;
+                                tc.rSpeed -= da;
+                                t.debuff_cs_stacks++;
+                            }
                             
                             t.debuff_cs_timeout = new Timer(function () {
                                 // restore debuffed stats
-                                t.config.sSpeed += debuff_amount * t.debuff_cs_stacks;
-                                t.config.tSpeed += debuff_amount * t.debuff_cs_stacks;
-                                t.config.fSpeed += debuff_amount * t.debuff_cs_stacks;
-                                t.config.rSpeed += debuff_amount * t.debuff_cs_stacks;
+                                t.config.sSpeed += da * t.debuff_cs_stacks;
+                                t.config.tSpeed += da * t.debuff_cs_stacks;
+                                t.config.fSpeed += da * t.debuff_cs_stacks;
+                                t.config.rSpeed += da * t.debuff_cs_stacks;
                                 
                                 delete t.debuff_cs_active;
                                 delete t.debuff_cs_stacks;
@@ -1357,11 +1360,13 @@ var PUP = (function() {
                             }, 8000);
                         }
                         else {
-                            t.debuff_cs_stacks++;
-                            t.config.sSpeed = t.config.sSpeed < debuff_amount+debuff_min ? debuff_min : t.config.sSpeed - debuff_amount;
-                            t.config.tSpeed = t.config.tSpeed < debuff_amount+debuff_min ? debuff_min : t.config.tSpeed - debuff_amount;
-                            t.config.fSpeed = t.config.fSpeed < debuff_amount+debuff_min ? debuff_min : t.config.fSpeed - debuff_amount;
-                            t.config.rSpeed = t.config.rSpeed < debuff_amount+debuff_min ? debuff_min : t.config.rSpeed - debuff_amount;
+                            if (tc.sSpeed > da && tc.tSpeed > da && tc.fSpeed > da && tc.rSpeed > da) {
+                                tc.sSpeed -= da;
+                                tc.tSpeed -= da;
+                                tc.fSpeed -= da;
+                                tc.rSpeed -= da;
+                                t.debuff_cs_stacks++;
+                            }
                             
                             t.debuff_cs_timeout.reset();
                         }
@@ -1569,7 +1574,7 @@ var PUP = (function() {
                 tank.pb_active = true;
             
                 var incBarrier = function (args) {
-                    if (!tank.pBarrier) { return; }
+                    if (!tank.hasOwnProperty('pBarrier')) { return; }
                     // Increases the barrier projectile count
                     var angle = UTIL.geometry.getAngleBetweenLineAndHAxis({x: tank.config.oX, y: tank.config.oY}, {x: args.projectile.config.oX, y: args.projectile.config.oY});
                     var tmp = new Projectile({speed: 0, damage: tank.config.pDamage, critChance: tank.config.critChance, angle: angle, oX: tank.config.oX + tank.pb_radius, oY: tank.config.oY, srcId: tank.config.id, srcType: 'projectile-barrier'});
@@ -1579,7 +1584,7 @@ var PUP = (function() {
                 tank.events.listen('hit', incBarrier);
                 
                 var updateBarrierSpin = function (args) {
-                    if (!tank.pBarrier) { return; }
+                    if (!tank.hasOwnProperty('pBarrier')) { return; }
                     // Updates the position of each projectile tethered to the tank
                     for (var i = 0; i < tank.pBarrier.length; i++) {
                         var newAngle = tank.pBarrier[i][1] + (360 * args.modifier);
@@ -1593,7 +1598,7 @@ var PUP = (function() {
                 tank.events.listen('frame', updateBarrierSpin);
                 
                 var de_pb = function () {
-                    if (!tank.pBarrier) { return; }
+                    if (!tank.hasOwnProperty('pBarrier')) { return; }
                     // deactivate all projectiles in projectile barrier
                     for (var i = 0; i < tank.pBarrier.length; i++) {
                         tank.pBarrier[i][0].death();
