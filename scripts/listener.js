@@ -132,6 +132,23 @@ function attachEditorEventListeners() {
         $('.overlay').hide();
         $('#map-properties-screen').show();
     });
+    
+    $('#load-map').click(function () {
+
+        // hide menu
+        $('.overlay').hide();
+        // show prompt
+        $('#prompt-map-load').show();
+    });
+    
+    $('#load-map-ok').click(function () {
+        // we have the map name, so we can load it to the editor.
+        MAP.loadToEditor();
+        // hide menu
+        editor();
+        $('.overlay').fadeOut();
+        
+    });
 
     $('#save-map').click(function () {
 

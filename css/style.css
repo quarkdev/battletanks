@@ -762,3 +762,26 @@ button {
 .settings-table-col2 {
     text-align: left;
 }
+
+.w-strength {
+    cursor: pointer;
+    padding: 0 12px;
+}
+
+.w-offense,
+.w-defense,
+.w-combined {
+    font-weight: bold;
+}
+
+.w-offense {
+    color: orange;
+}
+
+.w-defense {
+    color: cyan;
+}
+
+.w-combined {
+    color: green;
+}

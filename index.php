@@ -53,6 +53,7 @@
             include 'screens/prompt_map_name.html';
             include 'screens/prompt_map_name_export.html';
             include 'screens/prompt_map_import.html';
+            include 'screens/prompt_map_load.html';
             include 'screens/upgrades.html';
             include 'screens/consumables.html';
         ?>

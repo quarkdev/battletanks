@@ -343,7 +343,7 @@
             "rSpeed"       : 185,
             "accel"        : 115,
             "pSpeed"       : 810,
-            "pDamage"      : 1400,
+            "pDamage"      : 3400,
             "critChance"   : 10,
             "critMultiplier": 3,
             "ammo"         : 460,

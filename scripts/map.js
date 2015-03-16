@@ -374,6 +374,101 @@ var MAP = (function () {
         
         return 0;
     };
+    
+    my.loadToEditor = function () {
+        // Clear the destructible, startingpoint, powerup arrays.
+        destructibles.length = 0;
+        powerups.length = 0;
+        startingpoints.length = 0;
+        
+        var map = JSON.parse(document.getElementById('map-load-json').value);
+        
+        // push the powerups into the array
+        for (i = 0; i < map.powerups.length; i++) {
+            powerups.push(PUP.create(map.powerups[i][0], map.powerups[i][1], map.powerups[i][2]));
+        }
+        
+        // push the startingpoints into the array
+        for (i = 0; i < map.startingPoints.length; i++) {
+            startingpoints.push(new StartingPoint(map.startingPoints[i].config.oX, map.startingPoints[i].config.oY));
+        }
+
+        // push the destructibles into the array
+        for (i = 0; i < map.destructibles.length; i++) {
+            destructibles.push(new Destructible(BLUEPRINT.get(map.destructibles[i][0]), map.destructibles[i][1], map.destructibles[i][2]));
+        }
+        
+        // load wave data
+        var wl = document.getElementById('wave-list');
+        wl.innerHTML = ''; // clear all waves
+        for (var i = 0; i < map.waves.length; i++) {
+            var w = document.createElement('li');
+            w.className = 'w-row';
+            var ih = '<span class="w-strength" onclick="MAP.calcWaveStrength(this.parentNode)">Calculate Strength</span>';
+            ih += '<span class="w-desc">'+map.waves[i][0]+'</span>';
+            ih += '<span class="w-spawns">';
+            // iterate on spawns
+            var spawns = map.waves[i][1];
+            for (var n = 0; n < spawns.length; n++) {
+                var s = spawns[n].split('|');
+                ih += '<span data-blueprint="'+spawns[n]+'" title="Buffs { '+s[2]+' }" onclick="$(this).remove();">'+UTIL.toTitleCase(s[0])+' ('+s[1]+')</span>';
+            }
+            ih += '</span>';
+            ih += '<span class="w-wait-time">'+map.waves[i][2]+'</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span</li>';
+            w.innerHTML = ih;
+            wl.appendChild(w);
+        }
+    };
+    
+    my.calcWaveStrength = function (obj) {
+        // calculate the offense/defense strength values of a wave based on spawn attributes attr(multiplier)
+        // offense: pDamage(0.08), critChance(0.2), critMultiplier(1.5), fRate(1), tSpeed(0.05)
+        // defense: maxHealth(0.05), maxShield(0.03), armor(0.06), shieldRegen(0.08), sSpeed(0.01), fSpeed(0.01), accel(0.1)
+
+        var offense = 0;
+        var defense = 0;
+        
+        // 1. get all spawns
+        var spawns = UTIL.gui.makeChildrenATTRIntoArrayElements($(obj).children('.w-spawns'), 'data-blueprint');
+        
+        // 2. iterate over all spawns and do a running total of selected tank attributes
+        for (var i = 0; i < spawns.length; i++) {
+            var pieces = spawns[i].split('|');
+            var buffs = pieces.length === 3 ? pieces[2].split(',') : [];
+            
+            // retrieve blueprint
+            var bp = BLUEPRINT.get(pieces[0]);
+            
+            // create dummy tank then apply buffs
+            var _tank = new Tank(bp, 'dummy', 'dummy', 0, 0, 'dummy');
+            
+            for (var n = 0; n < buffs.length; n++) {
+                var b = buffs[n].split(':');
+                _tank.config[b[0]] += parseFloat(b[1]);
+            }
+            
+            var t = _tank.config;
+            
+            offense += (t.pDamage*0.08
+                        + t.critChance*0.2
+                        + t.critMultiplier*1.5
+                        + t.fRate
+                        + t.tSpeed*0.05) * pieces[1];
+                        
+            defense += (t.maxHealth*0.05
+                        + t.maxShield*0.03
+                        + t.armor*0.06
+                        + t.shieldRegen*0.08
+                        + t.sSpeed*0.01
+                        + t.accel*0.1) * pieces[1];
+        }
+        
+        offense = Math.round(offense);
+        defense = Math.round(defense);
+        var combined = offense + defense;
+        
+        $(obj).children('.w-strength').html('<span class="w-offense">'+offense+'</span> / <span class="w-defense">'+defense+'</span> / <span class="w-combined">'+combined+'</span>');
+    };
 
     my.importFromBlueprint = function () {
         // Load all maps from blueprint

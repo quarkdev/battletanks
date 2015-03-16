@@ -1,6 +1,6 @@
 <script type="text/javascript">
     function updateWave() { 
-        var _upd = '<span class="w-desc">' + $('#update-wave-description').val() + '</span><span class="w-spawns">' + $('#update-wave-spawns-container').html() + '</span><span class="w-wait-time">' + $('#update-wave-delay').val() + '</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span';
+        var _upd = '<span class="w-strength" onclick="MAP.calcWaveStrength(this.parentNode)">Calculate Strength</span><span class="w-desc">' + $('#update-wave-description').val() + '</span><span class="w-spawns">' + $('#update-wave-spawns-container').html() + '</span><span class="w-wait-time">' + $('#update-wave-delay').val() + '</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span';
         
         $('#wave-list li:eq(' + $('#wave-update-item-index').val() + ')').html(_upd);
         

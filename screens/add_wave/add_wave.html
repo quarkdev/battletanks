@@ -7,12 +7,19 @@
     
     function addWave() {
         if ($('#wave-spawns-container').html() != '') {
-            var waveStr = '<li class="w-row"><span class="w-desc">' + $('#wave-description').val() + '</span><span class="w-spawns">' + $('#wave-spawns-container').html() + '</span><span class="w-wait-time">' + $('#wave-delay').val() + '</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span</li>';
+            var waveStr = '<li class="w-row"><span class="w-strength" onclick="MAP.calcWaveStrength(this.parentNode)">Calculate Strength</span><span class="w-desc">' + $('#wave-description').val() + '</span><span class="w-spawns">' + $('#wave-spawns-container').html() + '</span><span class="w-wait-time">' + $('#wave-delay').val() + '</span><span> seconds</span> <span class="span-btn" onclick="copyToUpdateBox($(this).parent()); $(\'#wave-update-item-index\').val($(this).parent().index()); $(\'#dialog-update-wave\').show()">EDIT</span> <span class="span-btn" onclick="$(this).parent().remove()">X</span</li>';
         
             $('#wave-list').append(waveStr);
         }
         
         $('#dialog-add-wave').hide();
+    }
+    
+    function calcStrengths() {
+        var ws = document.getElementsByClassName('w-strength');
+        for (var i = 0; i < ws.length; i++) {
+            ws[i].click();
+        }
     }
 
     function populateSpawnOpts() {
