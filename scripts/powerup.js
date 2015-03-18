@@ -1206,7 +1206,8 @@ var PUP = (function() {
                     var newp_coords = UTIL.geometry.getPointAtAngleFrom(p.objectHit.obj.config.oX, p.objectHit.obj.config.oY, tanA, (nearest_tank.config.width/2) + 2);
                 
                     // fire new projectile towards new target
-                    var cProj = new Projectile({mods: projectile.mods, speed: p.speed, damage: p.damage * 0.80, critChance: p.critChance, angle: tanA, oX: newp_coords[0], oY: newp_coords[1], srcId: p.srcId, srcType: 'chain'});
+                    var speed = typeof projectile.flagASId !== 'undefined' ? p.speed + projectile.flaggedAreaSlow : p.speed; // restore speed caused by area slow (so that generated shrapnel gets flagged correctly)
+                    var cProj = new Projectile({mods: projectile.mods, speed: speed, damage: p.damage * 0.80, critChance: p.critChance, angle: tanA, oX: newp_coords[0], oY: newp_coords[1], srcId: p.srcId, srcType: 'chain'});
                     cProj.jumps = projectile.jumps; // save the jumps remaining for the new projectile
                     
                     projectiles.push(cProj);
