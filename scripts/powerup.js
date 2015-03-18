@@ -154,7 +154,9 @@ var PUP = (function() {
         
         this.use = function (tank) {
             if (typeof tank.hes === 'undefined') {
+            
                 tank.hes = {};
+                
                 var makeExplosive = function (projectile) {
                     if (typeof projectile.hesActive === 'undefined') {
                         projectile.hesActive = true;
@@ -184,14 +186,16 @@ var PUP = (function() {
                     }
                 };
                 makeExplosive.id = 'makeExplosive';
+                
                 tank.projectile_mods.push(makeExplosive);
+                
                 tank.hes.timeout = new Timer(function () {
-                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'makeExplosive'; });
                     delete tank.hes;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'makeExplosive'; });
                 }, 12000);
             }
             else {
-                tank.hes.timeout.extend('8000');
+                tank.hes.timeout.extend(8000);
             }
         };
     }
