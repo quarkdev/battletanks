@@ -490,14 +490,13 @@ var PUP = (function() {
             
             if (!active) {
                 tank.is = {};
-                tank.is.dmult = 0.4; // distance multiplier
                 
                 var impulseShell = function (projectile) {
                     var p = projectile.config;
                     
                     // increase damage per distance travelled
                     var _dt = UTIL.geometry.getDistanceBetweenPoints(p.lastPos, {x: p.oX, y: p.oY}); // distance travelled per frame
-                    var _dmult = typeof tank.is !== 'undefined' ? tank.is.dmult : 0.4;
+                    var _dmult = 0.5;
                     
                     p.dt = typeof p.dt !== 'undefined' ? p.dt + _dt : 0; // total distance travelled
                     p.damage += _dt * _dmult * (GLOBALS.map.wave.current + 1);
@@ -519,7 +518,6 @@ var PUP = (function() {
                 }, 12000);
             }
             else {
-                tank.is.dmult += 0.2;
                 tank.is.timeout.extend(8000);
             }
         };
