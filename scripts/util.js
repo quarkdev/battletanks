@@ -411,6 +411,7 @@ var UTIL = (function () {
             dmg = scale ? dmg * (GLOBALS.map.wave.current + 1) : dmg;
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+            dmg = isNaN(dmg) ? 0 : dmg;
             
             // deal damage to tank shield
             tanks[n].config.shield -= dmg;
@@ -452,6 +453,7 @@ var UTIL = (function () {
             dmg = scale ? dmg * (GLOBALS.map.wave.current + 1) : dmg;
             var crit = 10 > Math.random() * 100;
             dmg = crit ? dmg * ((Math.random() * 3) + 1) : dmg;
+            dmg = isNaN(dmg) ? 0 : dmg;
             
             // apply damage reduction from armor
             dmg = dmg * UTIL.getDamageMultiplier(destructibles[n].config.armor);
