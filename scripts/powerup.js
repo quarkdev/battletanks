@@ -498,6 +498,8 @@ var PUP = (function() {
                     var _dt = UTIL.geometry.getDistanceBetweenPoints(p.lastPos, {x: p.oX, y: p.oY}); // distance travelled per frame
                     var _dmult = 0.5;
                     
+                    _dt = isNaN(_dt) ? 0 : _dt; // quick-fix: swallow non-number calcs
+                    
                     p.dt = typeof p.dt !== 'undefined' ? p.dt + _dt : 0; // total distance travelled
                     p.damage += _dt * _dmult * (GLOBALS.map.wave.current + 1);
                     
