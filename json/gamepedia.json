@@ -173,6 +173,12 @@
             "description": "Projectiles explode on hit dealing additional damage to everything near the area of impact.",
             "image": "images/powerups/high-explosive-shell.png",
             "video": ""
+        },
+        {
+            "name": "Chaos Shell",
+            "description": "Grants 10% chance to modify projectile damage by 10 - 2000 percent.",
+            "image": "images/powerups/chaos-shell",
+            "video": ""
         }
     ],
     "tanks" : [

@@ -31,7 +31,8 @@ var PUP = (function() {
         {slug: 'mine', cost: 20, desc: 'Plants an anti-tank mine on the ground that becomes armed after 3 seconds. Deals moderate damage.'},
         {slug: 'carpet-bomb', cost: 100, desc: 'Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.'},
         {slug: 'armor-piercing-shell', cost: 100, desc: 'Each projectile hit reduces enemy armor by 5.'},
-        {slug: 'high-explosive-shell', cost: 100, desc: 'Each projectile hit deals an extra Area-of-Effect damage.'}
+        {slug: 'high-explosive-shell', cost: 100, desc: 'Each projectile hit deals an extra Area-of-Effect damage.'},
+        {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 2000 percent damage.'}
     ];
     
     my.getSlug = function (slug) {
@@ -106,6 +107,8 @@ var PUP = (function() {
                 return new ArmorPiercingShell(x, y);
             case 'high-explosive-shell':
                 return new HighExplosiveShell(x, y);
+            case 'chaos-shell':
+                return new ChaosShell(x, y);
             default:
                 break;
         }
@@ -137,6 +140,64 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function ChaosShell(x, y) {
+        /* has 10% chance to fire a chaos shell that deals 10%-2000% damage */
+        this.config = {
+            name    : 'Chaos Shell',
+            slug    : 'chaos-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('chaos-shell')
+        };
+        
+        this.use = function (tank) {
+            if (typeof tank.csh === 'undefined') {
+                tank.csh = {};
+                
+                var chaosShell = function (projectile) {
+                    var p = projectile.config;
+                    
+                    if (typeof p.csh_flagged === 'undefined') {
+                        // roll
+                        p.csh_flagged = true;
+                        var roll = Math.random();
+                        if (roll < 0.1) {
+                            p.csh_active = true;
+                        }
+                    }
+                    
+                    if (p.active && p.csh_active) {
+                        if (typeof p.cshvfx === 'undefined') {
+                            var random = Math.floor(Math.random() * (2000 - 10 + 1)) + 10;
+                            p.damage = p.damage * (random / 100.0);
+                            var size = 196 + ((random / 100) * 3);
+                            p.cshvfx = new VisualEffect({name: 'csh-flare', oX: p.oX, oY: p.oY, width: 256, height: 256, scaleW: size, scaleH: size,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'bflaree'});
+                            visualeffects.push(p.cshvfx);
+                            projectile.events.listen('death', function () {p.cshvfx.end(); });
+                        }
+                        else {
+                            p.cshvfx.config.oX = p.oX;
+                            p.cshvfx.config.oY = p.oY;
+                        }
+                    }
+                };
+                chaosShell.id = 'chaosShell';
+                
+                tank.projectile_mods.push(chaosShell);
+                
+                tank.csh.timeout = new Timer(function () {
+                    delete tank.csh;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'chaosShell'; });
+                }, 12000);
+            }
+            else {
+                tank.csh.timeout.extend(6000);
+            }
         };
     }
     

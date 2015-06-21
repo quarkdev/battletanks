@@ -87,6 +87,7 @@ UTIL.asset.queue('image', ['mine', 'images/powerups/mine.png', PowerUpImages]);
 UTIL.asset.queue('image', ['carpet-bomb', 'images/powerups/carpet-bomb.png', PowerUpImages]);
 UTIL.asset.queue('image', ['armor-piercing-shell', 'images/powerups/armor-piercing-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['high-explosive-shell', 'images/powerups/high-explosive-shell.png', PowerUpImages]);
+UTIL.asset.queue('image', ['chaos-shell', 'images/powerups/chaos-shell.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -159,6 +160,10 @@ UTIL.asset.queue('image', ['aps-trail', 'images/spritesheets/aps-trail.png', Spr
 UTIL.asset.queue('image', ['streaks', 'images/spritesheets/streaks.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['smokey-flare', 'images/spritesheets/smokey-flare.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['flicker-flare', 'images/spritesheets/flicker-flare.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['sf-i2', 'images/spritesheets/smokey-flicker-inwards-2.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['cflare', 'images/spritesheets/chaotic-flare.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['bflaree', 'images/spritesheets/burst-flare-eratic.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['pup-2fs', 'images/spritesheets/power-up-2-2fs.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-1', 'images/spritesheets/debris-explosion-3a.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-2', 'images/spritesheets/debris-explosion-3b.png', SpriteSheetImages]);
 //UTIL.asset.queue('image', ['d-exp-3', 'images/spritesheets/debris-explosion-4.png', SpriteSheetImages]);
@@ -279,6 +284,7 @@ MAP.addPlaceable('powerup', 'mine');
 MAP.addPlaceable('powerup', 'carpet-bomb');
 MAP.addPlaceable('powerup', 'armor-piercing-shell');
 MAP.addPlaceable('powerup', 'high-explosive-shell');
+MAP.addPlaceable('powerup', 'chaos-shell');
 
 GLOBALS.map.index = 0;
 
