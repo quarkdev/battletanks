@@ -32,7 +32,8 @@ var PUP = (function() {
         {slug: 'carpet-bomb', cost: 100, desc: 'Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.'},
         {slug: 'armor-piercing-shell', cost: 100, desc: 'Each projectile hit reduces enemy armor by 5.'},
         {slug: 'high-explosive-shell', cost: 100, desc: 'Each projectile hit deals an extra Area-of-Effect damage.'},
-        {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 2000 percent damage.'}
+        {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 2000 percent damage.'},
+        {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'}
     ];
     
     my.getSlug = function (slug) {
@@ -109,6 +110,8 @@ var PUP = (function() {
                 return new HighExplosiveShell(x, y);
             case 'chaos-shell':
                 return new ChaosShell(x, y);
+            case 'vampiric-shell':
+                return new VampiricShell(x, y);
             default:
                 break;
         }
@@ -140,6 +143,61 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function VampiricShell(x, y) {
+        /* 1% of the shell's damage heals the source. */
+        this.config = {
+            name    : 'Vampiric Shell',
+            slug    : 'vampiric-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('vampiric-shell')
+        };
+        
+        this.use = function (tank) {
+            if (typeof tank.vs === 'undefined') {
+                tank.vs = {};
+                
+                tank.vs.vfx = new VisualEffect({name: 'vampiric-aura', oX: tank.config.oX, oY: tank.config.oY, width: 128, height: 128, scaleW: tank.config.tSize * 2, scaleH: tank.config.tSize * 2, maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'halo-5'});
+                visualeffects.push(tank.vs.vfx);
+                
+                var vsAnim = function () {
+                    tank.vs.vfx.updatePos(tank.config.oX, tank.config.oY);
+                };
+                tank.events.listen('frame', vsAnim);
+                
+                var vampiricShell = function (projectile) {
+                    if (typeof projectile.vsActive === 'undefined') {
+                        projectile.vsActive = true;
+                        projectile.events.listen('death', function () {
+                            if (projectile.config.objectHit.type !== 'tank') { return; }
+
+                            //visualeffects.push(new VisualEffect({name: 'explosion', oX: projectile.config.oX, oY: projectile.config.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: r, scaleH: r, maxCols: 8, maxRows: 6, framesTillUpdate: 0, loop: false, spriteSheet: 'ms-exp-7'}));
+                            
+                            tank.config.health += (projectile.config.damage * 0.01);
+                            tank.config.health = tank.config.health > tank.config.maxHealth ? tank.config.maxHealth : tank.config.health;
+                            renderExtern();
+                        });
+                    }
+                };
+                vampiricShell.id = 'vampiricShell';
+                
+                tank.projectile_mods.push(vampiricShell);
+                
+                tank.vs.timeout = new Timer(function () {
+                    tank.events.unlisten('frame', vsAnim);
+                    tank.vs.vfx.end();
+                    delete tank.vs;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'vampiricShell'; });
+                }, 12000);
+            }
+            else {
+                tank.vs.timeout.extend(6000);
+            }
         };
     }
     

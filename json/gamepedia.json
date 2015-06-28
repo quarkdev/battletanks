@@ -177,7 +177,13 @@
         {
             "name": "Chaos Shell",
             "description": "Grants 10% chance to modify projectile damage by 10 - 2000 percent.",
-            "image": "images/powerups/chaos-shell",
+            "image": "images/powerups/chaos-shell.png",
+            "video": ""
+        },
+        {
+            "name": "Vampiric Shell",
+            "description": "1% of the shell damage is returned as health.",
+            "image": "images/powerups/vampiric-shell.png",
             "video": ""
         }
     ],
