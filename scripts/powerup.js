@@ -170,6 +170,11 @@ var PUP = (function() {
                 };
                 tank.events.listen('frame', vsAnim);
                 
+                var vsAnimEnd = function () {
+                    tank.vs.vfx.end();
+                };
+                tank.events.listen('death', vsAnimEnd);
+                
                 var vampiricShell = function (projectile) {
                     if (typeof projectile.vsActive === 'undefined') {
                         projectile.vsActive = true;
@@ -190,6 +195,7 @@ var PUP = (function() {
                 
                 tank.vs.timeout = new Timer(function () {
                     tank.events.unlisten('frame', vsAnim);
+                    tank.events.unlisten('death', vsAnimEnd);
                     tank.vs.vfx.end();
                     delete tank.vs;
                     tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'vampiricShell'; });
