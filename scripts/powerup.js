@@ -1911,7 +1911,7 @@ var PUP = (function() {
     }
 
     function IncreasedDamage(x, y) {
-        /* increases the armor */
+        /* increases the damage */
         this.config = {
             name    : 'Increased Damage',
             slug    : 'increased-damage',
@@ -1948,7 +1948,7 @@ var PUP = (function() {
     }
 
     function AphoticShield(x, y) {
-        /* increases the armor, absorbs projectiles */
+        /* renders tank invulnerable until it gets hit by a set amount of projectiles */
         this.config = {
             name    : 'Aphotic Shield',
             slug    : 'aphotic-shield',
