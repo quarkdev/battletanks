@@ -198,6 +198,22 @@ var update = function(delta) {
                 
                 // send message to pathfinder worker asking for directions
                 bots[i][5].worker.postMessage(JSON.stringify(msg));
+                
+                // 50% chance for tank to use powerups at the end of each movequeue
+                var rollPup = (Math.random() * 10) > 4;
+                var rollNum = Math.ceil(Math.random() * GLOBALS.map.wave.current); // how many powerups to roll for the spawned tank
+                rollNum = rollNum > 5 ? 5 : rollNum; // cap of 5 powerups per tank
+                
+                if (rollPup) {
+                    for (var n = 0; n < rollNum; n++) {
+                        var pup = PUP.createRandom(bots[i][0].config.oX, bots[i][0].config.oY);
+                        
+                        // bots can't use nuke and mines
+                        if (pup.config.slug !== 'nuke' && pup.config.slug !== 'mine') {
+                            pup.use(bots[i][0]);
+                        }
+                    }
+                }
             }
             
             bots[i][0].frame(delta); // run all frame callbacks
