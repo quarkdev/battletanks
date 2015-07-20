@@ -1323,7 +1323,7 @@ var PUP = (function() {
                     // Check if it is near enough to jump to
                     var nearest_dist = UTIL.geometry.getDistanceBetweenPoints({x: p.oX, y: p.oY}, {x: nearest_tank.config.oX, y: nearest_tank.config.oY});
                     
-                    if (nearest_dist > 300) { return; }
+                    if (nearest_dist > 400) { return; }
                     
                     // Determine which way to adjust projectile angle.
                     var dX = nearest_tank.config.oX - p.oX;
