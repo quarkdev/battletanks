@@ -2036,11 +2036,11 @@ var PUP = (function() {
                     if (tank.as_break) {
                         tank.as_break();
                     }
-                }, 4500);
+                }, 6000);
             }
             else {
                 tank.maxHits += 12;
-                tank.as_timeout.extend(1500);
+                tank.as_timeout.extend(3000);
             } 
         };
     }
