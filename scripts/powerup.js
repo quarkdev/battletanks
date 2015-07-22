@@ -179,7 +179,7 @@ var PUP = (function() {
                             bv = sl > bv ? bv : sl;
                             // remove shield energy
                             target.config.shield -= bv;
-                            // deal damage to tank (ignores armor ad shield)
+                            // deal damage to tank (ignores armor and shield)
                             target.config.health -= bv;
                             target.config.health = target.config.health > 0 ? target.config.health : 0;
                         });
@@ -493,7 +493,7 @@ var PUP = (function() {
                     var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
                     
                     // deal damage to tanks/destructibles/proc chainExplode dummies
-                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1000, 180, 90);
+                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1500, 180, 90);
                     
                     // show explosion flash
                     var flash = new Light({
@@ -607,7 +607,7 @@ var PUP = (function() {
                             break;
                     }
                     
-                    UTIL.dealAreaDamage(loc, 2500, 220, 90);
+                    UTIL.dealAreaDamage(loc, 3000, 220, 90);
                 };
 
                 if (dy.config.active && dy.armed) {
