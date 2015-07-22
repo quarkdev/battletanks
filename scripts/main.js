@@ -202,7 +202,7 @@ var update = function(delta) {
                 // 50% chance for tank to use powerups at the end of each movequeue
                 var rollPup = (Math.random() * 10) > 4;
                 var rollNum = Math.ceil(Math.random() * GLOBALS.map.wave.current); // how many powerups to roll for the spawned tank
-                rollNum = rollNum > 5 ? 5 : rollNum; // cap of 5 powerups per tank
+                rollNum = rollNum > 2 ? 2 : rollNum; // cap of 2 powerups per tank
                 
                 if (rollPup) {
                     for (var n = 0; n < rollNum; n++) {
