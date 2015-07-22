@@ -63,6 +63,8 @@ Projectile.prototype.update = function (modifier) {
             var t = result.tank;
             p.objectHit = {type: 'tank', obj: t};
             
+            this.events.emit('tank_hit');
+            
             this.death();
             
             // Call tank hit method. Pass the projectile that hit it.
