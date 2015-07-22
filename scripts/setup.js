@@ -89,6 +89,7 @@ UTIL.asset.queue('image', ['armor-piercing-shell', 'images/powerups/armor-pierci
 UTIL.asset.queue('image', ['high-explosive-shell', 'images/powerups/high-explosive-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['chaos-shell', 'images/powerups/chaos-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['vampiric-shell', 'images/powerups/vampiric-shell.png', PowerUpImages]);
+UTIL.asset.queue('image', ['emp-shell', 'images/powerups/emp-shell.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -192,6 +193,7 @@ UTIL.asset.queue('image', ['impact-stone-5', 'images/spritesheets/impact-stone-5
 UTIL.asset.queue('image', ['impact-stone-6', 'images/spritesheets/impact-stone-6.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['impact-stone-7', 'images/spritesheets/impact-stone-7.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['halo-5', 'images/spritesheets/halo-5.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['flash-burst-5', 'images/spritesheets/flash-burst-5.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();
@@ -288,6 +290,7 @@ MAP.addPlaceable('powerup', 'armor-piercing-shell');
 MAP.addPlaceable('powerup', 'high-explosive-shell');
 MAP.addPlaceable('powerup', 'chaos-shell');
 MAP.addPlaceable('powerup', 'vampiric-shell');
+MAP.addPlaceable('powerup', 'emp-shell');
 
 GLOBALS.map.index = 0;
 

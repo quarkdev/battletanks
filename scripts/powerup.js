@@ -33,7 +33,8 @@ var PUP = (function() {
         {slug: 'armor-piercing-shell', cost: 100, desc: 'Each projectile hit reduces enemy armor by 5.'},
         {slug: 'high-explosive-shell', cost: 100, desc: 'Each projectile hit deals an extra Area-of-Effect damage.'},
         {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 2000 percent damage.'},
-        {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'}
+        {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'},
+        {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'}
     ];
     
     my.getSlug = function (slug) {
@@ -112,6 +113,8 @@ var PUP = (function() {
                 return new ChaosShell(x, y);
             case 'vampiric-shell':
                 return new VampiricShell(x, y);
+            case 'emp-shell':
+                return new EMPShell(x, y);
             default:
                 break;
         }
@@ -143,6 +146,58 @@ var PUP = (function() {
             this.tmp.use(tank);
             var pn = this.tmp.config.name;
             this.config.name += ' | ' + pn;
+        };
+    }
+    
+    function EMPShell(x, y) {
+        /* Causes the target tank's shield to burst dealing additional damage. */
+        this.config = {
+            name    : 'EMP Shell',
+            slug    : 'emp-shell',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('emp-shell')
+        };
+        
+        this.use = function (tank) {
+            if (typeof tank.ems === 'undefined') {
+                tank.ems = {};
+                
+                var empShell = function (projectile) {
+                    if (typeof projectile.emsActive === 'undefined') {
+                        projectile.emsActive = true;
+                        projectile.events.listen('death', function () {
+                            if (projectile.config.objectHit.type !== 'tank') { return; }
+                            visualeffects.push(new VisualEffect({name: 'shield-burst', oX: projectile.config.oX, oY: projectile.config.oY, width: 128, height: 128, angle: Math.random() * 360, scaleW: 96, scaleH: 96, maxCols: 8, maxRows: 3, framesTillUpdate: 0, loop: false, spriteSheet: 'flash-burst-5'}));
+                            // calculate 0.1% of target's shield
+                            var target = projectile.config.objectHit.obj;
+                            var bv = target.config.maxShield * 0.001;
+                            // check how much shield energy left
+                            var sl = target.config.shield;
+                            // calculate final burst value
+                            bv = sl > bv ? bv : sl;
+                            // remove shield energy
+                            target.config.shield -= bv;
+                            // deal damage to tank (ignores armor ad shield)
+                            target.config.health -= bv;
+                            target.config.health = target.config.health > 0 ? target.config.health : 0;
+                        });
+                    }
+                };
+                empShell.id = 'empShell';
+                
+                tank.projectile_mods.push(empShell);
+                
+                tank.ems.timeout = new Timer(function () {
+                    delete tank.ems;
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'empShell'; });
+                }, 6000);
+            }
+            else {
+                tank.ems.timeout.extend(3000);
+            }
         };
     }
     
