@@ -91,6 +91,29 @@ var update = function(delta) {
     
         // update tanks only if active | TEST for AI pathfinding
         if (bots[i][0].config.active) {
+            // check if we have a target
+            if (bots[i][6] !== null) {
+                // check if target is not active
+                if (!bots[i][6].config.active) {
+                    // acquire target
+                    for (var k = 0; k < tanks.length; k++) {
+                        if (tanks[k].config.active && tanks[k].config.faction !== bots[i][0].config.faction) {
+                            bots[i][6] = tanks[k];
+                            break;
+                        }
+                    }
+                }
+            }
+            else {
+                // acquire target
+                for (var k = 0; k < tanks.length; k++) {
+                    if (tanks[k].config.active && tanks[k].config.faction !== bots[i][0].config.faction) {
+                        bots[i][6] = tanks[k];
+                        break;
+                    }
+                }
+            }
+        
             // randomize the chance for bot to ask for LOS
             var askForLos = 15 > Math.random() * 100;
             
@@ -98,7 +121,7 @@ var update = function(delta) {
                 // send message to pathfinder asking for LOS calculation
                 query = {};
                 query.sender = bot_id;
-                query.playerLoc = {x: player.config.oX, y: player.config.oY};
+                query.playerLoc = {x: bots[i][6].config.oX, y: bots[i][6].config.oY};
                 query.botLoc = {x: bots[i][0].config.oX, y: bots[i][0].config.oY};
                 query.lastKnown = {x: bots[i][4].x, y: bots[i][4].y};
                 query.cmd = 'get_line_of_sight';
