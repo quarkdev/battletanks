@@ -88,7 +88,7 @@ function readMsg() {
                 postMessage(JSON.stringify(reply));
                 break;
             case 'get_line_of_sight':
-                /* Check if bot can see player, if yes, return last known player location {los: true, x: x, y: y} else {los: false, x: null, y: null} */
+                /* Check if bot can see target, if yes, return last known target location {los: true, x: x, y: y} else {los: false, x: null, y: null} */
                 var lkl = checkLineOfSight(messageReceived.playerLoc, messageReceived.botLoc, messageReceived.lastKnown);
                 
                 if (lkl.los) {
@@ -97,6 +97,19 @@ function readMsg() {
                     reply.lkl = lkl;
                     
                     postMessage(JSON.stringify(reply));
+                }
+                break;
+            case 'acquire_target':
+                /* Find a target within LOS */
+                var coords = messageReceived.coords;
+                for (var i = 0; i < coords.length; i++) {
+                    var lkl = checkLineOfSight(coords[i], messageReceived.botLoc, messageReceived.lastKnown);
+                    if (lkl.los) {
+                        reply.cmd = 'acquire_target_ok';
+                        reply.lkl = lkl;
+                        postMessage(JSON.stringify(reply));
+                        break;
+                    }
                 }
                 break;
             default:

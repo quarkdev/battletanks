@@ -96,28 +96,24 @@ var update = function(delta) {
                 // check if target is not active
                 if (!bots[i][6].config.active) {
                     // acquire target
-                    for (var k = 0; k < tanks.length; k++) {
-                        if (tanks[k].config.active && tanks[k].config.faction !== bots[i][0].config.faction) {
-                            bots[i][6] = tanks[k];
-                            break;
-                        }
+                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                    if (bots[i][6] === -1) {
+                        bots[i][6] = null;
                     }
                 }
             }
             else {
                 // acquire target
-                for (var k = 0; k < tanks.length; k++) {
-                    if (tanks[k].config.active && tanks[k].config.faction !== bots[i][0].config.faction) {
-                        bots[i][6] = tanks[k];
-                        break;
-                    }
+                bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                if (bots[i][6] === -1) {
+                    bots[i][6] = null;
                 }
             }
         
             // randomize the chance for bot to ask for LOS
             var askForLos = 15 > Math.random() * 100;
             
-            if (askForLos) {
+            if (askForLos && bots[i][6] !== null) {
                 // send message to pathfinder asking for LOS calculation
                 query = {};
                 query.sender = bot_id;
@@ -129,14 +125,16 @@ var update = function(delta) {
                 bots[i][5].worker.postMessage(JSON.stringify(query));
             }
             
-            // Update turret to last known location of player
+            // Update turret to last known location of target
             bots[i][0].turnTurret(delta, bots[i][4].x, bots[i][4].y);
             
-            // Check if bot can see player
-            if (bots[i][4].los) {
-                // Check if tank within firing angle (fire only @ less than 5 degree difference)
-                if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: tanks[0].config.oX, y: tanks[0].config.oY}) - bots[i][0].config.tAngle) < 5) {
-                    bots[i][0].fire();
+            // Check if bot can see target and target is alive
+            if (bots[i][4].los && bots[i][6] !== null) {
+                if (bots[i][6].config.active) {
+                    // Check if tank within firing angle (fire only @ less than 5 degree difference)
+                    if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: tanks[0].config.oX, y: tanks[0].config.oY}) - bots[i][0].config.tAngle) < 5) {
+                        bots[i][0].fire();
+                    }
                 }
             }
             
@@ -208,7 +206,7 @@ var update = function(delta) {
                         msg.cmd = 'get_waypoint_random';
                         break;
                     case 'chase':
-                        msg.goal  = [bots[i][4].x, bots[i][4].y]; // use the last known location of player
+                        msg.goal  = [bots[i][4].x, bots[i][4].y]; // use the last known location of target
                         msg.cmd = 'get_waypoint';
                         break;
                     default:
