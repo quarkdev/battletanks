@@ -149,6 +149,23 @@ var PUP = (function() {
         };
     }
     
+    function MissileTurret(x, y) {
+        /* Drops a stationary missile turret at current location. Turret attacks nearby enemy tanks. */
+        this.config = {
+            name    : 'Missile Turret',
+            slug    : 'missile-turret',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('missile-turret')
+        };
+        
+        this.use = function (tank) {
+        
+        }
+    }
+    
     function EMPShell(x, y) {
         /* Causes the target tank's shield to burst dealing additional damage. */
         this.config = {
