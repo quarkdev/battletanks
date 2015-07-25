@@ -181,21 +181,43 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            // randomly select a tank blueprint
-            GLOBALS.abotCount++;
-            var bp = BLUEPRINT.getByType('tanks');
-            bp = bp[Math.floor(Math.random() * bp.length)];
-            var tId = 'abot' + GLOBALS.abotCount;
-            var t = new Tank(bp, tId, 'computer_p', tank.config.oX, tank.config.oY, tank.config.faction);
-            tanks.push(t);
-            var _x = Math.floor(Math.random() * WORLD_WIDTH);
-            var _y = Math.floor(Math.random() * WORLD_HEIGHT);
-            bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null]);
-            LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tId, t.config.id, t.config.width);
-            // spawned tanks explode when their spawner is destroyed
-            tank.events.listen('death', function () {
-                t.death();
+            // add the spawn vortex effect
+            var x = tank.config.oX;
+            var y = tank.config.oY;
+            var vfx = new VisualEffect({
+                name: 'spawn_vortex',
+                oX: x,
+                oY: y,
+                width: 128,
+                height: 128,
+                scaleW: 128,
+                scaleH: 128,
+                maxCols: 8,
+                maxRows: 4,
+                framesTillUpdate: 0,
+                loop: true,
+                spriteSheet: 'wf-2'
             });
+            visualeffects.push(vfx);
+        
+            new Timer(function () {
+                vfx.end();
+                // randomly select a tank blueprint
+                GLOBALS.abotCount++;
+                var bp = BLUEPRINT.getByType('tanks');
+                bp = bp[Math.floor(Math.random() * bp.length)];
+                var tId = 'abot' + GLOBALS.abotCount;
+                var t = new Tank(bp, tId, 'computer_p', x, y, tank.config.faction);
+                tanks.push(t);
+                var _x = Math.floor(Math.random() * WORLD_WIDTH);
+                var _y = Math.floor(Math.random() * WORLD_HEIGHT);
+                bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null]);
+                LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tId, t.config.id, t.config.width);
+                // spawned tanks explode when their spawner is destroyed
+                tank.events.listen('death', function () {
+                    t.death();
+                });
+            }, 1500);
         }
     }
     
