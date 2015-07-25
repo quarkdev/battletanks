@@ -71,6 +71,7 @@ var GLOBALS = (function () {
             lastScore: 0
         },
         botCount : 0, // the number of bots currently active
+        abotCount: 0, // allied bots spawned (doesn't get reset)
         rdd : 0, // number of recently destroyed destructibles (that the pathfinders are not aware of)
         packedDestructibles : []
     };

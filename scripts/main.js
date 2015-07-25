@@ -132,7 +132,7 @@ var update = function(delta) {
             if (bots[i][4].los && bots[i][6] !== null) {
                 if (bots[i][6].config.active) {
                     // Check if tank within firing angle (fire only @ less than 5 degree difference)
-                    if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: tanks[0].config.oX, y: tanks[0].config.oY}) - bots[i][0].config.tAngle) < 5) {
+                    if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: bots[i][6].config.oX, y: bots[i][6].config.oY}) - bots[i][0].config.tAngle) < 5) {
                         bots[i][0].fire();
                     }
                 }
@@ -654,6 +654,7 @@ var start = function () {
         minimapBGCtx.drawImage(terrain, 0, 0, WORLD_WIDTH / 8, WORLD_HEIGHT / 8);
         $('#ammo-count').html(player.config.ammo);
         $('#gold-count').html(player.config.coins);
+        GLOBALS.abotCount = 0; // reset ally bot count (also used as a uid)
         main();
     });
 };

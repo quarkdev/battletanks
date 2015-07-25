@@ -34,7 +34,8 @@ var PUP = (function() {
         {slug: 'high-explosive-shell', cost: 100, desc: 'Each projectile hit deals an extra Area-of-Effect damage.'},
         {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 2000 percent damage.'},
         {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'},
-        {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'}
+        {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'},
+        {slug: 'pocket-tank', cost: 1000, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'}
     ];
     
     my.getSlug = function (slug) {
@@ -115,6 +116,8 @@ var PUP = (function() {
                 return new VampiricShell(x, y);
             case 'emp-shell':
                 return new EMPShell(x, y);
+            case 'pocket-tank':
+                return new PocketTank(x, y);
             default:
                 break;
         }
@@ -162,7 +165,37 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
+        }
+    }
+    
+    function PocketTank(x, y) {
+        /* Spawns 1 random friendly tanks at your location. */
+        this.config = {
+            name    : 'Pocket Tank',
+            slug    : 'pocket-tank',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('pocket-tank')
+        };
         
+        this.use = function (tank) {
+            // randomly select a tank blueprint
+            GLOBALS.abotCount++;
+            var bp = BLUEPRINT.getByType('tanks');
+            bp = bp[Math.floor(Math.random() * bp.length)];
+            var tId = 'abot' + GLOBALS.abotCount;
+            var t = new Tank(bp, tId, 'computer_p', tank.config.oX, tank.config.oY, tank.config.faction);
+            tanks.push(t);
+            var _x = Math.floor(Math.random() * WORLD_WIDTH);
+            var _y = Math.floor(Math.random() * WORLD_HEIGHT);
+            bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null]);
+            LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tId, t.config.id, t.config.width);
+            // spawned tanks explode when their spawner is destroyed
+            tank.events.listen('death', function () {
+                t.death();
+            });
         }
     }
     

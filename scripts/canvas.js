@@ -40,7 +40,12 @@ var CANVAS = (function () {
                 else {
                     minimapCtx.beginPath();
                     minimapCtx.arc(tanks[i].config.oX/8, tanks[i].config.oY/8, 3, 0, 2 * Math.PI, false);
-                    minimapCtx.fillStyle = 'orange';
+                    if (tanks[i].config.faction == 'friendly') {
+                        minimapCtx.fillStyle = 'white';
+                    }
+                    else {
+                        minimapCtx.fillStyle = 'orange';
+                    }
                     minimapCtx.fill();
                 }
             }

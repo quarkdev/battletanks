@@ -90,6 +90,7 @@ UTIL.asset.queue('image', ['high-explosive-shell', 'images/powerups/high-explosi
 UTIL.asset.queue('image', ['chaos-shell', 'images/powerups/chaos-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['vampiric-shell', 'images/powerups/vampiric-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['emp-shell', 'images/powerups/emp-shell.png', PowerUpImages]);
+UTIL.asset.queue('image', ['pocket-tank', 'images/powerups/pocket-tank.png', PowerUpImages]);
 
 // Destructible images
 DestructibleImages = new ImageLibrary();
@@ -291,6 +292,7 @@ MAP.addPlaceable('powerup', 'high-explosive-shell');
 MAP.addPlaceable('powerup', 'chaos-shell');
 MAP.addPlaceable('powerup', 'vampiric-shell');
 MAP.addPlaceable('powerup', 'emp-shell');
+MAP.addPlaceable('powerup', 'pocket-tank');
 
 GLOBALS.map.index = 0;
 

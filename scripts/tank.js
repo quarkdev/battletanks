@@ -910,7 +910,7 @@ Tank.prototype.death = function () {
 
     lights.push(flash);
 
-    if (t.control === 'computer') {
+    if (t.faction !== 'friendly' && t.control === 'computer') {
         GLOBALS.map.wave.enemyCount -= 1;
         STAT.inc('total_tanks_destroyed', 1);
         STAT.inc('td_' + t.name, 1);
