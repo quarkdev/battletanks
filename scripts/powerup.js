@@ -565,7 +565,7 @@ var PUP = (function() {
                     var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
                     
                     // deal damage to tanks/destructibles/proc chainExplode dummies
-                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1500, 180, 90);
+                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1800, 180, 90);
                     
                     // show explosion flash
                     var flash = new Light({
