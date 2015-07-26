@@ -201,6 +201,7 @@ var PUP = (function() {
             visualeffects.push(vfx);
         
             new Timer(function () {
+                if (!tank.config.active) { return; } // don't spawn if spawner dies before timer 
                 vfx.end();
                 // randomly select a tank blueprint
                 GLOBALS.abotCount++;
