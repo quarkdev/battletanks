@@ -1401,7 +1401,7 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            tank.config.coins += 50;
+            tank.config.coins += 250;
             gold_pick_sound.get();
         };
     }
