@@ -680,7 +680,7 @@ var PUP = (function() {
                             break;
                     }
                     
-                    UTIL.dealAreaDamage(loc, 3000, 220, 90);
+                    UTIL.dealAreaDamage(loc, 5000, 220, 90);
                 };
 
                 if (dy.config.active && dy.armed) {
@@ -1170,7 +1170,7 @@ var PUP = (function() {
 
                 new Timer(function () { flash.config.active = false; core.config.active = false; }, 3050);
                 
-                UTIL.dealAreaDamage(loc, 12000, 10000, 800);
+                UTIL.dealAreaDamage(loc, 20000, 10000, 800);
             }, 6000);
         };
     }
