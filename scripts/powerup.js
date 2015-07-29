@@ -169,7 +169,7 @@ var PUP = (function() {
     }
     
     function PocketTank(x, y) {
-        /* Spawns 1 random friendly tanks at your location. */
+        /* Spawns 1 random friendly tank at your location. */
         this.config = {
             name    : 'Pocket Tank',
             slug    : 'pocket-tank',
@@ -243,9 +243,9 @@ var PUP = (function() {
                         projectile.emsActive = true;
                         projectile.events.listen('tank_hit', function () {
                             visualeffects.push(new VisualEffect({name: 'shield-burst', oX: projectile.config.oX, oY: projectile.config.oY, width: 128, height: 128, angle: Math.random() * 360, scaleW: 96, scaleH: 96, maxCols: 8, maxRows: 3, framesTillUpdate: 0, loop: false, spriteSheet: 'flash-burst-5'}));
-                            // calculate 0.1% of target's shield
+                            // calculate 0.5% of target's shield
                             var target = projectile.config.objectHit.obj;
-                            var bv = target.config.maxShield * 0.001;
+                            var bv = target.config.maxShield * 0.005;
                             // check how much shield energy left
                             var sl = target.config.shield;
                             // calculate final burst value
