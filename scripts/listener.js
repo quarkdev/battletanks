@@ -243,6 +243,7 @@ function gameKeyDownEvent(e) {
         if (ui_location === 'game' && $('#upgrades-screen').css('display') === 'none' && GLOBALS.botCount === 0) {
             // show upgrades screen only in-game and when there are no active bots
             pause();
+            TANK.upgrade.refresh();
             $('#upgrades-screen').show();
         }
     }

@@ -63,9 +63,9 @@ TANK.upgrade = (function () {
             for (var key in upgrades) {
                 upgrades[key].level = 0;
                 box += '<div id="u-passive-' + upgrades[key].id + '" class="upgrade-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onmouseover="$(this).children(\'.upgrade-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.upgrade-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
-                            <img style="position: relative; z-index: 1" class="flip-vertical" src="' + upgrades[key].image + '" onclick="$(this).parent().find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\', $(this).parent().children(\'.buyout-multiplier\').val()));" />\
+                            <img class="item-img flip-vertical" style="position: relative; z-index: 1" src="' + upgrades[key].image + '" onclick="$(this).parent().find($(\'strong\')).html(TANK.upgrade.buy(\'' + key + '\', $(this).parent().children(\'.buyout-multiplier\').val()));" />\
                             <span class="upgrade-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + upgrades[key].cost + '</span>\
-                            <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
+                            <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;" oninput="TANK.upgrade.refresh()">\
                             <div class="upgrade-hover-box" style="position: absolute; z-index: 10; width: 200px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
                                 <b>' + upgrades[key].name + '</b>\
                                 <p>' + upgrades[key].description + '</p>\
@@ -74,6 +74,24 @@ TANK.upgrade = (function () {
                         </div>';
             }
             $('#upgrades_container').html(box);
+        },
+        refresh : function () {
+            /* Desaturate upgrades that are above current gold. */
+            var ub = document.getElementsByClassName('upgrade-box');
+            for (var i = 0; i < ub.length; i++) {
+                // get cost
+                var cost = parseInt(ub[i].getElementsByClassName('upgrade-cost')[0].innerHTML);
+                // get multiplier
+                var multiplier = parseInt(ub[i].getElementsByClassName('buyout-multiplier')[0].value);
+                // determine if item is affordable
+                var affordable = player.config.coins > cost * multiplier;
+                if (affordable) {
+                    $(ub[i].getElementsByClassName('item-img')[0]).removeClass('desaturate');
+                }
+                else {
+                    $(ub[i].getElementsByClassName('item-img')[0]).addClass('desaturate');
+                }
+            }
         },
         buy : function (key, size) {
             /* Acquire the upgrade in exchange for a fixed cost. */
@@ -112,7 +130,7 @@ TANK.upgrade = (function () {
                 // Play sound
                 gold_pick_sound.get();
             }
-
+            TANK.upgrade.refresh();
             return upgrades[key].level;
         }
     };
@@ -136,9 +154,9 @@ TANK.consumable = (function() {
             for (var i = 0; i < pups.length; i++) {
                 if (pups[i].slug === 'gold-coin' || pups[i].slug === 'ammo') continue; // exclude gold coin and ammo powerups
                 box += '<div id="c-powerup-' + i + '" class="consumable-box" style="display: inline-block; position: relative; width: 48px; text-align: center; cursor: pointer;" onmouseover="$(this).children(\'.consumable-hover-box\').show(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 1)" onmouseout="$(this).children(\'.consumable-hover-box\').hide(); $(this).children(\'.buyout-multiplier\').css(\'opacity\', 0)">\
-                            <img style="position: relative; z-index: 1;" class="flip-vertical" src="' + PowerUpImages.get(pups[i].slug).src + '" onclick="TANK.consumable.buy(\'' + pups[i].slug + '\', $(this).parent().children(\'.buyout-multiplier\').val());" />\
+                            <img style="position: relative; z-index: 1;" class="item-img flip-vertical" src="' + PowerUpImages.get(pups[i].slug).src + '" onclick="TANK.consumable.buy(\'' + pups[i].slug + '\', $(this).parent().children(\'.buyout-multiplier\').val());" />\
                             <span class="consumable-cost" style="background: url(images/ui/dollar-small.png) left center no-repeat; padding-left: 14px; color: yellow;">' + pups[i].cost + '</span>\
-                            <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;">\
+                            <input class="buyout-multiplier" type="number" value="1" style="width: 100%; opacity: 0;" oninput="TANK.consumable.refresh()">\
                             <div class="consumable-hover-box" style="position: absolute; z-index: 10; width: 220px; background-color: #000; border: 1px dotted #fff; text-align: left; padding: 12px; font-size: 13px; display: none; color: #fff;">\
                                 <b>' + UTIL.toTitleCase(pups[i].slug.split('-').join(' ')) + '</b>\
                                 <p>' + pups[i].desc + '</p>\
@@ -147,6 +165,24 @@ TANK.consumable = (function() {
             }
             $('#consumables_container').html(box);
             TANK.consumable.updateInventoryHUD();
+        },
+        refresh : function () {
+            /* Desaturate upgrades that are above current gold. */
+            var ub = document.getElementsByClassName('consumable-box');
+            for (var i = 0; i < ub.length; i++) {
+                // get cost
+                var cost = parseInt(ub[i].getElementsByClassName('consumable-cost')[0].innerHTML);
+                // get multiplier
+                var multiplier = parseInt(ub[i].getElementsByClassName('buyout-multiplier')[0].value);
+                // determine if item is affordable
+                var affordable = player.config.coins > cost * multiplier;
+                if (affordable) {
+                    $(ub[i].getElementsByClassName('item-img')[0]).removeClass('desaturate');
+                }
+                else {
+                    $(ub[i].getElementsByClassName('item-img')[0]).addClass('desaturate');
+                }
+            }
         },
         buy : function (key, size) {
             /* Acquire the consumable for a fixed cost. */
@@ -197,6 +233,7 @@ TANK.consumable = (function() {
                 gold_pick_sound.get();
                 
                 TANK.consumable.updateInventoryHUD();
+                TANK.consumable.refresh();
                 return stackSize;
             }
         },
