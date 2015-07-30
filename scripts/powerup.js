@@ -35,7 +35,7 @@ var PUP = (function() {
         {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 2000 percent damage.'},
         {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'},
         {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'},
-        {slug: 'pocket-tank', cost: 1000, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'}
+        {slug: 'pocket-tank', cost: 100, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'}
     ];
     
     my.getSlug = function (slug) {
