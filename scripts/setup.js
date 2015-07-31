@@ -195,6 +195,7 @@ UTIL.asset.queue('image', ['impact-stone-6', 'images/spritesheets/impact-stone-6
 UTIL.asset.queue('image', ['impact-stone-7', 'images/spritesheets/impact-stone-7.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['halo-5', 'images/spritesheets/halo-5.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['flash-burst-5', 'images/spritesheets/flash-burst-5.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['blast-wave-1', 'images/spritesheets/blast-wave-1.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();

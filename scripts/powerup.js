@@ -1792,8 +1792,10 @@ var PUP = (function() {
                         return; // bounce once only please
                     }
 
-                    var retProj = new Projectile({speed: p.speed, damage: p.damage, critChance: p.critChance, angle: (p.angle + 180) % 360, oX: p.oX, oY: p.oY, srcId: p.srcId, srcType: 'ricochet'});
+                    var retProj = new Projectile({speed: p.speed * 2, damage: p.damage, critChance: p.critChance, angle: (p.angle + 180) % 360, oX: p.lastPos.x, oY: p.lastPos.y, srcId: p.srcId, srcType: 'ricochet'});
                     projectiles.push(retProj);
+                    // show return vfx
+                    visualeffects.push(new VisualEffect({name: 'return-wave', oX: p.oX, oY: p.oY, width: 128, height: 128, angle: Math.random() * 360, scaleW: 64, scaleH: 64,  maxCols: 4, maxRows: 3, framesTillUpdate: 0, loop: false, spriteSheet: 'blast-wave-1'}));
                 };
                 tank.events.listen('hit', returnHit);
                 
