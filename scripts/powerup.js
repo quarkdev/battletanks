@@ -2236,7 +2236,7 @@ var PUP = (function() {
             if (!active) {
                 tank.regen = {};
                 tank.regen.stacks = 1;
-                tank.regen.rate = tank.config.maxHealth * 0.0005 * tank.regen.stacks; // 5% per second
+                tank.regen.rate = tank.config.maxHealth * 0.001 * tank.regen.stacks; // 10% per second
 
                 tank.regen.interval = new Interval(function () {
                     tank.config.health = tank.config.maxHealth - tank.config.health < tank.regen.rate ? tank.config.maxHealth : tank.config.health + tank.regen.rate;
