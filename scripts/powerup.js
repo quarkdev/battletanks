@@ -223,7 +223,7 @@ var PUP = (function() {
     }
     
     function EMPShell(x, y) {
-        /* Causes the target tank's shield to burst dealing additional damage. */
+        /* Causes the target tank's shield to burst dealing additional damage. Also causes tanks to emit an EMP on death. */
         this.config = {
             name    : 'EMP Shell',
             slug    : 'emp-shell',
@@ -260,11 +260,31 @@ var PUP = (function() {
                 };
                 empShell.id = 'empShell';
                 
+                var empWave = function (projectile) {
+                    projectile.events.listen('tank_hit', function () {
+                        var t = projectile.config.objectHit.obj;
+                        if (typeof t.empwflagged === 'undefined') {
+                            t.empwflagged = true;
+                            t.events.listen('death', function () {
+                                // start implosion animation
+                                visualeffects.push(new VisualEffect({name: 'emp-implode', oX: t.config.oX, oY: t.config.oY, width: 256, height: 256, scaleW: t.config.width * 3, scaleH: t.config.width * 3, maxCols: 8, maxRows: 7, framesTillUpdate: 0, loop: false, spriteSheet: 'implode-3', endCallBack: function () {
+                                    // start wave animation
+                                    visualeffects.push(new VisualEffect({name: 'emp-wave', oX: t.config.oX, oY: t.config.oY, width: 128, height: 128, scaleW: t.config.width * 6, scaleH: t.config.width * 6, maxCols: 4, maxRows: 2, framesTillUpdate: 0, loop: false, spriteSheet: 'blast-wave-2'}));
+                                    // deal damage to nearby tanks based on total energy
+                                    UTIL.dealAreaDamage({x: t.config.oX, y: t.config.oY}, t.config.maxShield, 200);
+                                }}));
+                            });
+                        }
+                    });
+                };
+                empWave.id = 'empWave';
+                
                 tank.projectile_mods.push(empShell);
+                tank.projectile_mods.push(empWave);
                 
                 tank.ems.timeout = new Timer(function () {
                     delete tank.ems;
-                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'empShell'; });
+                    tank.projectile_mods = tank.projectile_mods.filter(function (item) { return item.id != 'empShell' && item.id != 'empWave'; });
                 }, 6000);
             }
             else {

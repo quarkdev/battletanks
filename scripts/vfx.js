@@ -56,6 +56,7 @@ VisualEffect.prototype.end = function () {
     /* End effect animation by setting active to false. */
     this.config.endCallBack();
     this.config.active = false;
+    GLOBALS.flags.clean.visualeffects++;
 };
 
 VisualEffect.prototype.updatePos = function (x, y) {
@@ -93,8 +94,7 @@ VisualEffect.prototype.update = function () {
                     vx.paused = true;
                 }
                 else {
-                    vx.active = false;
-                    GLOBALS.flags.clean.visualeffects++;
+                    this.end();
                 }
             }
             else {
