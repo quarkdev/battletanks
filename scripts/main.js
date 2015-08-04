@@ -531,9 +531,16 @@ var main = function () {
             waveCountDown = new Interval(function () {
                 cd_timesRun += 1;
                 
-                $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
+                if (wave_delay-cd_timesRun > 1) {
+                    $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds... <span style="pointer-events: all; cursor: pointer;" onclick="UTIL.skipWaveCountDown();">SKIP</span>');
+                }
+                else {
+                    $('#text-overlay-top').html('Wave ' + (GLOBALS.map.wave.current + 1) + ' in ' + (wave_delay-cd_timesRun) + ' seconds...');
+                }
                 
-                if (cd_timesRun === wave_delay - 1) {
+                if (cd_timesRun === wave_delay - 1 || cd_skip) {
+                    cd_timesRun = wave_delay - 1; // jump timer (in case of skip)
+                    cd_skip = false;
                     wave_start_sound.get();
                     
                     // replenish health and ammo on start of wave
@@ -557,6 +564,8 @@ var main = function () {
                 else if (cd_timesRun >= wave_delay) {
                     waveCountDown.clear();
                     cd_timesRun = 0;
+                    
+                    spawn_timer.timeout();
                     
                     $('#text-overlay-top').html('Wave: ' + (GLOBALS.map.wave.current));
                 }
@@ -598,7 +607,7 @@ var main = function () {
                 // update current wave
                 GLOBALS.map.wave.current += 1;
                 GLOBALS.map.wave.spawning = false;
-            }, parseInt(waves[GLOBALS.map.wave.current][2]) * 1000);
+            }, parseInt((waves[GLOBALS.map.wave.current][2]) * 1000) + 1000);
         }
         else {
             // no more unspawned waves, declare victory!

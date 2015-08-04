@@ -135,3 +135,4 @@ var hp = document.getElementById('current-health');
 
 var waveCountDown = null;
 var spawn_timer = null;
+var cd_skip = false;

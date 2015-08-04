@@ -131,6 +131,10 @@ var UTIL = (function () {
         return true;
     };
     
+    my.skipWaveCountDown = function () {
+        cd_skip = true;
+    };
+    
     my.getHighScores = function () {
         $.ajax({  
             type: "POST",  
