@@ -768,7 +768,7 @@ var PUP = (function() {
                     
                     // increase damage per distance travelled
                     var _dt = UTIL.geometry.getDistanceBetweenPoints(p.lastPos, {x: p.oX, y: p.oY}); // distance travelled per frame
-                    var _dmult = 0.5;
+                    var _dmult = 1.5;
                     
                     _dt = isNaN(_dt) ? 0 : _dt; // quick-fix: swallow non-number calcs
                     
