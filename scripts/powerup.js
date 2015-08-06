@@ -20,7 +20,7 @@ var PUP = (function() {
         {slug: 'concussive-shell', cost: 40, desc: 'Applies a stacking slow on hit. Slow amount is 5 per hit.'},
         {slug: 'fireworks', cost: 10, desc: 'Projectiles explode into multiple smaller projectiles after reaching 440-560 units terminus distance. Each lesser projectile deal 25% of the host projectile\'s damage.'},
         {slug: 'chain', cost: 30, desc: 'Projectiles jump to nearby tanks. Maximum jump distance is 300 units. Maximum of 4 jumps.'},
-        {slug: 'gold-coin', cost: 50, desc: 'Gives 250 gold.'},
+        {slug: 'gold-coin', cost: 50, desc: 'Gives 500 gold.'},
         {slug: 'increased-critical-chance', cost: 40, desc: 'Increases critical hit chance by 5% per stack.'},
         {slug: 'kinetic-shell', cost: 30, desc: 'Adds a knockback to projectile attacks. Knockback distance is (projectile speed / 100) units, resets movement velocities to zero on hit.'},
         {slug: 'time-dilation-sphere', cost: 40, desc: 'Reduces the speed of projectiles within a 175-unit radius of the host tank by 90%.'},
@@ -1422,7 +1422,7 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            tank.config.coins += 250;
+            tank.config.coins += 500;
             gold_pick_sound.get();
         };
     }
