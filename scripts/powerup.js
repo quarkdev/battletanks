@@ -32,7 +32,7 @@ var PUP = (function() {
         {slug: 'carpet-bomb', cost: 100, desc: 'Calls a C-130 Carpet Bomber to lay waste on an area. Direction is relies on turret facing angle.'},
         {slug: 'armor-piercing-shell', cost: 100, desc: 'Each projectile hit reduces enemy armor by 5.'},
         {slug: 'high-explosive-shell', cost: 100, desc: 'Each projectile hit deals an extra Area-of-Effect damage.'},
-        {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 2000 percent damage.'},
+        {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 5000 percent damage.'},
         {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'},
         {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'},
         {slug: 'pocket-tank', cost: 100, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'}
@@ -355,7 +355,7 @@ var PUP = (function() {
     }
     
     function ChaosShell(x, y) {
-        /* has 10% chance to fire a chaos shell that deals 10%-2000% damage */
+        /* has 10% chance to fire a chaos shell that deals 10%-5000% damage */
         this.config = {
             name    : 'Chaos Shell',
             slug    : 'chaos-shell',
@@ -384,7 +384,7 @@ var PUP = (function() {
                     
                     if (p.active && p.csh_active) {
                         if (typeof p.cshvfx === 'undefined') {
-                            var random = Math.floor(Math.random() * (2000 - 10 + 1)) + 10;
+                            var random = Math.floor(Math.random() * (5000 - 10 + 1)) + 10;
                             p.damage = p.damage * (random / 100.0);
                             var size = 196 + ((random / 100) * 3);
                             p.cshvfx = new VisualEffect({name: 'csh-flare', oX: p.oX, oY: p.oY, width: 256, height: 256, scaleW: size, scaleH: size,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 'bflaree'});
