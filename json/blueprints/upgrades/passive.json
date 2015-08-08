@@ -102,7 +102,7 @@
 					"stats"       : [{"stat": "maxAmmo", "value": 10}],
 					"description" : "Adds 10 ammo",
 					"image"		  : "images/upgrades/ammunition.png",
-					"cost"        : 50,
+					"cost"        : 100,
 					"level"    	  : 0
 				},
 				"fRate" : {
