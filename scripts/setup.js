@@ -199,6 +199,7 @@ UTIL.asset.queue('image', ['blast-wave-1', 'images/spritesheets/blast-wave-1.png
 UTIL.asset.queue('image', ['implode-3', 'images/spritesheets/implode-3.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['big-burst-1', 'images/spritesheets/big-burst-1.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['blast-wave-2', 'images/spritesheets/blast-wave-2.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['coin-burst-1', 'images/spritesheets/coin-burst-1.png', SpriteSheetImages]);
 
 // BGM
 var backgroundMusic = new Audio();

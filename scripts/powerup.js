@@ -1423,6 +1423,7 @@ var PUP = (function() {
         
         this.use = function (tank) {
             tank.config.coins += 500;
+            visualeffects.push(new VisualEffect({name: 'coin-burst', oX: tank.config.oX, oY: tank.config.oY, width: 128, height: 128, scaleW: 128, scaleH: 128,  maxCols: 8, maxRows: 3, framesTillUpdate: 0, loop: false, spriteSheet: 'coin-burst-1'}));
             gold_pick_sound.get();
         };
     }
