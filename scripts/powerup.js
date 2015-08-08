@@ -700,7 +700,7 @@ var PUP = (function() {
                             break;
                     }
                     
-                    UTIL.dealAreaDamage(loc, 5000, 220, 90);
+                    UTIL.dealAreaDamage(loc, 8000, 220, 90);
                 };
 
                 if (dy.config.active && dy.armed) {
