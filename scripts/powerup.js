@@ -1454,7 +1454,7 @@ var PUP = (function() {
                     
                     // check if projectile has jumps left, add the max jumps if undefined
                     if (typeof projectile.jumps === 'undefined') {
-                        projectile.jumps = 4;
+                        projectile.jumps = 5;
                     }
                     else if (projectile.jumps === 0) {
                         return;
