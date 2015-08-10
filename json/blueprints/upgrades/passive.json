@@ -20,7 +20,7 @@
 					"image"		  : "images/upgrades/armor.png",
 					"cost"        : 100,
 					"level"    	  : 0
-				}
+				},
 				"fSpeed" : {
 					"name"        : "Forward Speed",
 					"id"          : "ifs",
