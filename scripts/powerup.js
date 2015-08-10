@@ -1768,8 +1768,14 @@ var PUP = (function() {
                     var _oX = args._oX;
                     var _oY = args._oY;
                     for (var i = 1; i < tank.ts_stack + 1; i++) {
-                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, critMultiplier: tank.config.critMultiplier, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
-                        projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, critMultiplier: tank.config.critMultiplier, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                        if (tank.config.ammo >= 2) {
+                            projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, critMultiplier: tank.config.critMultiplier, angle:  tank.config.tAngle - (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                            projectiles.push(new Projectile({mods: tank.projectile_mods, speed: tank.config.pSpeed, damage: tank.config.pDamage, critChance: tank.config.critChance, critMultiplier: tank.config.critMultiplier, angle:  tank.config.tAngle + (2 * i), oX: _oX, oY: _oY, srcId: tank.config.id, srcType: tank.config.name}));
+                            tank.config.ammo -= 2;
+                        }
+                        else {
+                            break;
+                        }
                     }
                 };
                 tank.events.listen('fire', multiShot);
