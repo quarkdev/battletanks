@@ -6,8 +6,8 @@
 				"maxHealth" : {
 					"name"        : "Max Health",
 					"id"          : "imh",
-					"stats"       : [{"stat": "maxHealth", "value": 100}],
-					"description" : "Increases max health by 100",
+					"stats"       : [{"stat": "maxHealth", "value": 20}],
+					"description" : "Increases max health by 20",
 					"image"		  : "images/upgrades/health.png",
 					"cost"        : 20,
 					"level"    	  : 0
@@ -15,29 +15,17 @@
 				"armor" : {
 					"name"        : "Armor",
 					"id"          : "iarmor",
-					"stats"       : [{"stat": "armor", "value": 25}],
-					"description" : "Increases armor by 25",
+					"stats"       : [{"stat": "armor", "value": 2}],
+					"description" : "Increases armor by 2",
 					"image"		  : "images/upgrades/armor.png",
 					"cost"        : 100,
 					"level"    	  : 0
-				},
-				"admArmor" : {
-					"name"        : "Adamantium Armor",
-					"id"          : "iarmor",
-					"stats"       : [
-						{"stat": "armor", "value": 300},
-						{"stat": "maxShield", "value": 100}
-					],
-					"description" : "Increases armor by 300 and maximum shield by 100",
-					"image"		  : "images/upgrades/adamantium-armor.png",
-					"cost"        : 100,
-					"level"    	  : 0
-				},
+				}
 				"fSpeed" : {
 					"name"        : "Forward Speed",
 					"id"          : "ifs",
-					"stats"       : [{"stat": "fSpeed", "value": 10}],
-					"description" : "Increases forward speed by 10",
+					"stats"       : [{"stat": "fSpeed", "value": 5}],
+					"description" : "Increases forward speed by 5",
 					"image"		  : "images/upgrades/forward-speed.png",
 					"cost"        : 50,
 					"level"    	  : 0
@@ -45,8 +33,8 @@
 				"rSpeed" : {
 					"name"        : "Reverse Speed",
 					"id"          : "irs",
-					"stats"       : [{"stat": "rSpeed", "value": 10}],
-					"description" : "Increases reverse speed by 10",
+					"stats"       : [{"stat": "rSpeed", "value": 5}],
+					"description" : "Increases reverse speed by 5",
 					"image"		  : "images/upgrades/reverse-speed.png",
 					"cost"        : 50,
 					"level"    	  : 0
@@ -54,8 +42,8 @@
 				"tSpeed" : {
 					"name"        : "Turret Traverse Speed",
 					"id"          : "itts",
-					"stats"       : [{"stat": "tSpeed", "value": 10}],
-					"description" : "Increases turret traverse speed by 10",
+					"stats"       : [{"stat": "tSpeed", "value": 5}],
+					"description" : "Increases turret traverse speed by 5",
 					"image"		  : "images/upgrades/turret-traverse-speed.png",
 					"cost"        : 50,
 					"level"    	  : 0
@@ -63,8 +51,8 @@
 				"sSpeed" : {
 					"name"        : "Chassis Turn Speed",
 					"id"          : "icts",
-					"stats"       : [{"stat": "sSpeed", "value": 10}],
-					"description" : "Increases chassis turn speed by 10",
+					"stats"       : [{"stat": "sSpeed", "value": 5}],
+					"description" : "Increases chassis turn speed by 5",
 					"image"		  : "images/upgrades/chassis-turn-speed.png",
 					"cost"        : 25,
 					"level"    	  : 0
@@ -72,8 +60,8 @@
 				"accel" : {
 					"name"        : "Acceleration",
 					"id"          : "iaccel",
-					"stats"       : [{"stat": "accel", "value": 15}],
-					"description" : "Increases acceleration by 15",
+					"stats"       : [{"stat": "accel", "value": 10}],
+					"description" : "Increases acceleration by 10",
 					"image"		  : "images/upgrades/acceleration.png",
 					"cost"        : 50,
 					"level"    	  : 0
@@ -81,17 +69,17 @@
 				"pSpeed" : {
 					"name"        : "Shell Velocity",
 					"id"          : "isv",
-					"stats"       : [{"stat": "pSpeed", "value": 50}],
-					"description" : "Increases shell velocity by 50",
+					"stats"       : [{"stat": "pSpeed", "value": 10}],
+					"description" : "Increases shell velocity by 10",
 					"image"		  : "images/upgrades/shell-velocity.png",
-					"cost"        : 40,
+					"cost"        : 20,
 					"level"    	  : 0
 				},
 				"pDamage" : {
 					"name"        : "Shell Damage",
 					"id"          : "isd",
-					"stats"       : [{"stat": "pDamage", "value": 25}],
-					"description" : "Increases shell damage by 25",
+					"stats"       : [{"stat": "pDamage", "value": 10}],
+					"description" : "Increases shell damage by 10",
 					"image"		  : "images/upgrades/shell-damage.png",
 					"cost"        : 20,
 					"level"    	  : 0
@@ -108,10 +96,10 @@
 				"fRate" : {
 					"name"        : "Firing Rate",
 					"id"          : "ifrate",
-					"stats"       : [{"stat": "fRate", "value": 0.2}],
-					"description" : "Increases firing rate by 0.2 shells/second",
+					"stats"       : [{"stat": "fRate", "value": 0.1}],
+					"description" : "Increases firing rate by 0.1 shells/second",
 					"image"		  : "images/upgrades/firing-rate.png",
-					"cost"        : 20,
+					"cost"        : 100,
 					"level"    	  : 0
 				},
 				"critChance" : {
@@ -126,19 +114,19 @@
 				"shield" : {
 					"name"        : "Increased Maximum Shield",
 					"id"          : "imsh",
-					"stats"       : [{"stat": "maxShield", "value": 500}],
-					"description" : "Increases maximum shield by 500",
+					"stats"       : [{"stat": "maxShield", "value": 100}],
+					"description" : "Increases maximum shield by 100",
 					"image"		  : "images/upgrades/shield.png",
-					"cost"        : 15,
+					"cost"        : 10,
 					"level"    	  : 0
 				},
 				"shieldRegen" : {
 					"name"        : "Increased Shield Regeneration",
 					"id"          : "ishr",
-					"stats"       : [{"stat": "shieldRegen", "value": 250}],
-					"description" : "Increases shield regen by 250/sec",
+					"stats"       : [{"stat": "shieldRegen", "value": 25}],
+					"description" : "Increases shield regen by 25/sec",
 					"image"		  : "images/upgrades/shield-regen.png",
-					"cost"        : 30,
+					"cost"        : 5,
 					"level"    	  : 0
 				}
 			}
