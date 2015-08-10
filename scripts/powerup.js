@@ -1966,6 +1966,8 @@ var PUP = (function() {
                 tank.config.rSpeed += 100;
                 tank.config.tSpeed += 40;
                 tank.config.sSpeed += 20;
+                tank.config.accel += 50;
+                tank.config.decel += 50;
                 
                 tank.h_active = true;
                 tank.h_stacks = 1;
@@ -1975,6 +1977,8 @@ var PUP = (function() {
                     tank.config.rSpeed -= 100 * tank.h_stacks;
                     tank.config.tSpeed -= 40 * tank.h_stacks;
                     tank.config.sSpeed -= 20 * tank.h_stacks;
+                    tank.config.accel -= 50 * tank.h_stacks;
+                    tank.config.decel -= 50 * tank.h_stacks;
                     
                     delete tank.h_active;
                     delete tank.h_stacks;
@@ -1986,6 +1990,8 @@ var PUP = (function() {
                 tank.config.rSpeed += 100;
                 tank.config.tSpeed += 40;
                 tank.config.sSpeed += 20;
+                tank.config.accel += 50;
+                tank.config.decel += 50;
                 tank.h_stacks++;
                 tank.h_timeout.extend(3000);
             }
