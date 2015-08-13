@@ -133,15 +133,17 @@ VisualEffect.prototype.draw = function (ctx, xView, yView) {
     ctx.translate(-(vx.oX - xView), -(vx.oY - yView));
 };
 
-VisualEffect.prototype.drawCustom = function (ctx, xView, yView, coords, scale) {
+VisualEffect.prototype.drawScaled = function (ctx, xView, yView, scale) {
     var vx = this.config;
     var animation = this.animation;
 
     if (!vx.active) { return; }
 
     var angleInRadians = vx.angle * Math.PI/180;
+    var x = vx.oX * scale;
+    var y = vx.oY * scale;
 
-    ctx.translate(coords.x, coords.y);
+    ctx.translate(x, y);
     ctx.rotate(angleInRadians);
     ctx.drawImage(
         vx.spriteSheet,
@@ -154,5 +156,5 @@ VisualEffect.prototype.drawCustom = function (ctx, xView, yView, coords, scale) 
         vx.scaleH * scale
     );
     ctx.rotate(-angleInRadians);
-    ctx.translate(-coords.x, -coords.y);
+    ctx.translate(-x, -y);
 };
