@@ -586,7 +586,7 @@ var PUP = (function() {
                     var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
                     
                     // deal damage to tanks/destructibles/proc chainExplode dummies
-                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1800, 320, 90);
+                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1800, 200, 90);
                     
                     // show explosion flash
                     var flash = new Light({
@@ -601,7 +601,7 @@ var PUP = (function() {
                     lights.push(flash);
                     
                     // push explosion vfx
-                    visualeffects.push(new VisualEffect({name: 'explosion', oX: P[0], oY: P[1], width: 256, height: 256, angle: a, scaleW: r, scaleH: r,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'sq-exp'}));
+                    visualeffects.push(new VisualEffect({name: 'explosion', oX: P[0], oY: P[1], width: 256, height: 256, angle: a, scaleW: r, scaleH: r,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, vom: true, spriteSheet: 'sq-exp'}));
                 
                     // Play sound effect [random]
                     var roll = Math.floor(Math.random() * 3) + 1;
@@ -1106,6 +1106,7 @@ var PUP = (function() {
                 maxRows: 4,
                 framesTillUpdate: 1,
                 loop: true,
+                vom: true,
                 spriteSheet: 'calldown'
             });
             
