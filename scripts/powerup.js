@@ -578,15 +578,15 @@ var PUP = (function() {
                         dy.dbcd = false;
                     }, 50);
                 
-                    // cause an explosion anywhere within 80 radius
+                    // cause an explosion anywhere within 160 radius
                     var r = 128 + (Math.random() * 64)
                     var a = Math.random() * 360;
-                    var d = Math.random() * 80;
+                    var d = Math.random() * 160;
                     var offset = UTIL.geometry.getPointAtAngleFrom(dy.config.oX, dy.config.oY, dy.config.angle + 180, 100);
                     var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
                     
                     // deal damage to tanks/destructibles/proc chainExplode dummies
-                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1800, 180, 90);
+                    UTIL.dealAreaDamage({x: P[0], y: P[1]}, 1800, 320, 90);
                     
                     // show explosion flash
                     var flash = new Light({
