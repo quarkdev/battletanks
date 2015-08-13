@@ -24,6 +24,7 @@ function VisualEffect(specs) {
         resettable        : typeof specs.resettable === 'undefined' ? false : specs.resettable,
         paused            : typeof specs.paused === 'undefined' ? false : specs.paused,
         endCallBack       : specs.endCallBack || function () {},
+        vom               : typeof specs.vom === 'undefined' ? false : specs.vom, // visible on minimap
         spriteSheet       : SpriteSheetImages.get(specs.spriteSheet)
     };
     
@@ -130,4 +131,28 @@ VisualEffect.prototype.draw = function (ctx, xView, yView) {
     );
     ctx.rotate(-angleInRadians);
     ctx.translate(-(vx.oX - xView), -(vx.oY - yView));
+};
+
+VisualEffect.prototype.drawCustom = function (ctx, xView, yView, coords, scale) {
+    var vx = this.config;
+    var animation = this.animation;
+
+    if (!vx.active) { return; }
+
+    var angleInRadians = vx.angle * Math.PI/180;
+
+    ctx.translate(coords.x, coords.y);
+    ctx.rotate(angleInRadians);
+    ctx.drawImage(
+        vx.spriteSheet,
+        animation.csc * vx.width,
+        animation.csr * vx.height,
+        vx.width, vx.height,
+        -(vx._scaleW * scale),
+        -(vx._scaleH * scale),
+        vx.scaleW * scale,
+        vx.scaleH * scale
+    );
+    ctx.rotate(-angleInRadians);
+    ctx.translate(-coords.x, -coords.y);
 };

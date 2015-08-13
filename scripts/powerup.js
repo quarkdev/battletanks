@@ -638,7 +638,7 @@ var PUP = (function() {
             dummy.dbcd = false;
             dummy.bombingStarted = false;
             dummy.config.angle = tank.config.tAngle;
-            dummy.vfx = new VisualEffect({name: 'c130-sil', oX: dummy.config.oX, oY: dummy.config.oY, width: 365, height: 533, angle: tank.config.tAngle, scaleW: 365, scaleH: 533,  maxCols: 1, maxRows: 1, framesTillUpdate: 0, loop: false, paused: true, spriteSheet: 'c130-sil'});
+            dummy.vfx = new VisualEffect({name: 'c130-sil', oX: dummy.config.oX, oY: dummy.config.oY, width: 365, height: 533, angle: tank.config.tAngle, scaleW: 365, scaleH: 533,  maxCols: 1, maxRows: 1, framesTillUpdate: 0, loop: false, paused: true, vom: true, spriteSheet: 'c130-sil'});
             visualeffects.push(dummy.vfx);
             c130_sound.get();
             

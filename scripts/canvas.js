@@ -67,6 +67,13 @@ var CANVAS = (function () {
     my.drawVisualEffects = function (context, xView, yView) {
         for (var i = 0; i < visualeffects.length; i++) {
             visualeffects[i].draw(context, xView, yView);
+            if (visualeffects[i].config.vom) {
+                var coords = {
+                    x: visualeffects[i].config.oX * 0.125,
+                    y: visualeffects[i].config.oY * 0.125
+                }
+                visualeffects[i].drawCustom(minimapCtx, xView, yView, coords, 0.125);
+            }
         }
     };
     my.drawLights = function (context, xView, yView) {
