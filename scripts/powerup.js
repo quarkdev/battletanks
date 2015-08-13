@@ -569,8 +569,8 @@ var PUP = (function() {
         
             // aux fn drop bomb
             var dropBomb = function (dy) {
-                // check if distance to target < 400 units and drop is not on cooldown
-                if (UTIL.geometry.getDistanceBetweenPoints(dy.target, {x: dy.config.oX, y: dy.config.oY}) < 400 && !dy.dbcd) {
+                // check if distance to target < 500 units and drop is not on cooldown
+                if (UTIL.geometry.getDistanceBetweenPoints(dy.target, {x: dy.config.oX, y: dy.config.oY}) < 500 && !dy.dbcd) {
                     dy.dbcd = true; // drop bomb cooldown
                     dy.bombingStarted = true;
                 
@@ -626,7 +626,7 @@ var PUP = (function() {
         
             // create dummy object just outside the tank's vision
             var _P = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, tank.config.tAngle + 180, 1200); // b2 bomber point of origin
-            var _T = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, tank.config.tAngle, 800); // b2 bomber target 800 units ahead
+            var _T = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, tank.config.tAngle, 1000); // b2 bomber target 1000 units ahead
              
             var dummy = new Dummy({name: 'c130-carpet-bomber', mods: [fly, dropBomb], oX: _P[0], oY: _P[1]});
             
