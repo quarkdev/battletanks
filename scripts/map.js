@@ -608,6 +608,7 @@ var MAP = (function () {
             maxRows: 4,
             framesTillUpdate: 0,
             loop: true,
+            vom: true,
             spriteSheet: 'wf-2'
         });
         visualeffects.push(vfx);
