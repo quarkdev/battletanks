@@ -73,6 +73,7 @@
     <div id="combat-log"></div>
     <div id="editor-ui"></div>
 </div>
+<p id="mozfox-msg" style="display: none; color: rgba(255, 255, 255, 0.5); text-align: center;">Jittery rendering? Try using Mozilla Firefox. <span onclick="this.parentNode.style.display='none';" style="cursor: pointer">[hide]</span></p>
 
 <!-- Ok, let's start unloading our Javascript payload -->
 <script type="text/javascript" src="scripts/init.js"></script>
