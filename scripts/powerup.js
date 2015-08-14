@@ -1140,7 +1140,9 @@ var PUP = (function() {
                     radius      : 2000,
                     intensity   : 1
                 });
-
+                
+                UTIL.dealAreaDamage(loc, 20000, 10000, 800);
+                
                 lights.push(flash);
                 lights.push(core);
                 
@@ -1154,8 +1156,6 @@ var PUP = (function() {
                 new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.05; }, 450);
                 new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.05; }, 475);
                 new Timer(function () { flash.config.active = false; core.config.active = false; }, 500);
-                
-                UTIL.dealAreaDamage(loc, 20000, 10000, 800);
             }, 6000);
         };
     }
