@@ -579,7 +579,7 @@ var PUP = (function() {
                     }, 50);
                 
                     // cause an explosion anywhere within 160 radius
-                    var r = 128 + (Math.random() * 64)
+                    var r = 128 + (Math.random() * 84)
                     var a = Math.random() * 360;
                     var d = Math.random() * 160;
                     var offset = UTIL.geometry.getPointAtAngleFrom(dy.config.oX, dy.config.oY, dy.config.angle + 180, 100);
