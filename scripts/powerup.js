@@ -1141,20 +1141,19 @@ var PUP = (function() {
                     intensity   : 1
                 });
                 
-                UTIL.dealAreaDamage(loc, 20000, 10000, 800);
+                UTIL.dealAreaDamage(loc, 20000, 5000, 800);
                 
                 lights.push(flash);
                 lights.push(core);
                 
-                visualeffects.push(new VisualEffect({name: 'nuke-blast', oX: loc.x, oY: loc.y, width: 256, height: 256, scaleW: 2048, scaleH: 2048, maxCols: 16, maxRows: 14, framesTillUpdate: 0, loop: false, vom: true, spriteSheet: 'ms-exp-4'}));
+                visualeffects.push(new VisualEffect({name: 'nuke-blast', oX: loc.x, oY: loc.y, width: 256, height: 256, scaleW: 4096, scaleH: 4096, maxCols: 16, maxRows: 14, framesTillUpdate: 0, loop: false, vom: true, spriteSheet: 'ms-exp-4'}));
 
-                new Timer(function () { flash.config.radius = 4500; flash.config.intensity -= 0.2; }, 100);
-                new Timer(function () { flash.config.radius = 4000; flash.config.intensity -= 0.2; }, 200);
-                new Timer(function () { flash.config.radius = 3500; flash.config.intensity -= 0.2; }, 300);
+                new Timer(function () { flash.config.radius = 4500; flash.config.intensity -= 0.05; }, 100);
+                new Timer(function () { flash.config.radius = 4000; flash.config.intensity -= 0.05; }, 200);
+                new Timer(function () { flash.config.radius = 3500; flash.config.intensity -= 0.05; }, 300);
                 new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.05; }, 400);
-                new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.05; }, 425);
-                new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.05; }, 450);
-                new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.05; }, 475);
+                new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.20; }, 425);
+                new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.20; }, 450);
                 new Timer(function () { flash.config.active = false; core.config.active = false; }, 500);
             }, 6000);
         };
