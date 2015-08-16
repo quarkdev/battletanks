@@ -252,6 +252,7 @@ function gameKeyDownEvent(e) {
         if (ui_location === 'game' && $('#consumables-screen').css('display') === 'none' && GLOBALS.botCount === 0) {
             // show consumables screen only in-game and when there are no active bots
             pause();
+            TANK.consumable.refresh();
             $('#consumables-screen').show();
         }
     }

@@ -27,8 +27,8 @@
         <div id="shop-ui" class="hud">
             <span style="font-weight: bold;">SHOP</span>
             <hr>
-            <span class="shop-btn" onclick="pause();$('#upgrades-screen').show();">Upgrades</span><br>
-            <span class="shop-btn" onclick="pause();$('#consumables-screen').show();">Consumables</span>
+            <span class="shop-btn" onclick="pause();TANK.upgrade.refresh();$('#upgrades-screen').show();">Upgrades</span><br>
+            <span class="shop-btn" onclick="pause();TANK.consumable.refresh();$('#consumables-screen').show();">Consumables</span>
         </div>
         <div id="text-overlay-center" class="hud"></div>
         <div id="text-overlay-top" class="hud"></div>
