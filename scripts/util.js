@@ -96,6 +96,13 @@ var UTIL = (function () {
         music.currentTime = 0;
     };
     
+    my.changeMusic = function (music, url) {
+        music.pause();
+        music.currentTime = 0;
+        music.src = url;
+        my.playMusic(music);
+    };
+    
     my.pauseMusic = function (music) {
         music.pause();
     };
