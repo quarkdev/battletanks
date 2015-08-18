@@ -1458,6 +1458,21 @@ function ImageLibrary() {
 }
 
 /*
+* Public Object: TextureLibrary
+*/
+function TextureLibrary() {
+    this.shelf = {};
+    
+    this.add = function (id, url, onSuccess, onError) {
+    
+    };
+    
+    this.get = function (id) {
+    
+    };
+}
+
+/*
 * Public Object: SoundPool
 *
 * A sound pool constructor
