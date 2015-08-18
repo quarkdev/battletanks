@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="css/chat.css">
 <script src="scripts/jquery-2.1.0.min.js"></script>
 <script src="scripts/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="scripts/three.min.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 </head>
 <body>

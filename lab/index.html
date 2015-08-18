@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<title>My first Three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.min.js"></script>
+		<script>
+			// Our Javascript will go here.
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+            
+            //var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            //var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+            //var cube = new THREE.Mesh( geometry, material );
+            //scene.add( cube );
+            var map = THREE.ImageUtils.loadTexture( "img/chassis.png" );
+            var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
+            var sprite = new THREE.Sprite( material );
+            scene.add( sprite );
+            
+            var map1 = THREE.ImageUtils.loadTexture( "img/recoil.png" );
+            map1.wrapS = THREE.RepeatWrapping;
+            map1.wrapT = THREE.RepeatWrapping;
+            map1.repeat.set(1/4, 1/4);
+            var material1 = new THREE.SpriteMaterial( { map: map1, color: 0xffffff, fog: true } );
+            var sprite1 = new THREE.Sprite( material1 );
+            sprite1.translateZ( 0.1 );
+            scene.add( sprite1 );
+
+            camera.position.z = 5;
+            
+            var _cx = {r: 0, c: 0};
+            
+            function render() {
+                requestAnimationFrame( render );
+                if (_cx.r === 3 && _cx.c === 3) {
+                    _cx.r = 0;
+                    _cx.c = 0;
+                }
+                else if (_cx.c === 3 && _cx.r < 3) {
+                    _cx.r++;
+                    _cx.c = 0;
+                }
+                else {
+                    _cx.c++;
+                }
+                
+                map1.offset.x = _cx.c * 0.25;
+                map1.offset.y = _cx.r * 0.25;
+                material1.rotation += Math.PI/360;
+                renderer.render( scene, camera );
+            }
+            render();
+		</script>
+	</body>
+</html>
