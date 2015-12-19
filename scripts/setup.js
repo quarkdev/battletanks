@@ -203,7 +203,9 @@ UTIL.asset.queue('image', ['blast-wave-2', 'images/spritesheets/blast-wave-2.png
 UTIL.asset.queue('image', ['coin-burst-1', 'images/spritesheets/coin-burst-1.png', SpriteSheetImages]);
 
 // BGM
+var menuBGM = new Audio();
 var backgroundMusic = new Audio();
+UTIL.asset.queue('audio', ['sounds/bgm/movin.mp3', true, 0.15, menuBGM]);
 UTIL.asset.queue('audio', ['sounds/bgm/6.mp3', true, 0.15, backgroundMusic]);
 
 // Sound effects

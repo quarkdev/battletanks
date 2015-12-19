@@ -9,6 +9,8 @@ var menu = function() {
 
     // show menu overlay
     $('#main-menu').fadeIn();
+    
+    UTIL.playMusic(menuBGM);
 };
 
 var pause = function () {
@@ -256,7 +258,7 @@ var update = function(delta) {
     // Update all visual effects.
     for (i = 0; i < visualeffects.length; i++) {
         if (visualeffects[i].config.active) {
-            visualeffects[i].update();
+            visualeffects[i].update(delta);
         }
     }
     
@@ -658,6 +660,7 @@ var start = function () {
         $('#progress').fadeOut();
         attachGameEventListeners();
         then = performance.now();
+        UTIL.stopMusic(menuBGM);
         UTIL.playMusic(backgroundMusic);
         renderExtern();
         minimapBGCtx.drawImage(terrain, 0, 0, WORLD_WIDTH / 8, WORLD_HEIGHT / 8);
@@ -712,8 +715,6 @@ var showGameOver = function (state) {
         default:
             break;
     }
-    
-    UTIL.pauseMusic(backgroundMusic);
 
     $('#ss-notif').hide();
     $('#submit-score').hide();

@@ -51,6 +51,18 @@ VisualEffect.prototype.nextSprite = function () {
     else {
         animation.csc++;
     }
+    
+    if (!vx.loop && animation.csr === vx.maxRowIndex && animation.csc === vx.maxColIndex) {
+        if (vx.resettable) {
+            animation.csr = 0;
+            animation.csc = 0;
+            animation.frames = 0;
+            vx.paused = true;
+        }
+        else {
+            this.end();
+        }
+    }
 };
 
 VisualEffect.prototype.end = function () {
@@ -74,12 +86,12 @@ VisualEffect.prototype.unPause = function () {
     this.config.paused = false;
 };
 
-VisualEffect.prototype.update = function () {
+VisualEffect.prototype.update = function (dt) {
     var vx = this.config;
     var animation = this.animation;
 
     if (!vx.active || vx.paused) { return; }
-    
+    /*
     if (animation.frames !== vx.framesTillUpdate) {
         animation.frames++;
     }
@@ -106,6 +118,12 @@ VisualEffect.prototype.update = function () {
             this.nextSprite();
         }
         
+    }*/
+    // delta-based animation
+
+    var frames = Math.ceil( dt * 30 );
+    for (var i = 0; i < frames; i++) {
+        this.nextSprite();
     }
 };
 
