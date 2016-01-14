@@ -684,12 +684,18 @@ var PUP = (function() {
                         dy.dmcd = false;
                     }, 50);
                 
-                    // cause an explosion anywhere within 160 radius
+                    // srop a mine anywhere within 160 radius
                     var r = 128 + (Math.random() * 84)
                     var a = Math.random() * 360;
                     var d = Math.random() * 160;
                     var offset = UTIL.geometry.getPointAtAngleFrom(dy.config.oX, dy.config.oY, dy.config.angle + 180, 100);
                     var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
+                    
+                    // check if drop point is outside world bounds
+                    if ( P[0] < 0 || P[0] > WORLD_WIDTH || P[1] < 0 || P[1] > WORLD_HEIGHT ) {
+                        // drop point out of bounds, so we cant drop a mine here
+                        return;
+                    }
                     
                     // drop mine
                     var mirror_tank = jQuery.extend( true, {}, tank );

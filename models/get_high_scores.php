@@ -7,7 +7,7 @@
         $conn_string = "host=ec2-174-129-1-179.compute-1.amazonaws.com port=5432 dbname=d6e1frjth87pfd user=cizbwdxggeralb password=Vxbh0ac32QujliNdiV74wBe11N sslmode=require";
         $conn = pg_connect($conn_string);
         
-        $query = "SELECT * FROM high_score ORDER BY score DESC LIMIT 10";
+        $query = "SELECT * FROM high_score ORDER BY score DESC LIMIT 15";
         $result = pg_query($conn, $query);
         
         while ($row = pg_fetch_object($result)) {
@@ -17,7 +17,8 @@
                     "player" => $row->player,
                     "map"    => $row->map,
                     "wave"   => $row->wave,
-                    "score"  => $row->score
+                    "score"  => $row->score,
+                    "timestamp" => $row->hsdate
                 )
             );
         }
