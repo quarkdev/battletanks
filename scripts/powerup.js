@@ -35,7 +35,8 @@ var PUP = (function() {
         {slug: 'chaos-shell', cost: 100, desc: 'Has 10% chance to fire a projectile that deals 10 - 5000 percent damage.'},
         {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'},
         {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'},
-        {slug: 'pocket-tank', cost: 100, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'}
+        {slug: 'pocket-tank', cost: 100, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'},
+        {slug: 'cluster-mine', cost: 100, desc: 'Call a C-130 Hercules to drop mines in an area.'}
     ];
     
     my.getSlug = function (slug) {
@@ -118,6 +119,8 @@ var PUP = (function() {
                 return new EMPShell(x, y);
             case 'pocket-tank':
                 return new PocketTank(x, y);
+            case 'cluster-mine':
+                return new ClusterMine(x, y);
             default:
                 break;
         }
@@ -637,6 +640,82 @@ var PUP = (function() {
             };
             
             dummy.dbcd = false;
+            dummy.bombingStarted = false;
+            dummy.config.angle = tank.config.tAngle;
+            dummy.vfx = new VisualEffect({name: 'c130-sil', oX: dummy.config.oX, oY: dummy.config.oY, width: 365, height: 533, angle: tank.config.tAngle, scaleW: 365, scaleH: 533,  maxCols: 1, maxRows: 1, framesTillUpdate: 0, loop: false, paused: true, vom: true, spriteSheet: 'c130-sil'});
+            visualeffects.push(dummy.vfx);
+            c130_sound.get();
+            
+            dummies.push(dummy);
+        };
+    }
+    
+    function ClusterMine(x, y) {
+        /* call a cluster-mine drop on an area. */
+        this.config = {
+            name    : 'Cluster Mine',
+            slug    : 'cluster-mine',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('cluster-mine')
+        };
+        
+        this.use = function (tank) {
+            // aux fn fly
+            var fly = function (dy) {
+                var d = 360 * dy.delta;
+                var P = UTIL.geometry.getPointAtAngleFrom(dy.config.oX, dy.config.oY, dy.config.angle, d);
+                
+                // move dummy
+                dy.config.oX = dy.vfx.config.oX = P[0];
+                dy.config.oY = dy.vfx.config.oY = P[1];
+            };
+        
+            // aux fn drop mine
+            var dropMine = function (dy) {
+                // check if distance to target < 500 units and drop is not on cooldown
+                if (UTIL.geometry.getDistanceBetweenPoints(dy.target, {x: dy.config.oX, y: dy.config.oY}) < 500 && !dy.dmcd) {
+                    dy.dmcd = true; // drop mine cooldown
+                    dy.bombingStarted = true;
+                
+                    new Timer(function () {
+                        dy.dmcd = false;
+                    }, 50);
+                
+                    // cause an explosion anywhere within 160 radius
+                    var r = 128 + (Math.random() * 84)
+                    var a = Math.random() * 360;
+                    var d = Math.random() * 160;
+                    var offset = UTIL.geometry.getPointAtAngleFrom(dy.config.oX, dy.config.oY, dy.config.angle + 180, 100);
+                    var P = UTIL.geometry.getPointAtAngleFrom(offset[0], offset[1], a, d);
+                    
+                    // drop mine
+                    var mirror_tank = jQuery.extend( true, {}, tank );
+                    mirror_tank.config.oX = P[0];
+                    mirror_tank.config.oY = P[1];
+                    PUP.create( 'mine', P[0], P[1] ).use( mirror_tank );
+                }
+                else if (UTIL.geometry.getDistanceBetweenPoints(dy.target, {x: dy.config.oX, y: dy.config.oY}) > 1200 && dy.bombingStarted) {
+                    // destroy dummy
+                    dy.vfx.end();
+                    dy.config.active = false;
+                }
+            };
+        
+            // create dummy object just outside the tank's vision
+            var _P = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, tank.config.tAngle + 180, 1200); // b2 bomber point of origin
+            var _T = UTIL.geometry.getPointAtAngleFrom(tank.config.oX, tank.config.oY, tank.config.tAngle, 1000); // b2 bomber target 1000 units ahead
+             
+            var dummy = new Dummy({name: 'c130-carpet-bomber', mods: [fly, dropMine], oX: _P[0], oY: _P[1]});
+            
+            dummy.target = {
+                x: _T[0],
+                y: _T[1]
+            };
+            
+            dummy.dmcd = false;
             dummy.bombingStarted = false;
             dummy.config.angle = tank.config.tAngle;
             dummy.vfx = new VisualEffect({name: 'c130-sil', oX: dummy.config.oX, oY: dummy.config.oY, width: 365, height: 533, angle: tank.config.tAngle, scaleW: 365, scaleH: 533,  maxCols: 1, maxRows: 1, framesTillUpdate: 0, loop: false, paused: true, vom: true, spriteSheet: 'c130-sil'});
