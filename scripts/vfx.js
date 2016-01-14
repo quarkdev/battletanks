@@ -25,6 +25,7 @@ function VisualEffect(specs) {
         paused            : typeof specs.paused === 'undefined' ? false : specs.paused,
         endCallBack       : specs.endCallBack || function () {},
         vom               : typeof specs.vom === 'undefined' ? false : specs.vom, // visible on minimap
+        fps               : specs.fps || 30,
         spriteSheet       : SpriteSheetImages.get(specs.spriteSheet)
     };
     
@@ -121,7 +122,7 @@ VisualEffect.prototype.update = function (dt) {
     }*/
     // delta-based animation
 
-    var frames = Math.ceil( dt * 30 );
+    var frames = Math.ceil( dt * vx.fps );
     for (var i = 0; i < frames; i++) {
         this.nextSprite();
     }

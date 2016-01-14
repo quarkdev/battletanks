@@ -796,13 +796,30 @@ var PUP = (function() {
                     }
 
                     if (procced || dy.chainExplode) {
-                        // boom!
-                        my.explode();
-                        
-                        // disarm mine
-                        dy.vfx.end();
-                        dy.config.active = false;
-                        dy.armed = false;
+                        if (typeof dy.timed === 'undefined') {
+                            // boom! after 1 second
+                            dy.vfx.config.fps = 120; // increase blink speed
+                            dy.timed = true;
+                            var tte = dy.chainExplode ? 0 : 1000;
+                            dy.timer = new Timer(function() {
+                                my.explode();
+                                
+                                // disarm mine
+                                dy.vfx.end();
+                                dy.config.active = false;
+                                dy.armed = false;
+                            }, tte);
+                        }
+                        else if (dy.chainExplode) {
+                            // if procced by another explosion, explode immmediately
+                            dy.timer.clear();
+                            my.explode();
+                            
+                            // disarm mine
+                            dy.vfx.end();
+                            dy.config.active = false;
+                            dy.armed = false;
+                        }
                     }
                 }
                 
