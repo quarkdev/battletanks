@@ -789,8 +789,12 @@ var PUP = (function() {
                     UTIL.dealAreaDamage(loc, 8000, 220, 90);
                 };
 
-                if (dy.config.active && dy.armed) {
+                if ( dy.config.active && ( dy.armed || dy.chainExplode ) ) {
                     var procced = false;
+                    
+                    if ( dy.armtimer.config.active ) {
+                        dy.armtimer.timeout();
+                    }
 
                     for (var i = 0; i < tanks.length; i++) {
                         var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
@@ -802,11 +806,11 @@ var PUP = (function() {
                     }
 
                     if (procced || dy.chainExplode) {
+                        var tte = dy.chainExplode ? 25 : 1000;
                         if (typeof dy.timed === 'undefined') {
                             // boom! after 1 second
                             dy.vfx.config.fps = 120; // increase blink speed
                             dy.timed = true;
-                            var tte = dy.chainExplode ? 0 : 1000;
                             dy.timer = new Timer(function() {
                                 my.explode();
                                 
@@ -816,15 +820,18 @@ var PUP = (function() {
                                 dy.armed = false;
                             }, tte);
                         }
-                        else if (dy.chainExplode) {
+                        else if (dy.chainExplode && typeof dy.timerc === 'undefined') {
                             // if procced by another explosion, explode immmediately
                             dy.timer.clear();
-                            my.explode();
-                            
-                            // disarm mine
-                            dy.vfx.end();
-                            dy.config.active = false;
-                            dy.armed = false;
+                            dy.timed = true;
+                            dy.timerc = new Timer(function() {
+                                my.explode();
+                                
+                                // disarm mine
+                                dy.vfx.end();
+                                dy.config.active = false;
+                                dy.armed = false;
+                            }, tte);
                         }
                     }
                 }
@@ -841,7 +848,7 @@ var PUP = (function() {
             visualeffects.push(dummy.vfx);
 
             // activate landmine after 3 seconds
-            new Timer(function () {
+            dummy.armtimer = new Timer(function () {
                 dummy.vfx.unPause();
                 dummy.armed = true;
             }, 3000);

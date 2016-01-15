@@ -483,12 +483,10 @@ var UTIL = (function () {
         for (var r = 0; r < dummies.length; r++) {
             if (dummies[r].config.active) {
                 if (dummies[r].config.explosive) {
-                    if (dummies[r].armed) {
-                        // check distance
-                        var d = UTIL.geometry.getDistanceBetweenPoints({x: dummies[r].config.oX, y: dummies[r].config.oY}, epicenter);
-                        if (d < chainRadius) {
-                            dummies[r].chainExplode = true;
-                        }
+                    // check distance
+                    var d = UTIL.geometry.getDistanceBetweenPoints({x: dummies[r].config.oX, y: dummies[r].config.oY}, epicenter);
+                    if (d < chainRadius) {
+                        dummies[r].chainExplode = true;
                     }
                 }
             }
@@ -1673,8 +1671,10 @@ function Timer(callback, expire) {
     };
     
     m.timeout = function () {
-        m.config.cb();
-        m.clear();
+        if ( m.config.active ) {
+            m.config.cb();
+            m.clear();
+        }
     };
     
     m.getRemaining = function () {
