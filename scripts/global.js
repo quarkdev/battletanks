@@ -59,6 +59,7 @@ var GLOBALS = (function () {
             current : null,
             wave    : {
                 current : 0,
+                current_ : 0,
                 enemyCount : 0,
                 spawning : false
             },

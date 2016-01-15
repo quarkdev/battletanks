@@ -380,7 +380,7 @@ var UTIL = (function () {
                 ajax   : true,
                 map    : maps[GLOBALS.map.index].name,
                 player : playername,
-                wave   : GLOBALS.map.wave.current,
+                wave   : GLOBALS.map.wave.current_,
                 score  : GLOBALS.statistics.lastScore
             };
             //UTIL.post('/models/submit_score.php', data);

@@ -49,6 +49,7 @@ var LOAD = (function () {
             
             // Setup waves, initialize
             GLOBALS.map.wave.current = 0;
+            GLOBALS.map.wave.current_ = 0;
             GLOBALS.map.wave.enemyCount = 0;
             GLOBALS.map.wave.spawning = false;
             GLOBALS.map.postgame = false;

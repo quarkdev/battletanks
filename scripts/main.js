@@ -98,7 +98,14 @@ var update = function(delta) {
                 // check if target is not active
                 if (!bots[i][6].config.active) {
                     // acquire target
-                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                    if ( player.config.active ) {
+                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                    }
+                    else {
+                        // free-for-all once player is dead
+                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [], []);
+                    }
+                    
                     if (bots[i][6] === -1) {
                         bots[i][6] = null;
                     }
@@ -106,7 +113,13 @@ var update = function(delta) {
             }
             else {
                 // acquire target
-                bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                if ( player.config.active ) {
+                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                }
+                else {
+                    // free-for-all once player is dead
+                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [], []);
+                }
                 if (bots[i][6] === -1) {
                     bots[i][6] = null;
                 }
@@ -518,9 +531,11 @@ var main = function () {
                     opacity: 1,
                     fontSize: '26px'
                 }, 300, function () {
-                    tanks[0].config.coins += bonusGold;
-                    $('#gold-count').html(tanks[0].config.coins);
-                    gold_pick_sound.get();
+                    if ( player.config.active ) {
+                        tanks[0].config.coins += bonusGold;
+                        $('#gold-count').html(tanks[0].config.coins);
+                        gold_pick_sound.get();
+                    }
                     $(this).delay(2000).animate({
                         opacity: 0
                     }, 300);
@@ -608,6 +623,10 @@ var main = function () {
                 }
                 // update current wave
                 GLOBALS.map.wave.current += 1;
+                if (player.config.active) {
+                    // for endgame records
+                    GLOBALS.map.wave.current_ += 1;
+                }
                 GLOBALS.map.wave.spawning = false;
             }, parseInt((waves[GLOBALS.map.wave.current][2]) * 1000) + 1000);
         }
@@ -696,14 +715,18 @@ var startMapEditor = function () {
     editor();
 };
 
-var showGameOver = function (state) {
-    // stop the main interval
+var cleartwe = function () {
     cancelAnimationFrame(mainAnimation);
-    var gk_div = document.getElementById('gos-kills');
-    
     UTIL.timer.killAll();
     UTIL.stopMusic(backgroundMusic);
     LOAD.worker.terminateAll();
+};
+
+var showGameOver = function (state) {
+    var gk_div = document.getElementById('gos-kills');
+    
+    // stop the main interval
+    //cleartwe();
     
     switch (state) {
         case 'victory':

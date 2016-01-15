@@ -949,11 +949,13 @@ Tank.prototype.death = function () {
 
     if (t.faction !== 'friendly' && t.control === 'computer') {
         GLOBALS.map.wave.enemyCount -= 1;
-        STAT.inc('total_tanks_destroyed', 1);
-        STAT.inc('td_' + t.name, 1);
-        hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
-        tanks[0].config.coins += t.coins;
-        $('#gold-count').html(tanks[0].config.coins);
+        if ( player.config.active ) {
+            STAT.inc('total_tanks_destroyed', 1);
+            STAT.inc('td_' + t.name, 1);
+            hud_kill_count.innerHTML = STAT.get('total_tanks_destroyed');
+            tanks[0].config.coins += t.coins;
+            $('#gold-count').html(tanks[0].config.coins);
+        }
     }
     
     /* has a chance to spawn a random powerup on death */
