@@ -522,7 +522,9 @@ var main = function () {
 
                 var bonusGold = Math.ceil(tanks[0].config.coins * 0.1);
                 
-                $('#shop-ui').show();
+                if ( player.config.active ) {
+                    $('#shop-ui').show();
+                }
 
                 wave_cleared_sound.get();
                 $('#text-overlay-center').css('font-size', '42px');
@@ -543,7 +545,7 @@ var main = function () {
             }
             
             // inform player that wave is spawning after spawn wait time
-            var wave_delay = parseInt(waves[GLOBALS.map.wave.current][2]);
+            var wave_delay = player.config.active ? parseInt(waves[GLOBALS.map.wave.current][2]) : 0;
             var cd_timesRun = 0;
             waveCountDown = new Interval(function () {
                 cd_timesRun += 1;
@@ -561,9 +563,11 @@ var main = function () {
                     wave_start_sound.get();
                     
                     // replenish health and ammo on start of wave
-                    tanks[0].config.health = tanks[0].config.maxHealth;
-                    tanks[0].config.ammo = tanks[0].config.maxAmmo;
-                    $('#ammo-count').html(player.config.ammo);
+                    if ( player.config.active ) {
+                        tanks[0].config.health = tanks[0].config.maxHealth;
+                        tanks[0].config.ammo = tanks[0].config.maxAmmo;
+                        $('#ammo-count').html(player.config.ammo);
+                    }
                     renderExtern();
                     $('#shop-ui').hide();
                     
