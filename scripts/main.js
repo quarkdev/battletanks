@@ -27,6 +27,7 @@ var pause = function () {
         cancelAnimationFrame(editorAnimation);
     }
     else if (ui_location === 'post_game') {
+        $('#game-over-screen').show();
         return;
     }
 
@@ -103,7 +104,7 @@ var update = function(delta) {
                     }
                     else {
                         // free-for-all once player is dead
-                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [], []);
+                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], []);
                     }
                     
                     if (bots[i][6] === -1) {
@@ -118,8 +119,9 @@ var update = function(delta) {
                 }
                 else {
                     // free-for-all once player is dead
-                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [], []);
+                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], []);
                 }
+                
                 if (bots[i][6] === -1) {
                     bots[i][6] = null;
                 }

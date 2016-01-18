@@ -361,6 +361,22 @@ var UTIL = (function () {
         return nearest_tank;
     };
     
+    my.followNextTank = function () {
+        /* Follow (camera) a random active tank. */
+        var target = player;
+        
+        for (var i = 0; i < 1000; i++) {
+            var r = Math.floor(Math.random() * ((tanks.length-1) - 0 + 1)) + 0;
+            if (tanks[r].config.active) {
+                target = tanks[r];
+                camera.follow(target, canvas.width/2, canvas.height/2);
+                break;
+            }
+        }
+
+        return target.config.id;;
+    };
+    
     my.submitScore = function () {
         // check input field for name
         var playername = $('#playername').val().trim();

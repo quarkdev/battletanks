@@ -275,6 +275,9 @@ function gameKeyDownEvent(e) {
                 break;
         }
     }
+    else if (e.keyCode === 70) {
+        UTIL.followNextTank();
+    }
     else {
         keysDown[e.keyCode] = true;
     }
