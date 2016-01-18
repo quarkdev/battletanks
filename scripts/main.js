@@ -100,11 +100,11 @@ var update = function(delta) {
                 if (!bots[i][6].config.active) {
                     // acquire target
                     if ( player.config.active ) {
-                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.id], [bots[i][0].config.faction]);
                     }
                     else {
                         // free-for-all once player is dead
-                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], []);
+                        bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.id], []);
                     }
                     
                     if (bots[i][6] === -1) {
@@ -115,11 +115,11 @@ var update = function(delta) {
             else {
                 // acquire target
                 if ( player.config.active ) {
-                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], [bots[i][0].config.faction]);
+                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.id], [bots[i][0].config.faction]);
                 }
                 else {
                     // free-for-all once player is dead
-                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.srcId], []);
+                    bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.id], []);
                 }
                 
                 if (bots[i][6] === -1) {
