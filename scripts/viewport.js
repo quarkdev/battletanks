@@ -85,6 +85,9 @@ window.Viewport = {};
         this.followed = gameObject; 
         this.xDeadZone = xDeadZone;
         this.yDeadZone = yDeadZone;
+        
+        // mark gameobject as 'chased'
+        chase_target = gameObject;
     }                   
 
     Camera.prototype.update = function()

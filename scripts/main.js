@@ -353,6 +353,15 @@ var update = function(delta) {
         GLOBALS.flags.clean.tanks = 0;
     }
     
+    if (!player.config.active && !chase_target.config.active && !chase_target_seek) {
+        // wait a short while before shifting camera to another tank
+        chase_target_seek = true;
+        new Timer(function() {
+            UTIL.followNextTank();
+            chase_target_seek = false;
+        }, 1500);
+    }
+    
     camera.update();
 };
 

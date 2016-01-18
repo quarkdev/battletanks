@@ -108,6 +108,8 @@ var mainAnimation = null;
 var editorAnimation = null;
 
 var camera = null;
+var chase_target = {};
+var chase_target_seek = false;
 
 var ui_location = null; // menu, game, editor
 

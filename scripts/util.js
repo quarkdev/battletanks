@@ -367,7 +367,7 @@ var UTIL = (function () {
         
         for (var i = 0; i < 1000; i++) {
             var r = Math.floor(Math.random() * ((tanks.length-1) - 0 + 1)) + 0;
-            if (tanks[r].config.active) {
+            if (tanks[r].config.active && tanks[r].config.id !== camera.followed.config.id) {
                 target = tanks[r];
                 camera.follow(target, canvas.width/2, canvas.height/2);
                 break;
