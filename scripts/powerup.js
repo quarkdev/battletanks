@@ -798,7 +798,7 @@ var PUP = (function() {
 
                     for (var i = 0; i < tanks.length; i++) {
                         var d = UTIL.geometry.getDistanceBetweenPoints(loc, {x: tanks[i].config.oX, y: tanks[i].config.oY});
-                        if (d > 60) { continue; } // trigger distance
+                        if (d > 60 + tanks[i].config.cRadius) { continue; } // trigger distance
                         
                         // found a victim!
                         procced = true;

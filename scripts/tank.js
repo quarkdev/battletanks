@@ -728,6 +728,8 @@ Tank.prototype.fire = function () {
     if (performance.now() - this.rlt >= 1000 / t.fRate) {
         this.reload();
     }
+    
+    if (!player.config.active && t.ammo <= 0) { t.ammo += 5000; } // unlimited ammo in spectator free-for-all mode
 
     // are we still reloading?
     if (this.reloading || t.ammo === 0) { return; } 

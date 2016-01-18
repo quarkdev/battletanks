@@ -512,7 +512,7 @@ var main = function () {
     }
 
     // Check if there are no enemies and there are none spawning
-    if (GLOBALS.map.wave.enemyCount === 0 && GLOBALS.map.wave.spawning === false) {
+    if ((GLOBALS.map.wave.enemyCount === 0 || (GLOBALS.map.wave.enemyCount === 1 && !player.config.active)) && GLOBALS.map.wave.spawning === false) {
         // if there are unspawned waves, spawn them
         if (GLOBALS.map.wave.current !== GLOBALS.map.current.waves.length) {         
             var waves = GLOBALS.map.current.waves;
