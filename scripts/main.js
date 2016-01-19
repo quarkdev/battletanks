@@ -130,7 +130,7 @@ var update = function(delta) {
             // randomize the chance for bot to ask for LOS
             var askForLos = 15 > Math.random() * 100;
             // calculate the approximate time it takes for the projectile to reach target's current position
-            var _t = bots[i][6] == null ? 0 : UTIL.geometry.getDistanceBetweenPoints({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: bots[i][6].config.oX, y: bots[i][6].config.oY}) / bots[i][0].config.pSpeed;;
+            var _t = bots[i][6] == null ? 0 : Math.abs(UTIL.geometry.getDistanceBetweenPoints({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: bots[i][6].config.oX, y: bots[i][6].config.oY}) - bots[i][0].config.tWidth/2) / bots[i][0].config.pSpeed;;
             
             if (askForLos && bots[i][6] !== null) {
                 // send message to pathfinder asking for LOS calculation
