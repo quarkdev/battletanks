@@ -897,6 +897,30 @@ UTIL.geometry = (function() {
     };
     
     /*
+    * Public Method: getProjectedPointInTime
+    *
+    * Finds the projected point (time-based) from an origin point
+    *
+    * Parameters:
+    *   O - the origin point
+    *   d - the direction of the terminal point
+    *   s - the speed in units/second (at which the point is moving)
+    *   t - the time used to calculate the future terminal point
+    *
+    * Returns:
+    *   a point object (terminal point)
+    */
+    my.getProjectedPointInTime = function (O, d, s, t) {
+        // get the distance travelled
+        var dist = s * t;
+        
+        // get projected point
+        var P = my.getPointAtAngleFrom(O.x, O.y, d, dist);
+        
+        return {x: P[0], y: P[1]};
+    };
+    
+    /*
     * Private Method: _getDistanceBetweenPoints
     *
     * Finds the distance between two points

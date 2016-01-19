@@ -129,12 +129,14 @@ var update = function(delta) {
         
             // randomize the chance for bot to ask for LOS
             var askForLos = 15 > Math.random() * 100;
+            // calculate the approximate time it takes for the projectile to reach target's current position
+            var _t = bots[i][6] == null ? 0 : UTIL.geometry.getDistanceBetweenPoints({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: bots[i][6].config.oX, y: bots[i][6].config.oY}) / bots[i][0].config.pSpeed;;
             
             if (askForLos && bots[i][6] !== null) {
                 // send message to pathfinder asking for LOS calculation
                 query = {};
                 query.sender = bot_id;
-                query.playerLoc = {x: bots[i][6].config.oX, y: bots[i][6].config.oY};
+                query.playerLoc = UTIL.geometry.getProjectedPointInTime({x: bots[i][6].config.oX, y: bots[i][6].config.oY}, bots[i][6].config.hAngle, Math.max(bots[i][6].velocity.forward, bots[i][6].velocity.reverse), _t);//{x: bots[i][6].config.oX, y: bots[i][6].config.oY};
                 query.botLoc = {x: bots[i][0].config.oX, y: bots[i][0].config.oY};
                 query.lastKnown = {x: bots[i][4].x, y: bots[i][4].y};
                 query.cmd = 'get_line_of_sight';
@@ -149,7 +151,7 @@ var update = function(delta) {
             if (bots[i][4].los && bots[i][6] !== null) {
                 if (bots[i][6].config.active) {
                     // Check if tank within firing angle (fire only @ less than 5 degree difference)
-                    if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, {x: bots[i][6].config.oX, y: bots[i][6].config.oY}) - bots[i][0].config.tAngle) < 5) {
+                    if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, UTIL.geometry.getProjectedPointInTime({x: bots[i][6].config.oX, y: bots[i][6].config.oY}, bots[i][6].config.hAngle, Math.max(bots[i][6].velocity.forward, bots[i][6].velocity.reverse), _t)) - bots[i][0].config.tAngle) < 5) {
                         bots[i][0].fire();
                     }
                 }
