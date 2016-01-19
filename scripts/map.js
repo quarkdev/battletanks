@@ -616,9 +616,11 @@ var MAP = (function () {
         new Timer(function () {
             // end the spawn vortex animation
             vfx.end();
+            
+            var faction = player.config.active ? 'hostile' : enemyId; // one-tank faction in free-for-all mode
         
             // spawn enemy at starting point
-            var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'computer', x, y);
+            var enemy = new Tank(BLUEPRINT.get(blueprint), enemyId, 'computer', x, y, faction);
             
             if (typeof mods !== 'undefined') {
                 for (var i = 0; i < mods.length; i++) {
