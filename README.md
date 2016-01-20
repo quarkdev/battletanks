@@ -6,7 +6,7 @@ local play only, websockets-based multiplayer to come
 
 |                               Key                              |     Command    |
 |----------------------------------------------------------------|----------------|
-|<kbd>&uarr;</kbd> or <kbd>A</kbd>                               |Accelerate      |
+|<kbd>&uarr;</kbd> or <kbd>W</kbd>                               |Accelerate      |
 |<kbd>&darr;</kbd> or <kbd>S</kbd>                               |Decelerate      |
 |<kbd>&larr;</kbd> or <kbd>A</kbd>                               |Turn Left       |
 |<kbd>&rarr;</kbd> or <kbd>D</kbd>                               |Turn Right      |
