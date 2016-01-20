@@ -256,21 +256,26 @@ function gameKeyDownEvent(e) {
             $('#consumables-screen').show();
         }
     }
-    else if (e.keyCode === 97 || e.keyCode === 98 || e.keyCode === 99 || e.keyCode === 100 || e.keyCode === 101) {
+    else if (e.keyCode === 97 || e.keyCode === 98 || e.keyCode === 99 || e.keyCode === 100 || e.keyCode === 101 || (e.keyCode > 48 && e.keyCode < 54)) {
         switch (e.keyCode) {
             case 97:
+            case 49:
                 TANK.consumable.use(0);
                 break;
             case 98:
+            case 50:
                 TANK.consumable.use(1);
                 break;
             case 99:
+            case 51:
                 TANK.consumable.use(2);
                 break;
             case 100:
+            case 52:
                 TANK.consumable.use(3);
                 break;
             case 101:
+            case 53:
                 TANK.consumable.use(4);
                 break;
         }

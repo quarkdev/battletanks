@@ -48,29 +48,29 @@ var reset = function() {
 var update = function(delta) {
     
     /* turn tank body to direction */
-    if (37 in keysDown) { // left arrow pressed
+    if (37 in keysDown || 65 in keysDown) { // left arrow pressed
         player.turnBody(delta, 'ccw');
     }
     
-    if (39 in keysDown) { // right arrow pressed
+    if (39 in keysDown || 68 in keysDown) { // right arrow pressed
         player.turnBody(delta, 'cw');
     }
     
-    if (!(37 in keysDown) && !(39 in keysDown)) { // no left/right arrows pressed
+    if (!(37 in keysDown) && !(39 in keysDown) && !(65 in keysDown) && !(68 in keysDown)) { // no left/right arrows pressed
         player.turnBody(delta, 'hold');
     }
     
-    if (38 in keysDown) { // up arrow pressed
+    if (38 in keysDown || 87 in keysDown) { // up arrow pressed
         player.move(delta, 'forward');
     }
-    else if (!(40 in keysDown)) {
+    else if (!(40 in keysDown) && !(83 in keysDown)) {
         player.move(delta, 'forward-stop');
     }
     
-    if (40 in keysDown) { // down arrow pressed
+    if (40 in keysDown || 83 in keysDown) { // down arrow pressed
         player.move(delta, 'reverse');
     }
-    else if (!(38 in keysDown)) {
+    else if (!(38 in keysDown) && !(87 in keysDown)) {
         player.move(delta, 'reverse-stop');
     }
     

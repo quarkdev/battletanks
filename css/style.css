@@ -787,6 +787,21 @@ button {
     position: relative;
 }
 
+.item-img,
+.ci-img {
+    transition: all 0.1s ease-out;
+}
+
+.item-img:hover,
+.ci-img:hover {
+    transform: scaleY(-1.2) scaleX(1.2);
+}
+
+.item-img:active,
+.ci-img:active {
+    transform: scaleY(-1.4) scaleX(1.4);
+}
+
 .ci-img {
     cursor: pointer;
     opacity: 0.75;
