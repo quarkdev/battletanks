@@ -1808,7 +1808,8 @@ function Interval(callback, delay, ticks) {
         ms     : 0,
         mx     : delay,
         tk     : {c: 0, m: ticks},
-        cb     : callback // called for each tick
+        cb     : callback, // called for each tick
+        noend  : false // invalidates ticks, interval doesnt end
     };
     
     m.pause = function () {
@@ -1853,7 +1854,7 @@ function Interval(callback, delay, ticks) {
             m.tick();
             m.config.ms = m.config.ms - m.config.mx; // add overflow to next delay
             
-            if (m.config.tk.c === m.config.tk.m) {
+            if (m.config.tk.c === m.config.tk.m && !m.config.noend) {
                 m.clear();
             }
         }

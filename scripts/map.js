@@ -670,6 +670,29 @@ var MAP = (function () {
         powerups.push(PUP.createRandom(x, y));
     };
     
+    my.grantPowerUps = function () {
+        /* Grants a random number of random powerups to a random number of computer-controlled tanks. */
+
+        for (var i = 0; i < tanks.length; i++) {
+            if (!tanks[i].config.active || tanks[i].config.control === 'player') {
+                // dead tanks don't need powerups
+                continue;
+            }
+            
+            var rollNum = Math.ceil(Math.random() * 5); // how many powerups to roll for the spawned tank
+            rollNum = rollNum > 5 ? 5 : rollNum; // cap of 5 powerups per tank
+            
+            for (var n = 0; n < rollNum; n++) {
+                var pup = PUP.createRandom(tanks[i].config.oX, tanks[i].config.oY);
+                
+                // illegal powerups
+                if (pup.config.slug !== 'nuke' && pup.config.slug !== 'mine') {
+                    pup.use(tanks[i]);
+                }
+            }
+        }
+    };
+    
     my.generateTerrain = function () {
         /* Randomly generates a terrain. */
         

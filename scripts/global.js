@@ -107,6 +107,8 @@ var bots = []; // [tank, movequeue, movelist_status, state] where movelist_statu
 var mainAnimation = null;
 var editorAnimation = null;
 
+var givePowerUpInterval = null;
+
 var camera = null;
 var chase_target = {};
 var chase_target_seek = false;
