@@ -428,6 +428,7 @@ var UTIL = (function () {
     
         // damage all tanks within radius units
         for (var n = 0; n < tanks.length; n++) {
+            if (!tanks[n].config.active) { continue; }
             var d = UTIL.geometry.getDistanceBetweenPoints(epicenter, {x: tanks[n].config.oX, y: tanks[n].config.oY}) - tanks[n].config.cRadius;
             d = d < 0 ? 0 : d;
             if (d > radius || isNaN(d)) { continue; }
@@ -471,6 +472,7 @@ var UTIL = (function () {
         
         // damage all destructibles within radius units
         for (var n = 0; n < destructibles.length; n++) {
+            if (!destructibles[n].config.active) { continue; }
             var d = UTIL.geometry.getDistanceBetweenPoints(epicenter, {x: destructibles[n].config.oX, y: destructibles[n].config.oY}) - destructibles[n].config.cRadius;
             d = d < 0 ? 0 : d;
             if (d > radius || isNaN(d)) { continue; }
