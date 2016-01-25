@@ -703,11 +703,12 @@ var start = function () {
         $('#gold-count').html(player.config.coins);
         GLOBALS.abotCount = 0; // reset ally bot count (also used as a uid)
         
+        /*
         givePowerUpInterval = new Interval(function() {
             MAP.grantPowerUps();
         }, 20000, 100);
         
-        givePowerUpInterval.config.noend = true;
+        givePowerUpInterval.config.noend = true;*/
         
         main();
     });
