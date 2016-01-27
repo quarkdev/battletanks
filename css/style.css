@@ -167,7 +167,7 @@ button {
     font-weight: bold;
     font-size: 24px;
     cursor: pointer;
-    transition: color 0.15s, background-color 0.15s;
+    transition: color 0.15s, background-color 0.15s, transform 0.2s;
 }
 
 .menu-txt {
@@ -302,6 +302,7 @@ button {
 }
 
 .menu-btn:hover {
+    transform: scale(0.9);
     color: #fff;
     background-color: #0058b3;
 }
