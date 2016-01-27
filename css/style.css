@@ -307,6 +307,10 @@ button {
     background-color: #0058b3;
 }
 
+.menu-btn:active {
+    transform: scale(0.7);
+}
+
 #canvas-ui-wrap {
     position: absolute;
     width: 1026px;
