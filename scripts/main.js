@@ -497,7 +497,6 @@ var main = function () {
     //renderExtern(); // render external objects
     
     then = now;
-    mainAnimation = requestAnimationFrame(main);
     
     // check player state
     if (!player.config.active) {
@@ -667,6 +666,8 @@ var main = function () {
             }
         }
     }
+    
+    mainAnimation = requestAnimationFrame(main);
 };
 
 // Faux Main (Map Editor)
