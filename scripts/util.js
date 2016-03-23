@@ -385,9 +385,8 @@ var UTIL = (function () {
             }
             shake_timer.clear();
         }
-        shake = true;
         shake_amount = amount;
-        shake_timer = new Timer(function() { shake = false; }, duration);
+        shake_timer = new Timer(function() {}, duration);
     };
     
     my.submitScore = function () {

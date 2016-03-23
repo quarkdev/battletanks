@@ -493,7 +493,7 @@ var main = function () {
     var delta = now - then;
     
     // update dummy cam coords
-    if ( shake ) {
+    if ( shake_timer && shake_timer.config.active ) {
         dummy_camera.x = tank_to_chase.x + (Math.floor(Math.random() * (shake_amount*2+1)) - shake_amount);
         dummy_camera.y = tank_to_chase.y + (Math.floor(Math.random() * (shake_amount*2+1)) - shake_amount);
     }
