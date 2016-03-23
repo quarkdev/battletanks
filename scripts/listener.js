@@ -119,7 +119,6 @@ function attachMenuEventListeners() {
         $('.overlay').hide();
         
         // load default settings
-        $('#set-screen-shake').val(GLOBALS.settings.screenShake);
         $('#set-ashp').val(GLOBALS.settings.ashp);
         
         $('#settings-screen').fadeIn();

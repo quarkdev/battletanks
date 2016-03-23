@@ -369,12 +369,25 @@ var UTIL = (function () {
             var r = Math.floor(Math.random() * ((tanks.length-1) - 0 + 1)) + 0;
             if (tanks[r].config.active && tanks[r].config.id !== camera.followed.config.id) {
                 target = tanks[r];
-                camera.follow(target, canvas.width/2, canvas.height/2);
+                tank_to_chase = target;
                 break;
             }
         }
 
         return target.config.id;;
+    };
+    
+    my.doScreenShake = function (amount, duration) {      
+        if ( shake_timer ) {
+            if ( shake_amount > amount && shake_timer.config.active ) {
+                // screenshakes of greater intensity are not overidden
+                return;
+            }
+            shake_timer.clear();
+        }
+        shake = true;
+        shake_amount = amount;
+        shake_timer = new Timer(function() { shake = false; }, duration);
     };
     
     my.submitScore = function () {

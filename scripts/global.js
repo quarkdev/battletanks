@@ -18,9 +18,6 @@ var GLOBALS = (function () {
         },
         settings : {
             set : function () {
-                // set screenshake
-                m.settings.screenShake = parseInt($('#set-screen-shake').val());
-                
                 // set always show hp/shield
                 m.settings.ashp = parseInt($('#set-ashp').val());
                 
@@ -36,7 +33,6 @@ var GLOBALS = (function () {
                 m.settings.sfxVol = _sfxv;
                 UTIL.setSfxVol(m.settings.sfxVol);
             },
-            screenShake : 0, // 0 = false, 1 = on critical hit only, 2 = on normal hit only, 3 = on both
             ashp : 1, // always show hitpoints and shield
             mscVol : 100,
             sfxVol : 100
@@ -141,3 +137,17 @@ var hp = document.getElementById('current-health');
 var waveCountDown = null;
 var spawn_timer = null;
 var cd_skip = false;
+
+var dummy_camera = {
+    config : {
+        active: true,
+    },
+    x: 0,
+    y: 0
+};
+
+var tank_to_chase = null;
+
+var shake_timer = null;
+var shake_amount = 0;
+var shake = false;

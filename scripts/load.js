@@ -40,7 +40,8 @@ var LOAD = (function () {
         
             // bind player controls
             player = tanks[0];
-            camera.follow(player, canvas.width/2, canvas.height/2);
+            camera.follow(dummy_camera, canvas.width/2, canvas.height/2);
+            tank_to_chase = player;
 
             // set player gold to 5000
             tanks[0].config.coins = 50000;

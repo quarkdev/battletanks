@@ -491,6 +491,17 @@ var renderExtern = function () {
 var main = function () {
     var now = performance.now();
     var delta = now - then;
+    
+    // update dummy cam coords
+    if ( shake ) {
+        dummy_camera.x = tank_to_chase.x + (Math.floor(Math.random() * (shake_amount*2+1)) - shake_amount);
+        dummy_camera.y = tank_to_chase.y + (Math.floor(Math.random() * (shake_amount*2+1)) - shake_amount);
+    }
+    else {
+        dummy_camera.x = tank_to_chase.x;
+        dummy_camera.y = tank_to_chase.y;
+    }
+    dummy_camera.config.active = tank_to_chase.config.active;
 
     update(delta / 1000);
     renderCanvas(); // render canvas objects

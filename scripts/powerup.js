@@ -787,6 +787,7 @@ var PUP = (function() {
                     }
                     
                     UTIL.dealAreaDamage(loc, 8000, 220, 90);
+                    UTIL.doScreenShake(14, 420);
                 };
 
                 if ( dy.config.active && ( dy.armed || dy.chainExplode ) ) {
@@ -1248,9 +1249,11 @@ var PUP = (function() {
                     oY          : loc.y,
                     radius      : 2000,
                     intensity   : 1
-                });
+                });             
                 
                 UTIL.dealAreaDamage(loc, 20000, 5000, 800);
+                UTIL.doScreenShake(20, 3500);
+                new Timer(function() {shake_amount=8;}, 2800);
                 
                 lights.push(flash);
                 lights.push(core);
