@@ -881,7 +881,7 @@ Tank.prototype.hit = function (projectile) {
         STAT.inc('total_damage_taken', end_damage);
     }
     
-    if (t.id === player.config.id && GLOBALS.settings.ssod) {
+    if (t.id === player.config.id && GLOBALS.settings.ssoh) {
         // screenshake effect on hit
         UTIL.doScreenShake(4, 150);
     }
