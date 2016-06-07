@@ -26,13 +26,13 @@ var GLOBALS = (function () {
                 m.settings.ssod = parseInt($('#set-ssod').val());
                 
                 // set music volume
-                var _mscv = parseInt($('#set-music-volume').val());
+                var _mscv = parseInt($('#set-mscVol').val());
                 _mscv = Math.max(0, Math.min(_mscv, 200)); // clamp between 0 and 200
                 m.settings.mscVol = _mscv;
                 UTIL.setMscVol(m.settings.mscVol);
                 
                 // set sfx volume
-                var _sfxv = parseInt($('#set-sfx-volume').val());
+                var _sfxv = parseInt($('#set-sfxVol').val());
                 _sfxv = Math.max(0, Math.min(_sfxv, 200)); // clamp between 0 and 200
                 m.settings.sfxVol = _sfxv;
                 UTIL.setSfxVol(m.settings.sfxVol);
@@ -55,12 +55,12 @@ var GLOBALS = (function () {
                         GLOBALS.settings[key] = from_ls[key];
                     }
                 }
-
+                
                 // update ui values
                 var _gs = GLOBALS.settings;
                 for (let key in _gs) {
                     if (!_gs.hasOwnProperty(key) || key == 'set' || key == 'getl') { continue; }
-                    $('#set-'+key).val(GLOBALS.settings[key]);
+                    $('#set-'+key).val(_gs[key]);
                 }
             },
             ashp : 1, // always show hitpoints and shield
