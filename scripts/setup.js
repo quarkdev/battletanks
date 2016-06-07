@@ -336,6 +336,9 @@ $(document).ready(function () {
             STAT.add('td_' + GLOBALS.tankSelection.blueprints[i].name);
         }
         
+        // Load settings from localstorage
+        GLOBALS.settings.getl();
+        
         // Load best scores to global
         var bst = localStorage.getItem('best_scores');
         if (bst !== null) {

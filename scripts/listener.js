@@ -118,9 +118,6 @@ function attachMenuEventListeners() {
     $('#settings').click(function () {
         $('.overlay').hide();
         
-        // load default settings
-        $('#set-ashp').val(GLOBALS.settings.ashp);
-        
         $('#settings-screen').fadeIn();
     });
 }

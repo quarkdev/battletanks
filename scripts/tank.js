@@ -881,7 +881,7 @@ Tank.prototype.hit = function (projectile) {
         STAT.inc('total_damage_taken', end_damage);
     }
     
-    if (t.id === player.config.id) {
+    if (t.id === player.config.id && GLOBALS.settings.ssod) {
         // screenshake effect on hit
         UTIL.doScreenShake(4, 150);
     }
@@ -927,8 +927,10 @@ Tank.prototype.death = function () {
 
     visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: t.explodeScale * 4, scaleH: t.explodeScale * 4,  maxCols: 16, maxRows: 5, framesTillUpdate: 0, loop: false, spriteSheet: 'ms-exp-6'}));
     
-    // screenshake effect everytime a tank explodes
-    UTIL.doScreenShake(t.cRadius, 400);
+    if ( GLOBALS.settings.ssod ) {
+        // screenshake effect everytime a tank explodes
+        UTIL.doScreenShake(t.cRadius, 400);
+    }
 
     // show explosion flash
     var flash = new Light({

@@ -21,6 +21,10 @@ var GLOBALS = (function () {
                 // set always show hp/shield
                 m.settings.ashp = parseInt($('#set-ashp').val());
                 
+                // set scrrenshake
+                m.settings.ssoh = parseInt($('#set-ssoh').val());
+                m.settings.ssod = parseInt($('#set-ssod').val());
+                
                 // set music volume
                 var _mscv = parseInt($('#set-music-volume').val());
                 _mscv = Math.max(0, Math.min(_mscv, 200)); // clamp between 0 and 200
@@ -32,8 +36,36 @@ var GLOBALS = (function () {
                 _sfxv = Math.max(0, Math.min(_sfxv, 200)); // clamp between 0 and 200
                 m.settings.sfxVol = _sfxv;
                 UTIL.setSfxVol(m.settings.sfxVol);
+                
+                // save to localstorage
+                function replacer(key, value) {
+                    if (key=='set') return undefined;
+                    else if (key=='getl') return undefined;
+                    else return value;
+                }
+                localStorage.setItem('bt_settings', JSON.stringify(GLOBALS.settings, replacer));
+            },
+            getl: function () {
+                // retrieve from localstorage
+                var _fls = localStorage.getItem('bt_settings');
+                if (_fls !== null) {
+                    var from_ls = JSON.parse(_fls);
+                    for (let key in from_ls) {
+                        if (!from_ls.hasOwnProperty(key)) { continue; }
+                        GLOBALS.settings[key] = from_ls[key];
+                    }
+                }
+
+                // update ui values
+                var _gs = GLOBALS.settings;
+                for (let key in _gs) {
+                    if (!_gs.hasOwnProperty(key) || key == 'set' || key == 'getl') { continue; }
+                    $('#set-'+key).val(GLOBALS.settings[key]);
+                }
             },
             ashp : 1, // always show hitpoints and shield
+            ssoh: 1,
+            ssod: 1,
             mscVol : 100,
             sfxVol : 100
         },
