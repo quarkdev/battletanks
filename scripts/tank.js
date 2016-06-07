@@ -857,9 +857,6 @@ Tank.prototype.hit = function (projectile) {
     var hit_explosion_scale = Math.floor((Math.random() * 15) + 10) + 32;
     hit_explosion_scale = critical_hit ? hit_explosion_scale * 2 : hit_explosion_scale;
     visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'sq-exp'}));
-
-    // screenshake effect on hit
-    UTIL.doScreenShake(4, 150);
     
     // show hit flash
     var flash = new Light({
@@ -885,13 +882,8 @@ Tank.prototype.hit = function (projectile) {
     }
     
     if (t.id === player.config.id) {
-        // screenshake effect everytime the player's tank gets hit
-        if (critical_hit && (GLOBALS.settings.screenShake == 1 || GLOBALS.settings.screenShake == 3)) {
-            $('#canvas-ui-wrap').stop().effect('shake', { distance: 6, times: 3 }, 100);
-        }
-        else if (GLOBALS.settings.screenShake == 2 || GLOBALS.settings.screenShake == 3) {
-            $('#canvas-ui-wrap').stop().effect('shake', { distance: 2, times: 1 }, 20);
-        }
+        // screenshake effect on hit
+        UTIL.doScreenShake(4, 150);
     }
     
     var oldHealth = t.health;
@@ -936,7 +928,7 @@ Tank.prototype.death = function () {
     visualeffects.push(new VisualEffect({name: 'explosion', oX: t.oX, oY: t.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: t.explodeScale * 4, scaleH: t.explodeScale * 4,  maxCols: 16, maxRows: 5, framesTillUpdate: 0, loop: false, spriteSheet: 'ms-exp-6'}));
     
     // screenshake effect everytime a tank explodes
-    UTIL.doScreenShake(12, 400);
+    UTIL.doScreenShake(t.cRadius, 400);
 
     // show explosion flash
     var flash = new Light({
