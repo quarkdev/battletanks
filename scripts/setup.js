@@ -2,6 +2,7 @@
 
 // Blueprints
 UTIL.asset.queue('blueprint', ['tanks', 'json/blueprints/tanks.json']);
+UTIL.asset.queue('blueprint', ['turrets', 'json/blueprints/turrets.json']);
 UTIL.asset.queue('blueprint', ['destructibles', 'json/blueprints/destructibles.json']);
 UTIL.asset.queue('blueprint', ['maps', 'json/blueprints/maps.json']);
 UTIL.asset.queue('blueprint', ['upgrades', 'json/blueprints/upgrades/passive.json']);

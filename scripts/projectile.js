@@ -167,6 +167,6 @@ Projectile.prototype._hasHitTank = function (tanks, x, y, lx, ly) {
 
 Projectile.prototype.death = function () {
     if (!this.config.active) { return; } // prevent multiple deaths
-    this.config.active = false;
     this.events.emit('death');
+    this.config.active = false;
 };

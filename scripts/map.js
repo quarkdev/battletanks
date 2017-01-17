@@ -639,7 +639,7 @@ var MAP = (function () {
             var _y = Math.floor(Math.random() * WORLD_HEIGHT);
             
             // add to bot pool (index 6 is the current target)
-            bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null]);
+            bots.push([enemy, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null, 3000]); // bots[i][7] is the time (in milliseconds) since bot was able to fire at a locked target
             
             // 50% chance for a spawned tank to use random powerups on spawn
             var rollPup = (Math.random() * 10) > 4;

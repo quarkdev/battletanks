@@ -97,7 +97,7 @@ var update = function(delta) {
             // check if we have a target
             if (bots[i][6] !== null) {
                 // check if target is not active
-                if (!bots[i][6].config.active) {
+                if (!bots[i][6].config.active || bots[i][7] > 500) {
                     // acquire target
                     if ( player.config.active ) {
                         bots[i][6] = UTIL.getNearestTank(bots[i][0].config.oX, bots[i][0].config.oY, [bots[i][0].config.id], [bots[i][0].config.faction]);
@@ -153,6 +153,7 @@ var update = function(delta) {
                     // Check if tank within firing angle (fire only @ less than 5 degree difference)
                     if (Math.abs(UTIL.geometry.getAngleBetweenLineAndHAxis({x: bots[i][0].config.oX, y: bots[i][0].config.oY}, UTIL.geometry.getProjectedPointInTime({x: bots[i][6].config.oX, y: bots[i][6].config.oY}, bots[i][6].config.hAngle, Math.max(bots[i][6].velocity.forward, bots[i][6].velocity.reverse), _t)) - bots[i][0].config.tAngle) < 5) {
                         bots[i][0].fire();
+                        bots[i][7] = 0;
                     }
                 }
             }
@@ -240,6 +241,7 @@ var update = function(delta) {
                 bots[i][5].worker.postMessage(JSON.stringify(msg));
             }
             
+            bots[i][7] += delta; // since last firing
             bots[i][0].frame(delta); // run all frame callbacks
         }
     }

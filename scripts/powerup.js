@@ -37,7 +37,7 @@ var PUP = (function() {
         {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'},
         {slug: 'pocket-tank', cost: 100, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'},
         {slug: 'cluster-mine', cost: 100, desc: 'Call a C-130 Hercules to drop mines in an area.'},
-        {slug: 'missile-turret', cost: 100, desc: 'Build a static defense turret that fires deadly tomahawk guided missiles.'}
+        {slug: 'missile-turret', cost: 200, desc: 'Build a static defense turret that fires deadly tomahawk guided missiles.'}
     ];
     
     my.getSlug = function (slug) {
@@ -181,7 +181,7 @@ var PUP = (function() {
             tanks.push(t);
             var _x = Math.floor(Math.random() * WORLD_WIDTH);
             var _y = Math.floor(Math.random() * WORLD_HEIGHT);
-            bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null]);
+            bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null, 3000]);
             LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tId, t.config.id, t.config.width);
             
             // apply unlimited homing missile powerup to tank dummy
@@ -195,17 +195,19 @@ var PUP = (function() {
             t.hes.timeout.clear();
             
             var fireMissile = function (projectile) {
-                // add thruster effect to projectile tail
-                if (typeof projectile.rt_vfx === 'undefined') {
-                    projectile.rt_vfx = new VisualEffect({name: 'missile-trail', oX: projectile.config.oX, oY: projectile.config.oY, width: 128, height: 128, angle: tank.config.tAngle + 90, scaleW: 96, scaleH: 96, maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 's-thruster'});
-                    visualeffects.push(projectile.rt_vfx);
-                    projectile.events.listen('death', function() { projectile.rt_vfx.end() });
-                }
-                else {
-                    // update the vfx angle
-                    projectile.rt_vfx.updateAngle(projectile.config.angle + 90);
-                    // update vfx position
-                    projectile.rt_vfx.updatePos(projectile.config.oX, projectile.config.oY);
+                if (projectile.config.active) {
+                    // add thruster effect to projectile tail
+                    if (typeof projectile.rt_vfx === 'undefined') {
+                        projectile.rt_vfx = new VisualEffect({name: 'missile-trail', oX: projectile.config.oX, oY: projectile.config.oY, width: 128, height: 128, angle: tank.config.tAngle + 90, scaleW: 96, scaleH: 96, maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 's-thruster'});
+                        visualeffects.push(projectile.rt_vfx);
+                        projectile.events.listen('death', function() { projectile.rt_vfx.end(); });
+                    }
+                    else {
+                        // update the vfx angle
+                        projectile.rt_vfx.updateAngle(projectile.config.angle + 90);
+                        // update vfx position
+                        projectile.rt_vfx.updatePos(projectile.config.oX, projectile.config.oY);
+                    }
                 }
             };
             fireMissile.id = 'fireMissile';
@@ -259,7 +261,7 @@ var PUP = (function() {
                 tanks.push(t);
                 var _x = Math.floor(Math.random() * WORLD_WIDTH);
                 var _y = Math.floor(Math.random() * WORLD_HEIGHT);
-                bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null]);
+                bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null, 3000]);
                 LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tId, t.config.id, t.config.width);
                 // spawned tanks explode when their spawner is destroyed
                 tank.events.listen('death', function () {
