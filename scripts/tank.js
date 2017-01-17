@@ -732,7 +732,7 @@ Tank.prototype.fire = function () {
     if (!player.config.active && t.ammo <= 0) { t.ammo += 5000; } // unlimited ammo in spectator free-for-all mode
 
     // are we still reloading?
-    if (this.reloading || t.ammo === 0) { return; } 
+    if (this.reloading || t.ammo === 0) { return; }
     
     if (t.control === 'player') {
         STAT.inc('total_shots_fired', 1);
@@ -855,8 +855,14 @@ Tank.prototype.hit = function (projectile) {
     
     // play visual effect
     var hit_explosion_scale = Math.floor((Math.random() * 15) + 10) + 32;
-    hit_explosion_scale = critical_hit ? hit_explosion_scale * 2 : hit_explosion_scale;
-    visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'sq-exp'}));
+    hit_explosion_scale = critical_hit ? hit_explosion_scale * 3 : hit_explosion_scale;
+    
+    if ( t.shield > 0 ) {
+        visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 128, height: 128, angle: Math.random() * 360, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 4, maxRows: 2, framesTillUpdate: 0, loop: false, spriteSheet: 'blast-wave-2'}));
+    }
+    else {
+        visualeffects.push(new VisualEffect({name: 'hit_explosion', oX: p.oX, oY: p.oY, width: 256, height: 256, angle: Math.random() * 360, scaleW: hit_explosion_scale, scaleH: hit_explosion_scale,  maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'sq-exp'}));
+    }
     
     // show hit flash
     var flash = new Light({

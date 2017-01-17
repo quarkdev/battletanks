@@ -37,6 +37,8 @@ UTIL.asset.queue('image', ['m4_sherman_turret_blue', 'images/tanks/m4_sherman_bl
 UTIL.asset.queue('image', ['m4_sherman_chassis_blue', 'images/tanks/m4_sherman_blue/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['heavy_turret', 'images/tanks/heavy/turret.png', TankImages]);
 UTIL.asset.queue('image', ['heavy_chassis', 'images/tanks/heavy/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['missile_turret_turret', 'images/tanks/missile_turret/turret.png', TankImages]);
+UTIL.asset.queue('image', ['missile_turret_chassis', 'images/tanks/missile_turret/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['widower_turret', 'images/tanks/widower/turret.png', TankImages]);
 UTIL.asset.queue('image', ['widower_chassis', 'images/tanks/widower/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['fafnir_turret', 'images/tanks/fafnir/turret.png', TankImages]);
@@ -91,6 +93,7 @@ UTIL.asset.queue('image', ['chaos-shell', 'images/powerups/chaos-shell.png', Pow
 UTIL.asset.queue('image', ['vampiric-shell', 'images/powerups/vampiric-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['emp-shell', 'images/powerups/emp-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['pocket-tank', 'images/powerups/pocket-tank.png', PowerUpImages]);
+UTIL.asset.queue('image', ['missile-turret', 'images/powerups/missile-turret.png', PowerUpImages]);
 UTIL.asset.queue('image', ['cluster-mine', 'images/powerups/cluster-mine.png', PowerUpImages]);
 
 // Destructible images
@@ -138,6 +141,7 @@ UTIL.asset.queue('image', ['volumetric_explosion', 'images/spritesheets/volumetr
 UTIL.asset.queue('image', ['volumetric_explosion_2', 'images/spritesheets/volumetric_explosion_2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['spawn_vortex', 'images/spritesheets/spawn_vortex.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['heavy_recoil', 'images/tanks/heavy/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['missile_turret_recoil', 'images/tanks/missile_turret/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['calldown', 'images/spritesheets/calldown.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['shield_glimpse', 'images/spritesheets/shield_glimpse.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['bar', 'images/spritesheets/bar.png', SpriteSheetImages]);
@@ -156,6 +160,7 @@ UTIL.asset.queue('image', ['ms-exp-7', 'images/spritesheets/multi-stage-explosio
 UTIL.asset.queue('image', ['cloud-exp-3', 'images/spritesheets/cloud-explosion-3.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['cloud-blast-4', 'images/spritesheets/cloud-blast-4.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['cloud-exp-2', 'images/spritesheets/cloud-explosion-2.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['cloud-explosion-7', 'images/spritesheets/cloud-explosion-7.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['shalo-2', 'images/spritesheets/smokey-halo-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['wf-2', 'images/spritesheets/whirlpool-flare-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['sq-exp', 'images/spritesheets/stylized-quick-explosion.png', SpriteSheetImages]);
@@ -202,6 +207,7 @@ UTIL.asset.queue('image', ['implode-3', 'images/spritesheets/implode-3.png', Spr
 UTIL.asset.queue('image', ['big-burst-1', 'images/spritesheets/big-burst-1.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['blast-wave-2', 'images/spritesheets/blast-wave-2.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['coin-burst-1', 'images/spritesheets/coin-burst-1.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['s-thruster', 'images/spritesheets/simple-thruster.png', SpriteSheetImages]);
 
 // BGM
 var menuBGM = new Audio();
@@ -302,6 +308,7 @@ MAP.addPlaceable('powerup', 'chaos-shell');
 MAP.addPlaceable('powerup', 'vampiric-shell');
 MAP.addPlaceable('powerup', 'emp-shell');
 MAP.addPlaceable('powerup', 'pocket-tank');
+MAP.addPlaceable('powerup', 'missile-turret');
 MAP.addPlaceable('powerup', 'cluster-mine');
 
 GLOBALS.map.index = 0;

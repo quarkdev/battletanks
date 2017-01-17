@@ -36,7 +36,8 @@ var PUP = (function() {
         {slug: 'vampiric-shell', cost: 500, desc: '1% of the shell damage is returned to the source as health.'},
         {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'},
         {slug: 'pocket-tank', cost: 100, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'},
-        {slug: 'cluster-mine', cost: 100, desc: 'Call a C-130 Hercules to drop mines in an area.'}
+        {slug: 'cluster-mine', cost: 100, desc: 'Call a C-130 Hercules to drop mines in an area.'},
+        {slug: 'missile-turret', cost: 100, desc: 'Build a static defense turret that fires deadly tomahawk guided missiles.'}
     ];
     
     my.getSlug = function (slug) {
@@ -121,6 +122,8 @@ var PUP = (function() {
                 return new PocketTank(x, y);
             case 'cluster-mine':
                 return new ClusterMine(x, y);
+            case 'missile-turret':
+                return new MissileTurret(x, y);
             default:
                 break;
         }
@@ -168,6 +171,46 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
+            var x = tank.config.oX;
+            var y = tank.config.oY;
+            // get turret blueprint
+            GLOBALS.abotCount++;
+            var bp = BLUEPRINT.get('missile_turret');
+            var tId = 'abot' + GLOBALS.abotCount;
+            var t = new Tank(bp, tId, 'computer_p', x, y, tank.config.faction);
+            tanks.push(t);
+            var _x = Math.floor(Math.random() * WORLD_WIDTH);
+            var _y = Math.floor(Math.random() * WORLD_HEIGHT);
+            bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null]);
+            LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tId, t.config.id, t.config.width);
+            
+            // apply unlimited homing missile powerup to tank dummy
+            var _pup = PUP.create('homing-missile', -32, -32);
+            _pup.use(t);
+            t.hm_timeout.clear(); // remove the expire time
+            
+            // apply unlimited HE shell powerup to tank dummy
+            var _pup_he = PUP.create('high-explosive-shell', -32, -32);
+            _pup_he.use(t);
+            t.hes.timeout.clear();
+            
+            var fireMissile = function (projectile) {
+                // add thruster effect to projectile tail
+                if (typeof projectile.rt_vfx === 'undefined') {
+                    projectile.rt_vfx = new VisualEffect({name: 'missile-trail', oX: projectile.config.oX, oY: projectile.config.oY, width: 128, height: 128, angle: tank.config.tAngle + 90, scaleW: 96, scaleH: 96, maxCols: 8, maxRows: 4, framesTillUpdate: 0, loop: true, spriteSheet: 's-thruster'});
+                    visualeffects.push(projectile.rt_vfx);
+                    projectile.events.listen('death', function() { projectile.rt_vfx.end() });
+                }
+                else {
+                    // update the vfx angle
+                    projectile.rt_vfx.updateAngle(projectile.config.angle + 90);
+                    // update vfx position
+                    projectile.rt_vfx.updatePos(projectile.config.oX, projectile.config.oY);
+                }
+            };
+            fireMissile.id = 'fireMissile';
+            
+            t.projectile_mods.push(fireMissile);
         }
     }
     
@@ -1473,12 +1516,12 @@ var PUP = (function() {
                 tank.inccc.stacks = 1;
 
                 tank.inccc.timeout = new Timer(function() {
-                    tank.config.critChance -= tank.inccc.stacks * 5;
+                    tank.config.critChance -= tank.inccc.stacks * 10;
                     delete tank.inccc;
                 }, 12000);
             }
             else {
-                tank.config.critChance += 5;
+                tank.config.critChance += 10;
                 tank.inccc.stacks += 1;
                 tank.inccc.timeout.extend(3000);
             }
@@ -1498,7 +1541,7 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
-            tank.config.coins += 500;
+            tank.config.coins += 1000;
             visualeffects.push(new VisualEffect({name: 'coin-burst', oX: tank.config.oX, oY: tank.config.oY, width: 128, height: 128, scaleW: 128, scaleH: 128,  maxCols: 8, maxRows: 3, framesTillUpdate: 0, loop: false, spriteSheet: 'coin-burst-1'}));
             gold_pick_sound.get();
         };
@@ -2277,7 +2320,7 @@ var PUP = (function() {
                 }, 6000);
             }
             else {
-                tank.maxHits += 12;
+                tank.maxHits += 36;
                 tank.as_timeout.extend(3000);
             } 
         };
