@@ -363,6 +363,8 @@ var UTIL = (function () {
     
     my.followNextTank = function () {
         /* Follow (camera) a random active tank. */
+        // disable if main tank still active
+        if (player.config.active) return;
         var target = player;
         
         for (var i = 0; i < 1000; i++) {
@@ -375,6 +377,15 @@ var UTIL = (function () {
         }
 
         return target.config.id;;
+    };
+    
+    my.toggleFreeCameraMode = function () {
+        // disable toggle if main tank still active
+        if (player.config.active) return;
+        freecam = !freecam;
+        if (!freecam) {
+            my.followNextTank();
+        }
     };
     
     my.doScreenShake = function (amount, duration) {      

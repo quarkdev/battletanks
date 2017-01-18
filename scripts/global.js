@@ -179,6 +179,7 @@ var dummy_camera = {
 };
 
 var tank_to_chase = null;
+var freecam = false;
 
 var shake_timer = null;
 var shake_amount = 0;

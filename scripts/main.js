@@ -494,6 +494,14 @@ var main = function () {
     var now = performance.now();
     var delta = now - then;
     
+    if (freecam) {
+        tank_to_chase = {};
+        tank_to_chase.config = {};
+        tank_to_chase.active = true;
+        tank_to_chase.x = mousePos.mX + camera.xView;
+        tank_to_chase.y = mousePos.mY + camera.yView;
+    }
+    
     // update dummy cam coords
     if ( shake_timer && shake_timer.config.active ) {
         dummy_camera.x = tank_to_chase.x + (Math.floor(Math.random() * (shake_amount*2+1)) - shake_amount);
@@ -704,6 +712,9 @@ var start = function () {
     var workersCreated = LOAD.gameSettings();
     workersCreated = workersCreated > 0 ? workersCreated : 1;
     var pseudoInc = 100 / workersCreated;
+    
+    // disable freecam
+    freecam = false;
     
     UTIL.fancyProgress(pseudoInc, function() {
         $('#progress').fadeOut();

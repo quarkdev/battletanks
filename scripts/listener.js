@@ -276,8 +276,11 @@ function gameKeyDownEvent(e) {
                 break;
         }
     }
+    else if (e.keyCode === 78) {
+        UTIL.followNextTank(); // n
+    }
     else if (e.keyCode === 70) {
-        UTIL.followNextTank();
+        UTIL.toggleFreeCameraMode(); // f
     }
     else {
         keysDown[e.keyCode] = true;
