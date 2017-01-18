@@ -37,7 +37,8 @@ var PUP = (function() {
         {slug: 'emp-shell', cost: 500, desc: 'Causes the target tank\'s shield to burst dealing additional damage.'},
         {slug: 'pocket-tank', cost: 100, desc: 'Spawns 1 friendly tank to fight for you. Spawned tanks are destroyed on spawner\'s death.'},
         {slug: 'cluster-mine', cost: 100, desc: 'Call a C-130 Hercules to drop mines in an area.'},
-        {slug: 'missile-turret', cost: 200, desc: 'Build a static defense turret that fires deadly tomahawk guided missiles.'}
+        {slug: 'missile-turret', cost: 200, desc: 'Build a static defense turret that fires deadly tomahawk guided missiles.'},
+        {slug: 'gatling-turret', cost: 180, desc: 'Build a static defense turret that rapidly fires armor-piercing shells.'}
     ];
     
     my.getSlug = function (slug) {
@@ -124,6 +125,8 @@ var PUP = (function() {
                 return new ClusterMine(x, y);
             case 'missile-turret':
                 return new MissileTurret(x, y);
+            case 'gatling-turret':
+                return new GatlingTurret(x, y);
             default:
                 break;
         }
@@ -158,8 +161,41 @@ var PUP = (function() {
         };
     }
     
+    function GatlingTurret(x, y) {
+        /* Drops a stationary gatling turret at current location. */
+        this.config = {
+            name    : 'Gatling Turret',
+            slug    : 'gatling-turret',
+            oX      : x,
+            oY      : y,
+            size    : 32,
+            cRadius : 16,
+            image   : PowerUpImages.get('gatling-turret')
+        };
+        
+        this.use = function (tank) {
+            var x = tank.config.oX;
+            var y = tank.config.oY;
+            // get turret blueprint
+            GLOBALS.abotCount++;
+            var bp = BLUEPRINT.get('gatling_turret');
+            var tId = 'abot' + GLOBALS.abotCount;
+            var t = new Tank(bp, tId, 'computer_p', x, y, tank.config.faction);
+            tanks.push(t);
+            var _x = Math.floor(Math.random() * WORLD_WIDTH);
+            var _y = Math.floor(Math.random() * WORLD_HEIGHT);
+            bots.push([t, [], 'waiting', 'patrol', {los: false, x: _x, y: _y}, null, null, 3000]);
+            LOAD.worker.pathFinder(GLOBALS.packedDestructibles, tId, t.config.id, t.config.width);
+            
+            // apply unlimited Armor Piercing shell powerup to tank dummy
+            var _pup_he = PUP.create('armor-piercing-shell', -32, -32);
+            _pup_he.use(t);
+            t.aps.timeout.clear();
+        }
+    }
+    
     function MissileTurret(x, y) {
-        /* Drops a stationary missile turret at current location. Turret attacks nearby enemy tanks. */
+        /* Drops a stationary missile turret at current location. */
         this.config = {
             name    : 'Missile Turret',
             slug    : 'missile-turret',

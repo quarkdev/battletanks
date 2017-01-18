@@ -40,6 +40,8 @@ UTIL.asset.queue('image', ['heavy_turret', 'images/tanks/heavy/turret.png', Tank
 UTIL.asset.queue('image', ['heavy_chassis', 'images/tanks/heavy/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['missile_turret_turret', 'images/tanks/missile_turret/turret.png', TankImages]);
 UTIL.asset.queue('image', ['missile_turret_chassis', 'images/tanks/missile_turret/chassis.png', TankImages]);
+UTIL.asset.queue('image', ['gatling_turret_turret', 'images/tanks/gatling_turret/turret.png', TankImages]);
+UTIL.asset.queue('image', ['gatling_turret_chassis', 'images/tanks/gatling_turret/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['widower_turret', 'images/tanks/widower/turret.png', TankImages]);
 UTIL.asset.queue('image', ['widower_chassis', 'images/tanks/widower/chassis.png', TankImages]);
 UTIL.asset.queue('image', ['fafnir_turret', 'images/tanks/fafnir/turret.png', TankImages]);
@@ -95,6 +97,7 @@ UTIL.asset.queue('image', ['vampiric-shell', 'images/powerups/vampiric-shell.png
 UTIL.asset.queue('image', ['emp-shell', 'images/powerups/emp-shell.png', PowerUpImages]);
 UTIL.asset.queue('image', ['pocket-tank', 'images/powerups/pocket-tank.png', PowerUpImages]);
 UTIL.asset.queue('image', ['missile-turret', 'images/powerups/missile-turret.png', PowerUpImages]);
+UTIL.asset.queue('image', ['gatling-turret', 'images/powerups/gatling-turret.png', PowerUpImages]);
 UTIL.asset.queue('image', ['cluster-mine', 'images/powerups/cluster-mine.png', PowerUpImages]);
 
 // Destructible images
@@ -143,6 +146,7 @@ UTIL.asset.queue('image', ['volumetric_explosion_2', 'images/spritesheets/volume
 UTIL.asset.queue('image', ['spawn_vortex', 'images/spritesheets/spawn_vortex.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['heavy_recoil', 'images/tanks/heavy/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['missile_turret_recoil', 'images/tanks/missile_turret/recoil.png', SpriteSheetImages]);
+UTIL.asset.queue('image', ['gatling_turret_recoil', 'images/tanks/gatling_turret/recoil.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['calldown', 'images/spritesheets/calldown.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['shield_glimpse', 'images/spritesheets/shield_glimpse.png', SpriteSheetImages]);
 UTIL.asset.queue('image', ['bar', 'images/spritesheets/bar.png', SpriteSheetImages]);
@@ -310,6 +314,7 @@ MAP.addPlaceable('powerup', 'vampiric-shell');
 MAP.addPlaceable('powerup', 'emp-shell');
 MAP.addPlaceable('powerup', 'pocket-tank');
 MAP.addPlaceable('powerup', 'missile-turret');
+MAP.addPlaceable('powerup', 'gatling-turret');
 MAP.addPlaceable('powerup', 'cluster-mine');
 
 GLOBALS.map.index = 0;

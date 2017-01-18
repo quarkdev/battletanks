@@ -31,6 +31,38 @@
             "hAngle"       : 90.0,
             "tAngle"       : 45.0,
             "coins"        : 750
+        },
+        {
+            "name"         : "gatling_turret",
+            "type"         : "turret",
+            "locked"       : 1,
+            "bImage"       : "gatling_turret_chassis",
+            "tImage"       : "gatling_turret_turret",
+            "health"       : 2000,
+            "shield"       : 800,
+            "shieldRegen"  : 500,
+            "armor"        : 100,
+            "tSize"        : 80.0,
+            "sSpeed"       : 0,
+            "width"        : 49.0,
+            "height"       : 49.0,
+            "tWidth"       : 80.0,
+            "tHeight"      : 80.0,
+            "fireScale"    : 1.1,
+            "explodeScale" : 80,
+            "tSpeed"       : 220.0,
+            "fSpeed"       : 0,
+            "rSpeed"       : 0,
+            "accel"        : 0,
+            "pSpeed"       : 720,
+            "pDamage"      : 100,
+            "critChance"   : 8,
+            "critMultiplier" : 3,
+            "ammo"         : 2000.0,
+            "fRate"        : 12,
+            "hAngle"       : 90.0,
+            "tAngle"       : 45.0,
+            "coins"        : 300
         }
     ]
 }
