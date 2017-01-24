@@ -115,7 +115,7 @@ Array.prototype.clear = function () {
 };
 
 var LOG_ENABLED = false;
-var MAX_BOTS = 50;
+var MAX_BOTS = 80;
 
 var terrain = null;
 var dummies = [];
