@@ -1348,6 +1348,42 @@ var PUP = (function() {
                 new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.20; }, 425);
                 new Timer(function () { flash.config.radius = 3000; flash.config.intensity -= 0.20; }, 450);
                 new Timer(function () { flash.config.active = false; core.config.active = false; }, 500);
+                
+                // add a DoT (damage over time) status ailment to tanks
+                var nukeDoT = function(oa) {
+                    var t = oa.tank;
+                    // remove tank hp at the rate of 1000 per second for a maximum of 5000 hp
+                    if (typeof t.nukeDoT === 'undefined') {
+                        t.nukeDoT = {};
+                        t.nukeDoT.damageDealt = 0;
+                    }
+                    else {
+                        if ( t.nukeDoT.damageDealt < 5000 ) {
+                            var amountToRemove = 1000*oa.modifier;
+                            t.config.health -= amountToRemove;
+                            t.config.health = t.config.health > 0 ? t.config.health : 0;
+                            t.nukeDoT.damageDealt += amountToRemove;
+                            if (t.config.control == 'player') {
+                                renderExtern();   
+                            }
+                        }
+                        else {
+                            t.events.unlisten('frame', 'nukeDoT');
+                        }
+                    }
+                };
+                
+                for (var i = 0; i < tanks.length; i++) {
+                    if (!tanks[i].config.active) {
+                        continue;
+                    }
+                    
+                    if (typeof tanks[i].nukeDoT !== 'undefined') {
+                        tanks[i].nukeDoT.damageDealt = 0; // reset
+                    }
+                    
+                    tanks[i].events.listen('frame', nukeDoT);
+                }
             }, 6000);
         };
     }

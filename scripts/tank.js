@@ -997,5 +997,5 @@ Tank.prototype.frame = function (modifier) {
     
     t.turretAnim.updatePos(t.oX, t.oY);
 
-    this.events.emit('frame', {modifier: modifier});
+    this.events.emit('frame', {tank: this, modifier: modifier});
 };
