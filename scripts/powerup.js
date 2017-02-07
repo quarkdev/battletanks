@@ -1363,6 +1363,9 @@ var PUP = (function() {
                             t.config.health -= amountToRemove;
                             t.config.health = t.config.health > 0 ? t.config.health : 0;
                             t.nukeDoT.damageDealt += amountToRemove;
+                            if (t.config.health == 0) {
+                                t.death();
+                            }
                             if (t.config.control == 'player') {
                                 renderExtern();   
                             }
