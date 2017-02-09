@@ -2318,6 +2318,10 @@ var PUP = (function() {
         };
         
         this.use = function (tank) {
+            if (!tank.config.active) {
+                return;
+            }
+            
             var active = typeof tank.as_active !== 'undefined';
         
             if (!active) {
@@ -2383,6 +2387,11 @@ var PUP = (function() {
                     }
                 };
                 tank.events.listen('hit', absorbHit);
+                tank.events.listen('death', function() {
+                    if (tank.as_break) {
+                        tank.as_break();
+                    }
+                });
                 
                 var asAnim = function () {
                     // update animation position
