@@ -2082,8 +2082,13 @@ var PUP = (function() {
                 var de_pb = function () {
                     if (typeof tank.pBarrier === 'undefined') { return; }
                     // deactivate all projectiles in projectile barrier
-                    for (var i = 0; i < tank.pBarrier.length; i++) {
-                        tank.pBarrier[i][0].death();
+                    for (let i = 0; i < tank.pBarrier.length; i++) {
+						// give angle for the projectile
+						let a = UTIL.geometry.getAngleBetweenLineAndHAxis( {x: tank.config.oX, y: tank.config.oY}, {x: tank.pBarrier[i][0].config.oX, y: tank.pBarrier[i][0].config.oY} );
+						tank.pBarrier[i][0].config.angle = a;
+						
+						// give speed (to start moving outwards)
+						tank.pBarrier[i][0].config.speed = 640;
                     }
                     
                     tank.events.unlisten('hit', incBarrier);
