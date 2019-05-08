@@ -755,7 +755,7 @@ Tank.prototype.fire = function () {
     
     var _fr = Math.floor(Math.random() * 3) + 1;
     visualeffects.push(new VisualEffect({name: 'muzzle-flash', oX: _oX, oY: _oY, width: 264, height: 128, angle: t.tAngle, scaleW: 128 * t.fireScale, scaleH: 64 * t.fireScale,  maxCols: 2, maxRows: 2, framesTillUpdate: 0, loop: false, spriteSheet: 'muzzle-flash-' + _fr}));
-    visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, scaleW: 12 * t.fireScale, scaleH: 12 * t.fireScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
+    visualeffects.push(new VisualEffect({name: 'explosion', oX: _oX, oY: _oY, width: 32, height: 32, angle: Math.random() * 360, scaleW: 12 * t.fireScale, scaleH: 12 * t.fireScale,  maxCols: 4, maxRows: 4, framesTillUpdate: 0, loop: false, spriteSheet: 'explosion'}));
     
     var flash = new Light({
         name        : 'muzzle-flash',
